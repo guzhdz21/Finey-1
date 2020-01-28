@@ -1,3 +1,25 @@
-<p>
-  menu works!
-</p>
+<ion-menu side="start"
+          menuId="MenuPrincipal"
+          contentId="Principal">
+
+    <ion-header>
+      <ion-toolbar>
+        <ion-title>Menú Princial</ion-title>
+      </ion-toolbar>
+    </ion-header>
+
+    <ion-content>
+      <ion-item>
+      <ion-avatar slot="start">
+        <img src="/assets/Hombre.png">
+      </ion-avatar>
+      <ion-label>Gustavo Hernández</ion-label>
+    </ion-item>
+      <ion-list>
+        <ion-item *ngFor="let opcion of opciones">
+          <ion-icon [name]="opcion.icono" slot="start"></ion-icon>
+          <ion-label>{{opcion.nombre}}</ion-label>
+        </ion-item>
+      </ion-list>
+    </ion-content>
+</ion-menu>
