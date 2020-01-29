@@ -67,11 +67,6 @@ export class Tab1Page {
       texto: 'Internet/Television/Telefonia'
     },
     {
-      nombre: 'cafe',
-      color: 'c008000',
-      texto: 'Electrodomesticos'
-    },
-    {
       nombre: 'battery-charging',
       color: 'c808080',
       texto: 'Electronicos'
@@ -109,7 +104,6 @@ export class Tab1Page {
   transporte = 15;
   seguro = 15;
   ITT = 15;
-  electro: 15;
   electronicos = 15;
   educacion = 15;
   ocio = 15;
@@ -131,12 +125,12 @@ export class Tab1Page {
     'Transporte',
     'Seguro',
     'Internet/Television/Telefonia',
-    'Electrodomesticos',
     'Electronicos',
     'Educacion',
     'Ocio',
     'Salud',
-    'Extra'
+    'Extra',
+    'Electrodomesticos'
   ];
   public doughnutChartData: SingleDataSet =
   [
@@ -151,7 +145,6 @@ export class Tab1Page {
       this.transporte,
       this.seguro,
       this.ITT,
-      this.electro,
       this.electronicos,
       this.educacion,
       this.ocio,
@@ -173,7 +166,6 @@ export class Tab1Page {
       '#00FF7F',
       '#00FFFF',
       '#D2691E',
-      '#008000',
       '#808080',
       'FUCHSIA',
       '#FF1493',
