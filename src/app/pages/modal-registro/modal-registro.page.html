@@ -2,10 +2,20 @@
 
 <ion-content>
 
-  <ion-button fill="outline" class=botones_info shape="round" color="dark"
-              mode="ios" >
+  <ion-item>
 
-  </ion-button>
+    <ion-buttons slot="start">
+    <ion-button slots="icon-only">
+      <ion-icon name="information-circle"></ion-icon>
+    </ion-button>
+  </ion-buttons>
+
+  <ion-label>Nombre</ion-label>
+
+  <ion-input type="text"
+            placeholder="Gustavo Hernández">
+  </ion-input>
+  </ion-item>
 
 <p>
   <ion-button (click)="salirSinArgumentos()" 
