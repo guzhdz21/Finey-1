@@ -109,7 +109,7 @@ export class Tab1Page {
   transporte = 15;
   seguro = 15;
   ITT = 15;
-  electrodomesticos: 15;
+  electro: 15;
   electronicos = 15;
   educacion = 15;
   ocio = 15;
@@ -151,7 +151,7 @@ export class Tab1Page {
       this.transporte,
       this.seguro,
       this.ITT,
-      this.electrodomesticos,
+      this.electro,
       this.electronicos,
       this.educacion,
       this.ocio,
