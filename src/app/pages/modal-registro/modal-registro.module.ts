@@ -7,13 +7,15 @@ import { IonicModule } from '@ionic/angular';
 import { ModalRegistroPageRoutingModule } from './modal-registro-routing.module';
 
 import { ModalRegistroPage } from './modal-registro.page';
+import { ComponentsModule } from '../../components/components.module';
 
 @NgModule({
   imports: [
     CommonModule,
     FormsModule,
     IonicModule,
-    ModalRegistroPageRoutingModule
+    ModalRegistroPageRoutingModule,
+    ComponentsModule
   ],
   declarations: [ModalRegistroPage]
 })
