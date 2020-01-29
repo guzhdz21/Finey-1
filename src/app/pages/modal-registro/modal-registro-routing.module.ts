@@ -2,11 +2,12 @@ import { NgModule } from '@angular/core';
 import { Routes, RouterModule } from '@angular/router';
 
 import { ModalRegistroPage } from './modal-registro.page';
+import { Tab2Page } from '../tab2/tab2.page';
 
 const routes: Routes = [
   {
     path: '',
-    component: ModalRegistroPage
+    component: Tab2Page
   }
 ];
 
