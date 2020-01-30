@@ -12,10 +12,18 @@ import { ComponentsModule } from './components/components.module';
 
 import { ChartsModule } from 'ng2-charts';
 
+import { HttpClientModule} from '@angular/common/http';
+
 @NgModule({
   declarations: [AppComponent],
   entryComponents: [],
-  imports: [BrowserModule, IonicModule.forRoot(), AppRoutingModule, ComponentsModule, ChartsModule],
+  imports: [
+    BrowserModule,
+    IonicModule.forRoot(),
+    AppRoutingModule,
+    ComponentsModule,
+    ChartsModule,
+    HttpClientModule],
   providers: [
     StatusBar,
     SplashScreen,
