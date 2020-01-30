@@ -1,7 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { ChartType } from 'chart.js';
 import { SingleDataSet, Label } from 'ng2-charts';
-import { Rubro, ColorArray } from '../../interfaces/interfaces';
+import { Rubro} from '../../interfaces/interfaces';
 import {Observable} from 'rxjs';
 import { DatosService } from '../../services/datos.service';
 
