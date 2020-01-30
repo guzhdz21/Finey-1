@@ -1,10 +1,14 @@
-<app-header-modal titulo="Registro"></app-header-modal>
+<app-header titulo="Mis Gastos"></app-header>
+
 
 <ion-content>
 
   <ion-item lines="none"> 
-    <ion-label class="texto_centrado"><p>Registra tus datos, si no gastas</p>
-    <p> en alguno inserta un 0</p></ion-label>
+    <ion-label class="texto_centrado"><h1>Mis Gastos</h1></ion-label>
+  </ion-item>
+  <ion-item lines="none"> 
+    <ion-label class="texto_centrado"><p>Modifica tus datos, si no quieres</p>
+    <p> modificar alguno, dejalo como está</p></ion-label>
   </ion-item>
   <ion-item></ion-item>
  
@@ -263,13 +267,10 @@
   </ion-buttons>
   <ion-label>Extra</ion-label>
   <ion-input type="text"
-            placeholder="Ej. 300">
+             placeholder="Ej. 300">
   </ion-input>
   </ion-item>
 
-      <ion-button expand="block" color="dark">Registrarme</ion-button>
-
-      <ion-button   (click)="salirSinArgumentos()"
-                    expand="block" color="dark">Salir del modal</ion-button> 
+      <ion-button expand="block" color="dark">Cambiar Datos</ion-button>
 
 </ion-content>

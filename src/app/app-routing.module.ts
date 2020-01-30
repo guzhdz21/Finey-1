@@ -9,6 +9,10 @@ const routes: Routes = [
   {
     path: 'modal-registro',
     loadChildren: () => import('./pages/modal-registro/modal-registro.module').then( m => m.ModalRegistroPageModule)
+  },
+  {
+    path: 'mis-gastos',
+    loadChildren: () => import('./pages/mis-gastos/mis-gastos.module').then( m => m.MisGastosPageModule)
   }
 ];
 @NgModule({
