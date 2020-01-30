@@ -1,0 +1,87 @@
+[
+    {
+        "nombre": "home",
+        "color": "FF0000",
+        "texto": "Vivienda"
+      },
+      {
+        "nombre": "water",
+        "color": "FFA500",
+        "texto": "Agua"
+      },
+      {
+        "nombre": "flash",
+        "color": "FFFF00",
+        "texto": "Luz"
+      },
+      {
+        "nombre": "cloud",
+        "color": "c00FF00",
+        "texto": "Gas"
+      },
+      {
+        "nombre": "pizza",
+        "color": "c00BFFF",
+        "texto": "Comida"
+      },
+      {
+        "nombre": "body",
+        "color": "c8A2BE2",
+        "texto": "Ropa"
+      },
+      {
+        "nombre": "bed",
+        "color": "FA8072",
+        "texto": "Mobiliario"
+      },
+      {
+        "nombre": "trash",
+        "color": "FFD700",
+        "texto": "Limpieza"
+      },
+      {
+        "nombre": "logo-model-s",
+        "color": "c00FF7F",
+        "texto": "Transporte"
+      },
+      {
+        "nombre": "contact",
+        "color": "c00FFFF",
+        "texto": "Seguro"
+      },
+      {
+        "nombre": "wifi",
+        "color": "D2691E",
+        "texto": "Internet/Television/Telefonia"
+      },
+      {
+        "nombre": "home",
+        "color": "c008000",
+        "texto": "Electrodomesticos"
+      },
+      {
+        "nombre": "battery-charging",
+        "color": "c808080",
+        "texto": "Electronicos"
+      },
+      {
+        "nombre": "book",
+        "color": "FUCHSIA",
+        "texto": "Educacion"
+      },
+      {
+        "nombre": "logo-game-controller-b",
+        "color": "FF1493",
+        "texto": "Ocio"
+      },
+      {
+        "nombre": "medkit",
+        "color": "c0000FF",
+        "texto": "Salud"
+      },
+      {
+        "nombre": "add-circle",
+        "color": "c000000",
+        "texto": "Extra"
+      }
+]
