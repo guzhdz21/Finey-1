@@ -15,8 +15,13 @@ export class ModalRegistroPage implements OnInit {
 
 ngOnInit() {
     this.datosService.getEtiquetasTab1().subscribe (val => {
-      this.etiquetas=val.nombre
+      this.etiquetas=val.nombre;
       });
 }
 
+salirSinArgumentos() {
+  this.modalCtrl.dismiss();
 }
+
+}
+
