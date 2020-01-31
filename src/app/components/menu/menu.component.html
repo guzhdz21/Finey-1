@@ -3,21 +3,22 @@
           contentId="Principal">
 
     <ion-header>
-      <ion-toolbar>
+      <ion-toolbar color="success">
         <ion-title>Menú Principal</ion-title>
       </ion-toolbar>
     </ion-header>
 
     <ion-content>
-      <ion-item>
+      <ion-item lines="none">
       <ion-avatar slot="start">
         <img src="/assets/Hombre.png">
       </ion-avatar>
       <ion-label>Gustavo Hernández</ion-label>
     </ion-item>
       <ion-list>
-        <ion-item *ngFor="let opcion of opciones">
-          <ion-icon [name]="opcion.icono" slot="start"></ion-icon>
+        <ion-item *ngFor="let opcion of opciones"
+                  [routerLink]="opcion.redirigirA">
+          <ion-icon color="success" [name]="opcion.icono" slot="start"></ion-icon>
           <ion-label>{{opcion.nombre}}</ion-label>
         </ion-item>
       </ion-list>

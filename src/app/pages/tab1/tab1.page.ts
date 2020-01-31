@@ -36,8 +36,6 @@ export class Tab1Page implements OnInit {
   salud = 15;
   extra = 15;
 
-
-
   public doughnutChartLabels: Label[] = this.etiqueta;
   public doughnutChartData: SingleDataSet =
   [
@@ -67,7 +65,6 @@ export class Tab1Page implements OnInit {
 
   public legend = false;
 
-
   constructor(private datosService: DatosService) {}
 
   ngOnInit() {
@@ -83,7 +80,7 @@ export class Tab1Page implements OnInit {
 
     this.datosService.getEtiquetasTab1().subscribe(val => {
       val.nombre.forEach(element => {
-        this.etiquetas.push(element.toString())
+        this.etiquetas.push(element.toString() + ' %')
       });
     });
 
@@ -93,6 +90,3 @@ export class Tab1Page implements OnInit {
   ionViewWillEnter() {
   }
   }
-
-
-

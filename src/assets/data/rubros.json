@@ -52,10 +52,10 @@
       {
         "nombre": "wifi",
         "color": "D2691E",
-        "texto": "Internet/Television/Telefonia"
+        "texto": "Internet/Cable/Telefonia"
       },
       {
-        "nombre": "home",
+        "nombre": "cafe",
         "color": "c008000",
         "texto": "Electrodomesticos"
       },

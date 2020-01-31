@@ -13,7 +13,11 @@ const routes: Routes = [
   {
     path: 'mis-gastos',
     loadChildren: () => import('./pages/mis-gastos/mis-gastos.module').then( m => m.MisGastosPageModule)
+  },  {
+    path: 'mis-gastos-page',
+    loadChildren: () => import('./pages/mis-gastos-page/mis-gastos-page.module').then( m => m.MisGastosPagePageModule)
   }
+
 ];
 @NgModule({
   imports: [

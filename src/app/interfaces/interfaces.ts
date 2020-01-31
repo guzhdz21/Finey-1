@@ -11,9 +11,25 @@ export interface Rubro {
 }
 
 export interface ColorArray {
-    colores: string[]
+    colores: string[];
 }
 
 export interface LabelArray {
-    nombre: string[]
+    nombre: string[];
+}
+
+export interface Gasto {
+    nombre: string;
+    cantidad: string;
+    tipo: string;
+    porcenteja: string;
+    icono: string;
+}
+
+export interface UsuarioLocal {
+    nombre: string;
+    sexo: string;
+    tipoIngreso: string;
+    ingresoCantida: number;
+    gastos: Gasto[];
 }
