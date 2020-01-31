@@ -13,11 +13,7 @@ export class Tab2Page {
 
   async abrirModal() {
      const modal = await this.modalCtrl.create({
-       component: ModalRegistroPage,
-       componentProps: {
-        nombre: 'Arlex',
-        pais: 'Mexico'
-    }
+       component: ModalRegistroPage
   });
      await modal.present();
 }

@@ -1,13 +1,15 @@
 import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { Rubro, ColorArray, LabelArray } from '../interfaces/interfaces';
+import { Storage } from '@ionic/storage';
 
 @Injectable({
   providedIn: 'root'
 })
 export class DatosService {
 
-  constructor(private http: HttpClient) { }
+  constructor(private http: HttpClient, 
+              private storage: Storage) { }
 
   getRubros() {
     return this.http.get<Rubro[]>('/assets/data/rubros.json');

@@ -1,11 +1,13 @@
 <ion-header no-border>
-  <ion-toolbar>
+  <ion-toolbar color="success">
     
     <ion-buttons slot="start">
-      <ion-back-button text="Atras"></ion-back-button>
+      <ion-button (click)="regresar()" slot="icon-only">
+        <ion-icon slot="start" name="arrow-round-back"></ion-icon>
+      </ion-button>
     </ion-buttons>
 
-    <ion-title class="texto_centrado">{{titulo}}</ion-title>
+    <ion-title>{{titulo}}</ion-title>
 
   </ion-toolbar>
 </ion-header>

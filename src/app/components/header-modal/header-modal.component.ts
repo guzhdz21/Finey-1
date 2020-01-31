@@ -1,4 +1,5 @@
 import { Component, OnInit, Input } from '@angular/core';
+import { ModalController, NavController } from '@ionic/angular';
 
 @Component({
   selector: 'app-header-modal',
@@ -8,8 +9,14 @@ import { Component, OnInit, Input } from '@angular/core';
 export class HeaderModalComponent implements OnInit {
 
   @Input() titulo: string;
-  constructor() { }
+  constructor(private modalCtrl: ModalController,
+              private nav: NavController) { }
 
   ngOnInit() {}
 
+  regresar()
+  {
+    this.modalCtrl.dismiss();
+    this.nav.navigateRoot('/tabs/tab1');
+  }
 }

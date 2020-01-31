@@ -83,7 +83,7 @@ export class Tab1Page implements OnInit {
 
     this.datosService.getEtiquetasTab1().subscribe(val => {
       val.nombre.forEach(element => {
-        this.etiquetas.push(element.toString())
+        this.etiquetas.push(element.toString() + ' %')
       });
     });
 

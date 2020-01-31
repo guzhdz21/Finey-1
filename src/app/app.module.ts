@@ -8,11 +8,13 @@ import { StatusBar } from '@ionic-native/status-bar/ngx';
 
 import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
-import { ComponentsModule } from './components/components.module';
 
 import { ChartsModule } from 'ng2-charts';
 
 import { HttpClientModule} from '@angular/common/http';
+
+import { IonicStorageModule } from '@ionic/storage';
+import { ComponentsModule } from './components/components.module';
 
 @NgModule({
   declarations: [AppComponent],
@@ -23,7 +25,8 @@ import { HttpClientModule} from '@angular/common/http';
     AppRoutingModule,
     ComponentsModule,
     ChartsModule,
-    HttpClientModule],
+    HttpClientModule,
+    IonicStorageModule.forRoot()],
   providers: [
     StatusBar,
     SplashScreen,

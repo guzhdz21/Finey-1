@@ -1,5 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { Opcion } from '../../interfaces/interfaces';
+import { ModalController } from '@ionic/angular';
+import { MisGastosPage } from 'src/app/pages/mis-gastos/mis-gastos.page';
 
 @Component({
   selector: 'app-menu',
@@ -12,7 +14,7 @@ opciones: Opcion[] = [
   {
     icono: 'cash',
     nombre: 'Mis Gastos',
-    redirigirA: ''
+    redirigirA: '/mis-gastos-page'
   },
   {
     icono: 'calendar',
@@ -26,7 +28,7 @@ opciones: Opcion[] = [
   }
 ];
 
-  constructor() { }
+  constructor(private modalCtrl: ModalController) { }
 
   ngOnInit() {}
 
