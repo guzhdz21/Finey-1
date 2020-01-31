@@ -1,14 +1,13 @@
 <app-header-modal titulo="Registro"></app-header-modal>
 
 <ion-content>
+  
+  <ion-item color="primary"> 
+    <ion-label><h1 class="texto_centrado_blanco">Datos Personales</h1></ion-label>
+  </ion-item>
 
   <ion-item lines="none"> 
-    <ion-label class="texto_centrado"><p>Registra tus datos, si no gastas</p>
-    <p> en alguno inserta un 0</p></ion-label>
-  </ion-item>
-  
-  <ion-item color="success"> 
-    <ion-label><h1 class="texto_centrado_blanco">Datos Personales</h1></ion-label>
+    <ion-label class="texto_centrado"><p>Registra tus datos personales</p></ion-label>
   </ion-item>
 
   <ion-item>
@@ -40,11 +39,11 @@
   <ion-item>
     <ion-list class="margen_izquierda_60">
       <ion-radio-group>
-        <ion-item>
+        <ion-item lines="none">
           <ion-radio color="dark"></ion-radio>
           <ion-label class="margen_izquierda_20">Masculino</ion-label>
         </ion-item>
-        <ion-item>
+        <ion-item lines="none">
           <ion-radio color="dark"></ion-radio>
           <ion-label class="margen_izquierda_20">Femenino</ion-label>
         </ion-item>
@@ -67,11 +66,11 @@
   <ion-item>
     <ion-list class="margen_izquierda_60">
       <ion-radio-group>
-        <ion-item>
+        <ion-item lines="none">
           <ion-radio color="dark"></ion-radio>
           <ion-label class="margen_izquierda_20">Fijo</ion-label>
         </ion-item>
-        <ion-item>
+        <ion-item lines="none">
           <ion-radio color="dark"></ion-radio>
           <ion-label class="margen_izquierda_20">Variable</ion-label>
         </ion-item>
@@ -91,8 +90,13 @@
   </ion-input>
   </ion-item>
 
-  <ion-item color="success"> 
+  <ion-item color="primary"> 
     <ion-label><h1 class="texto_centrado_blanco">Gastos</h1></ion-label>
+  </ion-item>
+
+  <ion-item lines="none"> 
+    <ion-label class="texto_centrado"><p>Registra tus gastos mensuales en cada seccion, </p>
+    <p>si en alguno no gastas registra un 0</p></ion-label>
   </ion-item>
 
   <ion-item *ngFor="let etiqueta of etiquetas">
@@ -108,8 +112,5 @@
 </ion-item>
 
       <ion-button expand="block" color="success">Registrarme</ion-button>
-
-      <ion-button   (click)="salirSinArgumentos()"
-                    expand="block" color="success">Salir del modal</ion-button> 
 
 </ion-content>

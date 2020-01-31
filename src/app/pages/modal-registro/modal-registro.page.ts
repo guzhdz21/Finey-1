@@ -19,8 +19,4 @@ ngOnInit() {
       });
 }
 
-salirSinArgumentos() {
-  this.modalCtrl.dismiss();
-}
-
 }
