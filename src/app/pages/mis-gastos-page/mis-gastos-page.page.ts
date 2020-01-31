@@ -21,5 +21,5 @@ async abrirModal() {
    });
       await modal.present();
  }
-
+ 
 }
