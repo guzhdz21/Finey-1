@@ -1,11 +1,12 @@
 import { Component, OnInit } from '@angular/core';
 import { ChartType } from 'chart.js';
 import { SingleDataSet, Label } from 'ng2-charts';
-import { Rubro} from '../../interfaces/interfaces';
+import { Rubro } from '../../interfaces/interfaces';
 import {Observable} from 'rxjs';
 import { DatosService } from '../../services/datos.service';
 import { ModalController } from '@ionic/angular';
 import { ModalRegistroPage } from '../modal-registro/modal-registro.page';
+import { DescripcionGastoPage } from '../descripcion-gasto/descripcion-gasto.page';
 
 @Component({
   selector: 'app-tab1',
@@ -19,47 +20,12 @@ export class Tab1Page implements OnInit {
   color = ['#ff7f0e',];
   etiquetas: string[] = [];
   etiqueta = ['Vivienda'];
+  datos: number[] = [];
+  dato: number[] = [4];
   primera: boolean;
 
-  vivienda = 15;
-  agua = 15;
-  luz = 15;
-  gas = 15;
-  comida = 15;
-  ropa = 15;
-  mobiliario = 15;
-  limpieza = 15;
-  transporte = 15;
-  seguro = 15;
-  ITT = 15;
-  electrodomesticos = 15;
-  electronicos = 15;
-  educacion = 15;
-  ocio = 15;
-  salud = 15;
-  extra = 15;
-
   public doughnutChartLabels: Label[] = this.etiqueta;
-  public doughnutChartData: SingleDataSet =
-  [
-      this.vivienda,
-      this.agua,
-      this.luz,
-      this.gas,
-      this.comida,
-      this.ropa,
-      this.mobiliario,
-      this.limpieza,
-      this.transporte,
-      this.seguro,
-      this.ITT,
-      this.electrodomesticos,
-      this.electronicos,
-      this.educacion,
-      this.ocio,
-      this.salud,
-      this.extra
-  ];
+  public doughnutChartData: SingleDataSet = [] = this.dato;
   public doughnutChartType: ChartType = 'doughnut';
   public chartColors: Array<any> = 
   [{
@@ -74,7 +40,7 @@ export class Tab1Page implements OnInit {
   ngOnInit() {
     if(this.datosService.primera === true)
     {
-      this.abrirModal();
+      this.abrirRegistro();
     }
     this.rubros = this.datosService.getRubros();
 
@@ -95,14 +61,40 @@ export class Tab1Page implements OnInit {
     });
 
     this.doughnutChartLabels = this.etiquetas;
+
+    this.datosService.cargarDatos();
   }
 
-  async abrirModal() {
+
+
+  async abrirRegistro() {
 
     const modal = await this.modalCtrl.create({
       component: ModalRegistroPage
     });
     await modal.present();
+  }
+
+  async abrirDescripcionGasto(seleccion: string, diseño: string) {
+
+    const modal = await this.modalCtrl.create({
+      component: DescripcionGastoPage,
+      componentProps: {
+        color: diseño,
+        rubro: seleccion,
+        gastos: this.datosService.usuarioCarga.gastos
+      }
+    });
+    await modal.present();
+  }
+
+  ionViewWillEnter() {
+    this.datosService.cargarDatos();
+    this.datos = [];
+    this.datosService.usuarioCarga.gastos.forEach(element => {
+      this.datos.push(Number(element.porcentaje));
+    });
+    this.doughnutChartData = this.datos;
   }
 
   }

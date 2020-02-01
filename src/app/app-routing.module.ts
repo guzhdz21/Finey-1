@@ -16,6 +16,10 @@ const routes: Routes = [
   },  {
     path: 'mis-gastos-page',
     loadChildren: () => import('./pages/mis-gastos-page/mis-gastos-page.module').then( m => m.MisGastosPagePageModule)
+  },
+  {
+    path: 'descripcion-gasto',
+    loadChildren: () => import('./pages/descripcion-gasto/descripcion-gasto.module').then( m => m.DescripcionGastoPageModule)
   }
 
 ];

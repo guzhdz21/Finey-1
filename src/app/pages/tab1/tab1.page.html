@@ -29,7 +29,7 @@
     <ion-button expand="full" color="primary">Saldo: 11000</ion-button>
 
     <ion-list>
-        <ion-item *ngFor="let rubro of rubros | async" lines="none">
+        <ion-item *ngFor="let rubro of rubros | async" lines="none" (click)="abrirDescripcionGasto(rubro.texto, rubro.color)">
             <ion-icon slot="start" name="square" [class]="rubro.color"></ion-icon>
             <ion-icon mode="ios" color="success" slot="start" [name]="rubro.nombre"></ion-icon>
             <ion-label>{{rubro.texto}}</ion-label>

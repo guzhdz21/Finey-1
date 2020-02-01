@@ -1,0 +1,47 @@
+<app-header-modal titulo="Descripcion de gasto"></app-header-modal>
+
+<ion-content>
+
+  <ion-item color="primary"> 
+    <ion-label><h1 class="texto_centrado_blanco">{{info.nombre}}</h1></ion-label>
+  </ion-item>
+
+  <ion-list lines="none">
+    <ion-item>
+      <ion-label color="tertiary">Color:</ion-label>
+      <ion-icon name="square" [class]="color"></ion-icon>
+    </ion-item>
+
+    <ion-item color="light">
+      <ion-label color="tertiary">Icono:</ion-label>
+      <ion-icon slot="end" [name]="info.icono" color="success"></ion-icon>
+    </ion-item>
+
+    <ion-item>
+      <ion-label color="tertiary">Tipo:</ion-label>
+      <ion-label class="margentexto">{{info.tipo}}</ion-label>
+    </ion-item>
+
+    <ion-item color="light">
+      <ion-label color="tertiary">Cantidad por mes:</ion-label>
+      <ion-label class="margentexto">{{info.cantidad}}</ion-label>
+    </ion-item>
+
+    <ion-item>
+      <ion-label class="ion-text-wrap" color="tertiary">Margen maximo de gasto:</ion-label>
+      <ion-label class="margentexto">{{info.margenMax}}</ion-label>
+    </ion-item>
+
+    <ion-item color="light">
+      <ion-label  class="ion-text-wrap" color="tertiary">Margen minimo de gasto:</ion-label>
+      <ion-label class="margentexto">{{info.margenMin}}</ion-label>
+    </ion-item>
+
+    <ion-item>
+      <ion-label class="ion-text-wrap" color="tertiary">Porcentaje de sueldo:</ion-label>
+      <ion-label class="margentexto">{{info.porcentaje}}%</ion-label>
+    </ion-item>
+
+  </ion-list>
+
+</ion-content>

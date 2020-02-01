@@ -56,7 +56,6 @@ export class DatosService {
 
    async cargarDatos() {
     const Usuario = await this.storage.get('Usuario');
-    console.log('Datos del usuario:', Usuario);
     this.usuarioCarga = Usuario;
 
   }
