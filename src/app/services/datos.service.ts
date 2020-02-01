@@ -11,10 +11,16 @@ export class DatosService {
   constructor(private http: HttpClient, 
               private storage: Storage) { 
     this.cargarPrimeraVez();
+    this.cargarDatos();
   }
 
   usuarioLocal: UsuarioLocal;
+  usuarioCarga: UsuarioLocal;
   primera: boolean;
+  hombre: string= '';
+  mujer: string = '';
+  fijo: string = '';
+  variable: string = '';
 
   getRubros() {
     return this.http.get<Rubro[]>('/assets/data/rubros.json');
@@ -52,4 +58,12 @@ export class DatosService {
       this.primera = true;
     }
   }
+
+   async cargarDatos() {
+    const Usuario = await this.storage.get('Usuario');
+    console.log('Datos del usuario:', Usuario);
+    this.usuarioCarga = Usuario;
+
+  }
+
 }
