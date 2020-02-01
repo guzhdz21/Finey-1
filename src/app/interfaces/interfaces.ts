@@ -8,6 +8,7 @@ export interface Rubro {
     nombre: string;
     color: string;
     texto: string;
+    tipo: string;
 }
 
 export interface ColorArray {
@@ -20,16 +21,18 @@ export interface LabelArray {
 
 export interface Gasto {
     nombre: string;
-    cantidad: string;
+    cantidad: number;
     tipo: string;
-    porcenteja: string;
+    porcentaje: string;
     icono: string;
+    margenMin: number;
+    margenMax: number;
 }
 
 export interface UsuarioLocal {
     nombre: string;
     sexo: string;
     tipoIngreso: string;
-    ingresoCantida: number;
+    ingresoCantidad: number;
     gastos: Gasto[];
 }

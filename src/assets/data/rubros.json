@@ -2,86 +2,103 @@
     {
         "nombre": "home",
         "color": "FF0000",
-        "texto": "Vivienda"
+        "texto": "Vivienda",
+        "tipo": "Fijo"
       },
       {
         "nombre": "water",
         "color": "FFA500",
-        "texto": "Agua"
+        "texto": "Agua",
+        "tipo": "Promedio"
       },
       {
         "nombre": "flash",
         "color": "FFFF00",
-        "texto": "Luz"
+        "texto": "Luz",
+        "tipo": "Promedio"
       },
       {
         "nombre": "cloud",
         "color": "c00FF00",
-        "texto": "Gas"
+        "texto": "Gas",
+        "tipo": "Fijo"
       },
       {
         "nombre": "pizza",
         "color": "c00BFFF",
-        "texto": "Comida"
+        "texto": "Comida",
+        "tipo": "Promedio"
       },
       {
         "nombre": "body",
         "color": "c8A2BE2",
-        "texto": "Ropa"
+        "texto": "Ropa",
+        "tipo": "Promedio"
       },
       {
         "nombre": "bed",
         "color": "FA8072",
-        "texto": "Mobiliario"
+        "texto": "Mobiliario",
+        "tipo": "Promedio"
       },
       {
         "nombre": "trash",
         "color": "FFD700",
-        "texto": "Limpieza"
+        "texto": "Limpieza",
+        "tipo": "Promedio"
       },
       {
         "nombre": "logo-model-s",
         "color": "c00FF7F",
-        "texto": "Transporte"
+        "texto": "Transporte",
+        "tipo": "Promedio"
       },
       {
         "nombre": "contact",
         "color": "c00FFFF",
-        "texto": "Seguro"
+        "texto": "Seguro",
+        "tipo": "Fijo"
       },
       {
         "nombre": "wifi",
         "color": "D2691E",
-        "texto": "Internet/Cable/Telefonia"
+        "texto": "Internet/Cable/Telefonia",
+        "tipo": "Fijo"
       },
       {
         "nombre": "cafe",
         "color": "c008000",
-        "texto": "Electrodomesticos"
+        "texto": "Electrodomesticos",
+        "tipo": "Promedio"
       },
       {
         "nombre": "battery-charging",
         "color": "c808080",
-        "texto": "Electronicos"
+        "texto": "Electronicos",
+        "tipo": "Promedio"
       },
       {
         "nombre": "book",
         "color": "FUCHSIA",
-        "texto": "Educacion"
+        "texto": "Educacion",
+        "tipo": "Fijo"
       },
       {
         "nombre": "logo-game-controller-b",
         "color": "FF1493",
-        "texto": "Ocio"
+        "texto": "Ocio",
+        "tipo": "Promedio"
       },
       {
         "nombre": "medkit",
         "color": "c0000FF",
-        "texto": "Salud"
+        "texto": "Salud",
+        "tipo": "Promedio"
       },
       {
         "nombre": "add-circle",
         "color": "c000000",
-        "texto": "Extra"
+        "texto": "Extra",
+        "tipo": "Fijo"
       }
 ]
