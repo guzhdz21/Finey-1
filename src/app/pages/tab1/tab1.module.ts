@@ -6,14 +6,20 @@ import { FormsModule } from '@angular/forms';
 import { Tab1Page } from './tab1.page';
 import { ComponentsModule } from '../../components/components.module';
 import { ChartsModule } from 'ng2-charts';
+import { ModalRegistroPage } from '../modal-registro/modal-registro.page';
+import { ModalRegistroPageModule } from '../modal-registro/modal-registro.module';
 
 @NgModule({
+  entryComponents: [
+    ModalRegistroPage
+  ],
   imports: [
     IonicModule,
     CommonModule,
     FormsModule,
     ComponentsModule,
     ChartsModule,
+    ModalRegistroPageModule,
     RouterModule.forChild([{ path: '', component: Tab1Page }])
   ],
   declarations: [Tab1Page]

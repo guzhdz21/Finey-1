@@ -4,6 +4,8 @@ import { SingleDataSet, Label } from 'ng2-charts';
 import { Rubro} from '../../interfaces/interfaces';
 import {Observable} from 'rxjs';
 import { DatosService } from '../../services/datos.service';
+import { ModalController } from '@ionic/angular';
+import { ModalRegistroPage } from '../modal-registro/modal-registro.page';
 
 @Component({
   selector: 'app-tab1',
@@ -17,6 +19,7 @@ export class Tab1Page implements OnInit {
   color = ['#ff7f0e',];
   etiquetas: string[] = [];
   etiqueta = ['Vivienda'];
+  primera: boolean;
 
   vivienda = 15;
   agua = 15;
@@ -65,15 +68,22 @@ export class Tab1Page implements OnInit {
 
   public legend = false;
 
-  constructor(private datosService: DatosService) {}
+  constructor(private datosService: DatosService,
+              private modalCtrl: ModalController) {}
 
   ngOnInit() {
+    if(this.datosService.primera === true)
+    {
+      this.abrirModal();
+    }
     this.rubros = this.datosService.getRubros();
+
     this.datosService.getColores().subscribe(val => {
       val.colores.forEach(element => {
         this.colores.push(element.toString())
       });
     });
+
     this.chartColors = [{
       backgroundColor: [ ] = this.colores
     }];
@@ -87,6 +97,12 @@ export class Tab1Page implements OnInit {
     this.doughnutChartLabels = this.etiquetas;
   }
 
-  ionViewWillEnter() {
+  async abrirModal() {
+
+    const modal = await this.modalCtrl.create({
+      component: ModalRegistroPage
+    });
+    await modal.present();
   }
+
   }

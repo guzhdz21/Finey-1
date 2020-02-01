@@ -21,7 +21,8 @@ export class ModalRegistroPage implements OnInit {
     gastos: []
   };
 
-  constructor( private modalCtrl: ModalController, private datosService: DatosService) { }
+  constructor( private modalCtrl: ModalController, 
+                private datosService: DatosService) { }
 
 ngOnInit() {
     this.datosService.getGastosJson().subscribe (val => {
@@ -65,6 +66,8 @@ registrar()
     this.i++;
   });
   this.datosService.guardarUsuarioInfo(this.usuario);
+  this.modalCtrl.dismiss();
+  this.datosService.guardarPrimeraVez(false);
 }
 
 }

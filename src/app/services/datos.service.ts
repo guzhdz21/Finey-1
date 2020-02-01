@@ -9,9 +9,12 @@ import { Storage } from '@ionic/storage';
 export class DatosService {
 
   constructor(private http: HttpClient, 
-              private storage: Storage) { }
+              private storage: Storage) { 
+    this.cargarPrimeraVez();
+  }
 
   usuarioLocal: UsuarioLocal;
+  primera: boolean;
 
   getRubros() {
     return this.http.get<Rubro[]>('/assets/data/rubros.json');
@@ -31,12 +34,22 @@ export class DatosService {
 
   guardarUsuarioInfo(usuario: UsuarioLocal) {
     this.usuarioLocal = usuario;
-    this.storage.set("Usuario", this.usuarioLocal);
+    this.storage.set('Usuario', this.usuarioLocal);
     console.log(this.usuarioLocal);
   }
 
   guardarPrimeraVez(primera: boolean)
   {
-    this.storage.set("Primera", primera);
+    this.storage.set('Primera', primera);
+  }
+
+   async cargarPrimeraVez()
+  {
+    const primera = await this.storage.get('Primera');
+    if(primera === false) {
+      this.primera = primera;
+    } else {
+      this.primera = true;
+    }
   }
 }
