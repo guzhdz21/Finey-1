@@ -28,5 +28,6 @@ export class AppComponent implements OnInit{
   }
   ngOnInit(){
     this.datosService.cargarPrimeraVez();
+    this.datosService.cargarDatos();
   }
 }

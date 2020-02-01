@@ -70,5 +70,10 @@ registrar()
   this.datosService.guardarPrimeraVez(false);
 }
 
+ionViewWillLeave()
+{
+  this.datosService.cargarDatos();
+}
+
 }
 

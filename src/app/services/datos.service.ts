@@ -17,10 +17,6 @@ export class DatosService {
   usuarioLocal: UsuarioLocal;
   usuarioCarga: UsuarioLocal;
   primera: boolean;
-  hombre: string= '';
-  mujer: string = '';
-  fijo: string = '';
-  variable: string = '';
 
   getRubros() {
     return this.http.get<Rubro[]>('/assets/data/rubros.json');
@@ -41,7 +37,6 @@ export class DatosService {
   guardarUsuarioInfo(usuario: UsuarioLocal) {
     this.usuarioLocal = usuario;
     this.storage.set('Usuario', this.usuarioLocal);
-    console.log(this.usuarioLocal);
   }
 
   guardarPrimeraVez(primera: boolean)

@@ -41,20 +41,20 @@
 
     <ion-item>
       <ion-list class="margen_izquierda_60">
-        <ion-radio-group>
+        <ion-radio-group #sexo>
           <ion-item lines="none">
-            <ion-radio color="dark" checked="{{hombre}}"></ion-radio>
+            <ion-radio color="dark" value="/assets/Hombre.png"></ion-radio>
             <ion-label class="margen_izquierda_20">Masculino</ion-label>
           </ion-item>
           <ion-item lines="none">
-            <ion-radio color="dark" checked="{{mujer}}"></ion-radio>
+            <ion-radio color="dark" value="/assets/Mujer.png"></ion-radio>
             <ion-label class="margen_izquierda_20">Femenino</ion-label>
           </ion-item>
         </ion-radio-group>
       </ion-list>
     </ion-item> 
   
-  
+  ada
     <ion-item lines="none">
   
       <ion-buttons slot="start">
@@ -68,13 +68,13 @@
   
     <ion-item>
       <ion-list class="margen_izquierda_60">
-        <ion-radio-group>
+        <ion-radio-group #tipoIngreso>
           <ion-item lines="none">
-            <ion-radio color="dark" checked="{{fijo}}"></ion-radio>
+            <ion-radio color="dark" value="Fijo"></ion-radio>
             <ion-label class="margen_izquierda_20">Fijo</ion-label>
           </ion-item>
           <ion-item lines="none">
-            <ion-radio color="dark" checked="{{variable}}"></ion-radio>
+            <ion-radio color="dark" value="Variable"></ion-radio>
             <ion-label class="margen_izquierda_20">Variable</ion-label>
           </ion-item>
         </ion-radio-group>
