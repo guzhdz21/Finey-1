@@ -1,7 +1,7 @@
 import { Component, OnInit } from '@angular/core';
-import { ModalController } from '@ionic/angular';
+import { ModalController, NavController } from '@ionic/angular';
 import { DatosService } from '../../services/datos.service';
-import { UsuarioLocal, Gasto, Rubro } from '../../interfaces/interfaces';
+import { UsuarioLocal, Rubro } from '../../interfaces/interfaces';
 
 @Component({
   selector: 'app-modal-registro',
@@ -22,7 +22,8 @@ export class ModalRegistroPage implements OnInit {
   };
 
   constructor( private modalCtrl: ModalController, 
-                private datosService: DatosService) { }
+                private datosService: DatosService,
+                private nav: NavController) { }
 
 ngOnInit() {
     this.datosService.getGastosJson().subscribe (val => {
@@ -65,15 +66,12 @@ registrar()
     }
     this.i++;
   });
+
   this.datosService.guardarUsuarioInfo(this.usuario);
   this.modalCtrl.dismiss();
   this.datosService.guardarPrimeraVez(false);
-}
-
-ionViewWillLeave()
-{
   this.datosService.cargarDatos();
-  location.reload();
+  this.nav.navigateRoot('/tabs/tab1');
 }
 
 }

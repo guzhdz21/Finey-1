@@ -14,7 +14,6 @@ export class DatosService {
     this.cargarDatos();
   }
 
-  usuarioLocal: UsuarioLocal;
   usuarioCarga: UsuarioLocal = 
   {
     nombre: '',
@@ -53,12 +52,13 @@ export class DatosService {
   }
 
   guardarUsuarioInfo(usuario: UsuarioLocal) {
-    this.usuarioLocal = usuario;
-    this.storage.set('Usuario', this.usuarioLocal);
+    this.usuarioCarga = usuario;
+    this.storage.set('Usuario', this.usuarioCarga);
   }
 
   guardarPrimeraVez(primera: boolean)
   {
+    this.primera = primera;
     this.storage.set('Primera', primera);
   }
 

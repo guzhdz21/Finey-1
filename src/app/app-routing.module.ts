@@ -20,6 +20,10 @@ const routes: Routes = [
   {
     path: 'descripcion-gasto',
     loadChildren: () => import('./pages/descripcion-gasto/descripcion-gasto.module').then( m => m.DescripcionGastoPageModule)
+  },
+  {
+    path: 'modal-registro-page',
+    loadChildren: () => import('./pages/modal-registro-page/modal-registro-page.module').then( m => m.ModalRegistroPagePageModule)
   }
 
 ];

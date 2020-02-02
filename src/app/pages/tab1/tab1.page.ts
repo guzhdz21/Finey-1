@@ -4,7 +4,7 @@ import { SingleDataSet, Label } from 'ng2-charts';
 import { Rubro } from '../../interfaces/interfaces';
 import {Observable} from 'rxjs';
 import { DatosService } from '../../services/datos.service';
-import { ModalController } from '@ionic/angular';
+import { ModalController, NavController } from '@ionic/angular';
 import { ModalRegistroPage } from '../modal-registro/modal-registro.page';
 import { DescripcionGastoPage } from '../descripcion-gasto/descripcion-gasto.page';
 
@@ -35,12 +35,13 @@ export class Tab1Page implements OnInit {
   public legend = false;
 
   constructor(private datosService: DatosService,
-              private modalCtrl: ModalController) {}
+              private modalCtrl: ModalController,
+              private nav: NavController) {}
 
   ngOnInit() {
     if(this.datosService.primera === true)
     {
-      this.abrirRegistro();
+      this.nav.navigateRoot('/modal-registro-page');
     }
     this.rubros = this.datosService.getRubros();
 
@@ -61,16 +62,18 @@ export class Tab1Page implements OnInit {
     });
 
     this.doughnutChartLabels = this.etiquetas;
-  }
 
-
-
-  async abrirRegistro() {
-
-    const modal = await this.modalCtrl.create({
-      component: ModalRegistroPage
+    this.datosService.usuarioCarga.gastos.forEach(element => {
+      this.datos.push(Number(element.porcentaje));
     });
-    await modal.present();
+    this.doughnutChartData = this.datos;
+
+    this.datosService.cargarDatos();
+    this.datosService.usuarioCarga.gastos.forEach(element => {
+      this.datos.push(Number(element.porcentaje));
+    });
+
+    this.doughnutChartData = this.datos;
   }
 
   async abrirDescripcionGasto(seleccion: string, diseño: string) {
