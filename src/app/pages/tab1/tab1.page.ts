@@ -61,8 +61,6 @@ export class Tab1Page implements OnInit {
     });
 
     this.doughnutChartLabels = this.etiquetas;
-
-    this.datosService.cargarDatos();
   }
 
 

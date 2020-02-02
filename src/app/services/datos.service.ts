@@ -15,7 +15,25 @@ export class DatosService {
   }
 
   usuarioLocal: UsuarioLocal;
-  usuarioCarga: UsuarioLocal;
+  usuarioCarga: UsuarioLocal = 
+  {
+    nombre: '',
+    sexo: '',
+    tipoIngreso: '',
+    ingresoCantidad: null,
+    gastos: [
+      {
+        nombre: '',
+        cantidad: null,
+        tipo: '',
+        porcentaje: '1',
+        icono: '',
+        margenMin: null,
+        margenMax: null
+      }
+      
+    ]
+  };
   primera: boolean;
 
   getRubros() {
@@ -56,8 +74,10 @@ export class DatosService {
 
    async cargarDatos() {
     const Usuario = await this.storage.get('Usuario');
-    this.usuarioCarga = Usuario;
-
+    if(Usuario)
+    {
+      this.usuarioCarga = Usuario;
+    }
   }
 
 }

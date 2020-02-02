@@ -1,9 +1,7 @@
 import { Component, OnInit, ViewChild } from '@angular/core';
 import { ModalController, NavController, IonRadioGroup } from '@ionic/angular';
-import { Tab1Page } from '../tab1/tab1.page';
 import { DatosService } from '../../services/datos.service';
 import { UsuarioLocal, Gasto, Rubro } from '../../interfaces/interfaces';
-import { hostViewClassName } from '@angular/compiler';
 
 @Component({
   selector: 'app-mis-gastos',

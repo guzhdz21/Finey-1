@@ -73,6 +73,7 @@ registrar()
 ionViewWillLeave()
 {
   this.datosService.cargarDatos();
+  location.reload();
 }
 
 }
