@@ -1,11 +1,10 @@
 import { Component, OnInit } from '@angular/core';
 import { ChartType } from 'chart.js';
 import { SingleDataSet, Label } from 'ng2-charts';
-import { Rubro } from '../../interfaces/interfaces';
+import { Rubro, UsuarioLocal } from '../../interfaces/interfaces';
 import {Observable} from 'rxjs';
 import { DatosService } from '../../services/datos.service';
-import { ModalController, NavController } from '@ionic/angular';
-import { ModalRegistroPage } from '../modal-registro/modal-registro.page';
+import { ModalController, NavController, Events } from '@ionic/angular';
 import { DescripcionGastoPage } from '../descripcion-gasto/descripcion-gasto.page';
 
 @Component({
@@ -14,13 +13,14 @@ import { DescripcionGastoPage } from '../descripcion-gasto/descripcion-gasto.pag
   styleUrls: ['tab1.page.scss']
 })
 export class Tab1Page implements OnInit {
+  
 
   rubros: Observable<Rubro[]>;
   colores: string[] = [];
   color = ['#ff7f0e',];
   etiquetas: string[] = [];
   etiqueta = ['Vivienda'];
-  datos: number[] = [];
+  datos: number[] =[];
   dato: number[] = [4];
   primera: boolean;
 
@@ -36,13 +36,23 @@ export class Tab1Page implements OnInit {
 
   constructor(private datosService: DatosService,
               private modalCtrl: ModalController,
-              private nav: NavController) {}
+              private nav: NavController,
+              private event: Events) {}
 
   ngOnInit() {
     if(this.datosService.primera === true)
     {
       this.nav.navigateRoot('/modal-registro-page');
     }
+
+    this.event.subscribe('userUpdate', (usuario: UsuarioLocal) => {
+      this.datos = [];
+      this.datosService.usuarioCarga.gastos.forEach(element => {
+      this.datos.push(Number(element.porcentaje));
+      });
+      this.doughnutChartData = this.datos;
+    });
+
     this.rubros = this.datosService.getRubros();
 
     this.datosService.getColores().subscribe(val => {
@@ -89,7 +99,7 @@ export class Tab1Page implements OnInit {
     await modal.present();
   }
 
-  ionViewWillEnter() {
+  ionViewDidEnter() {
     this.datosService.cargarDatos();
     this.datos = [];
     this.datosService.usuarioCarga.gastos.forEach(element => {

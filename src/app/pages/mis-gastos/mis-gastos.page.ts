@@ -1,5 +1,5 @@
 import { Component, OnInit, ViewChild } from '@angular/core';
-import { ModalController, NavController, IonRadioGroup } from '@ionic/angular';
+import { ModalController, NavController, IonRadioGroup, Events } from '@ionic/angular';
 import { DatosService } from '../../services/datos.service';
 import { UsuarioLocal, Gasto, Rubro } from '../../interfaces/interfaces';
 
@@ -23,7 +23,8 @@ export class MisGastosPage implements OnInit {
 
   constructor(private modalCtrl: ModalController,
               private nav: NavController,
-              public datosService: DatosService) { }
+              public datosService: DatosService,
+              private event: Events) { }
 
   ngOnInit() {
     this.datosService.getEtiquetasTab1().subscribe (val => {
@@ -63,8 +64,7 @@ export class MisGastosPage implements OnInit {
 
   this.datosService.guardarUsuarioInfo(this.usuarioModificado);
   this.datosService.cargarDatos();
-  this.datosService.guardarUsuarioInfo(this.usuarioModificado);
-  this.datosService.cargarDatos();
+  this.event.publish('userUpdate', (this.usuarioModificado));
   this.modalCtrl.dismiss();
   this.nav.navigateRoot('/tabs/tab1');
   }
