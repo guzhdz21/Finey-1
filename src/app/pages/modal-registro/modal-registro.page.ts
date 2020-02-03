@@ -1,7 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { ModalController, NavController } from '@ionic/angular';
 import { DatosService } from '../../services/datos.service';
-import { UsuarioLocal, Rubro } from '../../interfaces/interfaces';
+import { UsuarioLocal, Gasto ,Rubro } from '../../interfaces/interfaces';
 
 @Component({
   selector: 'app-modal-registro',
@@ -13,6 +13,7 @@ export class ModalRegistroPage implements OnInit {
   i: number = 0;
   etiquetas: string[] = [];
   rubros: Rubro[] = [];
+
   usuario: UsuarioLocal = {
     nombre: '',
     sexo: '',

@@ -29,8 +29,7 @@ export class DatosService {
         icono: '',
         margenMin: null,
         margenMax: null
-      }
-      
+      }   
     ]
   };
   primera: boolean;
@@ -80,4 +79,8 @@ export class DatosService {
     }
   }
 
+  modificarUsuarioInfo(usuario: UsuarioLocal) {
+    this.usuarioCarga = usuario;
+    console.log('Usuario Modificado', this.usuarioCarga);
+  }
 }
