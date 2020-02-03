@@ -32,6 +32,10 @@ export class MisGastosPage implements OnInit {
       this.datosService.cargarDatos();
       this.sexo.value = this.usuarioCargado.sexo;
       this.tipoIngreso.value = this.usuarioCargado.tipoIngreso;
+      
+      this.datosService.getRubros().subscribe (val => {
+        this.rubros = val;
+        });
   }
 
   regresar() {
@@ -59,9 +63,10 @@ export class MisGastosPage implements OnInit {
 
   this.datosService.guardarUsuarioInfo(this.usuarioModificado);
   this.datosService.cargarDatos();
-  this.datosService.modificarUsuarioInfo(this.usuarioModificado);
+  this.datosService.guardarUsuarioInfo(this.usuarioModificado);
   this.datosService.cargarDatos();
   this.modalCtrl.dismiss();
+  this.nav.navigateRoot('/tabs/tab1');
   }
 
 }

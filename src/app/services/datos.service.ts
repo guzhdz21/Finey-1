@@ -79,8 +79,4 @@ export class DatosService {
     }
   }
 
-  modificarUsuarioInfo(usuario: UsuarioLocal) {
-    this.usuarioCarga = usuario;
-    console.log('Usuario Modificado', this.usuarioCarga);
-  }
 }
