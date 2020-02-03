@@ -24,7 +24,8 @@
 
 
     <ion-input type="text"
-               value= {{usuarioCargado.nombre}}>
+               value= {{usuarioModificado.nombre}} 
+               [(ngModel)]="usuarioModificado.nombre">
     </ion-input>
     </ion-item>
   
@@ -88,7 +89,8 @@
     </ion-buttons>
     <ion-label>Ingreso mensual</ion-label>
     <ion-input type="text"
-              value={{usuarioCargado.ingresoCantidad}}>
+              value={{usuarioModificado.ingresoCantidad}}
+              [(ngModel)]="usuarioModificado.ingresoCantidad">
     </ion-input>
     </ion-item>
   
@@ -109,10 +111,11 @@
     </ion-buttons>
     <ion-label>{{etiqueta}}</ion-label>
     <ion-input type="text"
-               value= {{usuarioCargado.gastos[i].cantidad}}>
+               value= {{usuarioModificado.gastos[i].cantidad}}
+              [(ngModel)]="usuarioModificado.gastos[i].cantidad">
     </ion-input>
   </ion-item>
   
-        <ion-button expand="block" color="success">Modificar datos</ion-button>
+        <ion-button expand="block" color="success" (click)="modificar()">Modificar datos</ion-button>
   
   </ion-content>
