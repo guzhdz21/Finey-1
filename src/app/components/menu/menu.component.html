@@ -11,9 +11,9 @@
     <ion-content>
       <ion-item lines="none">
       <ion-avatar slot="start">
-        <img src="/assets/Hombre.png">
+        <img [src]="sexo">
       </ion-avatar>
-      <ion-label>{{usuarioMenu.nombre}}</ion-label>
+      <ion-label>{{nombre}}</ion-label>
     </ion-item>
       <ion-list>
         <ion-item *ngFor="let opcion of opciones"

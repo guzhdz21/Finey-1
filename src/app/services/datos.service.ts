@@ -2,7 +2,7 @@ import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { Rubro, ColorArray, LabelArray, UsuarioLocal, Gasto } from '../interfaces/interfaces';
 import { Storage } from '@ionic/storage';
-import { ToastController } from '@ionic/angular';
+import { ToastController, Events } from '@ionic/angular';
 
 @Injectable({
   providedIn: 'root'
@@ -11,14 +11,15 @@ export class DatosService {
 
   constructor(private http: HttpClient, 
               private storage: Storage,
-              private toastCtrl: ToastController) { 
+              private toastCtrl: ToastController,
+              private event: Events) { 
     this.cargarPrimeraVez();
     this.cargarDatos();
   }
 
   usuarioCarga: UsuarioLocal = 
   {
-    nombre: '',
+    nombre: 'G',
     sexo: '',
     tipoIngreso: '',
     ingresoCantidad: null,
@@ -79,6 +80,7 @@ export class DatosService {
     {
       this.usuarioCarga = Usuario;
     }
+    this.event.publish('usuarioInsertado');
   }
 
   async presentToast( message: string) {

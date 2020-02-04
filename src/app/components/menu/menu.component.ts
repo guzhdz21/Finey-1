@@ -1,9 +1,7 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, Input } from '@angular/core';
 import { Opcion } from '../../interfaces/interfaces';
-import { ModalController } from '@ionic/angular';
 import { DatosService } from '../../services/datos.service';
 import { UsuarioLocal, Gasto ,Rubro } from '../../interfaces/interfaces';
-import { MisGastosPage } from 'src/app/pages/mis-gastos/mis-gastos.page';
 
 @Component({
   selector: 'app-menu',
@@ -11,6 +9,9 @@ import { MisGastosPage } from 'src/app/pages/mis-gastos/mis-gastos.page';
   styleUrls: ['./menu.component.scss'],
 })
 export class MenuComponent implements OnInit {
+
+  @Input() nombre: string;
+  @Input() sexo: string;
 
   usuarioMenu: UsuarioLocal = this.datosService.usuarioCarga;
 
@@ -32,8 +33,7 @@ opciones: Opcion[] = [
   }
 ];
 
-  constructor(private modalCtrl: ModalController,
-              public datosService: DatosService) { }
+  constructor(public datosService: DatosService) { }
 
   ngOnInit() {
     this.datosService.cargarDatos();

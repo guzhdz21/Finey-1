@@ -74,7 +74,8 @@ sexoRadio_misgastos(event)
 
   this.datosService.guardarUsuarioInfo(this.usuarioModificado);
   this.datosService.cargarDatos();
-  this.event.publish('userUpdate', (this.usuarioModificado));
+  this.event.publish('usuarioActualizado');
+  this.event.publish('salirActualizado');
   this.modalCtrl.dismiss();
   this.nav.navigateRoot('/tabs/tab1');
   this.datosService.presentToast('Cambios modificados');

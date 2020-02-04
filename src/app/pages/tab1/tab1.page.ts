@@ -45,20 +45,29 @@ export class Tab1Page implements OnInit {
       this.nav.navigateRoot('/modal-registro-page');
     }
 
-    this.event.subscribe('userUpdate', (usuario: UsuarioLocal) => {
+    this.event.subscribe('usuarioActualizado', () => {
       this.datos = [];
+
       this.datosService.usuarioCarga.gastos.forEach(element => {
       this.datos.push(Number(element.porcentaje));
       });
+
       this.doughnutChartData = this.datos;
     });
+
+    this.event.subscribe('salirActualizado', () => {
+      this.event.unsubscribe('usuarioActualizado');
+      this.event.unsubscribe('SalirActualizado');
+    }); 
 
     this.rubros = this.datosService.getRubros();
 
     this.datosService.getColores().subscribe(val => {
+
       val.colores.forEach(element => {
         this.colores.push(element.toString())
       });
+
     });
 
     this.chartColors = [{

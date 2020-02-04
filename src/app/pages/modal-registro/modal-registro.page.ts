@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import { ModalController, NavController } from '@ionic/angular';
+import { ModalController, NavController, Events } from '@ionic/angular';
 import { DatosService } from '../../services/datos.service';
 import { UsuarioLocal, Gasto ,Rubro } from '../../interfaces/interfaces';
 
@@ -13,6 +13,8 @@ export class ModalRegistroPage implements OnInit {
   i: number = 0;
   etiquetas: string[] = [];
   rubros: Rubro[] = [];
+  ingreso: boolean = true;
+  sexo: boolean = true;
 
   usuario: UsuarioLocal = {
     nombre: '',
@@ -24,12 +26,14 @@ export class ModalRegistroPage implements OnInit {
 
   constructor( private modalCtrl: ModalController, 
                 private datosService: DatosService,
-                private nav: NavController) { }
+                private nav: NavController,
+                private event: Events) { }
 
 ngOnInit() {
     this.datosService.getGastosJson().subscribe (val => {
     this.usuario.gastos = val;
     });
+
     this.datosService.getEtiquetasTab1().subscribe (val => {
       this.etiquetas = val.nombre;
       });
@@ -42,11 +46,13 @@ ngOnInit() {
 ingresoRadio(event)
 {
   this.usuario.tipoIngreso = event.detail.value;
+  this.ingreso = false;
 }
 
 sexoRadio(event)
 {
   this.usuario.sexo = event.detail.value;
+  this.sexo = false;
 }
 
 registrar()
@@ -69,9 +75,11 @@ registrar()
   });
 
   this.datosService.guardarUsuarioInfo(this.usuario);
-  this.modalCtrl.dismiss();
   this.datosService.guardarPrimeraVez(false);
+  this.event.publish('usuarioInsertado');
+  this.event.publish('salir');
   this.datosService.cargarDatos();
+  this.modalCtrl.dismiss(); 
   this.nav.navigateRoot('/tabs/tab1');
   this.datosService.presentToast('Registro exitoso');
 }

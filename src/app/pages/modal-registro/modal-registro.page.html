@@ -1,7 +1,7 @@
 <app-header-modal titulo="Registro"></app-header-modal>
 
 <ion-content>
-  
+  <form #formulario="ngForm">
   <ion-item color="primary"> 
     <ion-label><h1 class="texto_centrado_blanco">Datos Personales</h1></ion-label>
   </ion-item>
@@ -22,7 +22,9 @@
 
   <ion-input type="text"
             placeholder="Gustavo Hernández"
-            required [(ngModel)]="usuario.nombre">
+            [(ngModel)]="usuario.nombre"
+            name="nombre"
+            required>
   </ion-input>
   </ion-item>
 
@@ -39,7 +41,9 @@
 
   <ion-item>
     <ion-list class="margen_izquierda_60">
-      <ion-radio-group required (ionChange)="sexoRadio($event)">
+      <ion-radio-group required
+                        (ionChange)="sexoRadio($event)"
+                        name="sexo">
         <ion-item lines="none">
           <ion-radio color="dark" value="/assets/Hombre.png"></ion-radio>
           <ion-label class="margen_izquierda_20">Masculino</ion-label>
@@ -66,7 +70,8 @@
 
   <ion-item>
     <ion-list class="margen_izquierda_60">
-      <ion-radio-group required (ionChange)="ingresoRadio($event)">
+      <ion-radio-group required
+                        (ionChange)="ingresoRadio($event)">
         <ion-item lines="none">
           <ion-radio color="dark" value="Fijo"></ion-radio>
           <ion-label class="margen_izquierda_20">Fijo</ion-label>
@@ -88,7 +93,9 @@
   <ion-label>Ingreso mensual</ion-label>
   <ion-input type="number"
             placeholder="Ej. 15000"
-            required [(ngModel)]="usuario.ingresoCantidad">
+            required 
+            [(ngModel)]="usuario.ingresoCantidad"
+            name="ingreso">
   </ion-input>
   </ion-item>
 
@@ -110,10 +117,18 @@
   <ion-label>{{etiqueta}}</ion-label>
   <ion-input type="number"
             placeholder="Ej. 300"
-            required [(ngModel)]="usuario.gastos[i].cantidad">
+            [(ngModel)]="usuario.gastos[i].cantidad"
+            name="gastos"
+            required>
   </ion-input>
+  
 </ion-item>
 
-      <ion-button expand="block" color="success" (click)="registrar()">Registrarme</ion-button>
+      <ion-button expand="block"
+                  color="success"
+                  (click)="registrar()"
+                  [disabled]="formulario.invalid || ingreso || sexo">Registrarme</ion-button>
+
+</form>
 
 </ion-content>
