@@ -27,27 +27,30 @@ export class MisGastosPage implements OnInit {
               private event: Events,) { }
 
   ngOnInit() {
+    console.log(this.datosService.usuarioCarga.gastos[16]);
+    this.datosService.cargarDatos();
     this.datosService.getEtiquetasTab1().subscribe (val => {
-      this.etiquetas=val.nombre;
+      this.etiquetas = val.nombre;
       });
+      
       this.datosService.cargarDatos();
       this.sexo.value = this.usuarioCargado.sexo;
       this.tipoIngreso.value = this.usuarioCargado.tipoIngreso;
       
       this.datosService.getRubros().subscribe (val => {
         this.rubros = val;
-        });
+      });
   }
 
   ingresoRadio_misgastos(event)
-{
-  this.usuarioModificado.tipoIngreso = event.detail.value;
-}
+  {
+   this.usuarioModificado.tipoIngreso = event.detail.value;
+  }
 
-sexoRadio_misgastos(event)
-{
-  this.usuarioModificado.sexo = event.detail.value;
-}
+  sexoRadio_misgastos(event)
+  {
+    this.usuarioModificado.sexo = event.detail.value;
+  }
 
   regresar() {
     this.modalCtrl.dismiss();
@@ -73,7 +76,6 @@ sexoRadio_misgastos(event)
   });
 
   this.datosService.guardarUsuarioInfo(this.usuarioModificado);
-  this.datosService.cargarDatos();
   this.event.publish('usuarioActualizado');
   this.event.publish('salirActualizado');
   this.modalCtrl.dismiss();

@@ -39,9 +39,10 @@ export class AppComponent implements OnInit{
       this.nombre = this.datosService.usuarioCarga.nombre;
       this.sexo = this.datosService.usuarioCarga.sexo;
     });
+
     this.event.subscribe('salir', () => {
       this.event.unsubscribe('usuarioInsertado');
       this.event.unsubscribe('salir');
-    }); 
+    });
   }
 }

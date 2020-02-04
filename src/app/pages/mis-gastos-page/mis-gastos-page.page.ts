@@ -1,6 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { ModalController } from '@ionic/angular';
 import { MisGastosPage } from '../mis-gastos/mis-gastos.page';
+import { DatosService } from '../../services/datos.service';
 
 @Component({
   selector: 'app-mis-gastos-page',
@@ -9,9 +10,11 @@ import { MisGastosPage } from '../mis-gastos/mis-gastos.page';
 })
 export class MisGastosPagePage implements OnInit {
 
-  constructor(private modalCtrl: ModalController) { }
+  constructor(private modalCtrl: ModalController,
+              private datosService: DatosService) { }
 
   ngOnInit() {
+    this.datosService.cargarDatos();
     this.abrirModal();
   }
 

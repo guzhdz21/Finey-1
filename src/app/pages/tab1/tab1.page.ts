@@ -55,11 +55,6 @@ export class Tab1Page implements OnInit {
       this.doughnutChartData = this.datos;
     });
 
-    this.event.subscribe('salirActualizado', () => {
-      this.event.unsubscribe('usuarioActualizado');
-      this.event.unsubscribe('SalirActualizado');
-    }); 
-
     this.rubros = this.datosService.getRubros();
 
     this.datosService.getColores().subscribe(val => {
@@ -108,13 +103,16 @@ export class Tab1Page implements OnInit {
     await modal.present();
   }
 
-  ionViewDidEnter() {
+  ionViewWillEnter() {
     this.datosService.cargarDatos();
     this.datos = [];
     this.datosService.usuarioCarga.gastos.forEach(element => {
       this.datos.push(Number(element.porcentaje));
     });
     this.doughnutChartData = this.datos;
+  }
+  ionViewWillLeave() {
+    this.datosService.cargarDatos();
   }
 
   }
