@@ -22,7 +22,7 @@
 
   <ion-input type="text"
             placeholder="Gustavo Hernández"
-            [(ngModel)]="usuario.nombre">
+            required [(ngModel)]="usuario.nombre">
   </ion-input>
   </ion-item>
 
@@ -39,7 +39,7 @@
 
   <ion-item>
     <ion-list class="margen_izquierda_60">
-      <ion-radio-group (ionChange)="sexoRadio($event)">
+      <ion-radio-group required (ionChange)="sexoRadio($event)">
         <ion-item lines="none">
           <ion-radio color="dark" value="/assets/Hombre.png"></ion-radio>
           <ion-label class="margen_izquierda_20">Masculino</ion-label>
@@ -66,7 +66,7 @@
 
   <ion-item>
     <ion-list class="margen_izquierda_60">
-      <ion-radio-group (ionChange)="ingresoRadio($event)">
+      <ion-radio-group required (ionChange)="ingresoRadio($event)">
         <ion-item lines="none">
           <ion-radio color="dark" value="Fijo"></ion-radio>
           <ion-label class="margen_izquierda_20">Fijo</ion-label>
@@ -88,7 +88,7 @@
   <ion-label>Ingreso mensual</ion-label>
   <ion-input type="number"
             placeholder="Ej. 15000"
-            [(ngModel)]="usuario.ingresoCantidad">
+            required [(ngModel)]="usuario.ingresoCantidad">
   </ion-input>
   </ion-item>
 
@@ -110,7 +110,7 @@
   <ion-label>{{etiqueta}}</ion-label>
   <ion-input type="number"
             placeholder="Ej. 300"
-            [(ngModel)]="usuario.gastos[i].cantidad">
+            required [(ngModel)]="usuario.gastos[i].cantidad">
   </ion-input>
 </ion-item>
 

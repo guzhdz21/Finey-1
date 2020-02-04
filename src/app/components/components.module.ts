@@ -6,8 +6,6 @@ import { IonicModule } from '@ionic/angular';
 import { HeaderModalComponent } from './header-modal/header-modal.component';
 import { RouterModule } from '@angular/router';
 
-
-
 @NgModule({
   declarations: [
     HeaderComponent,

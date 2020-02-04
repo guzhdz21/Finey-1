@@ -1,6 +1,8 @@
 import { Component, OnInit } from '@angular/core';
 import { Opcion } from '../../interfaces/interfaces';
 import { ModalController } from '@ionic/angular';
+import { DatosService } from '../../services/datos.service';
+import { UsuarioLocal, Gasto ,Rubro } from '../../interfaces/interfaces';
 import { MisGastosPage } from 'src/app/pages/mis-gastos/mis-gastos.page';
 
 @Component({
@@ -9,6 +11,8 @@ import { MisGastosPage } from 'src/app/pages/mis-gastos/mis-gastos.page';
   styleUrls: ['./menu.component.scss'],
 })
 export class MenuComponent implements OnInit {
+
+  usuarioMenu: UsuarioLocal = this.datosService.usuarioCarga;
 
 opciones: Opcion[] = [
   {
@@ -28,8 +32,10 @@ opciones: Opcion[] = [
   }
 ];
 
-  constructor(private modalCtrl: ModalController) { }
+  constructor(private modalCtrl: ModalController,
+              public datosService: DatosService) { }
 
-  ngOnInit() {}
-
+  ngOnInit() {
+    this.datosService.cargarDatos();
+  }
 }

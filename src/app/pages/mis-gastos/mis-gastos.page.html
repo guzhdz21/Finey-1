@@ -2,7 +2,7 @@
 <ion-content>
 
   <ion-content>
-  
+
     <ion-item color="primary"> 
       <ion-label><h1 class="texto_centrado_blanco">Datos Personales</h1></ion-label>
     </ion-item>
@@ -25,7 +25,7 @@
 
     <ion-input type="text"
                value= {{usuarioModificado.nombre}} 
-               [(ngModel)]="usuarioModificado.nombre">
+               required [(ngModel)]="usuarioModificado.nombre" #nombre>
     </ion-input>
     </ion-item>
   
@@ -42,7 +42,7 @@
 
     <ion-item>
       <ion-list class="margen_izquierda_60">
-        <ion-radio-group #sexo>
+        <ion-radio-group required #sexo (ionChange)="sexoRadio_misgastos($event)">
           <ion-item lines="none">
             <ion-radio color="dark" value="/assets/Hombre.png"></ion-radio>
             <ion-label class="margen_izquierda_20">Masculino</ion-label>
@@ -68,7 +68,7 @@
   
     <ion-item>
       <ion-list class="margen_izquierda_60">
-        <ion-radio-group #tipoIngreso>
+        <ion-radio-group required #tipoIngreso (ionChange)="ingresoRadio_misgastos($event)">
           <ion-item lines="none">
             <ion-radio color="dark" value="Fijo"></ion-radio>
             <ion-label class="margen_izquierda_20">Fijo</ion-label>
@@ -90,7 +90,7 @@
     <ion-label>Ingreso mensual</ion-label>
     <ion-input type="text"
               value={{usuarioModificado.ingresoCantidad}}
-              [(ngModel)]="usuarioModificado.ingresoCantidad">
+              required [(ngModel)]="usuarioModificado.ingresoCantidad">
     </ion-input>
     </ion-item>
   
@@ -112,10 +112,10 @@
     <ion-label>{{etiqueta}}</ion-label>
     <ion-input type="number"
                value= {{usuarioModificado.gastos[i].cantidad}}
-              [(ngModel)]="usuarioModificado.gastos[i].cantidad">
+               required [(ngModel)]="usuarioModificado.gastos[i].cantidad">
     </ion-input>
   </ion-item>
   
-        <ion-button expand="block" color="success" (click)="modificar()">Modificar datos</ion-button>
-  
+        <ion-button type="submit" expand="block" color="success" (click)="modificar()">Modificar datos</ion-button>
+
   </ion-content>
