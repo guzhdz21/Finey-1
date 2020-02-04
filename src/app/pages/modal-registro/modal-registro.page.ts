@@ -73,6 +73,7 @@ registrar()
   this.datosService.guardarPrimeraVez(false);
   this.datosService.cargarDatos();
   this.nav.navigateRoot('/tabs/tab1');
+  this.datosService.presentToast('Registro exitoso');
 }
 
 }

@@ -24,7 +24,7 @@ export class MisGastosPage implements OnInit {
   constructor(private modalCtrl: ModalController,
               private nav: NavController,
               public datosService: DatosService,
-              private event: Events) { }
+              private event: Events,) { }
 
   ngOnInit() {
     this.datosService.getEtiquetasTab1().subscribe (val => {
@@ -38,6 +38,16 @@ export class MisGastosPage implements OnInit {
         this.rubros = val;
         });
   }
+
+  ingresoRadio_misgastos(event)
+{
+  this.usuarioModificado.tipoIngreso = event.detail.value;
+}
+
+sexoRadio_misgastos(event)
+{
+  this.usuarioModificado.sexo = event.detail.value;
+}
 
   regresar() {
     this.modalCtrl.dismiss();
@@ -67,6 +77,7 @@ export class MisGastosPage implements OnInit {
   this.event.publish('userUpdate', (this.usuarioModificado));
   this.modalCtrl.dismiss();
   this.nav.navigateRoot('/tabs/tab1');
+  this.datosService.presentToast('Cambios modificados');
   }
 
 }
