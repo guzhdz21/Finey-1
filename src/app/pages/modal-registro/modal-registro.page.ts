@@ -126,7 +126,7 @@ sexoRadio(event)
     }
 
     async presentAlert() {
-
+      
       const alert = await this.alertCtrl.create({
         header: 'Advertencia',
         message: 'Tus gastos son mayores que tus ingresos, si deseas continuar presiona Ok, si quieres modificar algun dato presiona Configurar.',
@@ -145,7 +145,8 @@ sexoRadio(event)
           }
       ]
       });
-      await alert.present();
+      alert.present();
+      await alert.onDidDismiss();
     }
-
+    
 }

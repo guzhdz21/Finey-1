@@ -98,27 +98,4 @@ export class DatosService {
     });
     toast.present();
   }
-
-  async presentAlert() {
-
-    const alert = await this.alertCtrl.create({
-      header: 'Advertencia',
-      message: 'Tus gastos son mayores que tus ingresos, si deseas continuar presiona Ok, si quieres modificar algun dato presiona Configurar.',
-      buttons: [
-        {
-          text: 'Ok',
-          handler: (blah) => {
-            this.registrarseAdvertencia = true;
-          }
-        },
-        {
-          text: 'Configurar',
-          handler: (blah) => { 
-            this.registrarseAdvertencia = false;
-          }
-        }
-    ]
-    });
-    await alert.present();
-  }
 }
