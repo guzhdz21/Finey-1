@@ -44,5 +44,10 @@ export class AppComponent implements OnInit{
       this.event.unsubscribe('usuarioInsertado');
       this.event.unsubscribe('salir');
     });
+
+    this.event.subscribe('avatarActualizado', () => {
+      this.nombre = this.datosService.usuarioCarga.nombre;
+      this.sexo = this.datosService.usuarioCarga.sexo;
+    });
   }
 }

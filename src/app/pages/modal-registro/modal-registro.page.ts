@@ -76,8 +76,6 @@ registrar()
 
   this.datosService.guardarUsuarioInfo(this.usuario);
   this.datosService.guardarPrimeraVez(false);
-  this.event.publish('usuarioInsertado');
-  this.event.publish('salir');
   this.datosService.cargarDatos();
   this.modalCtrl.dismiss(); 
   this.nav.navigateRoot('/tabs/tab1');

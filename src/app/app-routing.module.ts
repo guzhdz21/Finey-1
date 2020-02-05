@@ -24,6 +24,14 @@ const routes: Routes = [
   {
     path: 'modal-registro-page',
     loadChildren: () => import('./pages/modal-registro-page/modal-registro-page.module').then( m => m.ModalRegistroPagePageModule)
+  },
+  {
+    path: 'modal-avatar-page',
+    loadChildren: () => import('./pages/modal-avatar-page/modal-avatar-page.module').then( m => m.ModalAvatarPagePageModule)
+  },
+  {
+    path: 'modal-avatar',
+    loadChildren: () => import('./pages/modal-avatar/modal-avatar.module').then( m => m.ModalAvatarPageModule)
   }
 
 ];
