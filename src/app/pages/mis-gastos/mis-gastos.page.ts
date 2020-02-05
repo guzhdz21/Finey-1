@@ -16,7 +16,7 @@ export class MisGastosPage implements OnInit {
   etiquetas: string[] = [];
   i: number = 0;
   rubros: Rubro[] = [];
-  registrarseAdvertencia: boolean = true;
+  registrarseAdvertencia: boolean = this.datosService.registrarseAdvertencia;
 
   usuarioCargado: UsuarioLocal = this.datosService.usuarioCarga;
 
@@ -58,12 +58,14 @@ export class MisGastosPage implements OnInit {
     if(this.usuarioModificado.tipoIngreso != 'Variable') {
   
       if(this.validarIngreso()){
-          await this.presentAlert();
+          await this.datosService.presentAlertaIngreso();
+          this.registrarseAdvertencia = this.datosService.registrarseAdvertencia;
+
   
         if(this.registrarseAdvertencia) {
           console.log(this.registrarseAdvertencia);
           this.modificarUsuario();
-          this.nav.navigateRoot('/tabs/tab1');
+          this.nav.navigateRoot('/tabs/tab3');
         }
       }
       else {
@@ -97,7 +99,6 @@ export class MisGastosPage implements OnInit {
 
   this.datosService.guardarUsuarioInfo(this.usuarioModificado);
   this.event.publish('usuarioActualizado');
-  this.event.publish('salirActualizado');
   this.modalCtrl.dismiss();
   this.nav.navigateRoot('/tabs/tab1');
   this.datosService.presentToast('Cambios modificados');
@@ -120,30 +121,6 @@ export class MisGastosPage implements OnInit {
         else{
         return false;
       }
-    }
-
-    async presentAlert() {
-      
-      const alert = await this.alertCtrl.create({
-        header: 'Advertencia',
-        message: 'Tus gastos son mayores que tus ingresos, si deseas continuar presiona Ok, si quieres modificar algun dato presiona Configurar.',
-        buttons: [
-          {
-            text: 'Ok',
-            handler: (blah) => {
-              this.registrarseAdvertencia = true;
-            }
-          },
-          {
-            text: 'Configurar',
-            handler: (blah) => { 
-              this.registrarseAdvertencia = false;
-            }
-          }
-      ]
-      });
-      alert.present();
-      await alert.onDidDismiss();
     }
     
 }

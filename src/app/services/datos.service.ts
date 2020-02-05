@@ -86,7 +86,6 @@ export class DatosService {
       this.usuarioCarga = Usuario;
     }
     this.event.publish('usuarioInsertado');
-    this.event.publish('salir');
   }
 
   async presentToast( message: string) {
@@ -97,5 +96,29 @@ export class DatosService {
       color: "success",
     });
     toast.present();
+  }
+
+  async presentAlertaIngreso() {
+      
+    const alert = await this.alertCtrl.create({
+      header: 'Advertencia',
+      message: 'Tus gastos son mayores que tus ingresos, si deseas continuar presiona Ok, si quieres modificar algun dato presiona Configurar.',
+      buttons: [
+        {
+          text: 'Ok',
+          handler: (blah) => {
+            this.registrarseAdvertencia = true;
+          }
+        },
+        {
+          text: 'Configurar',
+          handler: (blah) => { 
+            this.registrarseAdvertencia = false;
+          }
+        }
+    ]
+    });
+    alert.present();
+    await alert.onDidDismiss();
   }
 }

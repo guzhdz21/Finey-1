@@ -15,7 +15,7 @@ export class ModalRegistroPage implements OnInit {
   rubros: Rubro[] = [];
   ingreso: boolean = true;
   sexo: boolean = true;
-  registrarseAdvertencia: boolean = true;
+  registrarseAdvertencia: boolean = this.datosService.registrarseAdvertencia;
 
   usuario: UsuarioLocal = {
     nombre: '',
@@ -61,12 +61,13 @@ sexoRadio(event)
   if(this.usuario.tipoIngreso != 'Variable') {
 
     if(this.validarIngreso()){
-        await this.presentAlert();
+        await this.datosService.presentAlertaIngreso();
+        this.registrarseAdvertencia = this.datosService.registrarseAdvertencia;
 
       if(this.registrarseAdvertencia) {
         console.log(this.registrarseAdvertencia);
         this.registrarUsuario();
-        this.nav.navigateRoot('/tabs/tab1');
+        this.nav.navigateRoot('/tabs/tab3');
       }
     }
     else {
@@ -123,30 +124,6 @@ sexoRadio(event)
         else{
         return false;
       }
-    }
-
-    async presentAlert() {
-      
-      const alert = await this.alertCtrl.create({
-        header: 'Advertencia',
-        message: 'Tus gastos son mayores que tus ingresos, si deseas continuar presiona Ok, si quieres modificar algun dato presiona Configurar.',
-        buttons: [
-          {
-            text: 'Ok',
-            handler: (blah) => {
-              this.registrarseAdvertencia = true;
-            }
-          },
-          {
-            text: 'Configurar',
-            handler: (blah) => { 
-              this.registrarseAdvertencia = false;
-            }
-          }
-      ]
-      });
-      alert.present();
-      await alert.onDidDismiss();
     }
     
 }

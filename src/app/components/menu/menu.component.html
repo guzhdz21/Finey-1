@@ -9,19 +9,31 @@
     </ion-header>
 
     <ion-content>
-      <ion-item lines="none" 
-                routerLink="/modal-avatar-page">
-      <ion-avatar slot="start">
-        <img [src]="sexo">
-      </ion-avatar>
-      <ion-label>{{nombre}}</ion-label>
+
+      <ion-menu-toggle>
+
+        <ion-item lines="none" 
+                  routerLink="/modal-avatar-page">
+        <ion-avatar slot="start">
+          <img [src]="sexo">
+        </ion-avatar>
+        <ion-label>{{nombre}}</ion-label>
     </ion-item>
+        
+      </ion-menu-toggle>
+      
       <ion-list>
-        <ion-item *ngFor="let opcion of opciones"
-                  [routerLink]="opcion.redirigirA">
-          <ion-icon color="success" [name]="opcion.icono" slot="start"></ion-icon>
-          <ion-label>{{opcion.nombre}}</ion-label>
-        </ion-item>
+
+        <ion-menu-toggle *ngFor="let opcion of opciones">
+
+          <ion-item [routerLink]="opcion.redirigirA">
+            <ion-icon color="success" 
+                      [name]="opcion.icono" slot="start"></ion-icon>
+            <ion-label>{{opcion.nombre}}</ion-label>
+          </ion-item>
+
+        </ion-menu-toggle>
+        
       </ion-list>
     </ion-content>
 </ion-menu>
