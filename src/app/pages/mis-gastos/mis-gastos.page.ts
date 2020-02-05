@@ -10,7 +10,6 @@ import { UsuarioLocal, Gasto, Rubro } from '../../interfaces/interfaces';
 })
 export class MisGastosPage implements OnInit {
 
-  @ViewChild('sexo',{static: true}) sexo: IonRadioGroup;
   @ViewChild('tipoIngreso',{static: true}) tipoIngreso: IonRadioGroup;
 
   etiquetas: string[] = [];
@@ -34,7 +33,6 @@ export class MisGastosPage implements OnInit {
       });
       
       this.datosService.cargarDatos();
-      this.sexo.value = this.usuarioCargado.sexo;
       this.tipoIngreso.value = this.usuarioCargado.tipoIngreso;
       
       this.datosService.getRubros().subscribe (val => {
@@ -45,11 +43,6 @@ export class MisGastosPage implements OnInit {
   ingresoRadio_misgastos(event)
   {
    this.usuarioModificado.tipoIngreso = event.detail.value;
-  }
-
-  sexoRadio_misgastos(event)
-  {
-    this.usuarioModificado.sexo = event.detail.value;
   }
 
   regresar() {

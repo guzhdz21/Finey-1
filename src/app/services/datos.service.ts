@@ -81,6 +81,7 @@ export class DatosService {
       this.usuarioCarga = Usuario;
     }
     this.event.publish('usuarioInsertado');
+    this.event.publish('salir');
   }
 
   async presentToast( message: string) {
