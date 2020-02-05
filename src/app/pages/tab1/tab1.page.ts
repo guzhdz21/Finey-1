@@ -23,6 +23,9 @@ export class Tab1Page implements OnInit {
   datos: number[] =[];
   dato: number[] = [4];
   primera: boolean;
+  usuarioCargado: UsuarioLocal = this.datosService.usuarioCarga;
+  cantidadGastos: number;
+  saldo: number;
 
   public doughnutChartLabels: Label[] = this.etiqueta;
   public doughnutChartData: SingleDataSet = [] = this.dato;
@@ -88,6 +91,7 @@ export class Tab1Page implements OnInit {
     });
 
     this.doughnutChartData = this.datos;
+    this.mostrarSaldo();
   }
 
   async abrirDescripcionGasto(seleccion: string, diseño: string) {
@@ -113,6 +117,18 @@ export class Tab1Page implements OnInit {
   }
   ionViewWillLeave() {
     this.datosService.cargarDatos();
+  }
+
+  mostrarSaldo() {
+    var gastosCantidad = 0;
+      for( var ii = 0; ii < 17; ii++ ) {
+        if ( this.usuarioCargado.gastos[ii].cantidad != 0 ){
+      gastosCantidad += this.usuarioCargado.gastos[ii].cantidad;
+        } 
+      }
+      this.cantidadGastos=gastosCantidad;
+      var saldo = this.usuarioCargado.ingresoCantidad - gastosCantidad;
+      this.saldo = saldo;
   }
 
   }
