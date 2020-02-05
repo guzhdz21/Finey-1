@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import { ModalController, NavController, Events } from '@ionic/angular';
+import { ModalController, NavController, Events, AlertController } from '@ionic/angular';
 import { DatosService } from '../../services/datos.service';
 import { UsuarioLocal, Gasto ,Rubro } from '../../interfaces/interfaces';
 
@@ -15,6 +15,7 @@ export class ModalRegistroPage implements OnInit {
   rubros: Rubro[] = [];
   ingreso: boolean = true;
   sexo: boolean = true;
+  registrarseAdvertencia: boolean = true;
 
   usuario: UsuarioLocal = {
     nombre: '',
@@ -27,7 +28,7 @@ export class ModalRegistroPage implements OnInit {
   constructor( private modalCtrl: ModalController, 
                 private datosService: DatosService,
                 private nav: NavController,
-                private event: Events) { }
+                private alertCtrl: AlertController) { }
 
 ngOnInit() {
     this.datosService.getGastosJson().subscribe (val => {
@@ -55,49 +56,55 @@ sexoRadio(event)
   this.sexo = false;
 }
 
-async registrar()
+ async registrar()
 {
-  if ( this.validarIngreso() || this.datosService.registrarseAdvertencia || this.usuario.tipoIngreso == 'Variable'){
-  this.usuario.gastos.forEach(element => {
-    element.nombre = this.rubros[this.i].texto;
-    element.tipo = this.rubros[this.i].tipo;
-    element.icono = this.rubros[this.i].nombre;
-    element.porcentaje = ((element.cantidad*100)/this.usuario.ingresoCantidad).toString();
-    if (element.tipo === 'Promedio') {
-      element.margenMax = element.cantidad+(element.cantidad*0.07);
-      element.margenMin = element.cantidad-(element.cantidad*0.07);
+  if(this.usuario.tipoIngreso != 'Variable') {
+
+    if(this.validarIngreso()){
+        await this.presentAlert();
+
+      if(this.registrarseAdvertencia) {
+        console.log(this.registrarseAdvertencia);
+        this.registrarUsuario();
+        this.nav.navigateRoot('/tabs/tab1');
+      }
     }
     else {
-      element.margenMax = element.cantidad;
-      element.margenMin = element.cantidad;
+      this.registrarUsuario();
+      this.nav.navigateRoot('/tabs/tab1');
+      this.datosService.presentToast('Registro exitoso');
     }
-    this.i++;
-  });
-
-  this.datosService.guardarUsuarioInfo(this.usuario);
-  this.datosService.guardarPrimeraVez(false);
-  this.datosService.cargarDatos();
-  this.modalCtrl.dismiss(); 
-
-  if(this.datosService.registrarseAdvertencia){
-    this.nav.navigateRoot('/tabs/tab3');
   }
-  else{
-  this.nav.navigateRoot('/tabs/tab1');
-  }
-
-  this.datosService.presentToast('Registro exitoso');
-  
-  }
-  else{
-
-    await this.datosService.presentAlert();
-
-    if(this.datosService.registrarseAdvertencia){
-    this.registrar();
-    }
+  else {
+      this.registrarUsuario();
+      this.nav.navigateRoot('/tabs/tab1');
+      this.datosService.presentToast('Registro exitoso');
   }
 }
+
+  registrarUsuario()
+  {
+    this.usuario.gastos.forEach(element => {
+      element.nombre = this.rubros[this.i].texto;
+      element.tipo = this.rubros[this.i].tipo;
+      element.icono = this.rubros[this.i].nombre;
+      element.porcentaje = ((element.cantidad*100)/this.usuario.ingresoCantidad).toString();
+      if (element.tipo === 'Promedio') {
+        element.margenMax = element.cantidad+(element.cantidad*0.07);
+        element.margenMin = element.cantidad-(element.cantidad*0.07);
+      }
+      else {
+        element.margenMax = element.cantidad;
+        element.margenMin = element.cantidad;
+      }
+      this.i++;
+    });
+
+    this.datosService.guardarUsuarioInfo(this.usuario);
+    this.datosService.guardarPrimeraVez(false);
+    this.datosService.cargarDatos();
+    this.modalCtrl.dismiss();
+  }
 
   validarIngreso() {
 
@@ -111,11 +118,34 @@ async registrar()
       console.log('gastos: ', cantidadGastos);
       console.log('Ingresos: ', this.usuario.ingresoCantidad);
         if(cantidadGastos >= this.usuario.ingresoCantidad) {
-        return false;
-      }
-        else{
         return true;
       }
+        else{
+        return false;
+      }
+    }
+
+    async presentAlert() {
+
+      const alert = await this.alertCtrl.create({
+        header: 'Advertencia',
+        message: 'Tus gastos son mayores que tus ingresos, si deseas continuar presiona Ok, si quieres modificar algun dato presiona Configurar.',
+        buttons: [
+          {
+            text: 'Ok',
+            handler: (blah) => {
+              this.registrarseAdvertencia = true;
+            }
+          },
+          {
+            text: 'Configurar',
+            handler: (blah) => { 
+              this.registrarseAdvertencia = false;
+            }
+          }
+      ]
+      });
+      await alert.present();
     }
 
 }

@@ -20,7 +20,7 @@ export class DatosService {
     this.cargarDatos();
   }
 
-  registrarseAdvertencia: boolean = false;
+  registrarseAdvertencia: boolean;
 
   usuarioCarga: UsuarioLocal = 
   {
@@ -113,7 +113,9 @@ export class DatosService {
         },
         {
           text: 'Configurar',
-          handler: (blah) => { }
+          handler: (blah) => { 
+            this.registrarseAdvertencia = false;
+          }
         }
     ]
     });
