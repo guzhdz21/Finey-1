@@ -55,9 +55,9 @@ sexoRadio(event)
   this.sexo = false;
 }
 
-registrar()
+async registrar()
 {
-  console.log(this.rubros);
+  if ( this.validarIngreso() || this.datosService.registrarseAdvertencia || this.usuario.tipoIngreso == 'Variable'){
   this.usuario.gastos.forEach(element => {
     element.nombre = this.rubros[this.i].texto;
     element.tipo = this.rubros[this.i].tipo;
@@ -80,9 +80,44 @@ registrar()
   this.event.publish('salir');
   this.datosService.cargarDatos();
   this.modalCtrl.dismiss(); 
+
+  if(this.datosService.registrarseAdvertencia){
+    this.nav.navigateRoot('/tabs/tab3');
+  }
+  else{
   this.nav.navigateRoot('/tabs/tab1');
+  }
+
   this.datosService.presentToast('Registro exitoso');
+  
+  }
+  else{
+
+    await this.datosService.presentAlert();
+
+    if(this.datosService.registrarseAdvertencia){
+    this.registrar();
+    }
+  }
 }
 
-}
+  validarIngreso() {
 
+    var cantidadGastos=0;
+
+      for( var ii = 0; ii < 17; ii++ ) {
+        if( this.usuario.gastos[ii].cantidad != 0 ){
+      cantidadGastos += this.usuario.gastos[ii].cantidad;
+        } 
+      }
+      console.log('gastos: ', cantidadGastos);
+      console.log('Ingresos: ', this.usuario.ingresoCantidad);
+        if(cantidadGastos >= this.usuario.ingresoCantidad) {
+        return false;
+      }
+        else{
+        return true;
+      }
+    }
+
+}
