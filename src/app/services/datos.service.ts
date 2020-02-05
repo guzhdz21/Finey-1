@@ -2,7 +2,8 @@ import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { Rubro, ColorArray, LabelArray, UsuarioLocal, Gasto } from '../interfaces/interfaces';
 import { Storage } from '@ionic/storage';
-import { ToastController, Events } from '@ionic/angular';
+import { ToastController, Events, NavController } from '@ionic/angular';
+import { AlertController } from '@ionic/angular';
 
 @Injectable({
   providedIn: 'root'
@@ -12,10 +13,14 @@ export class DatosService {
   constructor(private http: HttpClient, 
               private storage: Storage,
               private toastCtrl: ToastController,
-              private event: Events) { 
+              private event: Events,
+              public alertCtrl: AlertController,
+              private nav: NavController) { 
     this.cargarPrimeraVez();
     this.cargarDatos();
   }
+
+  registrarseAdvertencia: boolean = false;
 
   usuarioCarga: UsuarioLocal = 
   {
@@ -94,4 +99,24 @@ export class DatosService {
     toast.present();
   }
 
+  async presentAlert() {
+
+    const alert = await this.alertCtrl.create({
+      header: 'Advertencia',
+      message: 'Tus gastos son mayores que tus ingresos, si deseas continuar presiona Ok, si quieres modificar algun dato presiona Configurar.',
+      buttons: [
+        {
+          text: 'Ok',
+          handler: (blah) => {
+            this.registrarseAdvertencia = true;
+          }
+        },
+        {
+          text: 'Configurar',
+          handler: (blah) => { }
+        }
+    ]
+    });
+    await alert.present();
+  }
 }
