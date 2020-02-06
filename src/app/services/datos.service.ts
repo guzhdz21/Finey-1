@@ -31,7 +31,7 @@ export class DatosService {
     gastos: [
       {
         nombre: '',
-        cantidad: null,
+        cantidad: 1,
         tipo: '',
         porcentaje: '1',
         icono: '',

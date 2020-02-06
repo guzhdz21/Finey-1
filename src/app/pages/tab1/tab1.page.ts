@@ -23,9 +23,9 @@ export class Tab1Page implements OnInit {
   datos: number[] =[];
   dato: number[] = [4];
   primera: boolean;
-  usuarioCargado: UsuarioLocal = this.datosService.usuarioCarga;
   cantidadGastos: number;
   saldo: number;
+  usuarioCargado: UsuarioLocal = this.datosService.usuarioCarga;
 
   public doughnutChartLabels: Label[] = this.etiqueta;
   public doughnutChartData: SingleDataSet = [] = this.dato;
@@ -37,7 +37,7 @@ export class Tab1Page implements OnInit {
 
   public legend = false;
 
-  constructor(private datosService: DatosService,
+  constructor(public datosService: DatosService,
               private modalCtrl: ModalController,
               private nav: NavController,
               private event: Events) {}
@@ -49,10 +49,11 @@ export class Tab1Page implements OnInit {
     }
 
     this.event.subscribe('usuarioActualizado', () => {
+      this.usuarioCargado = this.datosService.usuarioCarga;
       this.datos = [];
-
       this.datosService.usuarioCarga.gastos.forEach(element => {
       this.datos.push(Number(element.porcentaje));
+      this.mostrarSaldo();
       });
 
       this.doughnutChartData = this.datos;
@@ -121,12 +122,12 @@ export class Tab1Page implements OnInit {
 
   mostrarSaldo() {
     var gastosCantidad = 0;
-      for( var ii = 0; ii < 17; ii++ ) {
-        if ( this.usuarioCargado.gastos[ii].cantidad != 0 ){
-      gastosCantidad += this.usuarioCargado.gastos[ii].cantidad;
+      for( var i = 0; i < 17; i++ ) {
+        if ( this.datosService.usuarioCarga.gastos[i].cantidad != 0 ){
+      gastosCantidad += this.usuarioCargado.gastos[i].cantidad;
         } 
       }
-      this.cantidadGastos=gastosCantidad;
+      this.cantidadGastos = gastosCantidad;
       var saldo = this.usuarioCargado.ingresoCantidad - gastosCantidad;
       this.saldo = saldo;
   }
