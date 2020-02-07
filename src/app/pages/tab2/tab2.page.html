@@ -1,9 +1,38 @@
 <app-header></app-header>
 
 <ion-content>
+    
+    <ion-slides class="slide-full" pager="true">
 
-<ion-button extend="full">
-    Abrir modal
-</ion-button>
+        <ion-slide>
+            <ion-card>
+                <ion-item color="primary" class="cambio"> 
+                    <ion-label><h1 class="texto_centrado_blanco">Moto</h1></ion-label>
+                </ion-item>
+
+                <div style="display: block;">
+                    <canvas baseChart 
+                      [data]="doughnutChartData"
+                      [labels]="doughnutChartLabels"
+                      [chartType]="doughnutChartType"
+                       [colors]="chartColors"
+                       [legend]="legend">
+                    </canvas>
+                  </div>
+                  <p></p>
+
+                  <ion-list>
+
+                    <ion-item>
+                        
+                    </ion-item>
+
+                  </ion-list>
+            </ion-card>
+
+        </ion-slide>
+    
+    </ion-slides>
 
 </ion-content>
+
