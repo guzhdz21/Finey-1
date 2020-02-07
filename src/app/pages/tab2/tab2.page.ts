@@ -1,6 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { Label, SingleDataSet } from 'ng2-charts';
 import { ChartType } from 'chart.js';
+import { PlanDisplay } from '../../interfaces/interfaces';
 
 @Component({
   selector: 'app-tab2',
@@ -9,19 +10,39 @@ import { ChartType } from 'chart.js';
 })
 export class Tab2Page implements OnInit{
 
-  etiquetas = ['Progreso', 'Restante'];
+  etiquetas = ['Progreso %', 'Restante %'];
   dato: number[] = [60,40];
   datos: number[] =[];
   colores = ['#32CD32','#B0C4DE'];
-  info = [
+  planes: PlanDisplay[] = [
     {
-      etiqueta: 'Porcentaje de avance',
-      cantidad: ''
+      doughnutChartData: [20, 80],
+      plan: {
+        nombre: 'Moto',
+        cantidadTotal: 1500,
+        tiempoTotal: 10,
+        cantidadAcumulada: 300,
+        tiempoRestante: 8,
+        descripcion: 'Moto chingona',
+        aportacionMensual: 150
+      }
+    },
+    {
+      doughnutChartData: [50, 50],
+      plan: {
+        nombre: 'Laptop',
+      cantidadTotal: 2000,
+      tiempoTotal: 10,
+      cantidadAcumulada: 1000,
+      tiempoRestante: 5,
+      descripcion: 'Laptop chingona',
+      aportacionMensual: 200
+      }
     }
   ];
 
   public doughnutChartLabels: Label[] = this.etiquetas;
-  public doughnutChartData: SingleDataSet = [] = this.dato;
+  public doughnutChartData: number[] = this.dato;
   public doughnutChartType: ChartType = 'doughnut';
   public chartColors: Array<any> = 
   [{

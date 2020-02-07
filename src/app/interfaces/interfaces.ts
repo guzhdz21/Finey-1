@@ -1,3 +1,5 @@
+import { SingleDataSet } from 'ng2-charts';
+
 export interface Opcion {
     icono: string;
     nombre: string;
@@ -35,4 +37,19 @@ export interface UsuarioLocal {
     tipoIngreso: string;
     ingresoCantidad: number;
     gastos: Gasto[];
+}
+
+export interface Plan {
+    nombre: string;
+    cantidadTotal: number;
+    tiempoTotal: number;
+    cantidadAcumulada: number;
+    tiempoRestante: number;
+    descripcion: string;
+    aportacionMensual: number;
+}
+
+export interface PlanDisplay {
+    doughnutChartData: number[];
+    plan: Plan;
 }
