@@ -2,6 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { Label, SingleDataSet } from 'ng2-charts';
 import { ChartType } from 'chart.js';
 import { PlanDisplay } from '../../interfaces/interfaces';
+import { ModalController, NavController } from '@ionic/angular';
 
 @Component({
   selector: 'app-tab2',
@@ -51,10 +52,13 @@ export class Tab2Page implements OnInit{
 
   public legend = false;
 
-  constructor() {}
+  constructor(private modalCtrl: ModalController,
+              private nav: NavController) {}
 
-  ngOnInit() {
+  ngOnInit() { }
 
+  async abrirFormulario() {
+    this.nav.navigateRoot('/plan-form-page');
   }
 
 }
