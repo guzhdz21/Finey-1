@@ -4,6 +4,7 @@ import { Rubro, ColorArray, LabelArray, UsuarioLocal, Gasto } from '../interface
 import { Storage } from '@ionic/storage';
 import { ToastController, Events, NavController } from '@ionic/angular';
 import { AlertController } from '@ionic/angular';
+import { PlanDisplay } from '../interfaces/interfaces';
 
 @Injectable({
   providedIn: 'root'
@@ -18,6 +19,7 @@ export class DatosService {
               private nav: NavController) { 
     this.cargarPrimeraVez();
     this.cargarDatos();
+    this.cargarDatosPlan();
   }
 
   registrarseAdvertencia: boolean;
@@ -41,6 +43,21 @@ export class DatosService {
     ]
   };
   primera: boolean;
+
+  planesCargados: PlanDisplay[] = [
+    {
+      doughnutChartData: [20, 80],
+      plan: {
+        nombre: '',
+        cantidadTotal: 1,
+        tiempoTotal: 1,
+        cantidadAcumulada: 1,
+        tiempoRestante: 1,
+        descripcion: '',
+        aportacionMensual: 1
+      }
+    }
+  ];
 
   getRubros() {
     return this.http.get<Rubro[]>('/assets/data/rubros.json');
@@ -122,4 +139,10 @@ export class DatosService {
     await alert.onDidDismiss();
   }
   
+  async cargarDatosPlan() {
+    const planesLeidos = await this.storage.get('planesStorage');
+      this.planesCargados = planesLeidos;
+      console.log(this.planesCargados);
+    this.event.publish('planesStorage');
+  }
 }

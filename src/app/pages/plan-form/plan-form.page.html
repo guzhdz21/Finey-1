@@ -2,7 +2,6 @@
 
 <ion-content>
 
-    <form #formularioPlan="ngForm">
     <ion-item>
 
         <ion-buttons slot="start">
@@ -15,6 +14,8 @@
     
       <ion-input type="text"
                 placeholder="Casa nueva"
+                [(ngModel)]="planNuevo.nombre"
+                [name]="nombrePlan"
                 required>
       </ion-input>
       </ion-item>
@@ -31,6 +32,8 @@
     
       <ion-input type="number"
                 placeholder="500000"
+                [(ngModel)]="planNuevo.cantidadTotal"
+                 [name]="costoPlan"
                 required>
       </ion-input>
       </ion-item>
@@ -43,14 +46,36 @@
         </ion-button>
       </ion-buttons>
     
-      <ion-label>Tiempo a lograr la meta</ion-label>
+      <ion-label>Tiempo de plan (meses)</ion-label>
     
-      <ion-datetime></ion-datetime>
+      <ion-input type="number"
+      placeholder="12"
+      [(ngModel)]="planNuevo.tiempoTotal"
+       [name]="tiempoPlan"
+      required>
+      </ion-input>
+      </ion-item>
+
+      <ion-item>
+
+        <ion-buttons slot="start">
+        <ion-button slots="icon-only">
+          <ion-icon name="information-circle"></ion-icon>
+        </ion-button>
+      </ion-buttons>
+    
+      <ion-label>Descripcion</ion-label>
+    
+      <ion-input type="text"
+                placeholder="Casa ubicada en Av. Valdepeñas"
+                [(ngModel)]="planNuevo.descripcion"
+                [name]="descripcionPlan"
+                required>
+      </ion-input>
       </ion-item>
 
     <ion-button expand="block"
                 color="success"
-                [disabled]="formulario.invalid">Registrar plan</ion-button>
+                (click)="llamarFuncion()">Registrar plan</ion-button>
 
-    </form>
 </ion-content>
