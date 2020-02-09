@@ -1,5 +1,6 @@
 import { Component, OnInit } from '@angular/core';
-import { Plan } from '../../interfaces/interfaces';
+import { Plan, PlanDisplay} from '../../interfaces/interfaces';
+import { Storage } from '@ionic/storage';
 
 @Component({
   selector: 'app-plan-form',
@@ -18,9 +19,38 @@ planNuevo: Plan = {
   aportacionMensual: null,
 };
 
-  constructor() { }
+planes: PlanDisplay[] = [
+  {
+    doughnutChartData: [20, 80],
+    plan: {
+      nombre: '',
+      cantidadTotal: 1,
+      tiempoTotal: 2,
+      cantidadAcumulada: 3,
+      tiempoRestante: 4,
+      descripcion: '',
+      aportacionMensual: 5
+    }
+  }
+];
 
-  ngOnInit() {
+  constructor( private storage: Storage ) { }
+
+  ngOnInit() { }
+
+  llamarFuncion() {
+    this.calcularYRegistrar( this.planNuevo )
   }
 
+  calcularYRegistrar( planStorage: Plan) {
+    planStorage.aportacionMensual = planStorage.cantidadTotal / planStorage.tiempoTotal;
+    planStorage.cantidadAcumulada = 0;
+    planStorage.tiempoRestante = planStorage.tiempoTotal; 
+
+    this.planes[0].plan = this.planNuevo;
+    this.planes[0].doughnutChartData= [20,80];
+
+    this.storage.set('planesStorage', this.planes[0]);
+    console.log(this.planes[0]);
+  }
 }

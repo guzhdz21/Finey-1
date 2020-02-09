@@ -2,7 +2,9 @@ import { Component, OnInit } from '@angular/core';
 import { Label, SingleDataSet } from 'ng2-charts';
 import { ChartType } from 'chart.js';
 import { PlanDisplay } from '../../interfaces/interfaces';
-import { ModalController, NavController } from '@ionic/angular';
+import { ModalController, NavController, Events } from '@ionic/angular';
+import { Storage } from '@ionic/storage';
+import { DatosService } from '../../services/datos.service';
 
 @Component({
   selector: 'app-tab2',
@@ -20,24 +22,12 @@ export class Tab2Page implements OnInit{
       doughnutChartData: [20, 80],
       plan: {
         nombre: 'Moto',
-        cantidadTotal: 1500,
-        tiempoTotal: 10,
-        cantidadAcumulada: 300,
-        tiempoRestante: 8,
-        descripcion: 'Moto chingona',
-        aportacionMensual: 150
-      }
-    },
-    {
-      doughnutChartData: [50, 50],
-      plan: {
-        nombre: 'Laptop',
-      cantidadTotal: 2000,
-      tiempoTotal: 10,
-      cantidadAcumulada: 1000,
-      tiempoRestante: 5,
-      descripcion: 'Laptop chingona',
-      aportacionMensual: 200
+        cantidadTotal: 1,
+        tiempoTotal: 1,
+        cantidadAcumulada: 1,
+        tiempoRestante: 1,
+        descripcion: '400 cc',
+        aportacionMensual: 1
       }
     }
   ];
@@ -53,9 +43,14 @@ export class Tab2Page implements OnInit{
   public legend = false;
 
   constructor(private modalCtrl: ModalController,
-              private nav: NavController) {}
+              private nav: NavController,
+              private storage: Storage,
+              private event: Events,
+              private DatosService: DatosService) {}
 
-  ngOnInit() { }
+  ngOnInit() { 
+
+  }
 
   async abrirFormulario() {
     this.nav.navigateRoot('/plan-form-page');
