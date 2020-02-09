@@ -11,19 +11,17 @@ import { PlanFormPage } from '../plan-form/plan-form.page';
 })
 export class PlanFormPagePage implements OnInit {
 
-constructor(private modalCtrl: ModalController,
-  private datosService: DatosService) { }
+constructor(private modalCtrl: ModalController) { }
 
 ngOnInit() {
 this.abrirModal();
 }
 
 async abrirModal() {
-const modal = await this.modalCtrl.create({
-component: PlanFormPage,
-});
-await modal.present();
+  const modal = await this.modalCtrl.create({
+  component: PlanFormPage,
+  });
+  await modal.present();
 }
-
 
 }

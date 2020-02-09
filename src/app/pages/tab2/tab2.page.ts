@@ -17,9 +17,8 @@ export class Tab2Page implements OnInit{
   dato: number[] = [60,40];
   datos: number[] =[];
   colores = ['#32CD32','#B0C4DE'];
-  planes: PlanDisplay[] = [
-    {
-      doughnutChartData: [20, 80],
+  plan: PlanDisplay = {
+    doughnutChartData: [20, 80],
       plan: {
         nombre: 'Moto',
         cantidadTotal: 1,
@@ -29,11 +28,12 @@ export class Tab2Page implements OnInit{
         descripcion: '400 cc',
         aportacionMensual: 1
       }
-    }
+  };
+  planes: PlanDisplay[] = [
+    this.plan
   ];
 
   public doughnutChartLabels: Label[] = this.etiquetas;
-  public doughnutChartData: number[] = this.dato;
   public doughnutChartType: ChartType = 'doughnut';
   public chartColors: Array<any> = 
   [{
@@ -42,17 +42,28 @@ export class Tab2Page implements OnInit{
 
   public legend = false;
 
-  constructor(private modalCtrl: ModalController,
-              private nav: NavController,
-              private storage: Storage,
+  constructor(private nav: NavController,
               private event: Events,
-              private DatosService: DatosService) {}
+              private datosService: DatosService) {}
 
-  ngOnInit() { 
-
+  ngOnInit() {
+    this.datosService.cargarDatosPlan();
+    this.event.subscribe('planesCargados', () =>
+    {
+      this.planes = [];
+      this.datosService.planesCargados.forEach(element => {
+      this.planes.push({
+        doughnutChartData: [
+          (element.cantidadAcumulada*100)/element.cantidadTotal,
+          ((element.cantidadTotal - element.cantidadAcumulada)*100)/element.cantidadTotal
+        ],
+        plan: element
+      });
+    });
+    });
   }
 
-  async abrirFormulario() {
+  abrirFormulario() {
     this.nav.navigateRoot('/plan-form-page');
   }
 

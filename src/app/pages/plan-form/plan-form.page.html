@@ -15,7 +15,7 @@
       <ion-input type="text"
                 placeholder="Casa nueva"
                 [(ngModel)]="planNuevo.nombre"
-                [name]="nombrePlan"
+                name="nombrePlan"
                 required>
       </ion-input>
       </ion-item>
@@ -33,7 +33,7 @@
       <ion-input type="number"
                 placeholder="500000"
                 [(ngModel)]="planNuevo.cantidadTotal"
-                 [name]="costoPlan"
+                 name="costoPlan"
                 required>
       </ion-input>
       </ion-item>
@@ -49,10 +49,10 @@
       <ion-label>Tiempo de plan (meses)</ion-label>
     
       <ion-input type="number"
-      placeholder="12"
-      [(ngModel)]="planNuevo.tiempoTotal"
-       [name]="tiempoPlan"
-      required>
+                placeholder="12"
+                [(ngModel)]="planNuevo.tiempoTotal"
+                name="tiempoPlan"
+                required>
       </ion-input>
       </ion-item>
 
@@ -69,13 +69,13 @@
       <ion-input type="text"
                 placeholder="Casa ubicada en Av. Valdepeñas"
                 [(ngModel)]="planNuevo.descripcion"
-                [name]="descripcionPlan"
+                name="descripcionPlan"
                 required>
       </ion-input>
       </ion-item>
 
     <ion-button expand="block"
                 color="success"
-                (click)="llamarFuncion()">Registrar plan</ion-button>
+                (click)="calcularYRegistrar()">Registrar plan</ion-button>
 
 </ion-content>

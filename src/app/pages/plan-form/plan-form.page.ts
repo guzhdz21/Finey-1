@@ -1,6 +1,8 @@
 import { Component, OnInit } from '@angular/core';
 import { Plan, PlanDisplay} from '../../interfaces/interfaces';
 import { Storage } from '@ionic/storage';
+import { DatosService } from '../../services/datos.service';
+import { NavController, ModalController } from '@ionic/angular';
 
 @Component({
   selector: 'app-plan-form',
@@ -19,38 +21,22 @@ planNuevo: Plan = {
   aportacionMensual: null,
 };
 
-planes: PlanDisplay[] = [
-  {
-    doughnutChartData: [20, 80],
-    plan: {
-      nombre: '',
-      cantidadTotal: 1,
-      tiempoTotal: 2,
-      cantidadAcumulada: 3,
-      tiempoRestante: 4,
-      descripcion: '',
-      aportacionMensual: 5
-    }
-  }
-];
+planNuevoFinal: PlanDisplay;
 
-  constructor( private storage: Storage ) { }
+planes: PlanDisplay[] = [];
+
+  constructor( private datosService: DatosService,
+                private nav: NavController,
+                private modalCtrl: ModalController) { }
 
   ngOnInit() { }
 
-  llamarFuncion() {
-    this.calcularYRegistrar( this.planNuevo )
-  }
-
-  calcularYRegistrar( planStorage: Plan) {
-    planStorage.aportacionMensual = planStorage.cantidadTotal / planStorage.tiempoTotal;
-    planStorage.cantidadAcumulada = 0;
-    planStorage.tiempoRestante = planStorage.tiempoTotal; 
-
-    this.planes[0].plan = this.planNuevo;
-    this.planes[0].doughnutChartData= [20,80];
-
-    this.storage.set('planesStorage', this.planes[0]);
-    console.log(this.planes[0]);
+  calcularYRegistrar() {
+    this.planNuevo.aportacionMensual = this.planNuevo.cantidadTotal / this.planNuevo.tiempoTotal;
+    this.planNuevo.cantidadAcumulada = 0;
+    this.planNuevo.tiempoRestante = this.planNuevo.tiempoTotal;
+    this.datosService.guardarNuevoPlan(this.planNuevo);
+    this.modalCtrl.dismiss();
+    this.nav.navigateRoot('/tabs/tab1');
   }
 }

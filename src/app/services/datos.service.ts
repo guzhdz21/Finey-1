@@ -1,10 +1,9 @@
 import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
-import { Rubro, ColorArray, LabelArray, UsuarioLocal, Gasto } from '../interfaces/interfaces';
+import { Rubro, ColorArray, LabelArray, UsuarioLocal, Gasto, Plan } from '../interfaces/interfaces';
 import { Storage } from '@ionic/storage';
 import { ToastController, Events, NavController } from '@ionic/angular';
 import { AlertController } from '@ionic/angular';
-import { PlanDisplay } from '../interfaces/interfaces';
 
 @Injectable({
   providedIn: 'root'
@@ -42,20 +41,19 @@ export class DatosService {
       }   
     ]
   };
-  primera: boolean;
 
-  planesCargados: PlanDisplay[] = [
+  primera: boolean;
+  planesExisten: boolean = false;
+
+  planesCargados: Plan[] = [
     {
-      doughnutChartData: [20, 80],
-      plan: {
-        nombre: '',
-        cantidadTotal: 1,
-        tiempoTotal: 1,
-        cantidadAcumulada: 1,
-        tiempoRestante: 1,
-        descripcion: '',
-        aportacionMensual: 1
-      }
+      nombre: 'Moto',
+      cantidadTotal: 1,
+      tiempoTotal: 1,
+      cantidadAcumulada: 1,
+      tiempoRestante: 1,
+      descripcion: '400 cc',
+      aportacionMensual: 1
     }
   ];
 
@@ -138,11 +136,25 @@ export class DatosService {
     alert.present();
     await alert.onDidDismiss();
   }
+
+  guardarNuevoPlan(plan: Plan) {
+    if(this.planesExisten == false){
+      this.planesCargados = [];
+    }
+    this.planesCargados.push(plan);
+    this.storage.set('Planes', this.planesCargados);
+    this.event.publish('planesCargados');
+  }
   
   async cargarDatosPlan() {
-    const planesLeidos = await this.storage.get('planesStorage');
-      this.planesCargados = planesLeidos;
-      console.log(this.planesCargados);
-    this.event.publish('planesStorage');
+    const Planes = await this.storage.get('Planes');
+    if(Planes) {
+      this.planesCargados = Planes;
+      this.planesExisten = true;
+      this.event.publish('planesCargados');
+    }
+    else {
+      this.planesExisten = false;
+    }
   }
 }
