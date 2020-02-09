@@ -1,0 +1,56 @@
+<app-header-modal titulo="Inserta un nuevo plan"></app-header-modal>
+
+<ion-content>
+
+    <form #formularioPlan="ngForm">
+    <ion-item>
+
+        <ion-buttons slot="start">
+        <ion-button slots="icon-only">
+          <ion-icon name="information-circle"></ion-icon>
+        </ion-button>
+      </ion-buttons>
+    
+      <ion-label>Nombre del plan</ion-label>
+    
+      <ion-input type="text"
+                placeholder="Casa nueva"
+                required>
+      </ion-input>
+      </ion-item>
+
+      <ion-item>
+
+        <ion-buttons slot="start">
+        <ion-button slots="icon-only">
+          <ion-icon name="information-circle"></ion-icon>
+        </ion-button>
+      </ion-buttons>
+    
+      <ion-label>Costo</ion-label>
+    
+      <ion-input type="number"
+                placeholder="500000"
+                required>
+      </ion-input>
+      </ion-item>
+
+      <ion-item>
+
+        <ion-buttons slot="start">
+        <ion-button slots="icon-only">
+          <ion-icon name="information-circle"></ion-icon>
+        </ion-button>
+      </ion-buttons>
+    
+      <ion-label>Tiempo a lograr la meta</ion-label>
+    
+      <ion-datetime></ion-datetime>
+      </ion-item>
+
+    <ion-button expand="block"
+                color="success"
+                [disabled]="formulario.invalid">Registrar plan</ion-button>
+
+    </form>
+</ion-content>

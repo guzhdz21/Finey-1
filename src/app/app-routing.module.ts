@@ -13,7 +13,8 @@ const routes: Routes = [
   {
     path: 'mis-gastos',
     loadChildren: () => import('./pages/mis-gastos/mis-gastos.module').then( m => m.MisGastosPageModule)
-  },  {
+  },
+  {
     path: 'mis-gastos-page',
     loadChildren: () => import('./pages/mis-gastos-page/mis-gastos-page.module').then( m => m.MisGastosPagePageModule)
   },
@@ -32,6 +33,14 @@ const routes: Routes = [
   {
     path: 'modal-avatar',
     loadChildren: () => import('./pages/modal-avatar/modal-avatar.module').then( m => m.ModalAvatarPageModule)
+  },
+  {
+    path: 'plan-form-page',
+    loadChildren: () => import('./pages/plan-form-page/plan-form-page.module').then( m => m.PlanFormPagePageModule)
+  },
+  {
+    path: 'plan-form',
+    loadChildren: () => import('./pages/plan-form/plan-form.module').then( m => m.PlanFormPageModule)
   }
 
 ];
