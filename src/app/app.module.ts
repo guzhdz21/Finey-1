@@ -11,7 +11,7 @@ import { AppComponent } from './app.component';
 
 import { ChartsModule } from 'ng2-charts';
 
-import { HttpClientModule} from '@angular/common/http';
+import { HttpClientModule } from '@angular/common/http';
 
 import { IonicStorageModule } from '@ionic/storage';
 import { ComponentsModule } from './components/components.module';
