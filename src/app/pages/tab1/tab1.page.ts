@@ -123,7 +123,7 @@ export class Tab1Page implements OnInit {
   mostrarSaldo() {
     var gastosCantidad = 0;
       for( var i = 0; i < 17; i++ ) {
-        if ( this.datosService.usuarioCarga.gastos[i].cantidad != 0 ){
+        if ( this.usuarioCargado.gastos[i].cantidad != 0 ){
       gastosCantidad += this.usuarioCargado.gastos[i].cantidad;
         } 
       }

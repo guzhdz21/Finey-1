@@ -9,6 +9,7 @@ import { ModalController, NavController } from '@ionic/angular';
 export class HeaderModalComponent implements OnInit {
 
   @Input() titulo: string;
+  @Input() ruta: string;
   constructor(private modalCtrl: ModalController,
               private nav: NavController) { }
 
@@ -17,6 +18,6 @@ export class HeaderModalComponent implements OnInit {
   regresar()
   {
     this.modalCtrl.dismiss();
-    this.nav.navigateRoot('/tabs/tab1');
+    this.nav.navigateRoot(this.ruta);
   }
 }

@@ -1,6 +1,5 @@
 import { Component, OnInit } from '@angular/core';
 import { Plan, PlanDisplay} from '../../interfaces/interfaces';
-import { Storage } from '@ionic/storage';
 import { DatosService } from '../../services/datos.service';
 import { NavController, ModalController } from '@ionic/angular';
 import { AccionesService } from '../../services/acciones.service';
@@ -26,10 +25,6 @@ planNuevo: Plan = {
 usuarioCargado: UsuarioLocal = this.datosService.usuarioCarga;
 decisionCrearPlan: boolean = false;
 
-planNuevoFinal: PlanDisplay;
-
-planes: PlanDisplay[] = [];
-
   constructor( private datosService: DatosService,
                 private nav: NavController,
                 private modalCtrl: ModalController,
@@ -37,20 +32,20 @@ planes: PlanDisplay[] = [];
 
   ngOnInit() { }
 
-  calcularYRegistrar() {
+  async calcularYRegistrar() {
     this.planNuevo.aportacionMensual = this.planNuevo.cantidadTotal / this.planNuevo.tiempoTotal;
     this.planNuevo.cantidadAcumulada = 0;
     this.planNuevo.tiempoRestante = this.planNuevo.tiempoTotal;
 
-    if ( this.validarPlan() ) {
+    if ( await this.validarPlan() ) {
       this.datosService.guardarNuevoPlan(this.planNuevo);
       this.modalCtrl.dismiss();
-      this.nav.navigateRoot('/tabs/tab1');
+      this.nav.navigateRoot('/tabs/tab2');
     }
 
   }
 
-  validarPlan() {
+  async validarPlan() {
 
     var margenMax = 0;
     var margenMin = 0;
@@ -67,17 +62,21 @@ planes: PlanDisplay[] = [];
       } 
     }
 
-    
-   if ( (this.planNuevo.aportacionMensual - margenMax) >= 0 ) {
-    this.datosService.presentAlert1('ok', 'Plan creado', '¡Si te propones gastar menos en tus gastos promedio (luz, agua, etc.) puedes completar tu plan en menos tiempo!');
+   if ( (this.usuarioCargado.ingresoCantidad - this.planNuevo.aportacionMensual ) >= margenMax ) {
+    await this.accionesService.presentAlertPlan([{text: 'ok', handler: (blah) => {}}], 
+    'Plan creado', 
+    '¡Si te propones gastar menos en tus gastos promedio (luz, agua, etc.) puedes completar tu plan en menos tiempo!');
     return true;
    }
-   else if ( ( (this.planNuevo.aportacionMensual - margenMax) < 0 ) && ((this.planNuevo.aportacionMensual - margenMin) >= 0 ) ) {
-    this.datosService.presentAlert2('Crear', 'Modificar', 'Plan que apenas es posible', 'Puedes crear el plan y cumplirlo en el tiempo establecido MIENTRAS te mantengas en GASTOS MINIMOS en los gastos promedio (luz, agua, etc.) o puedes aumentar el tiempo en conseguirlo para que no estes tan presionado');
-    return this.decisionCrearPlan;
+   else if ( ( (this.usuarioCargado.ingresoCantidad - this.planNuevo.aportacionMensual) < margenMax ) 
+                && (( this.usuarioCargado.ingresoCantidad - this.planNuevo.aportacionMensual) >= margenMin ) ) {
+    await this.accionesService.presentAlertPlan([{text: 'Crear', handler: (blah) => {this.accionesService.alertaPlanCrear = true}},
+    {text: 'Modificar', handler: (blah) => {this.accionesService.alertaPlanCrear = false}}], 'Plan que apenas es posible', 
+    'Puedes crear el plan y cumplirlo en el tiempo establecido MIENTRAS te mantengas en GASTOS MINIMOS en los gastos promedio (luz, agua, etc.) o puedes aumentar el tiempo en conseguirlo para que no estes tan presionado');
+    return this.accionesService.alertaPlanCrear;
    }
    else {
-    this.datosService.presentAlert1('Modificar', 'No puedes completar este plan en ese tiempo', 'Presiona Modificar y aumenta tu tiempo para ser apto de conseguirlo');
+    await this.accionesService.presentAlertPlan([{text: 'Modificar', handler: (blah) => {}}], 'No puedes completar este plan en ese tiempo', 'Presiona Modificar y aumenta tu tiempo para ser apto de conseguirlo');
     return false;
    }
 
