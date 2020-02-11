@@ -72,13 +72,13 @@ sexoRadio(event)
     }
     else {
       this.registrarUsuario();
-      this.nav.navigateRoot('/tabs/tab1');
+      this.nav.navigateRoot('/plan-form');
       this.datosService.presentToast('Registro exitoso');
     }
   }
   else {
       this.registrarUsuario();
-      this.nav.navigateRoot('/tabs/tab1');
+      this.nav.navigateRoot('/plan-form');
       this.datosService.presentToast('Registro exitoso');
   }
 }

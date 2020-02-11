@@ -105,7 +105,6 @@ export class MisGastosPage implements OnInit {
   }
 
   validarIngreso() {
-
     var cantidadGastos=0;
 
       for( var ii = 0; ii < 17; ii++ ) {
