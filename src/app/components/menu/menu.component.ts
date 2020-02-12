@@ -24,7 +24,7 @@ opciones: Opcion[] = [
   {
     icono: 'calendar',
     nombre: 'Calendario',
-    redirigirA: ''
+    redirigirA: '/calendario-page'
   },
   {
     icono: 'settings',

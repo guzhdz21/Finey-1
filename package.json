@@ -28,6 +28,7 @@
     "chart.js": "^2.9.3",
     "cordova-sqlite-storage": "^4.0.0",
     "core-js": "^2.5.4",
+    "ionic2-calendar": "^0.5.8",
     "ng2-charts": "^2.3.0",
     "rxjs": "~6.5.1",
     "tslib": "^1.9.0",
