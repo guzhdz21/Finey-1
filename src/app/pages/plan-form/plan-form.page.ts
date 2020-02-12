@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, Input } from '@angular/core';
 import { Plan, PlanDisplay} from '../../interfaces/interfaces';
 import { DatosService } from '../../services/datos.service';
 import { NavController, ModalController } from '@ionic/angular';
@@ -12,7 +12,9 @@ import { UsuarioLocal, Gasto } from '../../interfaces/interfaces';
 })
 export class PlanFormPage implements OnInit {
 
-planNuevo: Plan = {
+  @Input() registro: string;
+
+ planNuevo: Plan = {
   nombre: '',
   cantidadTotal: null,
   tiempoTotal: null,
@@ -30,7 +32,8 @@ decisionCrearPlan: boolean = false;
                 private modalCtrl: ModalController,
                 private accionesService: AccionesService) { }
 
-  ngOnInit() { }
+  ngOnInit() {
+   }
 
   async calcularYRegistrar() {
     this.planNuevo.aportacionMensual = this.planNuevo.cantidadTotal / this.planNuevo.tiempoTotal;
@@ -83,4 +86,8 @@ decisionCrearPlan: boolean = false;
   }
 
 
+  omitir() {
+    this.modalCtrl.dismiss();
+    this.nav.navigateRoot('/tabs/tab2');
+  }
 }

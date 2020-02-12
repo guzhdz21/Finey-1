@@ -1,6 +1,22 @@
-<app-header-modal titulo="Inserta un nuevo plan" ruta="/tabs/tab2"></app-header-modal>
+<app-header-modal *ngIf="registro == 'false'" titulo="Inserta un nuevo plan" ruta="/tabs/tab2"></app-header-modal>
+
+<ion-header no-border *ngIf="registro == 'true'">
+  <ion-toolbar color="success">
+    
+    <ion-buttons slot="start">
+      <ion-button (click)="omitir()">
+        Omitir
+      </ion-button>
+    </ion-buttons>
+
+    <ion-title>Inserta un nuevo plan</ion-title>
+
+  </ion-toolbar>
+</ion-header>
 
 <ion-content>
+
+  <form #formulario="ngForm">
 
     <ion-item>
 
@@ -69,13 +85,15 @@
       <ion-input type="text"
                 placeholder="Casa ubicada en Av. Valdepeñas"
                 [(ngModel)]="planNuevo.descripcion"
-                name="descripcionPlan"
-                required>
+                name="descripcionPlan">
       </ion-input>
       </ion-item>
 
     <ion-button expand="block"
                 color="success"
-                (click)="calcularYRegistrar()">Registrar plan</ion-button>
+                (click)="calcularYRegistrar()"
+                [disabled]="formulario.invalid">Registrar plan</ion-button>
+
+  </form>            
 
 </ion-content>

@@ -4,7 +4,7 @@
     
     <ion-slides class="slide-full" pager="true">
 
-        <ion-slide *ngFor="let plan of planes">
+        <ion-slide *ngFor="let plan of planes; let i = index">
             <ion-content>
             <ion-card>
                 <ion-item color="primary" class="cambio"> 
@@ -49,6 +49,11 @@
                     <ion-item>
                         <ion-label color="tertiary">Tiempo restante</ion-label>
                         <ion-label class="margentexto">{{plan.plan.tiempoRestante}} meses</ion-label>
+                    </ion-item>
+
+                    <ion-item (click)="descripcion(plan.plan.descripcion)" *ngIf="plan.plan.descripcion">
+                        <ion-label color="tertiary">Descripcion</ion-label>
+                        <ion-label class="margentexto">${{plan.plan.descripcion}}</ion-label>
                     </ion-item>
 
                     <ion-item>

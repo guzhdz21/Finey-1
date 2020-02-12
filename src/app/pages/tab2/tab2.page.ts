@@ -5,6 +5,8 @@ import { PlanDisplay } from '../../interfaces/interfaces';
 import { ModalController, NavController, Events } from '@ionic/angular';
 import { Storage } from '@ionic/storage';
 import { DatosService } from '../../services/datos.service';
+import { AccionesService } from '../../services/acciones.service';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-tab2',
@@ -44,7 +46,9 @@ export class Tab2Page implements OnInit{
 
   constructor(private nav: NavController,
               private event: Events,
-              private datosService: DatosService) {}
+              private datosService: DatosService,
+              private accionesService: AccionesService,
+              private router: Router) {}
 
   ngOnInit() {
     this.datosService.cargarDatosPlan();
@@ -65,6 +69,15 @@ export class Tab2Page implements OnInit{
 
   abrirFormulario() {
     this.nav.navigateRoot('/plan-form-page');
+    this.router.navigate(['/plan-form-page'],
+    {
+      queryParams: {
+        value: false
+      }
+    });
   }
 
+  descripcion(descripcion: string) {
+    this.accionesService.presentAlertGenerica('Descripcion', descripcion);
+  }
 }

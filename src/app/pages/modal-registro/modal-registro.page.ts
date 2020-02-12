@@ -2,6 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { ModalController, NavController, Events, AlertController } from '@ionic/angular';
 import { DatosService } from '../../services/datos.service';
 import { UsuarioLocal, Gasto ,Rubro } from '../../interfaces/interfaces';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-modal-registro',
@@ -28,7 +29,7 @@ export class ModalRegistroPage implements OnInit {
   constructor( private modalCtrl: ModalController, 
                 private datosService: DatosService,
                 private nav: NavController,
-                private alertCtrl: AlertController) { }
+                private router: Router) { }
 
 ngOnInit() {
     this.datosService.getGastosJson().subscribe (val => {
@@ -72,13 +73,25 @@ sexoRadio(event)
     }
     else {
       this.registrarUsuario();
-      this.nav.navigateRoot('/plan-form');
+      this.nav.navigateRoot('/plan-form-page');
+      this.router.navigate(['/plan-form-page'],
+      {
+        queryParams: {
+          value: true
+        }
+      });
       this.datosService.presentToast('Registro exitoso');
     }
   }
   else {
       this.registrarUsuario();
-      this.nav.navigateRoot('/plan-form');
+      this.nav.navigateRoot('/plan-form-page');
+      this.router.navigate(['/plan-form-page'],
+      {
+        queryParams: {
+          value: true
+        }
+      });
       this.datosService.presentToast('Registro exitoso');
   }
 }

@@ -23,4 +23,20 @@ export class AccionesService {
     alert.present();
     await alert.onDidDismiss();
   }
+
+  async presentAlertGenerica( header: string, message: string) {
+      
+    const alert = await this.alertCtrl.create({
+      header: header,
+      message: message,
+      buttons: [
+        {
+          text: 'Ok',
+          handler: (bla) => {}
+        }
+      ]
+    });
+    alert.present();
+    await alert.onDidDismiss();
+  }
 }
