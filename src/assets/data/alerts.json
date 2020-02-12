@@ -1,0 +1,30 @@
+[
+    {
+        "titulo": "Nombre",
+        "mensaje": "Ingresa tu nombre de ususario que sera desplegado en la app, Ej: Gustavo Hernandez"
+    },
+    {
+        "titulo": "Sexo",
+        "mensaje": "Selecciona tu sexo, segun lo que selecciones se vera reflejada una imagen en tu avatar"
+    },
+    {
+        "titulo": "Tipo de Ingreso",
+        "mensaje": "Selecciona tu tipo de ingreso, deacuerdo a si recibes un sueldo fijo o un sueldo que varia segun los dias"
+    },
+    {
+        "titulo": "Ingreso mensual",
+        "mensaje": "Ingresa la cantidad mensual de sueldo que recibes Ej: $12000"
+    },
+    {
+        "titulo": "Vivienda",
+        "mensaje": "Ingresa el gasto mensual que realizas en tu vivienda, ya sea que pages renta o mantenimiento(Jardinero, Reparaciones, etc.)"
+    },
+    {
+        "titulo": "Agua",
+        "mensaje": "Ingresa el gasto mensual que realizas en agua(recibo del agua), este gasto debe ser un promedio de cuanto gastas al mes"
+    },
+    {
+        "titulo": "Luz",
+        "mensaje": "Ingresa el gasto mensual que realizas en luz(recibo de luz), este gasto debe ser un promedio de cuanto gastas al mes"
+    }
+]
