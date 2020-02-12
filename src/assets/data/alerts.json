@@ -26,5 +26,61 @@
     {
         "titulo": "Luz",
         "mensaje": "Ingresa el gasto mensual que realizas en luz(recibo de luz), este gasto debe ser un promedio de cuanto gastas al mes"
+    },
+    {
+        "titulo": "Gas",
+        "mensaje": "Ingresa el gasto mensual que realizas en gas(recibo de gas), este gasto debe ser un promedio de cuanto gastas al mes"
+    },
+    {
+        "titulo": "Comida",
+        "mensaje": "Ingresa el gasto mensual que realizas en comida(supermercado, carniceria, etc. Comida de la semana que cubra la canasta básica), este gasto debe ser un promedio de cuanto gastas al mes"
+    },
+    {
+        "titulo": "Ropa",
+        "mensaje": "Ingresa el gasto mensual que realizas en ropa(zapatos, playeras, pantalon/falda, etc.), este gasto debe ser un promedio de cuanto gastas al mes"
+    },
+    {
+        "titulo": "Mobiliario",
+        "mensaje": "Ingresa el gasto mensual que realizas en Mobiliario(mesas, sillas, camas, etc. Ya sea reparacion o cambio), este gasto debe ser un promedio de cuanto gastas al mes"
+    },
+    {
+        "titulo": "Limpeza",
+        "mensaje": "Ingresa el gasto mensual que realizas en limpieza(jabon, shampoo, maquillaje, desodorante, etc.), este gasto debe ser un promedio de cuanto gastas al mes"
+    },
+    {
+        "titulo": "Transporte",
+        "mensaje": "Ingresa el gasto mensual que realizas en transporte(gasolina, camion, metro, etc.), este gasto debe ser un promedio de cuanto gastas al mes"
+    },
+    {
+        "titulo": "Seguro",
+        "mensaje": "Ingresa el gasto mensual que realizas en seguro de vida"
+    },
+    {
+        "titulo": "Internet/Cable/Telefonia",
+        "mensaje": "Ingresa el pago mensual que realizas en tu plan actual ya sea que solo tengas uno o los tres servicios"
+    },
+    {
+        "titulo": "Electrodomesticos",
+        "mensaje": "Ingresa el gasto mensual que realizas en electodomesticos(licuadora, lampara, refrigerador, etc. Ya sea reparacion o cambio), este gasto debe ser un promedio de cuanto gastas al mes"
+    },
+    {
+        "titulo": "Electronicos",
+        "mensaje": "Ingresa el gasto mensual que realizas en electronicos(celular, computadora, etc. ya sea reparacion o cambio), este gasto debe ser un promedio de cuanto gastas al mes"
+    },
+    {
+        "titulo": "Educacion",
+        "mensaje": "Ingresa el gasto mensual que realizas en educacion(colegiatura, libros, cursos, ect.)"
+    },
+    {
+        "titulo": "Ocio",
+        "mensaje": "Ingresa el gasto mensual que realizas en ocio(entretenimiento, juegos, libros, bebidas, cine, gym, etc.), este gasto debe ser un promedio de cuanto gastas al mes"
+    },
+    {
+        "titulo": "Salud",
+        "mensaje": "Ingresa el gasto mensual que realizas en salud(medicinas, hospital, etc), este gasto debe ser un promedio de cuanto gastas al mes"
+    },
+    {
+        "titulo": "Extra",
+        "mensaje": "Ingresa cualquier gasto extra que tengas, puede ser un pago o una deuda, debes insertar el gasto mensual que haces gracias a este pago o deuda"
     }
 ]
