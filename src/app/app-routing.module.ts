@@ -41,6 +41,14 @@ const routes: Routes = [
   {
     path: 'plan-form',
     loadChildren: () => import('./pages/plan-form/plan-form.module').then( m => m.PlanFormPageModule)
+  },
+  {
+    path: 'calendario',
+    loadChildren: () => import('./pages/calendario/calendario.module').then( m => m.CalendarioPageModule)
+  },
+  {
+    path: 'calendario-page',
+    loadChildren: () => import('./pages/calendario-page/calendario-page.module').then( m => m.CalendarioPagePageModule)
   }
 
 ];
