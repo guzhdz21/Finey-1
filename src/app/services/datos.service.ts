@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
-import { Rubro, ColorArray, LabelArray, UsuarioLocal, Gasto, Plan } from '../interfaces/interfaces';
+import { Rubro, ColorArray, LabelArray, UsuarioLocal, Gasto, Plan, AlertaGeneral } from '../interfaces/interfaces';
 import { Storage } from '@ionic/storage';
 import { ToastController, Events, NavController } from '@ionic/angular';
 import { AlertController } from '@ionic/angular';
@@ -71,6 +71,10 @@ export class DatosService {
 
   getGastosJson() {
     return this.http.get<Gasto[]>('/assets/data/gastos.json');
+  }
+
+  getAlertasJson() {
+    return this.http.get<AlertaGeneral[]>('/assets/data/alerts.json');
   }
 
   guardarUsuarioInfo(usuario: UsuarioLocal) {

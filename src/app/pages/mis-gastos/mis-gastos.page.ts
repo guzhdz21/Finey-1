@@ -1,7 +1,8 @@
 import { Component, OnInit, ViewChild } from '@angular/core';
 import { ModalController, NavController, IonRadioGroup, Events, AlertController } from '@ionic/angular';
 import { DatosService } from '../../services/datos.service';
-import { UsuarioLocal, Gasto, Rubro } from '../../interfaces/interfaces';
+import { UsuarioLocal, Gasto, Rubro, AlertaGeneral } from '../../interfaces/interfaces';
+import { AccionesService } from '../../services/acciones.service';
 
 @Component({
   selector: 'app-mis-gastos',
@@ -16,6 +17,7 @@ export class MisGastosPage implements OnInit {
   etiquetas: string[] = [];
   i: number = 0;
   rubros: Rubro[] = [];
+  alertas: AlertaGeneral[] = [];
   registrarseAdvertencia: boolean = this.datosService.registrarseAdvertencia;
 
   usuarioCargado: UsuarioLocal = this.datosService.usuarioCarga;
@@ -26,11 +28,14 @@ export class MisGastosPage implements OnInit {
               private nav: NavController,
               public datosService: DatosService,
               private event: Events,
-              private alertCtrl: AlertController) { }
+              private accionesService: AccionesService) { }
 
   ngOnInit() {
-    console.log(this.datosService.usuarioCarga.gastos[16]);
     this.datosService.cargarDatos();
+    this.datosService.getAlertasJson().subscribe(val => {
+      this.alertas = val;
+    });
+    
     this.datosService.getEtiquetasTab1().subscribe (val => {
       this.etiquetas = val.nombre;
       });
@@ -120,6 +125,15 @@ export class MisGastosPage implements OnInit {
         else{
         return false;
       }
-    }
+  }
     
+  botonInfo(titulo: string) {
+    this.alertas.forEach(element => {
+      if(titulo == element.titulo)
+      {
+        this.accionesService.presentAlertGenerica(element.titulo, element.mensaje);
+        return;
+      }
+    });
+  }
 }

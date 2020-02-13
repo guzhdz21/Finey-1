@@ -53,3 +53,8 @@ export interface PlanDisplay {
     doughnutChartData: number[];
     plan: Plan;
 }
+
+export interface AlertaGeneral {
+    titulo: string;
+    mensaje: string;
+}

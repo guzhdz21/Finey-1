@@ -1,7 +1,8 @@
 import { Component, OnInit, ViewChild } from '@angular/core';
 import { DatosService } from '../../services/datos.service';
-import { UsuarioLocal } from '../../interfaces/interfaces';
+import { UsuarioLocal, AlertaGeneral } from '../../interfaces/interfaces';
 import { IonRadioGroup, ModalController, Events, NavController } from '@ionic/angular';
+import { AccionesService } from '../../services/acciones.service';
 
 @Component({
   selector: 'app-modal-avatar',
@@ -15,12 +16,19 @@ export class ModalAvatarPage implements OnInit {
   constructor(private datosService: DatosService,
               private modalCtrl: ModalController,
               private event: Events,
-              private nav: NavController) { }
+              private nav: NavController,
+              private accionesService: AccionesService) { }
 
+  alertas: AlertaGeneral[] = [];
   usuarioCargado: UsuarioLocal = this.datosService.usuarioCarga;
 
   ngOnInit() {
       this.datosService.cargarDatos();
+
+      this.datosService.getAlertasJson().subscribe(val => {
+        this.alertas = val;
+      });
+
       this.sexo.value = this.usuarioCargado.sexo;
   }
 
@@ -38,4 +46,13 @@ export class ModalAvatarPage implements OnInit {
     this.datosService.presentToast('Cambios modificados');
   }
 
+  botonInfo(titulo: string) {
+    this.alertas.forEach(element => {
+      if(titulo == element.titulo)
+      {
+        this.accionesService.presentAlertGenerica(element.titulo, element.mensaje);
+        return;
+      }
+    });
+  }
 }

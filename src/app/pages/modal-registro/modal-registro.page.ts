@@ -1,8 +1,9 @@
 import { Component, OnInit } from '@angular/core';
 import { ModalController, NavController, Events, AlertController } from '@ionic/angular';
 import { DatosService } from '../../services/datos.service';
-import { UsuarioLocal, Gasto ,Rubro } from '../../interfaces/interfaces';
+import { UsuarioLocal, Gasto, Rubro, AlertaGeneral } from '../../interfaces/interfaces';
 import { Router } from '@angular/router';
+import { AccionesService } from '../../services/acciones.service';
 
 @Component({
   selector: 'app-modal-registro',
@@ -16,6 +17,7 @@ export class ModalRegistroPage implements OnInit {
   rubros: Rubro[] = [];
   ingreso: boolean = true;
   sexo: boolean = true;
+  alertas: AlertaGeneral[] = [];
   registrarseAdvertencia: boolean = this.datosService.registrarseAdvertencia;
 
   usuario: UsuarioLocal = {
@@ -29,11 +31,16 @@ export class ModalRegistroPage implements OnInit {
   constructor( private modalCtrl: ModalController, 
                 private datosService: DatosService,
                 private nav: NavController,
-                private router: Router) { }
+                private router: Router,
+                private accionesService: AccionesService) { }
 
 ngOnInit() {
     this.datosService.getGastosJson().subscribe (val => {
     this.usuario.gastos = val;
+    });
+
+    this.datosService.getAlertasJson().subscribe(val => {
+      this.alertas = val;
     });
 
     this.datosService.getEtiquetasTab1().subscribe (val => {
@@ -137,6 +144,16 @@ sexoRadio(event)
         else{
         return false;
       }
-    }
+  }
+
+  botonInfo(titulo: string) {
+    this.alertas.forEach(element => {
+      if(titulo == element.titulo)
+      {
+        this.accionesService.presentAlertGenerica(element.titulo, element.mensaje);
+        return;
+      }
+    });
+  }
     
 }

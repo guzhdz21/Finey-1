@@ -44,7 +44,7 @@
         "mensaje": "Ingresa el gasto mensual que realizas en Mobiliario(mesas, sillas, camas, etc. Ya sea reparacion o cambio), este gasto debe ser un promedio de cuanto gastas al mes"
     },
     {
-        "titulo": "Limpeza",
+        "titulo": "Limpieza",
         "mensaje": "Ingresa el gasto mensual que realizas en limpieza(jabon, shampoo, maquillaje, desodorante, etc.), este gasto debe ser un promedio de cuanto gastas al mes"
     },
     {

@@ -16,7 +16,7 @@
     <ion-item lines="none">
   
       <ion-buttons slot="start">
-      <ion-button slots="icon-only">
+      <ion-button slots="icon-only" (click)="botonInfo('Tipo de Ingreso')">
         <ion-icon name="information-circle"></ion-icon>
       </ion-button>
     </ion-buttons>
@@ -43,7 +43,7 @@
   
     <ion-item>
       <ion-buttons slot="start">
-      <ion-button slots="icon-only">
+      <ion-button slots="icon-only" (click)="botonInfo('Ingreso mensual')">
         <ion-icon name="information-circle"></ion-icon>
       </ion-button>
     </ion-buttons>
@@ -66,7 +66,7 @@
   
     <ion-item *ngFor="let etiqueta of etiquetas; let i = index">
       <ion-buttons slot="start">
-      <ion-button slots="icon-only">
+      <ion-button slots="icon-only" (click)="botonInfo(etiqueta)">
         <ion-icon name="information-circle"></ion-icon>
       </ion-button>
     </ion-buttons>
