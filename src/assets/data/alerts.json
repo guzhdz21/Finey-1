@@ -1,7 +1,7 @@
 [
     {
         "titulo": "Nombre",
-        "mensaje": "Ingresa tu nombre de usuario que será desplegado en la app, Ej. Gustavo Hernandez"
+        "mensaje": "Ingresa tu nombre de usuario que será desplegado en la app, Ej. Gustavo Hernández"
     },
     {
         "titulo": "Sexo",
@@ -17,39 +17,39 @@
     },
     {
         "titulo": "Vivienda",
-        "mensaje": "Ingresa el gasto mensual que realizas en tu vivienda, ya sea que pages renta o mantenimiento(Jardinero, Reparaciones, etc.)"
+        "mensaje": "Ingresa el gasto mensual que realizas en tu vivienda, ya sea que pages renta o mantenimiento (Jardinero, Reparaciones, etc.)"
     },
     {
         "titulo": "Agua",
-        "mensaje": "Ingresa el gasto mensual que realizas en agua(recibo del agua), este gasto debe ser un promedio de cuanto gastas al mes"
+        "mensaje": "Ingresa el gasto mensual que realizas en agua (recibo del agua), este gasto debe ser un promedio de cuanto gastas al mes"
     },
     {
         "titulo": "Luz",
-        "mensaje": "Ingresa el gasto mensual que realizas en luz(recibo de luz), este gasto debe ser un promedio de cuanto gastas al mes"
+        "mensaje": "Ingresa el gasto mensual que realizas en luz (recibo de luz), este gasto debe ser un promedio de cuanto gastas al mes"
     },
     {
         "titulo": "Gas",
-        "mensaje": "Ingresa el gasto mensual que realizas en gas(recibo de gas), este gasto debe ser un promedio de cuanto gastas al mes"
+        "mensaje": "Ingresa el gasto mensual que realizas en gas (recibo de gas), este gasto debe ser un promedio de cuanto gastas al mes"
     },
     {
         "titulo": "Comida",
-        "mensaje": "Ingresa el gasto mensual que realizas en comida(supermercado, carniceria, comida de la semana que cubra la canasta básica, etc.), este gasto debe ser un promedio de cuanto gastas al mes"
+        "mensaje": "Ingresa el gasto mensual que realizas en comida (supermercado, carniceria, comida de la semana que cubra la canasta básica, etc.), este gasto debe ser un promedio de cuanto gastas al mes"
     },
     {
         "titulo": "Ropa",
-        "mensaje": "Ingresa el gasto mensual que realizas en ropa(zapatos, playeras, pantalón/falda, etc.), este gasto debe ser un promedio de cuanto gastas al mes"
+        "mensaje": "Ingresa el gasto mensual que realizas en ropa (zapatos, playeras, pantalón/falda, etc.), este gasto debe ser un promedio de cuanto gastas al mes"
     },
     {
         "titulo": "Mobiliario",
-        "mensaje": "Ingresa el gasto mensual que realizas en Mobiliario(mesas, sillas, camas, etc. Ya sea reparación o cambio), este gasto debe ser un promedio de cuanto gastas al mes"
+        "mensaje": "Ingresa el gasto mensual que realizas en Mobiliario (mesas, sillas, camas, etc. Ya sea reparación o cambio), este gasto debe ser un promedio de cuanto gastas al mes"
     },
     {
         "titulo": "Limpieza",
-        "mensaje": "Ingresa el gasto mensual que realizas en limpieza(jabón, shampoo, maquillaje, desodorante, etc.), este gasto debe ser un promedio de cuanto gastas al mes"
+        "mensaje": "Ingresa el gasto mensual que realizas en limpieza (jabón, shampoo, maquillaje, desodorante, etc.), este gasto debe ser un promedio de cuanto gastas al mes"
     },
     {
         "titulo": "Transporte",
-        "mensaje": "Ingresa el gasto mensual que realizas en transporte(gasolina, camión, metro, etc.), este gasto debe ser un promedio de cuanto gastas al mes"
+        "mensaje": "Ingresa el gasto mensual que realizas en transporte (gasolina, camión, metro, etc.), este gasto debe ser un promedio de cuanto gastas al mes"
     },
     {
         "titulo": "Seguro",
@@ -61,23 +61,23 @@
     },
     {
         "titulo": "Electrodomesticos",
-        "mensaje": "Ingresa el gasto mensual que realizas en electodomesticos(licuadora, lampara, refrigerador, etc. Ya sea reparación o cambio), este gasto debe ser un promedio de cuanto gastas al mes"
+        "mensaje": "Ingresa el gasto mensual que realizas en electodomesticos (licuadora, lampara, refrigerador, etc. Ya sea reparación o cambio), este gasto debe ser un promedio de cuanto gastas al mes"
     },
     {
         "titulo": "Electronicos",
-        "mensaje": "Ingresa el gasto mensual que realizas en electrónicos(celular, computadora, etc. ya sea reparacion o cambio), este gasto debe ser un promedio de cuanto gastas al mes"
+        "mensaje": "Ingresa el gasto mensual que realizas en electrónicos (celular, computadora, etc. ya sea reparacion o cambio), este gasto debe ser un promedio de cuanto gastas al mes"
     },
     {
         "titulo": "Educacion",
-        "mensaje": "Ingresa el gasto mensual que realizas en educación(colegiatura, libros, cursos, ect.)"
+        "mensaje": "Ingresa el gasto mensual que realizas en educación (colegiatura, libros, cursos, etc.)"
     },
     {
         "titulo": "Ocio",
-        "mensaje": "Ingresa el gasto mensual que realizas en ocio(entretenimiento, juegos, libros, bebidas, cine, gym, etc.), este gasto debe ser un promedio de cuanto gastas al mes"
+        "mensaje": "Ingresa el gasto mensual que realizas en ocio (entretenimiento, juegos, libros, bebidas, cine, gym, etc.), este gasto debe ser un promedio de cuanto gastas al mes"
     },
     {
         "titulo": "Salud",
-        "mensaje": "Ingresa el gasto mensual que realizas en salud(medicinas, hospital, etc), este gasto debe ser un promedio de cuanto gastas al mes"
+        "mensaje": "Ingresa el gasto mensual que realizas en salud (medicinas, hospital, etc), este gasto debe ser un promedio de cuanto gastas al mes"
     },
     {
         "titulo": "Extra",
@@ -89,14 +89,14 @@
     },
     {
         "titulo": "Costo",
-        "mensaje": "Ingresa la cantidad de dinero necesario para poder comprar o pagar tu meta y asi completar tu plan"
+        "mensaje": "Ingresa la cantidad de dinero necesario para poder comprar o pagar tu meta y así, completar tu plan"
     },
     {
         "titulo": "Tiempo del Plan",
-        "mensaje": "Ingresa el tiempo(en meses) en el que quieras completar tu plan"
+        "mensaje": "Ingresa el tiempo (en meses) en el que quieras completar tu plan"
     },
     {
         "titulo": "Descripcion",
-        "mensaje": "Puedes ingresar alfuna descripcion con informacion extra que quieras guardar en el plan"
+        "mensaje": "Puedes ingresar alguna descripción con información extra que quieras guardar en el plan"
     }
 ]
