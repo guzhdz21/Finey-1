@@ -82,5 +82,21 @@
     {
         "titulo": "Extra",
         "mensaje": "Ingresa cualquier gasto extra que tengas, puede ser un pago o una deuda, debes insertar el gasto mensual que haces gracias a este pago o deuda"
+    },
+    {
+        "titulo": "Nombre del Plan",
+        "mensaje": "Ingresa un nombre que identifique la meta que se quiere conseguir con el plan"
+    },
+    {
+        "titulo": "Costo",
+        "mensaje": "Ingresa la cantidad de dinero necesario para poder comprar o pagar tu meta y asi completar tu plan"
+    },
+    {
+        "titulo": "Tiempo del Plan",
+        "mensaje": "Ingresa el tiempo(en meses) en el que quieras completar tu plan"
+    },
+    {
+        "titulo": "Descripcion",
+        "mensaje": "Puedes ingresar alfuna descripcion con informacion extra que quieras guardar en el plan"
     }
 ]
