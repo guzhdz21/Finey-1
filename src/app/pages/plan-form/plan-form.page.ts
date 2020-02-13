@@ -1,5 +1,5 @@
 import { Component, OnInit, Input } from '@angular/core';
-import { Plan, PlanDisplay} from '../../interfaces/interfaces';
+import { Plan, PlanDisplay, AlertaGeneral } from '../../interfaces/interfaces';
 import { DatosService } from '../../services/datos.service';
 import { NavController, ModalController } from '@ionic/angular';
 import { AccionesService } from '../../services/acciones.service';
@@ -24,6 +24,8 @@ export class PlanFormPage implements OnInit {
   aportacionMensual: null,
 };
 
+alertas: AlertaGeneral[] = [];
+
 usuarioCargado: UsuarioLocal = this.datosService.usuarioCarga;
 decisionCrearPlan: boolean = false;
 
@@ -33,6 +35,10 @@ decisionCrearPlan: boolean = false;
                 private accionesService: AccionesService) { }
 
   ngOnInit() {
+
+    this.datosService.getAlertasJson().subscribe(val => {
+      this.alertas = val;
+    });
    }
 
   async calcularYRegistrar() {
@@ -89,5 +95,15 @@ decisionCrearPlan: boolean = false;
   omitir() {
     this.modalCtrl.dismiss();
     this.nav.navigateRoot('/tabs/tab2');
+  }
+
+  botonInfo(titulo: string) {
+    this.alertas.forEach(element => {
+      if(titulo == element.titulo)
+      {
+        this.accionesService.presentAlertGenerica(element.titulo, element.mensaje);
+        return;
+      }
+    });
   }
 }
