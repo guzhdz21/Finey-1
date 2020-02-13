@@ -4,7 +4,7 @@
     {{ viewTitle }}
   </ion-title>
   <ion-buttons slot="end">
-    <ion-button (click)="today()">Dia de hoy</ion-button>
+    <ion-button (click)="today()" class="boton-gris">Dia de hoy</ion-button>
   </ion-buttons>
 </ion-toolbar>
 
@@ -40,26 +40,20 @@
   </ion-card>
  
   <ion-row>
-    <!-- Change the displayed calendar mode -->
-    <ion-col size="4">
-      <ion-button expand="block" [color]="calendar.mode == 'month' ? 'primary' : 'secondary'" (click)="changeMode('month')">Mes</ion-button>
-    </ion-col>
-    <ion-col size="4">
-      <ion-button expand="block" [color]="calendar.mode == 'week' ? 'primary' : 'secondary'" (click)="changeMode('week')">Semana</ion-button>
-    </ion-col>
-    <ion-col size="4">
-      <ion-button expand="block" [color]="calendar.mode == 'day' ? 'primary' : 'secondary'" (click)="changeMode('day')">Dia</ion-button>
-    </ion-col>
  
     <!-- Move back one screen of the slides -->
-    <ion-col size="6" text-left>
+    <ion-col size="4" text-left>
       <ion-button fill="clear" (click)="back()">
         <ion-icon name="arrow-back" slot="icon-only"></ion-icon>
       </ion-button>
     </ion-col>
+
+    <ion-col size="4" text-center>
+    <ion-button expand="block" color="primary"> {{ viewTitle }}</ion-button>
+    </ion-col>
  
     <!-- Move forward one screen of the slides -->
-    <ion-col size="6" text-right>
+    <ion-col size="4" text-right>
       <ion-button fill="clear" (click)="next()">
         <ion-icon name="arrow-forward" slot="icon-only"></ion-icon>
       </ion-button>

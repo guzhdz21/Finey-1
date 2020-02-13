@@ -74,10 +74,6 @@ addEvent() {
   this.resetEvent();
 }
 
-changeMode(mode) { 
-  this.calendar.mode = mode;
-}
-
 back() { 
   var swiper = document.querySelector('.swiper-container')['swiper'];
   swiper.slidePrev();
