@@ -1,19 +1,19 @@
 [
     {
         "titulo": "Nombre",
-        "mensaje": "Ingresa tu nombre de ususario que sera desplegado en la app, Ej: Gustavo Hernandez"
+        "mensaje": "Ingresa tu nombre de usuario que será desplegado en la app, Ej. Gustavo Hernandez"
     },
     {
         "titulo": "Sexo",
-        "mensaje": "Selecciona tu sexo, segun lo que selecciones se vera reflejada una imagen en tu avatar"
+        "mensaje": "Selecciona tu sexo, según la opcion que selecciones se verá reflejada una imagen del sexo en tu avatar"
     },
     {
         "titulo": "Tipo de Ingreso",
-        "mensaje": "Selecciona tu tipo de ingreso, deacuerdo a si recibes un sueldo fijo o un sueldo que varia segun los dias"
+        "mensaje": "Selecciona tu tipo de ingreso, según si recibes un sueldo fijo (un empleado de fabrica) o un sueldo que varia según los dias (conductor de uber)"
     },
     {
         "titulo": "Ingreso mensual",
-        "mensaje": "Ingresa la cantidad mensual de sueldo que recibes Ej: $12000"
+        "mensaje": "Ingresa la cantidad mensual de ingresos que recibes Ej. $12000"
     },
     {
         "titulo": "Vivienda",
@@ -33,23 +33,23 @@
     },
     {
         "titulo": "Comida",
-        "mensaje": "Ingresa el gasto mensual que realizas en comida(supermercado, carniceria, etc. Comida de la semana que cubra la canasta básica), este gasto debe ser un promedio de cuanto gastas al mes"
+        "mensaje": "Ingresa el gasto mensual que realizas en comida(supermercado, carniceria, comida de la semana que cubra la canasta básica, etc.), este gasto debe ser un promedio de cuanto gastas al mes"
     },
     {
         "titulo": "Ropa",
-        "mensaje": "Ingresa el gasto mensual que realizas en ropa(zapatos, playeras, pantalon/falda, etc.), este gasto debe ser un promedio de cuanto gastas al mes"
+        "mensaje": "Ingresa el gasto mensual que realizas en ropa(zapatos, playeras, pantalón/falda, etc.), este gasto debe ser un promedio de cuanto gastas al mes"
     },
     {
         "titulo": "Mobiliario",
-        "mensaje": "Ingresa el gasto mensual que realizas en Mobiliario(mesas, sillas, camas, etc. Ya sea reparacion o cambio), este gasto debe ser un promedio de cuanto gastas al mes"
+        "mensaje": "Ingresa el gasto mensual que realizas en Mobiliario(mesas, sillas, camas, etc. Ya sea reparación o cambio), este gasto debe ser un promedio de cuanto gastas al mes"
     },
     {
         "titulo": "Limpieza",
-        "mensaje": "Ingresa el gasto mensual que realizas en limpieza(jabon, shampoo, maquillaje, desodorante, etc.), este gasto debe ser un promedio de cuanto gastas al mes"
+        "mensaje": "Ingresa el gasto mensual que realizas en limpieza(jabón, shampoo, maquillaje, desodorante, etc.), este gasto debe ser un promedio de cuanto gastas al mes"
     },
     {
         "titulo": "Transporte",
-        "mensaje": "Ingresa el gasto mensual que realizas en transporte(gasolina, camion, metro, etc.), este gasto debe ser un promedio de cuanto gastas al mes"
+        "mensaje": "Ingresa el gasto mensual que realizas en transporte(gasolina, camión, metro, etc.), este gasto debe ser un promedio de cuanto gastas al mes"
     },
     {
         "titulo": "Seguro",
@@ -57,19 +57,19 @@
     },
     {
         "titulo": "Internet/Cable/Telefonia",
-        "mensaje": "Ingresa el pago mensual que realizas en tu plan actual ya sea que solo tengas uno o los tres servicios"
+        "mensaje": "Ingresa el pago mensual que realizas en tu plan actual, ya sea que solo tengas uno o los tres servicios"
     },
     {
         "titulo": "Electrodomesticos",
-        "mensaje": "Ingresa el gasto mensual que realizas en electodomesticos(licuadora, lampara, refrigerador, etc. Ya sea reparacion o cambio), este gasto debe ser un promedio de cuanto gastas al mes"
+        "mensaje": "Ingresa el gasto mensual que realizas en electodomesticos(licuadora, lampara, refrigerador, etc. Ya sea reparación o cambio), este gasto debe ser un promedio de cuanto gastas al mes"
     },
     {
         "titulo": "Electronicos",
-        "mensaje": "Ingresa el gasto mensual que realizas en electronicos(celular, computadora, etc. ya sea reparacion o cambio), este gasto debe ser un promedio de cuanto gastas al mes"
+        "mensaje": "Ingresa el gasto mensual que realizas en electrónicos(celular, computadora, etc. ya sea reparacion o cambio), este gasto debe ser un promedio de cuanto gastas al mes"
     },
     {
         "titulo": "Educacion",
-        "mensaje": "Ingresa el gasto mensual que realizas en educacion(colegiatura, libros, cursos, ect.)"
+        "mensaje": "Ingresa el gasto mensual que realizas en educación(colegiatura, libros, cursos, ect.)"
     },
     {
         "titulo": "Ocio",
