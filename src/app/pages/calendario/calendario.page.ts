@@ -25,12 +25,14 @@ viewTitle = '';
 
 eventSource=[];
 
+collapseCard: boolean = false;
+
 calendar = {
   mode: 'month',
   currentDate: new Date()
 }  
 
-@ViewChild(CalendarComponent, { static: true}) myCal: CalendarComponent;
+@ViewChild(CalendarComponent, { static: false}) myCal: CalendarComponent;
 
 
  onViewTitleChanged(title) {
@@ -89,7 +91,7 @@ today() {
 }
 
 async onEventSelected(event) {
-let start = formatDate(event.starTime, 'medium', this.locale);
+let start = formatDate(event.startTime, 'medium', this.locale);
 let end = formatDate(event.endTime, 'medium', this.locale);
 
 const alert = await this.alertCtrl.create({ 
@@ -106,6 +108,13 @@ const alert = await this.alertCtrl.create({
 
   ngOnInit() {
     this.resetEvent();
+    this.today();
+    console.log('hola');
   }
 
+  ionWillEnter()
+  {
+    this.resetEvent();
+    this.today();
+  }
 }
