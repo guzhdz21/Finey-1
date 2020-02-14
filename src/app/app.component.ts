@@ -31,9 +31,9 @@ export class AppComponent implements OnInit{
       this.splashScreen.hide();
     });
   }
-  ngOnInit(){
+ async ngOnInit(){
     this.datosService.cargarPrimeraVez();
-    this.datosService.cargarDatos();
+   await this.datosService.cargarDatos();
     this.nombre = this.datosService.usuarioCarga.nombre;
     this.event.subscribe('usuarioInsertado', () => {
       this.nombre = this.datosService.usuarioCarga.nombre;
