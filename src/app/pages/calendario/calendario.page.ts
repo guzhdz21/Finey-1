@@ -19,6 +19,8 @@ event = {
   allDay: false
 };
 
+cargaYa = false;
+
 minDate = new Date().toISOString();
 
 viewTitle = '';
@@ -33,7 +35,6 @@ calendar = {
 }  
 
 @ViewChild(CalendarComponent, { static: false}) myCal: CalendarComponent;
-
 
  onViewTitleChanged(title) {
   this.viewTitle = title;
@@ -110,11 +111,11 @@ const alert = await this.alertCtrl.create({
     this.resetEvent();
     this.today();
     console.log('hola');
+    this.cargaYa=false;
   }
 
-  ionWillEnter()
+  ionViewWillEnter()
   {
-    this.resetEvent();
-    this.today();
+    this.cargaYa=true;
   }
 }

@@ -60,7 +60,7 @@
     </ion-col>
   </ion-row>
 
-  <calendar
+  <calendar *ngIf="cargaYa == true"
   [eventSource]="eventSource" 
   [calendarMode]="calendar.mode"
   [currentDate]="calendar.currentDate"
