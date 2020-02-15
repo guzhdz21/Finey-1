@@ -6,7 +6,25 @@
 
         <ion-slide *ngFor="let plan of planes; let i = index">
             <ion-content>
-            <ion-card>
+                <ion-card *ngIf="planesExiste == false">
+                    <ion-item lines="none">
+                        <ion-label><h1 class="noPlanes">No hay planes</h1></ion-label>
+                    </ion-item>
+    
+                    <p></p>
+    
+                    <ion-item lines="none">
+                        <ion-button 
+                                        color="success" 
+                                        (click)="abrirFormulario()"
+                                        class="botonNoPlanes"
+                                        size="medium">
+                                <ion-icon slot="icon-only" name="add"></ion-icon>
+                            </ion-button>
+                    </ion-item>
+                </ion-card>
+                
+            <ion-card *ngIf="planesExiste == true">
                 <ion-item color="primary" class="cambio"> 
                     <ion-label><h1 class="text">{{plan.plan.nombre}}</h1></ion-label>
                         <ion-button 

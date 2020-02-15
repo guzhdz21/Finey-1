@@ -35,6 +35,8 @@ export class Tab2Page implements OnInit{
     this.plan
   ];
 
+  planesExiste: boolean = false;
+
   public doughnutChartLabels: Label[] = this.etiquetas;
   public doughnutChartType: ChartType = 'doughnut';
   public chartColors: Array<any> = 
@@ -54,6 +56,7 @@ export class Tab2Page implements OnInit{
     this.datosService.cargarDatosPlan();
     this.event.subscribe('planesCargados', () =>
     {
+      this.planesExiste = true;
       this.planes = [];
       this.datosService.planesCargados.forEach(element => {
       this.planes.push({

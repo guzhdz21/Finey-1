@@ -59,7 +59,7 @@ export class Tab1Page implements OnInit {
       this.doughnutChartData = this.datos;
     });
 
-    this.event.publish('ususarioInsertado', () => {
+    this.event.publish('usuarioInsertado', () => {
       this.usuarioCargado = this.datosService.usuarioCarga;
     })
     this.rubros = this.datosService.getRubros();
