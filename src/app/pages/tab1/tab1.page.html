@@ -14,8 +14,12 @@
     <ion-item lines="none">
         <ion-label class="centrar gastos">Gastos: {{cantidadGastos}}</ion-label>
     </ion-item>
+
+    <ion-item lines="none" *ngIf="gastosCero == true">
+        <ion-label><h1 class="noHay">No hay gastos</h1></ion-label>
+    </ion-item>
     
-        <div style="display: block;">
+        <div style="display: block;" *ngIf="gastosCero == false">
             <canvas baseChart 
               [data]="doughnutChartData"
               [labels]="doughnutChartLabels"

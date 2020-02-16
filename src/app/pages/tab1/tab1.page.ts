@@ -26,6 +26,7 @@ export class Tab1Page implements OnInit {
   cantidadGastos: number;
   saldo: number;
   usuarioCargado: UsuarioLocal = this.datosService.usuarioCarga;
+  gastosCero: boolean = true;
 
   public doughnutChartLabels: Label[] = this.etiqueta;
   public doughnutChartData: SingleDataSet = [] = this.dato;
@@ -52,6 +53,9 @@ export class Tab1Page implements OnInit {
       this.usuarioCargado = this.datosService.usuarioCarga;
       this.datos = [];
       this.datosService.usuarioCarga.gastos.forEach(element => {
+        if(element.cantidad != 0){
+          this.gastosCero = false;
+        }
       this.datos.push(Number(element.porcentaje));
       this.mostrarSaldo();
       });
@@ -84,14 +88,12 @@ export class Tab1Page implements OnInit {
 
     this.doughnutChartLabels = this.etiquetas;
 
-    this.datosService.usuarioCarga.gastos.forEach(element => {
-      this.datos.push(Number(element.porcentaje));
-    });
-    this.doughnutChartData = this.datos;
-
     this.datosService.cargarDatos();
     this.datosService.usuarioCarga.gastos.forEach(element => {
       this.datos.push(Number(element.porcentaje));
+      if(element.cantidad != 0){
+        this.gastosCero = false;
+      }
     });
 
     this.doughnutChartData = this.datos;
