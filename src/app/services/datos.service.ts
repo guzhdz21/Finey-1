@@ -104,7 +104,7 @@ export class DatosService {
     {
       this.usuarioCarga = Usuario;
     }
-    this.event.publish('usuarioInsertado');
+    await this.event.publish('usuarioInsertado');
   }
 
   async presentToast( message: string) {

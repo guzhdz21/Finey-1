@@ -22,6 +22,7 @@ export class AppComponent implements OnInit{
     private datosService: DatosService,
     private event: Events
   ) {
+    this.datosService.cargarDatos();
     this.initializeApp();
   }
 
