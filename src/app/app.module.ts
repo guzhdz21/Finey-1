@@ -18,7 +18,7 @@ import { ComponentsModule } from './components/components.module';
 import { ServiceWorkerModule } from '@angular/service-worker';
 import { environment } from '../environments/environment';
 
-import { LocalNotifications } from '@ionic-native/local-notifications/ngx'
+import { LocalNotifications } from '@ionic-native/local-notifications/ngx';
 
 
 @NgModule({
@@ -31,11 +31,11 @@ import { LocalNotifications } from '@ionic-native/local-notifications/ngx'
     ComponentsModule,
     ChartsModule,
     HttpClientModule,
-    LocalNotifications,
     IonicStorageModule.forRoot(),
     ServiceWorkerModule.register('ngsw-worker.js', { enabled: environment.production })],
   providers: [
     StatusBar,
+    LocalNotifications,
     SplashScreen,
     { provide: RouteReuseStrategy, useClass: IonicRouteStrategy }
   ],
