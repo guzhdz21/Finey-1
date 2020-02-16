@@ -18,6 +18,8 @@ import { ComponentsModule } from './components/components.module';
 import { ServiceWorkerModule } from '@angular/service-worker';
 import { environment } from '../environments/environment';
 
+import { LocalNotifications } from '@ionic-native/local-notifications/ngx'
+
 
 @NgModule({
   declarations: [AppComponent],
@@ -29,6 +31,7 @@ import { environment } from '../environments/environment';
     ComponentsModule,
     ChartsModule,
     HttpClientModule,
+    LocalNotifications,
     IonicStorageModule.forRoot(),
     ServiceWorkerModule.register('ngsw-worker.js', { enabled: environment.production })],
   providers: [
