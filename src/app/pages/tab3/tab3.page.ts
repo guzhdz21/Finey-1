@@ -1,5 +1,7 @@
 import { Component } from '@angular/core';
-import { LocalNotifications } from '@ionic-native/local-notifications/ngx'
+import { LocalNotifications, ELocalNotificationTriggerUnit } from '@ionic-native/local-notifications/ngx'
+import { DatosService } from '../../services/datos.service';
+import { Platform } from '@ionic/angular';
 
 @Component({
   selector: 'app-tab3',
@@ -8,15 +10,26 @@ import { LocalNotifications } from '@ionic-native/local-notifications/ngx'
 })
 export class Tab3Page {
 
-  constructor( public localNotifications: LocalNotifications ) {}
+  constructor( public localNotifications: LocalNotifications,
+              private datosService: DatosService,
+              private plt: Platform ) {
+                this.plt.ready().then(() => {
+                  this.localNotifications.on('trigger').subscribe( res =>
+                    {
+                      this.datosService.presentToast('notificacion aparece');
+                    });
+                });
+              }
 
 
   mandarNotificacion() {
 this.localNotifications.schedule({
   title: 'Guz gay',
   text: 'Es demasiado gay',
-  trigger: { at: new Date(2020, 2, 16, 17, 25) }
+  trigger: { in: 10, unit: ELocalNotificationTriggerUnit.SECOND }
 });
+
+this.datosService.presentToast('boton oprimido');
   }
 
 }
