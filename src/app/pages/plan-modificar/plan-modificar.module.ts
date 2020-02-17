@@ -4,9 +4,9 @@ import { FormsModule } from '@angular/forms';
 
 import { IonicModule } from '@ionic/angular';
 
-import { PlanFormPageRoutingModule } from './plan-form-routing.module';
+import { PlanModificarPageRoutingModule } from './plan-modificar-routing.module';
 
-import { PlanFormPage } from './plan-form.page';
+import { PlanModificarPage } from './plan-modificar.page';
 import { ComponentsModule } from '../../components/components.module';
 
 @NgModule({
@@ -14,9 +14,10 @@ import { ComponentsModule } from '../../components/components.module';
     CommonModule,
     FormsModule,
     IonicModule,
-    PlanFormPageRoutingModule,
     ComponentsModule,
+    PlanModificarPageRoutingModule,
+    ComponentsModule
   ],
-  declarations: [PlanFormPage]
+  declarations: [PlanModificarPage]
 })
-export class PlanFormPageModule {}
+export class PlanModificarPageModule {}

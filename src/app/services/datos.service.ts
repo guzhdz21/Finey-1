@@ -149,6 +149,13 @@ export class DatosService {
     this.storage.set('Planes', this.planesCargados);
     this.event.publish('planesCargados');
   }
+
+  actualizarPlanes(plan: Plan[]) {
+      this.planesCargados = [];
+      this.planesCargados = plan;
+    this.storage.set('Planes', this.planesCargados);
+    this.event.publish('planesCargados');
+  }
   
   async cargarDatosPlan() {
     const Planes = await this.storage.get('Planes');

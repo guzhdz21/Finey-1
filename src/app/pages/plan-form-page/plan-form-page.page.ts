@@ -17,7 +17,7 @@ constructor(private modalCtrl: ModalController,
               this.activatedRoute.queryParams.subscribe((res) =>
               {
                 this.registro = res.value;
-              })
+              });
             }
 
 registro: string;

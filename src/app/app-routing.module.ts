@@ -7,14 +7,6 @@ const routes: Routes = [
     loadChildren: () => import('./pages/tabs/tabs.module').then(m => m.TabsPageModule)
   },
   {
-    path: 'modal-registro',
-    loadChildren: () => import('./pages/modal-registro/modal-registro.module').then( m => m.ModalRegistroPageModule)
-  },
-  {
-    path: 'mis-gastos',
-    loadChildren: () => import('./pages/mis-gastos/mis-gastos.module').then( m => m.MisGastosPageModule)
-  },
-  {
     path: 'mis-gastos-page',
     loadChildren: () => import('./pages/mis-gastos-page/mis-gastos-page.module').then( m => m.MisGastosPagePageModule)
   },
@@ -31,26 +23,17 @@ const routes: Routes = [
     loadChildren: () => import('./pages/modal-avatar-page/modal-avatar-page.module').then( m => m.ModalAvatarPagePageModule)
   },
   {
-    path: 'modal-avatar',
-    loadChildren: () => import('./pages/modal-avatar/modal-avatar.module').then( m => m.ModalAvatarPageModule)
-  },
-  {
     path: 'plan-form-page',
     loadChildren: () => import('./pages/plan-form-page/plan-form-page.module').then( m => m.PlanFormPagePageModule)
   },
   {
-    path: 'plan-form',
-    loadChildren: () => import('./pages/plan-form/plan-form.module').then( m => m.PlanFormPageModule)
-  },
-  {
-    path: 'calendario',
-    loadChildren: () => import('./pages/calendario/calendario.module').then( m => m.CalendarioPageModule)
-  },
-  {
     path: 'calendario-page',
     loadChildren: () => import('./pages/calendario-page/calendario-page.module').then( m => m.CalendarioPagePageModule)
+  },
+  {
+    path: 'plan-modificar-page',
+    loadChildren: () => import('./pages/plan-modificar-page/plan-modificar-page.module').then( m => m.PlanModificarPagePageModule)
   }
-
 ];
 @NgModule({
   imports: [

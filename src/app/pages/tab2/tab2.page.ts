@@ -70,14 +70,25 @@ export class Tab2Page implements OnInit{
     });
   }
 
-  abrirFormulario() {
-    this.nav.navigateRoot('/plan-form-page');
-    this.router.navigate(['/plan-form-page'],
-    {
-      queryParams: {
-        value: false
-      }
-    });
+  abrirFormulario(opcion: string, i: number) {
+    if(opcion == 'planNuevo') {
+      this.nav.navigateRoot('/plan-form-page');
+      this.router.navigate(['/plan-form-page'],
+      {
+        queryParams: {
+          value: false
+        }
+      });
+    }
+    else if(opcion == 'modificar'){
+      this.nav.navigateRoot('/plan-modificar-page');
+      this.router.navigate(['/plan-modificar-page'],
+      {
+        queryParams: {
+          index: i
+        }
+      });
+    }
   }
 
   descripcion(descripcion: string) {
