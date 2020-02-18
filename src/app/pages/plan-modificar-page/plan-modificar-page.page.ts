@@ -16,7 +16,7 @@ export class PlanModificarPagePage implements OnInit {
               private activatedRoute: ActivatedRoute) { 
     this.activatedRoute.queryParams.subscribe((res) =>
     {
-      this.index = res.value;
+      this.index = res.index;
     });
   }
 

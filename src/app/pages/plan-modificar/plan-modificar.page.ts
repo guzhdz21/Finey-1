@@ -25,7 +25,7 @@ export class PlanModificarPage implements OnInit {
     aportacionMensual: 0
   }];
 
-  indexAux: string = '0';
+  indexAux: number = 0;
 
   usuarioCargado: UsuarioLocal = this.datosService.usuarioCarga;
 
@@ -39,7 +39,7 @@ export class PlanModificarPage implements OnInit {
     this.datosService.cargarDatosPlan();
     this.event.subscribe('planesCargados', () => {
       this.planes = this.datosService.planesCargados;
-      this.indexAux = this.index;
+      this.indexAux = Number(this.index);
     }
     )
   }
@@ -65,7 +65,7 @@ export class PlanModificarPage implements OnInit {
     this.planes[this.indexAux].tiempoRestante = this.planes[this.indexAux].tiempoTotal;
 
     if ( await this.validarPlan() ) {
-      this.datosService.actualizarPlanes(this.planes[this.indexAux]);
+      this.datosService.actualizarPlanes(this.planes);
       this.modalCtrl.dismiss();
       this.nav.navigateRoot('/tabs/tab2');
     }

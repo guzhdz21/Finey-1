@@ -1,19 +1,5 @@
 <app-header-modal titulo="Modifica el plan" ruta="/tabs/tab2"></app-header-modal>
 
-<ion-header no-border>
-  <ion-toolbar color="success">
-    
-    <ion-buttons slot="start">
-      <ion-button (click)="regresar()">
-        Regresar
-      </ion-button>
-    </ion-buttons>
-
-    <ion-title>Modifica el plan</ion-title>
-
-  </ion-toolbar>
-</ion-header>
-
 <ion-content>
 
   <form #formulario="ngForm">
@@ -30,7 +16,7 @@
     
       <ion-input type="text"
                 placeholder="Casa nueva"
-                [(ngModel)]="planes[index].nombre"
+                [(ngModel)]="planes[indexAux].nombre"
                 name="nombrePlan"
                 required>
       </ion-input>
@@ -48,7 +34,7 @@
     
       <ion-input type="number"
                 placeholder="500000"
-                [(ngModel)]="planes[index].cantidadTotal"
+                [(ngModel)]="planes[indexAux].cantidadTotal"
                  name="costoPlan"
                 required>
       </ion-input>
@@ -66,7 +52,7 @@
     
       <ion-input type="number"
                 placeholder="12"
-                [(ngModel)]="planes[index].tiempoTotal"
+                [(ngModel)]="planes[indexAux].tiempoTotal"
                 name="tiempoPlan"
                 required>
       </ion-input>
@@ -84,7 +70,7 @@
     
       <ion-input type="text"
                 placeholder="Casa ubicada en Av. Valdepeñas"
-                [(ngModel)]="planes[index].descripcion"
+                [(ngModel)]="planes[indexAux].descripcion"
                 name="descripcionPlan">
       </ion-input>
       </ion-item>
