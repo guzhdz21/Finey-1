@@ -24,9 +24,10 @@ export class Tab3Page {
 
   mandarNotificacion() {
 this.localNotifications.schedule({
+  id: 1,
   title: 'Guz gay',
   text: 'Es demasiado gay',
-  trigger: { in: 10, unit: ELocalNotificationTriggerUnit.SECOND }
+  trigger: { every: ELocalNotificationTriggerUnit.MINUTE }
 });
 
 this.datosService.presentToast('boton oprimido');

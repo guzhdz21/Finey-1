@@ -44,6 +44,7 @@ export class Tab1Page implements OnInit {
               private event: Events) {}
 
   ngOnInit() {
+    console.log(this.usuarioCargado);
     if(this.datosService.primera === true)
     {
       this.nav.navigateRoot('/modal-registro-page');
@@ -65,7 +66,8 @@ export class Tab1Page implements OnInit {
 
     this.event.publish('usuarioInsertado', () => {
       this.usuarioCargado = this.datosService.usuarioCarga;
-    })
+      this.mostrarSaldo();
+    });
     this.rubros = this.datosService.getRubros();
 
     this.datosService.getColores().subscribe(val => {
@@ -97,7 +99,6 @@ export class Tab1Page implements OnInit {
     });
 
     this.doughnutChartData = this.datos;
-    this.mostrarSaldo();
   }
 
   async abrirDescripcionGasto(seleccion: string, diseño: string) {
@@ -120,6 +121,8 @@ export class Tab1Page implements OnInit {
       this.datos.push(Number(element.porcentaje));
     });
     this.doughnutChartData = this.datos;
+
+    this.mostrarSaldo();
   }
   ionViewWillLeave() {
     this.datosService.cargarDatos();
