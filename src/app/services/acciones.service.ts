@@ -12,6 +12,7 @@ export class AccionesService {
 
 
    alertaPlanCrear: boolean;
+   borrar: boolean;
   
   async presentAlertPlan( botones: any[], header: string, message: string) {
       

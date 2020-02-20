@@ -168,4 +168,9 @@ export class DatosService {
       this.planesExisten = false;
     }
   }
+
+  borrarPlan(i:number) {
+    this.planesCargados = this.planesCargados.filter( plan => plan != this.planesCargados[i]);
+    this.storage.set('Planes', this.planesCargados);
+  }
 }
