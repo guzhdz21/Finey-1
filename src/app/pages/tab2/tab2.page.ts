@@ -94,4 +94,15 @@ export class Tab2Page implements OnInit{
   descripcion(descripcion: string) {
     this.accionesService.presentAlertGenerica('Descripcion', descripcion);
   }
+
+  async borrarPlan(i: number) {
+    await this.accionesService.presentAlertPlan([{text: 'Cancelar', handler: (blah) => {this.accionesService.borrar = false}},
+                                          {text: 'Borrar', handler: (blah) => {this.accionesService.borrar = true}}], '¿Estas seguro de que quieres borrar este plan?', 'No podrás recuperar el progreso guardado en este plan');
+    
+    if(this.accionesService.borrar==true) {
+      this.datosService.borrarPlan(i);
+      location.reload();
+    } 
+  }
+
 }

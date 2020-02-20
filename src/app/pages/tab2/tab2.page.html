@@ -27,13 +27,6 @@
             <ion-card *ngIf="planesExiste == true">
                 <ion-item color="primary" class="cambio">
 
-                    <ion-button 
-                                    color="success" 
-                                    (click)="abrirFormulario('modificar', i)"
-                                    slot="start">
-                            <ion-icon slot="icon-only" name="settings"></ion-icon>
-                        </ion-button>
-
                     <ion-label><h1 class="text">{{plan.plan.nombre}}</h1></ion-label>
                         <ion-button 
                                     color="success" 
@@ -52,10 +45,44 @@
                        [colors]="chartColors"
                        [legend]="legend">
                     </canvas>
+        
+                    <ion-list>
+                        <ion-item lines="none">
+                        </ion-item>
+                    </ion-list>
+
                   </div>
-                  <p></p>
+
+                <ion-fab horizontal="center">
+                    <ion-fab-button color="primary">
+                        <ion-icon name = "build">
+                        </ion-icon>
+                    </ion-fab-button>
+
+                    <ion-fab-list side="start">
+                        <ion-fab>
+                            <ion-fab-button color="warning" (click)="abrirFormulario('modificar', i)">
+                                <ion-icon name="settings">
+                                </ion-icon>
+                            </ion-fab-button>
+                        </ion-fab>
+                    </ion-fab-list>
+
+                    <ion-fab-list side="end">
+                        <ion-fab>
+                            <ion-fab-button color="danger" (click)="borrarPlan(i)">
+                                <ion-icon name = "trash">
+                                </ion-icon>
+                            </ion-fab-button>
+                        </ion-fab>
+                    </ion-fab-list>
+
+                </ion-fab>
 
                   <ion-list>
+
+                    <ion-item lines="none"></ion-item>
+                    <ion-item lines="none"></ion-item>
 
                     <ion-item>
                         <ion-label color="tertiary">Porcentaje de avance</ion-label>
@@ -93,6 +120,7 @@
                     </ion-item>
 
                   </ion-list>
+
             </ion-card>
         </ion-content>
 
