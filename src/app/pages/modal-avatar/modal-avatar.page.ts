@@ -11,45 +11,54 @@ import { AccionesService } from '../../services/acciones.service';
 })
 export class ModalAvatarPage implements OnInit {
 
+  //Declaracion de variable para manejar el valor de elementos HTML
   @ViewChild('sexo',{static: true}) sexo: IonRadioGroup;
 
+  //Variable donde se guardan los datos cargados de la informacion de las alertas
+  alertas: AlertaGeneral[] = [];
+
+  //Variable para guardar los datos cargados del ususario
+  usuarioCargado: UsuarioLocal = this.datosService.usuarioCarga;
+
+  //Constructor con las inyecciones y constructores necesarios
   constructor(private datosService: DatosService,
               private modalCtrl: ModalController,
               private event: Events,
               private nav: NavController,
               private accionesService: AccionesService) { }
 
-  alertas: AlertaGeneral[] = [];
-  usuarioCargado: UsuarioLocal = this.datosService.usuarioCarga;
-
   ngOnInit() {
-      this.datosService.cargarDatos();
+    //Metodo para cargar los datos del ussuario
+    this.datosService.cargarDatos();
 
-      this.datosService.getAlertasJson().subscribe(val => {
-        this.alertas = val;
-      });
+    //Metodo para cargar la informacion de las alertas de un archivo
+    this.datosService.getAlertasJson().subscribe(val => {
+      this.alertas = val;
+    });
 
-      this.sexo.value = this.usuarioCargado.sexo;
+    //Asignacion a la variable que muestra el sexo actual de usuario
+    this.sexo.value = this.usuarioCargado.sexo;
   }
 
+  //Metodo que cambia el sexo del ussuario cuando este lo cambia
   sexoRadio(event)
   {
     this.usuarioCargado.sexo = event.detail.value;
   }
 
+  //Metodo que modifica la informacion del usuario y lo guarda en el storage
   modificar() {
     this.datosService.guardarUsuarioInfo(this.usuarioCargado);
     this.event.publish('avatarActualizado');
-    this.event.publish('salirAvatar');
     this.modalCtrl.dismiss();
     this.nav.navigateRoot('/tabs/tab1');
     this.datosService.presentToast('Cambios modificados');
   }
 
+  //Metodo que muestra la informacion al pulsar el boton de un elemento
   botonInfo(titulo: string) {
     this.alertas.forEach(element => {
-      if(titulo == element.titulo)
-      {
+      if(titulo == element.titulo) {
         this.accionesService.presentAlertGenerica(element.titulo, element.mensaje);
         return;
       }

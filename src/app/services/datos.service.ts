@@ -2,7 +2,7 @@ import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { Rubro, ColorArray, LabelArray, UsuarioLocal, Gasto, Plan, AlertaGeneral } from '../interfaces/interfaces';
 import { Storage } from '@ionic/storage';
-import { ToastController, Events, NavController } from '@ionic/angular';
+import { ToastController, Events} from '@ionic/angular';
 import { AlertController } from '@ionic/angular';
 
 @Injectable({
@@ -14,8 +14,7 @@ export class DatosService {
               private storage: Storage,
               private toastCtrl: ToastController,
               private event: Events,
-              public alertCtrl: AlertController,
-              private nav: NavController) { 
+              public alertCtrl: AlertController) { 
     this.cargarPrimeraVez();
     this.cargarDatos();
     this.cargarDatosPlan();
@@ -151,8 +150,8 @@ export class DatosService {
   }
 
   actualizarPlanes(plan: Plan[]) {
-      this.planesCargados = [];
-      this.planesCargados = plan;
+    this.planesCargados = [];
+    this.planesCargados = plan;
     this.storage.set('Planes', this.planesCargados);
     this.event.publish('planesCargados');
   }

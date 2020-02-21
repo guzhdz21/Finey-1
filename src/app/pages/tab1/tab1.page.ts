@@ -69,7 +69,7 @@ export class Tab1Page implements OnInit {
     });
     
     //Evento que escucha cuando el usuario es insertado para cambiar los datos de la grafica
-    this.event.publish('usuarioInsertado', () => {
+    this.event.subscribe('usuarioInsertado', () => {
       this.usuarioCargado = this.datosService.usuarioCarga;
       this.mostrarSaldo();
     });
@@ -125,7 +125,7 @@ export class Tab1Page implements OnInit {
   //Metodo que carga los datos cuando un usuario entrara al tabs
   ionViewWillEnter() {
     this.datosService.cargarDatos();
-    this.event.publish('usuarioInsertado', () => {
+    this.event.subscribe('usuarioInsertado', () => {
     this.usuarioCargado = this.datosService.usuarioCarga;
     });
     this.datos = [];

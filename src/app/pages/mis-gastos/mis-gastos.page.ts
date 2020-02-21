@@ -11,8 +11,7 @@ import { AccionesService } from '../../services/acciones.service';
 })
 export class MisGastosPage implements OnInit {
 
-  //Declaracion de variables para manejar el valor de elementos HTML
-  @ViewChild('sexo',{static: true}) sexo: IonRadioGroup;
+  //Declaracion de variable para manejar el valor de elementos HTML
   @ViewChild('tipoIngreso',{static: true}) tipoIngreso: IonRadioGroup;
 
   //Variables para guardar los datos cargados y mostrarlos en el formulario del HTML
@@ -48,34 +47,43 @@ export class MisGastosPage implements OnInit {
     this.datosService.getEtiquetas().subscribe (val => {
       this.etiquetas = val.nombre;
     });
-      
+    
+    //Llamada al metodo que carga los datos
     this.datosService.cargarDatos();
+
+    //Asignacion del tipo de ingreso a la variable
     this.tipoIngreso.value = this.usuarioModificado.tipoIngreso;
-      
+    
+    //Llmada a metodo que obtiene los rubros de un archivo
     this.datosService.getRubros().subscribe (val => {
       this.rubros = val;
     });
   }
 
+  //Metodo que actualiza el valor del tipo ingrso al modificarlo
   ingresoRadio_misgastos(event)
   {
    this.usuarioModificado.tipoIngreso = event.detail.value;
   }
 
+  //Metodo para regresar al pulsar el boton back
   regresar() {
     this.modalCtrl.dismiss();
     this.nav.navigateRoot('/tabs/tab1');
   }
 
+  //Metodo para modificar los datos del ususario con los ingresados
   async modificar()
   {
+    //Condicioanl que verifica si el ususario es variable
     if(this.usuarioModificado.tipoIngreso != 'Variable') {
   
-      if(this.validarIngreso()){
+      //Condicion que valida el ingreso de los gastos e ingreso
+      if(this.validarIngreso()) {
           await this.datosService.presentAlertaIngreso();
           this.registrarseAdvertencia = this.datosService.registrarseAdvertencia;
 
-  
+          //Condicional que verifica si un usuario no puede satisfacer sus necesidades y lo redirige
         if(this.registrarseAdvertencia) {
           console.log(this.registrarseAdvertencia);
           this.modificarUsuario();
@@ -95,6 +103,7 @@ export class MisGastosPage implements OnInit {
     }
   }
 
+  //Metodo que calcula los datos necearios para modificar y lo guarda en storage
   modificarUsuario()
   {
     var i = 0;
@@ -119,28 +128,28 @@ export class MisGastosPage implements OnInit {
   this.datosService.presentToast('Cambios modificados');
   }
 
+  //Metodo para validar el ingreso de gastos e ingreso
   validarIngreso() {
-    var cantidadGastos=0;
+    var cantidadGastos = 0;
 
-      for( var i = 0; i < 17; i++ ) {
-        if( this.usuarioModificado.gastos[i].cantidad != 0 ){
+    for( var i = 0; i < 17; i++ ) {
+      if( this.usuarioModificado.gastos[i].cantidad != 0 ){
       cantidadGastos += this.usuarioModificado.gastos[i].cantidad;
-        } 
-      }
-      console.log('gastos: ', cantidadGastos);
-      console.log('Ingresos: ', this.usuarioModificado.ingresoCantidad);
-        if(cantidadGastos >= this.usuarioModificado.ingresoCantidad) {
-        return true;
-      }
-        else{
-        return false;
-      }
+      } 
+    }
+
+    if(cantidadGastos >= this.usuarioModificado.ingresoCantidad) {
+      return true;
+    }
+    else {
+      return false;
+    }
   }
-    
+  
+  //Metodo para el boton de informacion
   botonInfo(titulo: string) {
     this.alertas.forEach(element => {
-      if(titulo == element.titulo)
-      {
+      if(titulo == element.titulo) {
         this.accionesService.presentAlertGenerica(element.titulo, element.mensaje);
         return;
       }

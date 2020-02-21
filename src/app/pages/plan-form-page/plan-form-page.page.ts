@@ -22,8 +22,7 @@ constructor(private modalCtrl: ModalController,
 
 registro: string;
 ngOnInit() {
-  console.log(this.registro);
-this.abrirModal();
+  this.abrirModal();
 }
 
 async abrirModal() {

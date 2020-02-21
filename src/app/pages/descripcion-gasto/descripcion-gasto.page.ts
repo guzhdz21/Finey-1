@@ -29,8 +29,7 @@ export class DescripcionGastoPage implements OnInit {
   ngOnInit() {
     //For each que verifica y asigna la informacion del gasto selecionado a la variable del HTML
     this.gastos.forEach(element => {
-      if(this.rubro === element.nombre)
-      {
+      if(this.rubro === element.nombre) {
         this.info = element;
         return
       }

@@ -1,5 +1,4 @@
 import { Component, OnInit, ViewChild, Inject, LOCALE_ID } from '@angular/core';
-import { NgCalendarModule } from 'ionic2-calendar';
 import { CalendarComponent } from 'ionic2-calendar/calendar';
 import { AlertController } from '@ionic/angular';
 import { formatDate } from '@angular/common';
@@ -11,6 +10,7 @@ import { formatDate } from '@angular/common';
 })
 export class CalendarioPage implements OnInit {
 
+//Declaracion vacia de la estructura del recordatorio
 event = {
   title: '',
   desc: '',
@@ -19,16 +19,13 @@ event = {
   allDay: false
 };
 
-cargaYa = false;
-
-minDate = new Date().toISOString();
-
-viewTitle = '';
-
+cargaYa = false; //Variable que le indica cuando ya cargar el calendario
+minDate = new Date().toISOString();  
+viewTitle = ''; //Es la etiqueta que te indica el nombre del mes
 eventSource=[];
-
 collapseCard: boolean = false;
 
+//Declaracion del calendario
 calendar = {
   mode: 'month',
   currentDate: new Date()
@@ -36,10 +33,12 @@ calendar = {
 
 @ViewChild(CalendarComponent, { static: false}) myCal: CalendarComponent;
 
+//Metodo que le cambia el nombre a la etiqueta del mes
  onViewTitleChanged(title) {
   this.viewTitle = title;
 }
 
+//Metodo que selecciona una fecha
 onTimeSelected(ev) {
   let selected = new Date(ev.selectedTime);
   this.event.startTime = selected.toISOString();
@@ -47,6 +46,7 @@ onTimeSelected(ev) {
   this.event.endTime = (selected.toISOString());
 }
 
+//Metodo que resetea el formulario del recordatorio
 resetEvent() { 
   this.event = {
     title: '',
@@ -57,6 +57,7 @@ resetEvent() {
   };
 }
 
+//Metodo que añade un evento
 addEvent() { 
   let eventCopy = { 
     title: this.event.title,
@@ -77,28 +78,33 @@ addEvent() {
   this.resetEvent();
 }
 
+//Boton para irte al mes anterior
 back() { 
   var swiper = document.querySelector('.swiper-container')['swiper'];
   swiper.slidePrev();
 }
 
+//Boton para irte al mes posterior
 next() { 
   var swiper = document.querySelector('.swiper-container')['swiper'];
   swiper.slideNext();
 }
 
+//Metodo que te posiciona en el dia actual
 today() {
   this.calendar.currentDate = new Date();
 }
 
+//Asignacion a los valores de start y end del recordatorio
 async onEventSelected(event) {
 let start = formatDate(event.startTime, 'medium', this.locale);
 let end = formatDate(event.endTime, 'medium', this.locale);
 
+//Alerta que muestra la informacion de los recordatorios
 const alert = await this.alertCtrl.create({ 
   header: event.title,
   subHeader: event.desc,
-  message: 'From: ' + start + '<br><br>To: ' + end,
+  message: 'Inicio: ' + start + '<br><br>Fin: ' + end,
   buttons: ['OK']
 });
     alert.present();  
@@ -110,10 +116,10 @@ const alert = await this.alertCtrl.create({
   ngOnInit() {
     this.resetEvent();
     this.today();
-    console.log('hola');
     this.cargaYa=false;
   }
 
+  //Este metodo cambia de valor la variable "cargaYa" para que pueda cargar el calendario sin problemas 
   ionViewWillEnter()
   {
     this.cargaYa=true;
