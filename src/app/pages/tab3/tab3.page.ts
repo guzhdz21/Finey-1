@@ -1,5 +1,5 @@
 import { Component } from '@angular/core';
-import { LocalNotifications, ELocalNotificationTriggerUnit } from '@ionic-native/local-notifications/ngx'
+import { LocalNotifications} from '@ionic-native/local-notifications/ngx'
 import { DatosService } from '../../services/datos.service';
 import { Platform } from '@ionic/angular';
 
@@ -18,10 +18,10 @@ export class Tab3Page {
 mandarNotificacion() {
 this.localNotifications.schedule({
   id: 1,
-  title: 'Guz gay',
+  title: 'Arlex gay',
   text: 'Es demasiado gay',
   data: {secret: 'secret'},
-  trigger: {at: new Date(new Date().getTime())},
+  trigger: {at: new Date(new Date().getTime() + 5000)},
   foreground: true
 });
 

@@ -53,7 +53,7 @@ ngOnInit() {
   });
 
   //Llamado al metodo del servicio datos Service para obtener las etiquetas de los campos de un archivo
-  this.datosService.getEtiquetasTab1().subscribe (val => {
+  this.datosService.getEtiquetas().subscribe (val => {
     this.etiquetas = val.nombre;
   });
 

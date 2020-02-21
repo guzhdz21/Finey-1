@@ -1,7 +1,7 @@
 import { Component, OnInit, ViewChild } from '@angular/core';
-import { ModalController, NavController, IonRadioGroup, Events, AlertController } from '@ionic/angular';
+import { ModalController, NavController, IonRadioGroup, Events } from '@ionic/angular';
 import { DatosService } from '../../services/datos.service';
-import { UsuarioLocal, Gasto, Rubro, AlertaGeneral } from '../../interfaces/interfaces';
+import { UsuarioLocal, Rubro, AlertaGeneral } from '../../interfaces/interfaces';
 import { AccionesService } from '../../services/acciones.service';
 
 @Component({
@@ -11,19 +11,24 @@ import { AccionesService } from '../../services/acciones.service';
 })
 export class MisGastosPage implements OnInit {
 
+  //Declaracion de variables para manejar el valor de elementos HTML
   @ViewChild('sexo',{static: true}) sexo: IonRadioGroup;
   @ViewChild('tipoIngreso',{static: true}) tipoIngreso: IonRadioGroup;
 
+  //Variables para guardar los datos cargados y mostrarlos en el formulario del HTML
   etiquetas: string[] = [];
-  i: number = 0;
   rubros: Rubro[] = [];
+
+  //Variable que guarda la informacion de las alertas
   alertas: AlertaGeneral[] = [];
+
+  //Variable que nos ayuda a asegurarnos si el ususario no puede satisfacer sus necesidades basicas
   registrarseAdvertencia: boolean = this.datosService.registrarseAdvertencia;
 
-  usuarioCargado: UsuarioLocal = this.datosService.usuarioCarga;
+  //Variable para guardar los datos del ususario
+  usuarioModificado: UsuarioLocal = this.datosService.usuarioCarga;
 
-  usuarioModificado: UsuarioLocal = this.usuarioCargado;
-
+  //Constructor con todas las inyecciones y controladores necesarios
   constructor(private modalCtrl: ModalController,
               private nav: NavController,
               public datosService: DatosService,
@@ -31,21 +36,25 @@ export class MisGastosPage implements OnInit {
               private accionesService: AccionesService) { }
 
   ngOnInit() {
+    //Llamada a metodo que carga los datos del ussuario
     this.datosService.cargarDatos();
+
+    //Lllamada a metodo que obtiene la informacion de las alertas de un archivo
     this.datosService.getAlertasJson().subscribe(val => {
       this.alertas = val;
     });
     
-    this.datosService.getEtiquetasTab1().subscribe (val => {
+    //LLamada a metodo que obtiene las etiquetas de un archivo
+    this.datosService.getEtiquetas().subscribe (val => {
       this.etiquetas = val.nombre;
-      });
+    });
       
-      this.datosService.cargarDatos();
-      this.tipoIngreso.value = this.usuarioCargado.tipoIngreso;
+    this.datosService.cargarDatos();
+    this.tipoIngreso.value = this.usuarioModificado.tipoIngreso;
       
-      this.datosService.getRubros().subscribe (val => {
-        this.rubros = val;
-      });
+    this.datosService.getRubros().subscribe (val => {
+      this.rubros = val;
+    });
   }
 
   ingresoRadio_misgastos(event)
@@ -88,8 +97,9 @@ export class MisGastosPage implements OnInit {
 
   modificarUsuario()
   {
-  this.usuarioModificado.gastos.forEach(element => {
-    element.tipo = this.rubros[this.i].tipo;
+    var i = 0;
+    this.usuarioModificado.gastos.forEach(element => {
+    element.tipo = this.rubros[i].tipo;
     element.porcentaje = ((element.cantidad*100)/this.usuarioModificado.ingresoCantidad).toString();
     if (element.tipo === 'Promedio') {
       element.margenMax = element.cantidad+(element.cantidad*0.07);
@@ -99,7 +109,7 @@ export class MisGastosPage implements OnInit {
       element.margenMax = element.cantidad;
       element.margenMin = element.cantidad;
     }
-    this.i++;
+    i++;
   });
 
   this.datosService.guardarUsuarioInfo(this.usuarioModificado);
@@ -112,9 +122,9 @@ export class MisGastosPage implements OnInit {
   validarIngreso() {
     var cantidadGastos=0;
 
-      for( var ii = 0; ii < 17; ii++ ) {
-        if( this.usuarioModificado.gastos[ii].cantidad != 0 ){
-      cantidadGastos += this.usuarioModificado.gastos[ii].cantidad;
+      for( var i = 0; i < 17; i++ ) {
+        if( this.usuarioModificado.gastos[i].cantidad != 0 ){
+      cantidadGastos += this.usuarioModificado.gastos[i].cantidad;
         } 
       }
       console.log('gastos: ', cantidadGastos);

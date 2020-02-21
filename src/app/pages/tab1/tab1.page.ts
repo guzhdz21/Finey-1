@@ -88,7 +88,7 @@ export class Tab1Page implements OnInit {
     }];
     
     //Llamada a funcion de servicio que obtiene las etiquetas de la grafica y asignacion a la variable de la Chart
-    this.datosService.getEtiquetasTab1().subscribe(val => {
+    this.datosService.getEtiquetas().subscribe(val => {
       val.nombre.forEach(element => {
         this.etiquetas.push(element.toString() + ' %')
       });
@@ -125,6 +125,9 @@ export class Tab1Page implements OnInit {
   //Metodo que carga los datos cuando un usuario entrara al tabs
   ionViewWillEnter() {
     this.datosService.cargarDatos();
+    this.event.publish('usuarioInsertado', () => {
+    this.usuarioCargado = this.datosService.usuarioCarga;
+    });
     this.datos = [];
     this.datosService.usuarioCarga.gastos.forEach(element => {
       this.datos.push(Number(element.porcentaje));

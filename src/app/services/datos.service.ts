@@ -65,7 +65,7 @@ export class DatosService {
     return this.http.get<ColorArray>('/assets/data/colores.json');
   }
 
-  getEtiquetasTab1() {
+  getEtiquetas() {
     return this.http.get<LabelArray>('/assets/data/etiquetastab1.json');
   }
 
