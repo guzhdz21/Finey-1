@@ -8,10 +8,12 @@ import { Gasto } from '../../interfaces/interfaces';
 })
 export class DescripcionGastoPage implements OnInit {
 
+  //Variables que recibe del Tabs1 para verificar cual selecciono
   @Input() color;
   @Input() rubro;
   @Input() gastos;
 
+  //Variable para el HTML
   info: Gasto  = {
     nombre: '',
     cantidad: null,
@@ -25,6 +27,7 @@ export class DescripcionGastoPage implements OnInit {
   constructor() { }
 
   ngOnInit() {
+    //For each que verifica y asigna la informacion del gasto selecionado a la variable del HTML
     this.gastos.forEach(element => {
       if(this.rubro === element.nombre)
       {

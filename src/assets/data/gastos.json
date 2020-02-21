@@ -1,7 +1,7 @@
 [
     {
         "nombre": "0",
-        "cantidad": "0",
+        "cantidad": null,
         "tipo": "",
         "porcentaje": "",
         "icono": "",
@@ -10,7 +10,7 @@
     },
     {
         "nombre": "1",
-        "cantidad": "0",
+        "cantidad": null,
         "tipo": "",
         "porcentaje": "",
         "icono": "",
@@ -19,7 +19,7 @@
     },
     {
         "nombre": "2",
-        "cantidad": "0",
+        "cantidad": null,
         "tipo": "",
         "porcentaje": "",
         "icono": "",
@@ -28,7 +28,7 @@
     },
     {
         "nombre": "3",
-        "cantidad": "0",
+        "cantidad": null,
         "tipo": "",
         "porcentaje": "",
         "icono": "",
@@ -37,16 +37,16 @@
     },
     {
         "nombre": "4",
-        "cantidad": "0",
+        "cantidad": null,
         "tipo": "",
         "porcentaje": "",
         "icono": "",
-        "margenMin": "null",
+        "margenMin": null,
         "margenMax": "null"
     },
     {
         "nombre": "5",
-        "cantidad": "0",
+        "cantidad": null,
         "tipo": "",
         "porcentaje": "",
         "icono": "",
@@ -55,7 +55,7 @@
     },
     {
         "nombre": "6",
-        "cantidad": "0",
+        "cantidad": null,
         "tipo": "",
         "porcentaje": "",
         "icono": "",
@@ -64,7 +64,7 @@
     },
     {
         "nombre": "7",
-        "cantidad": "0",
+        "cantidad": null,
         "tipo": "",
         "porcentaje": "",
         "icono": "",
@@ -73,7 +73,7 @@
     },
     {
         "nombre": "8",
-        "cantidad": "0",
+        "cantidad": null,
         "tipo": "",
         "porcentaje": "",
         "icono": "",
@@ -82,7 +82,7 @@
     },
     {
         "nombre": "9",
-        "cantidad": "0",
+        "cantidad": null,
         "tipo": "",
         "porcentaje": "",
         "icono": "",
@@ -91,7 +91,7 @@
     },
     {
         "nombre": "10",
-        "cantidad": "0",
+        "cantidad": null,
         "tipo": "",
         "porcentaje": "",
         "icono": "",
@@ -100,7 +100,7 @@
     },
     {
         "nombre": "11",
-        "cantidad": "0",
+        "cantidad": null,
         "tipo": "",
         "porcentaje": "",
         "icono": "",
@@ -109,7 +109,7 @@
     },
     {
         "nombre": "12",
-        "cantidad": "0",
+        "cantidad": null,
         "tipo": "",
         "porcentaje": "",
         "icono": "",
@@ -118,7 +118,7 @@
     },
     {
         "nombre": "13",
-        "cantidad": "0",
+        "cantidad": null,
         "tipo": "",
         "porcentaje": "",
         "icono": "",
@@ -127,7 +127,7 @@
     },
     {
         "nombre": "14",
-        "cantidad": "0",
+        "cantidad": null,
         "tipo": "",
         "porcentaje": "",
         "icono": "",
@@ -136,7 +136,7 @@
     },
     {
         "nombre": "15",
-        "cantidad": "0",
+        "cantidad": null,
         "tipo": "",
         "porcentaje": "",
         "icono": "",
@@ -145,7 +145,7 @@
     },
     {
         "nombre": "16",
-        "cantidad": "0",
+        "cantidad": null,
         "tipo": "",
         "porcentaje": "",
         "icono": "",

@@ -169,8 +169,9 @@ export class DatosService {
     }
   }
 
-  borrarPlan(i:number) {
+  async borrarPlan(i:number) {
     this.planesCargados = this.planesCargados.filter( plan => plan != this.planesCargados[i]);
-    this.storage.set('Planes', this.planesCargados);
+    await this.storage.set('Planes', this.planesCargados);
+    this.event.publish('planesModificados');
   }
 }

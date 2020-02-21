@@ -56,7 +56,14 @@ export class Tab2Page implements OnInit{
     this.datosService.cargarDatosPlan();
     this.event.subscribe('planesCargados', () =>
     {
-      this.planesExiste = true;
+      if(this.datosService.planesCargados.length <= 0) {
+        this.planesExiste = false;
+        this.planes = [this.plan];
+        return;
+      }
+      else{
+        this.planesExiste = true;
+      }
       this.planes = [];
       this.datosService.planesCargados.forEach(element => {
       this.planes.push({
@@ -67,6 +74,24 @@ export class Tab2Page implements OnInit{
         plan: element
       });
     });
+    });
+
+    this.event.subscribe('planesModificados', () => {
+      if(this.datosService.planesCargados.length <= 0) {
+        this.planesExiste = false;
+        this.planes = [this.plan];
+        return;
+      }
+      this.planes = [];
+      this.datosService.planesCargados.forEach(element => {
+        this.planes.push({
+          doughnutChartData: [
+            (element.cantidadAcumulada*100)/element.cantidadTotal,
+            ((element.cantidadTotal - element.cantidadAcumulada)*100)/element.cantidadTotal
+          ],
+          plan: element
+        });
+      });
     });
   }
 
@@ -101,7 +126,6 @@ export class Tab2Page implements OnInit{
     
     if(this.accionesService.borrar==true) {
       this.datosService.borrarPlan(i);
-      location.reload();
     } 
   }
 

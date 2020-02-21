@@ -124,7 +124,8 @@
             placeholder="Ej. 300"
             [(ngModel)]="usuario.gastos[i].cantidad"
             [name]="etiqueta"
-            required>
+            required
+            (ionChange)="verificarGastosNull()">
   </ion-input>
   
 </ion-item>
@@ -132,7 +133,7 @@
       <ion-button expand="block"
                   color="success"
                   (click)="registrar()"
-                  [disabled]="formulario.invalid || ingreso || sexo">Registrarme</ion-button>
+                  [disabled]="formulario.invalid || ingreso || sexo || requerido">Registrarme</ion-button>
 
 </form>
 

@@ -15,6 +15,7 @@ export class ModalRegistroPagePage implements OnInit {
     this.abrirRegistro();
   }
 
+  //Metodo para abrir Modal
   async abrirRegistro() {
 
     const modal = await this.modalCtrl.create({

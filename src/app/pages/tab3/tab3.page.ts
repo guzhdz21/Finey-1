@@ -12,22 +12,17 @@ export class Tab3Page {
 
   constructor( public localNotifications: LocalNotifications,
               private datosService: DatosService,
-              private plt: Platform ) {
-                this.plt.ready().then(() => {
-                  this.localNotifications.on('trigger').subscribe( res =>
-                    {
-                      this.datosService.presentToast('notificacion aparece');
-                    });
-                });
-              }
+              private plt: Platform ) {}
 
 
-  mandarNotificacion() {
+mandarNotificacion() {
 this.localNotifications.schedule({
   id: 1,
   title: 'Guz gay',
   text: 'Es demasiado gay',
-  trigger: { every: ELocalNotificationTriggerUnit.MINUTE }
+  data: {secret: 'secret'},
+  trigger: {at: new Date(new Date().getTime())},
+  foreground: true
 });
 
 this.datosService.presentToast('boton oprimido');

@@ -6,13 +6,14 @@
 
         <ion-slide *ngFor="let plan of planes; let i = index">
             <ion-content>
+
                 <ion-card *ngIf="planesExiste == false">
                     <ion-item lines="none">
                         <ion-label><h1 class="noHay">No hay planes</h1></ion-label>
                     </ion-item>
-    
+        
                     <p></p>
-    
+        
                     <ion-item lines="none">
                         <ion-button 
                                         color="success" 
