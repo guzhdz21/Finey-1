@@ -1,9 +1,8 @@
 import { Component, OnInit } from '@angular/core';
-import { Label, SingleDataSet } from 'ng2-charts';
+import { Label} from 'ng2-charts';
 import { ChartType } from 'chart.js';
 import { PlanDisplay } from '../../interfaces/interfaces';
-import { ModalController, NavController, Events } from '@ionic/angular';
-import { Storage } from '@ionic/storage';
+import { NavController, Events } from '@ionic/angular';
 import { DatosService } from '../../services/datos.service';
 import { AccionesService } from '../../services/acciones.service';
 import { Router } from '@angular/router';
@@ -15,7 +14,7 @@ import { Router } from '@angular/router';
 })
 export class Tab2Page implements OnInit{
 
-  etiquetas = ['Progreso %', 'Restante %'];
+  etiquetas = ['Progreso %', 'Restante %']; 
   dato: number[] = [60,40];
   datos: number[] =[];
   colores = ['#32CD32','#B0C4DE'];
@@ -35,7 +34,7 @@ export class Tab2Page implements OnInit{
     this.plan
   ];
 
-  planesExiste: boolean = false;
+  planesExiste: boolean = false; // Variable utilizada para saber si existen planes o no
 
   public doughnutChartLabels: Label[] = this.etiquetas;
   public doughnutChartType: ChartType = 'doughnut';
@@ -76,6 +75,7 @@ export class Tab2Page implements OnInit{
     });
     });
 
+    // Comprobamos que existen los planes y asignamos su progreso a la grafica pastel
     this.event.subscribe('planesModificados', () => {
       if(this.datosService.planesCargados.length <= 0) {
         this.planesExiste = false;
@@ -95,6 +95,7 @@ export class Tab2Page implements OnInit{
     });
   }
 
+  // Metodo que abre el formulario para insertar un nuevo plan o modificar alguno ya existente
   abrirFormulario(opcion: string, i: number) {
     if(opcion == 'planNuevo') {
       this.nav.navigateRoot('/plan-form-page');
@@ -116,10 +117,12 @@ export class Tab2Page implements OnInit{
     }
   }
 
+  // Alerta que presenta la descripcion de un plan
   descripcion(descripcion: string) {
     this.accionesService.presentAlertGenerica('Descripcion', descripcion);
   }
 
+  // Metodo para borrar un plan del storage
   async borrarPlan(i: number) {
     await this.accionesService.presentAlertPlan([{text: 'Cancelar', handler: (blah) => {this.accionesService.borrar = false}},
                                           {text: 'Borrar', handler: (blah) => {this.accionesService.borrar = true}}], '¿Estas seguro de que quieres borrar este plan?', 'No podrás recuperar el progreso guardado en este plan');
