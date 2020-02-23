@@ -1,6 +1,6 @@
 <app-header-modal titulo="Calendario" ruta="/tabs/tab1"></app-header-modal>
 <ion-toolbar color="primary">
-  <ion-title>
+  <ion-title text-capitalize>
     {{ viewTitle }}
   </ion-title>
   <ion-buttons slot="end">
@@ -70,7 +70,8 @@
   startHour="6"
   endHour="20"
   step="30"
-  startingDayWeek="1"> 
+  startingDayWeek="1"
+  [locale]="calendar.locale"> 
 </calendar>
 
 </ion-content>

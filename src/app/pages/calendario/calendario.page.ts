@@ -28,7 +28,8 @@ collapseCard: boolean = false;
 //Declaracion del calendario
 calendar = {
   mode: 'month',
-  currentDate: new Date()
+  currentDate: new Date(),
+  locale: 'es-MX'
 }  
 
 @ViewChild(CalendarComponent, { static: false}) myCal: CalendarComponent;

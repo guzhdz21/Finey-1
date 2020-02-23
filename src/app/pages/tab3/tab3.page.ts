@@ -18,11 +18,12 @@ export class Tab3Page {
 mandarNotificacion() {
 this.localNotifications.schedule({
   id: 1,
-  title: 'Arlex gay',
+  title: 'Arlex gay y joto',
   text: 'Es demasiado gay',
-  data: {secret: 'secret'},
-  trigger: {at: new Date(new Date().getTime() + 5000)},
-  foreground: true
+  trigger: {at: new Date(new Date().getTime() + 2000)},
+  foreground: true,
+  vibrate: true,
+  icon: 'alarm'
 });
 
 this.datosService.presentToast('boton oprimido');
