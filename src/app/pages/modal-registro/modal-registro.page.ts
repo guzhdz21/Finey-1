@@ -88,7 +88,7 @@ sexoRadio(event)
       await this.datosService.presentAlertaIngreso();
       this.registrarseAdvertencia = this.datosService.registrarseAdvertencia;
 
-    //Verificar si el usuario no puede satidfacer sus necesidades basicas y se insertan sus datos  
+    //Verificar si el usuario no puede satisfacer sus necesidades basicas y se insertan sus datos  
     if(this.registrarseAdvertencia) {
         this.registrarUsuario();
         this.nav.navigateRoot('/tabs/tab3');

@@ -20,8 +20,10 @@ export class DatosService {
     this.cargarDatosPlan();
   }
 
-  registrarseAdvertencia: boolean;
+// Advertencia sobre si el usuario puede satisfacer sus necesidades basicas con sus datos ingresados
+  registrarseAdvertencia: boolean; 
 
+  // Declaracion de el usuario cargado
   usuarioCarga: UsuarioLocal = 
   {
     nombre: 'G',
@@ -41,21 +43,23 @@ export class DatosService {
     ]
   };
 
-  primera: boolean;
-  planesExisten: boolean = false;
+  primera: boolean; // Variable para saber si es la primera vez que el usuario corre la app
+  planesExisten: boolean = false; // Variable para saber si hay planes existentes
 
+  // Variable de tipo plan que adquiere los valores del storage
   planesCargados: Plan[] = [
     {
-      nombre: 'Moto',
-      cantidadTotal: 1,
-      tiempoTotal: 1,
-      cantidadAcumulada: 1,
-      tiempoRestante: 1,
-      descripcion: '400 cc',
-      aportacionMensual: 1
+      nombre: '',
+      cantidadTotal: null,
+      tiempoTotal: null,
+      cantidadAcumulada: null,
+      tiempoRestante: null,
+      descripcion: '',
+      aportacionMensual: null
     }
   ];
   
+  // Metodos para obtener caracteristicas de archivos json
   getRubros() {
     return this.http.get<Rubro[]>('/assets/data/rubros.json');
   }
@@ -76,17 +80,20 @@ export class DatosService {
     return this.http.get<AlertaGeneral[]>('/assets/data/alerts.json');
   }
 
+  // Metodo que guarda el usuario en el local storage
   guardarUsuarioInfo(usuario: UsuarioLocal) {
     this.usuarioCarga = usuario;
     this.storage.set('Usuario', this.usuarioCarga);
   }
 
+  // Metodo que guarda la variable primera, registrandola para saber que no es la primera vez que el usuario corre la app
   guardarPrimeraVez(primera: boolean)
   {
     this.primera = primera;
     this.storage.set('Primera', primera);
   }
 
+  // Metodo que le da un valor a la variable "primera" segun si la encuentra en el storage o no
    async cargarPrimeraVez()
   {
     const primera = await this.storage.get('Primera');
@@ -97,6 +104,7 @@ export class DatosService {
     }
   }
 
+  // metodo que carga los datos de el usuario
    async cargarDatos() {
     const Usuario = await this.storage.get('Usuario');
     if(Usuario)
@@ -140,6 +148,7 @@ export class DatosService {
     await alert.onDidDismiss();
   }
 
+  // Metodo que guarda un nuevo plan en el storage
   guardarNuevoPlan(plan: Plan) {
     if(this.planesExisten == false){
       this.planesCargados = [];
@@ -149,6 +158,7 @@ export class DatosService {
     this.event.publish('planesCargados');
   }
 
+  // Metodo que actualiza los planes en el storage
   actualizarPlanes(plan: Plan[]) {
     this.planesCargados = [];
     this.planesCargados = plan;
@@ -156,6 +166,7 @@ export class DatosService {
     this.event.publish('planesCargados');
   }
   
+  // Metodo que carga los datos de un plan desde el storage
   async cargarDatosPlan() {
     const Planes = await this.storage.get('Planes');
     if(Planes) {
@@ -168,6 +179,7 @@ export class DatosService {
     }
   }
 
+  // Metodo que borra un plan del storage
   async borrarPlan(i:number) {
     this.planesCargados = this.planesCargados.filter( plan => plan != this.planesCargados[i]);
     await this.storage.set('Planes', this.planesCargados);
