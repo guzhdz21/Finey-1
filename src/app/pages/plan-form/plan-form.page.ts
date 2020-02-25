@@ -48,9 +48,13 @@ export class PlanFormPage implements OnInit {
 
    //Metodo que calcula los datos para agregar un plan nuevo y lo guarda en el Storage
   async calcularYRegistrar() {
-    this.planNuevo.aportacionMensual = this.planNuevo.cantidadTotal / this.planNuevo.tiempoTotal;
+    if(this.planes[0].cantidadTotal == null) {
+      this.planNuevo.aportacionMensual = this.planNuevo.cantidadTotal / this.planNuevo.tiempoTotal;
+    }
     this.planNuevo.cantidadAcumulada = 0;
     this.planNuevo.tiempoRestante = this.planNuevo.tiempoTotal;
+
+
 
     if (await this.validarPlan()) {
       this.datosService.guardarNuevoPlan(this.planNuevo);
@@ -67,10 +71,13 @@ export class PlanFormPage implements OnInit {
     var ahorrar = 0;
 
     for( var i = 0; i < 17; i++ ) {
-      if( this.usuarioCargado.gastos[i].cantidad != 0 ) {
-        margenMax += this.usuarioCargado.gastos[i].margenMax;
-      } 
+      
     }
+    this.usuarioCargado.gastos.forEach(element => {
+      if( element.cantidad != 0 ) {
+        margenMax += element.cantidad;
+      } 
+    });
 
     for( var i = 0; i < 17; i++ ) {
       if( this.usuarioCargado.gastos[i].cantidad != 0 ) {
