@@ -4,7 +4,7 @@
     {{ viewTitle }}
   </ion-title>
   <ion-buttons slot="end">
-    <ion-button (click)="today()" class="boton-gris">Dia de hoy</ion-button>
+    <ion-button (click)="today()" class="boton-gris">Ir al dia de hoy</ion-button>
   </ion-buttons>
 </ion-toolbar>
 
@@ -29,10 +29,6 @@
       <ion-item>
         <ion-label>Fin</ion-label>
         <ion-datetime displayFormat="MM/DD/YYYY HH:mm" pickerFormat="MMM D:HH:mm" [(ngModel)]="event.endTime" [min]="minDate"></ion-datetime>
-      </ion-item>
-      <ion-item>
-        <ion-label>Todo el dia</ion-label>
-        <ion-checkbox [(ngModel)]="event.allDay"></ion-checkbox>
       </ion-item>
       <ion-button fill="outline" expand="block" (click)="addEvent()" [disabled]="event.title == ''">Agregar Recordatorio</ion-button>
  
