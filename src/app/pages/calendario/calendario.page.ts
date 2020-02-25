@@ -4,6 +4,7 @@ import { AlertController } from '@ionic/angular';
 import { formatDate } from '@angular/common';
 import { AccionesService } from '../../services/acciones.service';
 import { DatosService } from 'src/app/services/datos.service';
+import { Recordatorio } from '../../interfaces/interfaces';
 
 @Component({
   selector: 'app-calendario',
@@ -19,6 +20,15 @@ event = {
   startTime: '',
   endTime: ''
 };
+
+recordatorio: Recordatorio[] = [
+  {
+    title: '',
+    mensaje: '',
+    inicio: null,
+    fin: null
+  }
+];
 
 cargaYa = false; //Variable que le indica cuando ya cargar el calendario
 minDate = new Date().toISOString();  
@@ -104,6 +114,10 @@ const alert = await this.alertCtrl.create({
     });
     alert.present();  
  }
+
+registrarNuevoRecordatorio(){
+ this.datosService.guardarNuevoRecordatorio(this.recordatorio[i]);
+}
 
 // Metodo que muestra una alert para borrar un recordatorio del storage
  async borrarRecordatorio(i: number) {
