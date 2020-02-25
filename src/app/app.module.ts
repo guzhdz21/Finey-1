@@ -17,10 +17,14 @@ import { IonicStorageModule } from '@ionic/storage';
 import { ComponentsModule } from './components/components.module';
 import { ServiceWorkerModule } from '@angular/service-worker';
 import { environment } from '../environments/environment';
+
 import es from '@angular/common/locales/es';
 import { registerLocaleData } from '@angular/common';
 
 import { LocalNotifications } from '@ionic-native/local-notifications/ngx';
+import { BackgroundMode } from '@ionic-native/background-mode/ngx';
+
+
 
 registerLocaleData(es);
 @NgModule({
@@ -38,6 +42,7 @@ registerLocaleData(es);
   providers: [
     StatusBar,
     LocalNotifications,
+    BackgroundMode,
     SplashScreen,
     { provide: RouteReuseStrategy, useClass: IonicRouteStrategy },
     {provide: LOCALE_ID, useValue: 'es-MX'}

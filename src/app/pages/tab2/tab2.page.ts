@@ -14,10 +14,7 @@ import { Router } from '@angular/router';
 })
 export class Tab2Page implements OnInit{
 
-  etiquetas = ['Progreso %', 'Restante %']; 
-  dato: number[] = [60,40];
-  datos: number[] =[];
-  colores = ['#32CD32','#B0C4DE'];
+  //Variable donde se establece el valor inicial 
   plan: PlanDisplay = {
     doughnutChartData: [20, 80],
       plan: {
@@ -30,17 +27,20 @@ export class Tab2Page implements OnInit{
         aportacionMensual: 1
       }
   };
+
+  //Arreglo donde se guardan los planes cargados
   planes: PlanDisplay[] = [
     this.plan
   ];
 
   planesExiste: boolean = false; // Variable utilizada para saber si existen planes o no
 
-  public doughnutChartLabels: Label[] = this.etiquetas;
+  //Variables del chart
+  public doughnutChartLabels: Label[] = ['Progreso %', 'Restante %'];
   public doughnutChartType: ChartType = 'doughnut';
   public chartColors: Array<any> = 
   [{
-    backgroundColor: [ ] = this.colores
+    backgroundColor: [ ] = ['#32CD32','#B0C4DE']
   }];
 
   public legend = false;
@@ -52,27 +52,27 @@ export class Tab2Page implements OnInit{
               private router: Router) {}
 
   ngOnInit() {
+    //Metodo para cargar los planes haya o no
     this.datosService.cargarDatosPlan();
-    this.event.subscribe('planesCargados', () =>
-    {
+    this.event.subscribe('planesCargados', () => {
       if(this.datosService.planesCargados.length <= 0) {
         this.planesExiste = false;
         this.planes = [this.plan];
         return;
       }
-      else{
+      else {
         this.planesExiste = true;
       }
       this.planes = [];
       this.datosService.planesCargados.forEach(element => {
-      this.planes.push({
-        doughnutChartData: [
-          (element.cantidadAcumulada*100)/element.cantidadTotal,
-          ((element.cantidadTotal - element.cantidadAcumulada)*100)/element.cantidadTotal
-        ],
-        plan: element
+        this.planes.push({
+          doughnutChartData: [
+            (element.cantidadAcumulada*100)/element.cantidadTotal,
+            ((element.cantidadTotal - element.cantidadAcumulada)*100)/element.cantidadTotal
+          ],
+          plan: element
+        });
       });
-    });
     });
 
     // Comprobamos que existen los planes y asignamos su progreso a la grafica pastel
@@ -125,9 +125,10 @@ export class Tab2Page implements OnInit{
   // Metodo para borrar un plan del storage
   async borrarPlan(i: number) {
     await this.accionesService.presentAlertPlan([{text: 'Cancelar', handler: (blah) => {this.accionesService.borrar = false}},
-                                          {text: 'Borrar', handler: (blah) => {this.accionesService.borrar = true}}], '¿Estas seguro de que quieres borrar este plan?', 'No podrás recuperar el progreso guardado en este plan');
+                                                {text: 'Borrar', handler: (blah) => {this.accionesService.borrar = true}}], 
+                                                '¿Estas seguro de que quieres borrar este plan?', 'No podrás recuperar el progreso guardado en este plan');
     
-    if(this.accionesService.borrar==true) {
+    if(this.accionesService.borrar == true) {
       this.datosService.borrarPlan(i);
     } 
   }
