@@ -2,6 +2,9 @@ import { Component, OnInit, ViewChild, Inject, LOCALE_ID } from '@angular/core';
 import { CalendarComponent } from 'ionic2-calendar/calendar';
 import { AlertController } from '@ionic/angular';
 import { formatDate } from '@angular/common';
+import { AccionesService } from '../../services/acciones.service';
+import { DatosService } from 'src/app/services/datos.service';
+import { Recordatorio } from '../../interfaces/interfaces';
 
 @Component({
   selector: 'app-calendario',
@@ -15,9 +18,17 @@ event = {
   title: '',
   desc: '',
   startTime: '',
-  endTime: '',
-  allDay: false
+  endTime: ''
 };
+
+recordatorio: Recordatorio[] = [
+  {
+    title: '',
+    mensaje: '',
+    inicio: null,
+    fin: null
+  }
+];
 
 cargaYa = false; //Variable que le indica cuando ya cargar el calendario
 minDate = new Date().toISOString();  
@@ -54,7 +65,6 @@ resetEvent() {
     desc: '',
     startTime: new Date().toISOString(),
     endTime: new Date().toISOString(),
-    allDay: false
   };
 }
 
@@ -64,15 +74,7 @@ addEvent() {
     title: this.event.title,
     startTime: new Date(this.event.startTime),
     endTime: new Date(this.event.endTime),
-    allDay: this.event.allDay,
     desc: this.event.desc
-  }
-  if (eventCopy.allDay) { 
-    let start = eventCopy.startTime;
-    let end = eventCopy.endTime;
-
-    eventCopy.startTime = new Date(Date.UTC(start.getUTCFullYear(), start.getUTCMonth(), start.getUTCDate()));
-    eventCopy.endTime = new Date(Date.UTC(end.getUTCFullYear(), end.getUTCMonth(), end.getUTCDate() + 1));
   }
   this.eventSource.push(eventCopy);
   this.myCal.loadEvents();
@@ -105,14 +107,33 @@ let end = formatDate(event.endTime, 'medium', this.locale);
 const alert = await this.alertCtrl.create({ 
   header: event.title,
   subHeader: event.desc,
-  message: 'Inicio: ' + start + '<br><br>Fin: ' + end,
-  buttons: ['OK']
-});
+  message: 'Inicio:  ' + start + '<br><br>Fin:  ' + end,
+  buttons: [{text: 'Modificar', handler: (blah) => {}},
+  {text: 'Borrar', handler: (blah) => {this.borrarRecordatorio(i)}},
+  {text: 'Ok'}]
+    });
     alert.present();  
  }
 
+registrarNuevoRecordatorio(){
+ this.datosService.guardarNuevoRecordatorio(this.recordatorio[i]);
+}
+
+// Metodo que muestra una alert para borrar un recordatorio del storage
+ async borrarRecordatorio(i: number) {
+  await this.accionesService.presentAlertPlan([{text: 'Cancelar', handler: (blah) => {this.accionesService.borrarRecordatorio = false}},
+                                        {text: 'Borrar', handler: (blah) => {this.accionesService.borrarRecordatorio = true}}], 
+                                        '¿Estas seguro de que quieres borrar este recordatorio?', 'En caso de que te retractes tendrías que crear uno nuevo similar');
+  
+  if(this.accionesService.borrarRecordatorio==true) {
+    this.datosService.borrarRecordatorio(i);
+  } 
+}
+
   constructor(private alertCtrl: AlertController,
-              @Inject(LOCALE_ID) private locale: string) { }
+              @Inject(LOCALE_ID) private locale: string,
+              private accionesService: AccionesService,
+              private datosService: DatosService) { }
 
   ngOnInit() {
     this.resetEvent();

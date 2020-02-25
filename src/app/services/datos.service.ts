@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
-import { Rubro, ColorArray, LabelArray, UsuarioLocal, Gasto, Plan, AlertaGeneral } from '../interfaces/interfaces';
+import { Rubro, ColorArray, LabelArray, UsuarioLocal, Gasto, Plan, AlertaGeneral, Recordatorio } from '../interfaces/interfaces';
 import { Storage } from '@ionic/storage';
 import { ToastController, Events} from '@ionic/angular';
 import { AlertController } from '@ionic/angular';
@@ -45,6 +45,7 @@ export class DatosService {
 
   primera: boolean; // Variable para saber si es la primera vez que el usuario corre la app
   planesExisten: boolean = false; // Variable para saber si hay planes existentes
+  recordatoriosExisten: boolean = false; // Variable para saber si hay planes existentes
 
   // Variable de tipo plan que adquiere los valores del storage
   planesCargados: Plan[] = [
@@ -56,6 +57,15 @@ export class DatosService {
       tiempoRestante: null,
       descripcion: '',
       aportacionMensual: null
+    }
+  ];
+
+  recordatoriosCargados: Recordatorio[] = [
+    {
+      title: '',
+      mensaje: '',
+      inicio: null,
+      fin: null
     }
   ];
   
@@ -185,4 +195,44 @@ export class DatosService {
     await this.storage.set('Planes', this.planesCargados);
     this.event.publish('planesModificados');
   }
+
+  // Metodo que guarda un nuevo recordatorio en el storage
+  guardarNuevoRecordatorio(recordatorio: Recordatorio) {
+    if(this.recordatoriosExisten == false){
+      this.recordatoriosCargados = [];
+    }
+    this.recordatoriosCargados.push(recordatorio);
+    this.storage.set('Recordatorios', this.recordatoriosCargados);
+    this.event.publish('recordatoriosCargados');
+  }
+
+  // Metodo que actualiza los recordatorios en el storage
+  actualizarRecordatorios(recordatorio: Recordatorio[]) {
+    this.recordatoriosCargados = [];
+    this.recordatoriosCargados = recordatorio;
+    this.storage.set('Recordatorios', this.recordatoriosCargados);
+    this.event.publish('RecordatoriosCargados');
+  }
+  
+  // Metodo que carga los datos de un recordatorio desde el storage
+  async cargarDatosRecordatorios() {
+    const Recordatorios = await this.storage.get('Recordatorios');
+    if(Recordatorios) {
+      this.recordatoriosCargados = Recordatorios;
+      this.recordatoriosExisten = true;
+      this.event.publish('recordatoriosCargados');
+    }
+    else {
+      this.recordatoriosExisten = false;
+    }
+  }
+
+  // Metodo que borra un recordatorio del storage
+  async borrarRecordatorio(i:number) {
+    this.recordatoriosCargados = this.recordatoriosCargados.filter( recordatorio => recordatorio != this.recordatoriosCargados[i]);
+    await this.storage.set('recordatorio', this.recordatoriosCargados);
+    this.event.publish('recordatoriosModificados');
+  }
+
+
 }
