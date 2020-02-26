@@ -108,15 +108,15 @@ const alert = await this.alertCtrl.create({
   header: event.title,
   subHeader: event.desc,
   message: 'Inicio:  ' + start + '<br><br>Fin:  ' + end,
-  buttons: [{text: 'Modificar', handler: (blah) => {}},
-  {text: 'Borrar', handler: (blah) => {this.borrarRecordatorio(i)}},
+  buttons: [
+  {text: 'Borrar', handler: (blah) => {this.borrarRecordatorio(2)}},
   {text: 'Ok'}]
     });
     alert.present();  
  }
 
 registrarNuevoRecordatorio(){
- this.datosService.guardarNuevoRecordatorio(this.recordatorio[i]);
+ this.datosService.guardarNuevoRecordatorio(this.recordatorio[2]);
 }
 
 // Metodo que muestra una alert para borrar un recordatorio del storage
