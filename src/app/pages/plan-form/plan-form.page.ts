@@ -89,27 +89,39 @@ export class PlanFormPage implements OnInit {
    
   }
 
-  dosPlanes(margenMax: number, margenMin: number) {
+  async dosPlanes(margenMax: number, margenMin: number) {
     var ahorrar = 0;
-    var mesMayor = 0;
     var planMenor = this.planes[0];
-
-    this.planes.forEach(element => {
-      
-    });
-    ahorrar += planMenor.cantidadTotal;
-    mesMayor = planMenor.tiempoTotal;
-    if(this.planNuevo.tiempoTotal < planMenor.tiempoRestante) {
-      planMenor = this.planNuevo;
+    var planMayor = this.planNuevo;
+    ahorrar += planMenor.cantidadTotal + planMayor.cantidadTotal;
+    if(planMayor.tiempoTotal < planMenor.tiempoRestante) {
+      var aux = planMenor;
+      planMenor = planMayor;
+      planMayor = aux;
     }
-
-    ahorrar += this.planNuevo.cantidadTotal;
-    ahorrar /= mesMayor;
+    ahorrar /= planMayor.tiempoRestante;
     ahorrar = this.usuarioCargado.ingresoCantidad - ahorrar;
 
     if (  ahorrar  >= margenMax ) {
-      planMenor
-    }
+      planMenor.aportacionMensual = (planMenor.cantidadTotal - planMenor.cantidadAcumulada)/planMenor.tiempoRestante;
+      planMayor.aportacionMensual = ahorrar - planMenor.aportacionMensual;
+      await this.accionesService.presentAlertPlan([{text: 'ok', handler: (blah) => {}}], 
+                                                    'Plan creado', 
+      '¡Si te propones gastar menos en tus gastos promedio (luz, agua, etc.) puedes completar tu plan en menos tiempo!');
+      return true;
+    } else if ( ( ahorrar < margenMax ) && (ahorrar >= margenMin ) ) {
+      planMenor.aportacionMensual = (planMenor.cantidadTotal - planMenor.cantidadAcumulada)/planMenor.tiempoRestante;
+      planMayor.aportacionMensual = ahorrar - planMenor.aportacionMensual;
+      await this.accionesService.presentAlertPlan([{text: 'Crear', handler: (blah) => {this.accionesService.alertaPlanCrear = true}},
+                                                  {text: 'Modificar', handler: (blah) => {this.accionesService.alertaPlanCrear = false}}], 
+                                                  'Plan que apenas es posible', 
+      'Puedes crear el plan y cumplirlo en el tiempo establecido MIENTRAS te mantengas en GASTOS MINIMOS en los gastos promedio (luz, agua, etc.) o puedes aumentar el tiempo en conseguirlo para que no estes tan presionado');
+      return this.accionesService.alertaPlanCrear;
+    } else {
+      await this.accionesService.presentAlertPlan([{text: 'Modificar', handler: (blah) => {}}], 
+      'No puedes completar este plan en ese tiempo', 'Presiona Modificar y aumenta tu tiempo para ser apto de conseguirlo');
+      return false;
+     }
   }
   //Metodo que omite el ingreso del primer plan al hacer el registro
   omitir() {
