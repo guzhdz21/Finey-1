@@ -2,7 +2,6 @@ import { Component } from '@angular/core';
 import { LocalNotifications} from '@ionic-native/local-notifications/ngx'
 import { DatosService } from '../../services/datos.service';
 import { Platform } from '@ionic/angular';
-import { BackgroundMode } from '@ionic-native/background-mode/ngx';
 
 @Component({
   selector: 'app-tab3',
@@ -13,8 +12,7 @@ export class Tab3Page {
 
   constructor(private localNotifications: LocalNotifications,
               private datosService: DatosService,
-              private plt: Platform,
-              private backgroundMode: BackgroundMode ) {}
+              private plt: Platform ) {}
 
 
   async mandarNotificacion() {

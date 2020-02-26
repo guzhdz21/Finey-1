@@ -48,15 +48,17 @@ export class PlanFormPage implements OnInit {
 
    //Metodo que calcula los datos para agregar un plan nuevo y lo guarda en el Storage
   async calcularYRegistrar() {
+    var unPlan = false;
     if(this.planes[0].cantidadTotal == null) {
       this.planNuevo.aportacionMensual = this.planNuevo.cantidadTotal / this.planNuevo.tiempoTotal;
+      unPlan = true;
     }
     this.planNuevo.cantidadAcumulada = 0;
     this.planNuevo.tiempoRestante = this.planNuevo.tiempoTotal;
 
 
 
-    if (await this.validarPlan()) {
+    if (await this.validarPlan(unPlan)) {
       this.datosService.guardarNuevoPlan(this.planNuevo);
       this.modalCtrl.dismiss();
       this.nav.navigateRoot('/tabs/tab2');
@@ -64,50 +66,51 @@ export class PlanFormPage implements OnInit {
   }
 
   //Metodo para validar el ingreso del plan
-  async validarPlan() {
+  async validarPlan(unPlan: boolean) {
 
     var margenMax = 0;
     var margenMin = 0;
-    var ahorrar = 0;
 
-    for( var i = 0; i < 17; i++ ) {
-      
-    }
     this.usuarioCargado.gastos.forEach(element => {
       if( element.cantidad != 0 ) {
-        margenMax += element.cantidad;
+        margenMax += element.margenMax;
+        margenMin += element.margenMin;
       } 
     });
 
-    for( var i = 0; i < 17; i++ ) {
-      if( this.usuarioCargado.gastos[i].cantidad != 0 ) {
-        margenMin += this.usuarioCargado.gastos[i].margenMin;
-      } 
-    }
-
-    if(this.planes[0].cantidadTotal == null) {
+    if(unPlan = true) {
+      var ahorrar = 0;
       ahorrar = this.usuarioCargado.ingresoCantidad - this.planNuevo.aportacionMensual;
       return this.alertasUnPlan(margenMax, margenMin, ahorrar);
     }
-    else {
-      var mesMayor = 0;
-      var planMenor = this.planes[0];
-      this.planes.forEach(element => {
-        ahorrar += element.cantidadTotal
-        if( element.tiempoTotal > mesMayor ) {
-          mesMayor = element.tiempoTotal;
-        }
-        if(element.tiempoTotal < planMenor.tiempoTotal) {
-          planMenor = element;
-        }
-      });
-      ahorrar += this.planNuevo.cantidadTotal;
-      ahorrar /= mesMayor;
-      ahorrar = this.usuarioCargado.ingresoCantidad - ahorrar;
+    else if(this.planes.length == 1) {
+      this.dosPlanes(margenMax, margenMin);
     }
    
   }
 
+  dosPlanes(margenMax: number, margenMin: number) {
+    var ahorrar = 0;
+    var mesMayor = 0;
+    var planMenor = this.planes[0];
+
+    this.planes.forEach(element => {
+      
+    });
+    ahorrar += planMenor.cantidadTotal;
+    mesMayor = planMenor.tiempoTotal;
+    if(this.planNuevo.tiempoTotal < planMenor.tiempoRestante) {
+      planMenor = this.planNuevo;
+    }
+
+    ahorrar += this.planNuevo.cantidadTotal;
+    ahorrar /= mesMayor;
+    ahorrar = this.usuarioCargado.ingresoCantidad - ahorrar;
+
+    if (  ahorrar  >= margenMax ) {
+      planMenor
+    }
+  }
   //Metodo que omite el ingreso del primer plan al hacer el registro
   omitir() {
     this.modalCtrl.dismiss();
