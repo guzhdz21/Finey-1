@@ -221,6 +221,7 @@ export class DatosService {
       this.recordatoriosCargados = Recordatorios;
       this.recordatoriosExisten = true;
       this.event.publish('recordatoriosCargados');
+      console.log(this.recordatoriosCargados);
     }
     else {
       this.recordatoriosExisten = false;
