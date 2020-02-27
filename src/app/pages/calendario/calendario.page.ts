@@ -21,14 +21,22 @@ event = {
   endTime: ''
 };
 
-recordatorio: Recordatorio[] = [
+recordatorioFull: Recordatorio =
   {
     title: '',
     mensaje: '',
     inicio: null,
     fin: null
-  }
-];
+  };
+
+  recordatoriosCargados: Recordatorio[] = [
+    {
+      title: '',
+      mensaje: '',
+      inicio: null,
+      fin: null
+    }
+  ];
 
 cargaYa = false; //Variable que le indica cuando ya cargar el calendario
 minDate = new Date().toISOString();  
@@ -76,9 +84,14 @@ addEvent() {
     endTime: new Date(this.event.endTime),
     desc: this.event.desc
   }
-  this.eventSource.push(eventCopy);
-  this.myCal.loadEvents();
-  this.resetEvent();
+  
+}
+
+cargarEventosStorage(){ 
+  this.datosService.recordatoriosCargados.forEach(element => {
+  this.eventSource.push(element);
+    console.log(element);
+  });
 }
 
 //Boton para irte al mes anterior
@@ -108,15 +121,19 @@ const alert = await this.alertCtrl.create({
   header: event.title,
   subHeader: event.desc,
   message: 'Inicio:  ' + start + '<br><br>Fin:  ' + end,
-  buttons: [
-  {text: 'Borrar', handler: (blah) => {this.borrarRecordatorio(2)}},
-  {text: 'Ok'}]
+  buttons: [{text: 'Borrar', handler: (blah) => {}},
+            {text: 'Ok'}]
     });
     alert.present();  
  }
 
 registrarNuevoRecordatorio(){
- this.datosService.guardarNuevoRecordatorio(this.recordatorio[2]);
+  this.recordatorioFull.title = this.event.title;
+  this.recordatorioFull.mensaje = this.event.desc;
+  this.recordatorioFull.inicio = this.event.startTime;
+  this.recordatorioFull.fin = this.event.endTime;
+ this.datosService.guardarNuevoRecordatorio(this.recordatorioFull);
+ this.resetEvent();
 }
 
 // Metodo que muestra una alert para borrar un recordatorio del storage
@@ -138,6 +155,10 @@ registrarNuevoRecordatorio(){
   ngOnInit() {
     this.resetEvent();
     this.today();
+
+    this.datosService.cargarDatosRecordatorios();
+    this.recordatoriosCargados = this.datosService.recordatoriosCargados;
+
     this.cargaYa=false;
   }
 
@@ -145,5 +166,8 @@ registrarNuevoRecordatorio(){
   ionViewWillEnter()
   {
     this.cargaYa=true;
+    this.cargarEventosStorage();
+    this.myCal.loadEvents();
   }
+
 }

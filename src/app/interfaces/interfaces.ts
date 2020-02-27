@@ -63,6 +63,6 @@ export interface AlertaGeneral {
 export interface Recordatorio {
     title: string;
     mensaje: string;
-    inicio: Date;
-    fin: Date;
+    inicio: string;
+    fin: string;
 }
