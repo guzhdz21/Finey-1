@@ -56,7 +56,8 @@ export class DatosService {
       cantidadAcumulada: null,
       tiempoRestante: null,
       descripcion: '',
-      aportacionMensual: null
+      aportacionMensual: null,
+      pausado: false
     }
   ];
 

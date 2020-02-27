@@ -23,7 +23,8 @@ export class PlanModificarPage implements OnInit {
     cantidadAcumulada: 0,
     tiempoRestante: 0,
     descripcion: '',
-    aportacionMensual: 0
+    aportacionMensual: 0,
+    pausado: false
   }];
 
   //Variable auxiliar para que el el modal cargue algo ants de recibir los datos

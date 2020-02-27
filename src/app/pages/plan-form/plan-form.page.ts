@@ -24,6 +24,7 @@ export class PlanFormPage implements OnInit {
     tiempoRestante: null,
     descripcion: '',
     aportacionMensual: null,
+    pausado: false
   };
 
   //Variable para guardar la infromacion de las alertas
@@ -33,6 +34,8 @@ export class PlanFormPage implements OnInit {
   usuarioCargado: UsuarioLocal = this.datosService.usuarioCarga;
 
   planes: Plan[] = this.datosService.planesCargados;
+
+  prioridadDos: boolean = false; 
 
   constructor( private datosService: DatosService,
                 private nav: NavController,
@@ -49,7 +52,7 @@ export class PlanFormPage implements OnInit {
    //Metodo que calcula los datos para agregar un plan nuevo y lo guarda en el Storage
   async calcularYRegistrar() {
     var unPlan = false;
-    if(this.planes[0].cantidadTotal == null) {
+    if(this.planes.length < 1) {
       this.planNuevo.aportacionMensual = this.planNuevo.cantidadTotal / this.planNuevo.tiempoTotal;
       unPlan = true;
     }
@@ -61,7 +64,13 @@ export class PlanFormPage implements OnInit {
     if (await this.validarPlan(unPlan)) {
       this.datosService.guardarNuevoPlan(this.planNuevo);
       this.modalCtrl.dismiss();
+      if(this.prioridadDos)
+      {
+        this.nav.navigateRoot('/plan-pausar-page');
+        return;
+      }
       this.nav.navigateRoot('/tabs/tab2');
+      return;
     }
   }
 
@@ -78,13 +87,13 @@ export class PlanFormPage implements OnInit {
       } 
     });
 
-    if(unPlan = true) {
+    if(unPlan == true) {
       var ahorrar = 0;
       ahorrar = this.usuarioCargado.ingresoCantidad - this.planNuevo.aportacionMensual;
       return this.alertasUnPlan(margenMax, margenMin, ahorrar);
     }
     else if(this.planes.length == 1) {
-      this.dosPlanes(margenMax, margenMin);
+     return this.dosPlanes(margenMax, margenMin);
     }
    
   }
@@ -93,35 +102,71 @@ export class PlanFormPage implements OnInit {
     var ahorrar = 0;
     var planMenor = this.planes[0];
     var planMayor = this.planNuevo;
-    ahorrar += planMenor.cantidadTotal + planMayor.cantidadTotal;
+    var gasto = 0;
+
+    ahorrar += (planMenor.cantidadTotal - planMenor.cantidadAcumulada) + planMayor.cantidadTotal;
     if(planMayor.tiempoTotal < planMenor.tiempoRestante) {
       var aux = planMenor;
       planMenor = planMayor;
       planMayor = aux;
     }
     ahorrar /= planMayor.tiempoRestante;
-    ahorrar = this.usuarioCargado.ingresoCantidad - ahorrar;
+    gasto = this.usuarioCargado.ingresoCantidad - ahorrar;
 
-    if (  ahorrar  >= margenMax ) {
+
+    if (gasto  >= margenMax) {
       planMenor.aportacionMensual = (planMenor.cantidadTotal - planMenor.cantidadAcumulada)/planMenor.tiempoRestante;
-      planMayor.aportacionMensual = ahorrar - planMenor.aportacionMensual;
-      await this.accionesService.presentAlertPlan([{text: 'ok', handler: (blah) => {}}], 
-                                                    'Plan creado', 
-      '¡Si te propones gastar menos en tus gastos promedio (luz, agua, etc.) puedes completar tu plan en menos tiempo!');
-      return true;
-    } else if ( ( ahorrar < margenMax ) && (ahorrar >= margenMin ) ) {
+
+      if(planMenor.aportacionMensual >= ahorrar) {
+        if(await this.prioridad(planMenor.nombre)) {
+          return false;
+        } else {
+          this.prioridadDos = true;
+          return true;
+        }
+      }
+      else {
+        planMayor.aportacionMensual = ahorrar - planMenor.aportacionMensual;
+        await this.accionesService.presentAlertPlan([{text: 'ok', handler: (blah) => {}}], 
+                                                      'Plan creado', 
+        '¡Si te propones gastar menos en tus gastos promedio (luz, agua, etc.) puedes completar tu plan en menos tiempo!');
+        return true;
+      }
+           
+    } else if ( ( gasto < margenMax ) && (ahorrar >= margenMin ) ) {
       planMenor.aportacionMensual = (planMenor.cantidadTotal - planMenor.cantidadAcumulada)/planMenor.tiempoRestante;
-      planMayor.aportacionMensual = ahorrar - planMenor.aportacionMensual;
-      await this.accionesService.presentAlertPlan([{text: 'Crear', handler: (blah) => {this.accionesService.alertaPlanCrear = true}},
+      
+      if(planMenor.aportacionMensual >= ahorrar) {
+        if(await this.prioridad(planMenor.nombre)) {
+          return false;
+        } else {
+          this.prioridadDos = true;
+          return true;
+        }
+      }
+      else {
+        planMayor.aportacionMensual = ahorrar - planMenor.aportacionMensual;
+        await this.accionesService.presentAlertPlan([{text: 'Crear', handler: (blah) => {this.accionesService.alertaPlanCrear = true}},
                                                   {text: 'Modificar', handler: (blah) => {this.accionesService.alertaPlanCrear = false}}], 
                                                   'Plan que apenas es posible', 
-      'Puedes crear el plan y cumplirlo en el tiempo establecido MIENTRAS te mantengas en GASTOS MINIMOS en los gastos promedio (luz, agua, etc.) o puedes aumentar el tiempo en conseguirlo para que no estes tan presionado');
-      return this.accionesService.alertaPlanCrear;
+        'Puedes crear el plan y cumplirlo en el tiempo establecido MIENTRAS te mantengas en GASTOS MINIMOS en los gastos promedio (luz, agua, etc.) o puedes aumentar el tiempo en conseguirlo para que no estes tan presionado');
+        return this.accionesService.alertaPlanCrear;
+      }
+
     } else {
       await this.accionesService.presentAlertPlan([{text: 'Modificar', handler: (blah) => {}}], 
       'No puedes completar este plan en ese tiempo', 'Presiona Modificar y aumenta tu tiempo para ser apto de conseguirlo');
       return false;
      }
+  }
+
+  async prioridad(nombre: string) {
+    var modificar;
+    await this.accionesService.presentAlertPlan([{text: 'No puedo', handler: (blah) => {modificar = false}},
+                                                  {text: 'Modificar', handler: (blah) => {modificar = true}}], 
+                                                  'Hemos detectado el plan' + nombre + 'como prioritario', 
+    'Puedes disminuir la cantidad del plan o aumentar el tiempo del mismo, si no puedes hacer esto escoge "No puedo"');
+    return modificar;
   }
   //Metodo que omite el ingreso del primer plan al hacer el registro
   omitir() {

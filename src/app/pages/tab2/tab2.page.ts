@@ -24,7 +24,8 @@ export class Tab2Page implements OnInit{
         cantidadAcumulada: 1,
         tiempoRestante: 1,
         descripcion: '400 cc',
-        aportacionMensual: 1
+        aportacionMensual: 1,
+        pausado: false
       }
   };
 

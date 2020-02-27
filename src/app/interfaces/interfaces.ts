@@ -47,6 +47,7 @@ export interface Plan {
     tiempoRestante: number;
     descripcion: string;
     aportacionMensual: number;
+    pausado: boolean
 }
 
 export interface PlanDisplay {

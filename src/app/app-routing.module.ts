@@ -33,7 +33,15 @@ const routes: Routes = [
   {
     path: 'plan-modificar-page',
     loadChildren: () => import('./pages/plan-modificar-page/plan-modificar-page.module').then( m => m.PlanModificarPagePageModule)
+  },  {
+    path: 'plan-pausar',
+    loadChildren: () => import('./pages/plan-pausar/plan-pausar.module').then( m => m.PlanPausarPageModule)
+  },
+  {
+    path: 'plan-pausar-page',
+    loadChildren: () => import('./pages/plan-pausar-page/plan-pausar-page.module').then( m => m.PlanPausarPagePageModule)
   }
+
 ];
 @NgModule({
   imports: [
