@@ -84,14 +84,14 @@ addEvent() {
     endTime: new Date(this.event.endTime),
     desc: this.event.desc
   }
+  
 }
 
 cargarEventosStorage(){ 
-  this.recordatoriosCargados.forEach(element => {
-    this.eventSource.push(element);
+  this.datosService.recordatoriosCargados.forEach(element => {
+  this.eventSource.push(element);
     console.log(element);
   });
-  this.myCal.loadEvents();
 }
 
 //Boton para irte al mes anterior
@@ -121,9 +121,8 @@ const alert = await this.alertCtrl.create({
   header: event.title,
   subHeader: event.desc,
   message: 'Inicio:  ' + start + '<br><br>Fin:  ' + end,
-  buttons: [{text: 'Modificar', handler: (blah) => {}},
-  {text: 'Borrar', handler: (blah) => {}},
-  {text: 'Ok'}]
+  buttons: [{text: 'Borrar', handler: (blah) => {}},
+            {text: 'Ok'}]
     });
     alert.present();  
  }
@@ -156,6 +155,10 @@ registrarNuevoRecordatorio(){
   ngOnInit() {
     this.resetEvent();
     this.today();
+
+    this.datosService.cargarDatosRecordatorios();
+    this.recordatoriosCargados = this.datosService.recordatoriosCargados;
+
     this.cargaYa=false;
   }
 
@@ -163,7 +166,8 @@ registrarNuevoRecordatorio(){
   ionViewWillEnter()
   {
     this.cargaYa=true;
-    this.recordatoriosCargados = this.datosService.recordatoriosCargados;
     this.cargarEventosStorage();
+    this.myCal.loadEvents();
   }
+
 }
