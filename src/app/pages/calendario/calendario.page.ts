@@ -1,6 +1,6 @@
 import { Component, OnInit, ViewChild, Inject, LOCALE_ID } from '@angular/core';
 import { CalendarComponent } from 'ionic2-calendar/calendar';
-import { AlertController } from '@ionic/angular';
+import { AlertController, Events } from '@ionic/angular';
 import { formatDate } from '@angular/common';
 import { AccionesService } from '../../services/acciones.service';
 import { DatosService } from 'src/app/services/datos.service';
@@ -13,7 +13,7 @@ import { Recordatorio } from '../../interfaces/interfaces';
 })
 export class CalendarioPage implements OnInit {
 
-//Declaracion vacia de la estructura del recordatorio
+//Declaracion vacia de la estructura del evento
 event = {
   title: '',
   desc: '',
@@ -21,6 +21,7 @@ event = {
   endTime: ''
 };
 
+//Declaracion vacia de la estructura del recordatorio
 recordatorioFull: Recordatorio =
   {
     title: '',
@@ -29,6 +30,7 @@ recordatorioFull: Recordatorio =
     fin: null
   };
 
+//Declaracion vacia de la estructura del arreglo de los recordatorios 
   recordatoriosCargados: Recordatorio[] = [
     {
       title: '',
@@ -43,6 +45,11 @@ minDate = new Date().toISOString();
 viewTitle = ''; //Es la etiqueta que te indica el nombre del mes
 eventSource=[];
 collapseCard: boolean = false;
+
+    markDisabled = (date: Date) => {
+        var current = new Date();
+        return date < current;
+    };
 
 //Declaracion del calendario
 calendar = {
@@ -84,13 +91,21 @@ addEvent() {
     endTime: new Date(this.event.endTime),
     desc: this.event.desc
   }
-  
 }
 
+//Metodo que carga los recordatorios desde el storage
 cargarEventosStorage(){ 
   this.datosService.recordatoriosCargados.forEach(element => {
-  this.eventSource.push(element);
-    console.log(element);
+    
+    let eventCopy = { 
+      title: element.title,
+      startTime: new Date(element.inicio),
+      endTime: new Date(element.fin),
+      desc: element.mensaje
+    }
+
+  this.eventSource.push(eventCopy);
+    console.log(eventCopy);
   });
 }
 
@@ -127,6 +142,7 @@ const alert = await this.alertCtrl.create({
     alert.present();  
  }
 
+ //Metodo que le otorga los datos ingresador del recordatorio a nuestra interface Recordatorio e invoca la funcion para guardarlo en storage
 registrarNuevoRecordatorio(){
   this.recordatorioFull.title = this.event.title;
   this.recordatorioFull.mensaje = this.event.desc;
@@ -150,7 +166,8 @@ registrarNuevoRecordatorio(){
   constructor(private alertCtrl: AlertController,
               @Inject(LOCALE_ID) private locale: string,
               private accionesService: AccionesService,
-              private datosService: DatosService) { }
+              private datosService: DatosService,
+              private eventP: Events) { }
 
   ngOnInit() {
     this.resetEvent();
@@ -160,6 +177,11 @@ registrarNuevoRecordatorio(){
     this.recordatoriosCargados = this.datosService.recordatoriosCargados;
 
     this.cargaYa=false;
+
+ //Evento que escucha cuando el usuario es insertado para cambiar los datos de la grafica
+     this.eventP.subscribe('recordatoriosCargados', () => {
+      this.recordatoriosCargados = this.datosService.recordatoriosCargados;
+    });
   }
 
   //Este metodo cambia de valor la variable "cargaYa" para que pueda cargar el calendario sin problemas 
@@ -167,7 +189,7 @@ registrarNuevoRecordatorio(){
   {
     this.cargaYa=true;
     this.cargarEventosStorage();
-    this.myCal.loadEvents();
+    //this.myCal.loadEvents();
   }
 
 }

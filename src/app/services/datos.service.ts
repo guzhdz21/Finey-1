@@ -212,7 +212,7 @@ export class DatosService {
     this.recordatoriosCargados = [];
     this.recordatoriosCargados = recordatorio;
     this.storage.set('Recordatorios', this.recordatoriosCargados);
-    this.event.publish('RecordatoriosCargados');
+    this.event.publish('recordatoriosCargados');
   }
   
   // Metodo que carga los datos de un recordatorio desde el storage
@@ -221,7 +221,6 @@ export class DatosService {
     if(Recordatorios) {
       this.recordatoriosCargados = Recordatorios;
       this.recordatoriosExisten = true;
-      this.event.publish('recordatoriosCargados');
     }
     else {
       this.recordatoriosExisten = false;
