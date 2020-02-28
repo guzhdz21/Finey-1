@@ -181,6 +181,7 @@ registrarNuevoRecordatorio(){
  //Evento que escucha cuando el usuario es insertado para cambiar los datos de la grafica
      this.eventP.subscribe('recordatoriosCargados', () => {
       this.recordatoriosCargados = this.datosService.recordatoriosCargados;
+      this.cargarEventosStorage();
     });
   }
 
