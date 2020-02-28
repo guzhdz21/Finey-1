@@ -26,6 +26,12 @@
                 </ion-card>
                 
             <ion-card *ngIf="planesExiste == true">
+                <ion-item color="danger" class="cambio" *ngIf="plan.plan.pausado == true">
+
+                    <ion-label><h1 class="centrar">PAUSADO</h1></ion-label>
+                </ion-item>
+
+
                 <ion-item color="primary" class="cambio">
 
                     <ion-label><h1 class="text">{{plan.plan.nombre}}</h1></ion-label>
@@ -76,12 +82,12 @@
             
                     
                     <ion-fab-list side="end">
-                        <ion-fab-button color="medium">
+                        <ion-fab-button color="danger" (click)="pausarPlan(i)" [disabled]="plan.plan.pausado">
                             <ion-icon name="pause">
                             </ion-icon>
                         </ion-fab-button>
 
-                        <ion-fab-button color="success">
+                        <ion-fab-button color="success" (click)="renaudarPlan(i)" [disabled]="!plan.plan.pausado">
                             <ion-icon name = "play">
                             </ion-icon>
                         </ion-fab-button>

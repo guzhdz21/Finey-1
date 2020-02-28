@@ -1,7 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { Label} from 'ng2-charts';
 import { ChartType } from 'chart.js';
-import { PlanDisplay } from '../../interfaces/interfaces';
+import { PlanDisplay, Plan } from '../../interfaces/interfaces';
 import { NavController, Events } from '@ionic/angular';
 import { DatosService } from '../../services/datos.service';
 import { AccionesService } from '../../services/acciones.service';
@@ -134,4 +134,23 @@ export class Tab2Page implements OnInit{
     } 
   }
 
+  //Funcion para pausar planes
+  pausarPlan(i) {
+    var planes: Plan[] = [];
+    this.planes[i].plan.pausado = true;
+    this.planes.forEach(element => {
+      planes.push(element.plan);
+    });
+    this.datosService.actualizarPlanes(planes);
+  }
+
+  //Funcion para renaudar planes
+  renaudarPlan(i) {
+    var planes: Plan[] = [];
+    this.planes[i].plan.pausado = false; 
+    this.planes.forEach(element => {
+      planes.push(element.plan);
+    });
+    this.datosService.actualizarPlanes(planes); 
+  }
 }

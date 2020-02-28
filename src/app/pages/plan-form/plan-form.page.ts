@@ -164,7 +164,7 @@ export class PlanFormPage implements OnInit {
     var modificar;
     await this.accionesService.presentAlertPlan([{text: 'No puedo', handler: (blah) => {modificar = false}},
                                                   {text: 'Modificar', handler: (blah) => {modificar = true}}], 
-                                                  'Hemos detectado el plan' + nombre + 'como prioritario', 
+                                                  'Hemos detectado el plan ' + nombre + ' como prioritario', 
     'Puedes disminuir la cantidad del plan o aumentar el tiempo del mismo, si no puedes hacer esto escoge "No puedo"');
     return modificar;
   }
