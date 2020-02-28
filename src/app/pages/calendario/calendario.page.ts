@@ -83,16 +83,6 @@ resetEvent() {
   };
 }
 
-//Metodo que añade un evento
-addEvent() { 
-  let eventCopy = { 
-    title: this.event.title,
-    startTime: new Date(this.event.startTime),
-    endTime: new Date(this.event.endTime),
-    desc: this.event.desc
-  }
-}
-
 //Metodo que carga los recordatorios desde el storage
 cargarEventosStorage(){ 
   this.datosService.recordatoriosCargados.forEach(element => {
@@ -177,20 +167,25 @@ registrarNuevoRecordatorio(){
     this.recordatoriosCargados = this.datosService.recordatoriosCargados;
 
     this.cargaYa=false;
-
- //Evento que escucha cuando el usuario es insertado para cambiar los datos de la grafica
-     this.eventP.subscribe('recordatoriosCargados', () => {
-      this.recordatoriosCargados = this.datosService.recordatoriosCargados;
-      this.cargarEventosStorage();
-    });
   }
 
   //Este metodo cambia de valor la variable "cargaYa" para que pueda cargar el calendario sin problemas 
   ionViewWillEnter()
   {
-    this.cargaYa=true;
     this.cargarEventosStorage();
-    //this.myCal.loadEvents();
+    this.cargaYa=true;
+
+     //Evento que escucha cuando el usuario es insertado para cambiar los datos de la grafica
+     this.eventP.subscribe('recordatoriosCargados', () => {
+      this.recordatoriosCargados = this.datosService.recordatoriosCargados;
+      this.cargarEventosStorage();
+      this.myCal.loadEvents();
+    });
+
+  }
+
+  ionViewDidEnter(){
+
   }
 
 }
