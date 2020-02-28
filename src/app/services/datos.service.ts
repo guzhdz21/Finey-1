@@ -199,7 +199,7 @@ export class DatosService {
 
   // Metodo que guarda un nuevo recordatorio en el storage
   guardarNuevoRecordatorio(recordatorio: Recordatorio) {
-    if(this.recordatoriosExisten == false){
+    if(this.recordatoriosExisten == false) {
       this.recordatoriosCargados = [];
     }
     this.recordatoriosCargados.push(recordatorio);
@@ -233,6 +233,4 @@ export class DatosService {
     await this.storage.set('recordatorio', this.recordatoriosCargados);
     this.event.publish('recordatoriosModificados');
   }
-
-
 }

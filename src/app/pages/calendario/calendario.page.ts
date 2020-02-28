@@ -47,7 +47,7 @@ eventSource=[];
 collapseCard: boolean = false;
 
     markDisabled = (date: Date) => {
-        var current = new Date();
+        var current = new Date(new Date().getTime() - 86400000);
         return date < current;
     };
 
@@ -85,8 +85,10 @@ resetEvent() {
 
 //Metodo que carga los recordatorios desde el storage
 cargarEventosStorage(){ 
+  this.eventSource=[];
+
   this.datosService.recordatoriosCargados.forEach(element => {
-    
+
     let eventCopy = { 
       title: element.title,
       startTime: new Date(element.inicio),
@@ -95,7 +97,6 @@ cargarEventosStorage(){
     }
 
   this.eventSource.push(eventCopy);
-    console.log(eventCopy);
   });
 }
 
@@ -133,12 +134,13 @@ const alert = await this.alertCtrl.create({
  }
 
  //Metodo que le otorga los datos ingresador del recordatorio a nuestra interface Recordatorio e invoca la funcion para guardarlo en storage
-registrarNuevoRecordatorio(){
+async registrarNuevoRecordatorio(){
+  await this.datosService.cargarDatosRecordatorios();
   this.recordatorioFull.title = this.event.title;
   this.recordatorioFull.mensaje = this.event.desc;
   this.recordatorioFull.inicio = this.event.startTime;
   this.recordatorioFull.fin = this.event.endTime;
- this.datosService.guardarNuevoRecordatorio(this.recordatorioFull);
+  await this.datosService.guardarNuevoRecordatorio(this.recordatorioFull);
  this.resetEvent();
 }
 
