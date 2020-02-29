@@ -21,20 +21,14 @@ export class PlanPausarPage implements OnInit {
   }
 
   accionPausar(i) {
-    if(this.planes[i].pausado) {
-      this.planes[i].pausado = false;
-      this.planes.forEach(element => {
-        if(element.pausado) {
-          this.valido = true;
-          return;
-        }
-      });
-      !this.valido;
-      return;
-    }
-    this.planes[i].pausado = true;
-    this.valido = false;
-    return;
+    this.valido = true;
+    this.planes[i].pausado = !this.planes[i].pausado
+    this.planes.forEach(element => {
+      if(element.pausado){
+        this.valido = false;
+        return;
+      }
+    });
   }
 
   registrarCambios() {

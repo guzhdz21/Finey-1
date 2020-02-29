@@ -53,29 +53,12 @@ export class PlanFormPage implements OnInit {
   async calcularYRegistrar() {
     var unPlan = false;
     if(this.planes.length < 1) {
-      this.planNuevo.aportacionMensual = this.planNuevo.cantidadTotal / this.planNuevo.tiempoTotal;
       unPlan = true;
     }
+
+    this.planNuevo.aportacionMensual = this.planNuevo.cantidadTotal / this.planNuevo.tiempoTotal;
     this.planNuevo.cantidadAcumulada = 0;
     this.planNuevo.tiempoRestante = this.planNuevo.tiempoTotal;
-
-
-
-    if (await this.validarPlan(unPlan)) {
-      this.datosService.guardarNuevoPlan(this.planNuevo);
-      this.modalCtrl.dismiss();
-      if(this.prioridadDos)
-      {
-        this.nav.navigateRoot('/plan-pausar-page');
-        return;
-      }
-      this.nav.navigateRoot('/tabs/tab2');
-      return;
-    }
-  }
-
-  //Metodo para validar el ingreso del plan
-  async validarPlan(unPlan: boolean) {
 
     var margenMax = 0;
     var margenMin = 0;
@@ -87,15 +70,36 @@ export class PlanFormPage implements OnInit {
       } 
     });
 
-    if(unPlan == true) {
+
+    if (await this.validarPlan(margenMax, margenMin, unPlan)) {
+      if(unPlan == false)
+      {
+        if(this.planes.length == 1) {
+          if(await this.dosPlanes(margenMax, margenMin)) {
+            this.datosService.guardarNuevoPlan(this.planNuevo);
+            this.modalCtrl.dismiss();
+            if(this.prioridadDos == true) {
+              this.nav.navigateRoot('/plan-pausar-page');
+              return;
+            }
+            this.nav.navigateRoot('/tabs/tab2');
+            return;
+          }
+          return;
+        }
+      }
+      this.datosService.guardarNuevoPlan(this.planNuevo);
+      this.modalCtrl.dismiss();
+      this.nav.navigateRoot('/tabs/tab2');
+      return;
+    }
+  }
+
+  //Metodo para validar el ingreso del plan
+  async validarPlan(margenMax: number, margenMin: number, unPLan: boolean) {
       var ahorrar = 0;
       ahorrar = this.usuarioCargado.ingresoCantidad - this.planNuevo.aportacionMensual;
-      return this.alertasUnPlan(margenMax, margenMin, ahorrar);
-    }
-    else if(this.planes.length == 1) {
-     return this.dosPlanes(margenMax, margenMin);
-    }
-   
+      return this.alertasUnPlan(margenMax, margenMin, ahorrar, unPLan);
   }
 
   async dosPlanes(margenMax: number, margenMin: number) {
@@ -185,11 +189,13 @@ export class PlanFormPage implements OnInit {
   }
 
   //Imprimir las alertas segun el caso en un solo plan
-  async alertasUnPlan( margenMax: number, margenMin: number, ahorrar: number) {
+  async alertasUnPlan( margenMax: number, margenMin: number, ahorrar: number, unPlan: boolean) {
     if (  ahorrar  >= margenMax ) {
-      await this.accionesService.presentAlertPlan([{text: 'ok', handler: (blah) => {}}], 
+      if(unPlan) {
+        await this.accionesService.presentAlertPlan([{text: 'ok', handler: (blah) => {}}], 
                                                     'Plan creado', 
       '¡Si te propones gastar menos en tus gastos promedio (luz, agua, etc.) puedes completar tu plan en menos tiempo!');
+      }
       return true;
      }
      else if ( ( ahorrar < margenMax ) && (ahorrar >= margenMin ) ) {
