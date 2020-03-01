@@ -2,10 +2,11 @@ import { Component, OnInit } from '@angular/core';
 import { Label} from 'ng2-charts';
 import { ChartType } from 'chart.js';
 import { PlanDisplay, Plan } from '../../interfaces/interfaces';
-import { NavController, Events } from '@ionic/angular';
+import { NavController, Events, Platform } from '@ionic/angular';
 import { DatosService } from '../../services/datos.service';
 import { AccionesService } from '../../services/acciones.service';
 import { Router } from '@angular/router';
+import { Subscription } from 'rxjs';
 
 @Component({
   selector: 'app-tab2',
@@ -34,7 +35,9 @@ export class Tab2Page implements OnInit{
     this.plan
   ];
 
-  planesExiste: boolean = false; // Variable utilizada para saber si existen planes o no
+  planesExiste: boolean = false; // Variable utilizada para saber si existen planes o no}
+
+  backButtonSub: Subscription;
 
   //Variables del chart
   public doughnutChartLabels: Label[] = ['Progreso %', 'Restante %'];
@@ -50,7 +53,8 @@ export class Tab2Page implements OnInit{
               private event: Events,
               private datosService: DatosService,
               private accionesService: AccionesService,
-              private router: Router) {}
+              private router: Router,
+              private plt: Platform) {}
 
   ngOnInit() {
     //Metodo para cargar los planes haya o no
@@ -152,5 +156,11 @@ export class Tab2Page implements OnInit{
       planes.push(element.plan);
     });
     this.datosService.actualizarPlanes(planes); 
+  }
+
+  ionViewDidEnter() {
+    this.backButtonSub = this.plt.backButton.subscribeWithPriority( 10000, () => {
+      this.nav.navigateRoot('/tabs/tab1');
+    });
   }
 }

@@ -1,8 +1,9 @@
 import { Component, OnInit, ViewChild } from '@angular/core';
-import { ModalController, NavController, IonRadioGroup, Events } from '@ionic/angular';
+import { ModalController, NavController, IonRadioGroup, Events, Platform } from '@ionic/angular';
 import { DatosService } from '../../services/datos.service';
 import { UsuarioLocal, Rubro, AlertaGeneral } from '../../interfaces/interfaces';
 import { AccionesService } from '../../services/acciones.service';
+import { Subscription } from 'rxjs';
 
 @Component({
   selector: 'app-mis-gastos',
@@ -27,12 +28,15 @@ export class MisGastosPage implements OnInit {
   //Variable para guardar los datos del ususario
   usuarioModificado: UsuarioLocal = this.datosService.usuarioCarga;
 
+  backButtonSub: Subscription;
+
   //Constructor con todas las inyecciones y controladores necesarios
   constructor(private modalCtrl: ModalController,
               private nav: NavController,
               public datosService: DatosService,
               private event: Events,
-              private accionesService: AccionesService) { }
+              private accionesService: AccionesService, 
+              private plt: Platform) { }
 
   ngOnInit() {
     //Llamada a metodo que carga los datos del ussuario
@@ -153,6 +157,13 @@ export class MisGastosPage implements OnInit {
         this.accionesService.presentAlertGenerica(element.titulo, element.mensaje);
         return;
       }
+    });
+  }
+
+  ionViewDidEnter() {
+    this.backButtonSub = this.plt.backButton.subscribeWithPriority( 10000, () => {
+      this.modalCtrl.dismiss();
+      this.nav.navigateRoot('/tabs/tab1');
     });
   }
 }

@@ -1,9 +1,10 @@
 import { Component, OnInit, Input } from '@angular/core';
 import { Plan, AlertaGeneral } from '../../interfaces/interfaces';
 import { DatosService } from '../../services/datos.service';
-import { NavController, ModalController } from '@ionic/angular';
+import { NavController, ModalController, Platform } from '@ionic/angular';
 import { AccionesService } from '../../services/acciones.service';
 import { UsuarioLocal } from '../../interfaces/interfaces';
+import { Subscription } from 'rxjs';
 
 @Component({
   selector: 'app-plan-form',
@@ -37,10 +38,13 @@ export class PlanFormPage implements OnInit {
 
   prioridadDos: boolean = false; 
 
+  backButtonSub: Subscription;
+
   constructor( private datosService: DatosService,
                 private nav: NavController,
                 private modalCtrl: ModalController,
-                private accionesService: AccionesService) { }
+                private accionesService: AccionesService,
+                private plt: Platform) { }
 
   ngOnInit() {
     //Metodo que obtiene la informacion de las alertas de un archivo
@@ -210,5 +214,16 @@ export class PlanFormPage implements OnInit {
       'No puedes completar este plan en ese tiempo', 'Presiona Modificar y aumenta tu tiempo para ser apto de conseguirlo');
       return false;
      }
+  }
+
+  ionViewDidEnter() {
+    this.backButtonSub = this.plt.backButton.subscribeWithPriority( 10000, () => {
+      this.modalCtrl.dismiss();
+      if(this.registro == 'true'){
+        this.nav.navigateRoot('/tabs/tab1');
+      } else {
+      this.nav.navigateRoot('/tabs/tab2');
+      }
+    });
   }
 }

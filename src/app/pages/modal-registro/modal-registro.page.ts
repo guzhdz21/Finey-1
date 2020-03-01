@@ -1,9 +1,10 @@
 import { Component, OnInit } from '@angular/core';
-import { ModalController, NavController} from '@ionic/angular';
+import { ModalController, NavController, Platform } from '@ionic/angular';
 import { DatosService } from '../../services/datos.service';
 import { UsuarioLocal, Rubro, AlertaGeneral } from '../../interfaces/interfaces';
 import { Router } from '@angular/router';
 import { AccionesService } from '../../services/acciones.service';
+import { Subscription } from 'rxjs';
 
 @Component({
   selector: 'app-modal-registro',
@@ -24,6 +25,8 @@ export class ModalRegistroPage implements OnInit {
 
   //Variable que nos ayuda a asegurarnos si el ususario no puede satisfacer sus necesidades basicas
   registrarseAdvertencia: boolean = this.datosService.registrarseAdvertencia;
+
+  backButtonSub: Subscription;
   
   //Variable que se le asigna los datos del ususario
   usuario: UsuarioLocal = {
@@ -39,7 +42,8 @@ export class ModalRegistroPage implements OnInit {
                 private datosService: DatosService,
                 private nav: NavController,
                 private router: Router,
-                private accionesService: AccionesService) { }
+                private accionesService: AccionesService,
+                private plt: Platform) { }
 
 ngOnInit() {
   //Llamado al metodo del servicio datos Service para obtener gastos iniciales de un archivo
@@ -184,4 +188,13 @@ sexoRadio(event)
     this.requerido = false;
   }
     
+  ionViewDidEnter() {
+    this.backButtonSub = this.plt.backButton.subscribeWithPriority( 10000, () => {
+      if(window.confirm('¿Deseas salir de la app?'))
+      {
+        navigator["app"].exitApp();
+      }
+    });
+  }
+  
 }

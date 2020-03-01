@@ -1,7 +1,8 @@
 import { Component } from '@angular/core';
 import { LocalNotifications} from '@ionic-native/local-notifications/ngx'
 import { DatosService } from '../../services/datos.service';
-import { Platform } from '@ionic/angular';
+import { Platform, NavController } from '@ionic/angular';
+import { Subscription } from 'rxjs';
 
 @Component({
   selector: 'app-tab3',
@@ -10,9 +11,12 @@ import { Platform } from '@ionic/angular';
 })
 export class Tab3Page {
 
+  backButtonSub: Subscription;
+
   constructor(private localNotifications: LocalNotifications,
               private datosService: DatosService,
-              private plt: Platform ) {}
+              private plt: Platform,
+              private nav: NavController) {}
 
 
   async mandarNotificacion() {
@@ -27,5 +31,11 @@ export class Tab3Page {
     });
 
     this.datosService.presentToast('boton oprimido');
+  }
+
+  ionViewDidEnter() {
+    this.backButtonSub = this.plt.backButton.subscribeWithPriority( 10000, () => {
+      this.nav.navigateRoot('/tabs/tab1');
+    });
   }
 }

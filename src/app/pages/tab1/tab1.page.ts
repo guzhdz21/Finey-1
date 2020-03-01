@@ -2,9 +2,9 @@ import { Component, OnInit } from '@angular/core';
 import { ChartType } from 'chart.js';
 import { SingleDataSet, Label } from 'ng2-charts';
 import { Rubro, UsuarioLocal } from '../../interfaces/interfaces';
-import {Observable} from 'rxjs';
+import {Observable, Subscription} from 'rxjs';
 import { DatosService } from '../../services/datos.service';
-import { ModalController, NavController, Events } from '@ionic/angular';
+import { ModalController, NavController, Events, Platform } from '@ionic/angular';
 import { DescripcionGastoPage } from '../descripcion-gasto/descripcion-gasto.page';
 
 @Component({
@@ -28,6 +28,8 @@ export class Tab1Page implements OnInit {
   primera: boolean;
   gastosCero: boolean = true;
 
+  backButtonSub: Subscription;
+
   //Datos del ussuario
   usuarioCargado: UsuarioLocal = this.datosService.usuarioCarga;
   
@@ -45,7 +47,8 @@ export class Tab1Page implements OnInit {
   constructor(public datosService: DatosService,
               private modalCtrl: ModalController,
               private nav: NavController,
-              private event: Events) {}
+              private event: Events,
+              private plt: Platform) {}
 
   ngOnInit() {
     //Condicional para abrir el registro de la app
@@ -157,5 +160,14 @@ export class Tab1Page implements OnInit {
       this.cantidadGastos = gastosCantidad;
       var saldo = this.usuarioCargado.ingresoCantidad - gastosCantidad;
       this.saldo = saldo;
-    }
   }
+
+  ionViewDidEnter() {
+    this.backButtonSub = this.plt.backButton.subscribeWithPriority( 10000, () => {
+      if(window.confirm('¿Deseas salir de la app?'))
+      {
+        navigator["app"].exitApp();
+      }
+    });
+  }
+}

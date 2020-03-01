@@ -1,10 +1,11 @@
 import { Component, OnInit, ViewChild, Inject, LOCALE_ID } from '@angular/core';
 import { CalendarComponent } from 'ionic2-calendar/calendar';
-import { AlertController, Events } from '@ionic/angular';
+import { AlertController, Events, Platform, ModalController, NavController } from '@ionic/angular';
 import { formatDate } from '@angular/common';
 import { AccionesService } from '../../services/acciones.service';
 import { DatosService } from 'src/app/services/datos.service';
 import { Recordatorio } from '../../interfaces/interfaces';
+import { Subscription } from 'rxjs';
 
 @Component({
   selector: 'app-calendario',
@@ -45,6 +46,7 @@ minDate = new Date().toISOString();
 viewTitle = ''; //Es la etiqueta que te indica el nombre del mes
 eventSource=[];
 collapseCard: boolean = false;
+backButtonSub: Subscription;
 
     markDisabled = (date: Date) => {
         var current = new Date(new Date().getTime() - 86400000);
@@ -159,7 +161,10 @@ async registrarNuevoRecordatorio(){
               @Inject(LOCALE_ID) private locale: string,
               private accionesService: AccionesService,
               private datosService: DatosService,
-              private eventP: Events) { }
+              private eventP: Events,
+              private plt: Platform, 
+              private modalCtrl: ModalController,
+              private nav: NavController) { }
 
   ngOnInit() {
     this.resetEvent();
@@ -186,8 +191,11 @@ async registrarNuevoRecordatorio(){
 
   }
 
-  ionViewDidEnter(){
-
+  ionViewDidEnter() {
+    this.backButtonSub = this.plt.backButton.subscribeWithPriority( 10000, () => {
+      this.modalCtrl.dismiss();
+      this.nav.navigateRoot('/tabs/tab1');
+    });
   }
 
 }

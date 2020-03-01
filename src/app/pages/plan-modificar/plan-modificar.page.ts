@@ -2,7 +2,8 @@ import { Component, OnInit, Input } from '@angular/core';
 import { DatosService } from '../../services/datos.service';
 import { UsuarioLocal, AlertaGeneral, Plan } from '../../interfaces/interfaces';
 import { AccionesService } from '../../services/acciones.service';
-import { Events, NavController, ModalController } from '@ionic/angular';
+import { Events, NavController, ModalController, Platform } from '@ionic/angular';
+import { Subscription } from 'rxjs';
 
 @Component({
   selector: 'app-plan-modificar',
@@ -33,12 +34,15 @@ export class PlanModificarPage implements OnInit {
   //Variable que guarda la informaciond el usuario del ususario
   usuarioCargado: UsuarioLocal = this.datosService.usuarioCarga;
 
+  backButtonSub: Subscription;
+
   //Constructor con todas las inyecciones y controladores necesarios
   constructor( private nav: NavController,
               public datosService: DatosService,
               private event: Events,
               private accionesService: AccionesService,
-              private modalCtrl: ModalController) { }
+              private modalCtrl: ModalController,
+              private plt: Platform) { }
 
   ngOnInit() {
     //Metodo que carga datos de los planes y apuntamos al elegido
@@ -118,4 +122,10 @@ export class PlanModificarPage implements OnInit {
    }
   }
 
+  ionViewDidEnter() {
+    this.backButtonSub = this.plt.backButton.subscribeWithPriority( 10000, () => {
+      this.modalCtrl.dismiss();
+      this.nav.navigateRoot('/tabs/tab2');
+    });
+  }
 }
