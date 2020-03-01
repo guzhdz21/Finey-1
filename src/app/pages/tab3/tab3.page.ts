@@ -27,6 +27,7 @@ export class Tab3Page {
       trigger: {at: new Date(new Date().getTime() + 10000)},
       foreground: true,
       vibrate: true,
+      //sticky: true,
       icon: 'alarm'
     });
 
