@@ -88,6 +88,17 @@ export class PlanFormPage implements OnInit {
             }
             this.nav.navigateRoot('/tabs/tab2');
             return;
+          } else  {
+            if(await this.masDosPlanes(margenMax, margenMin)) {
+              this.datosService.guardarNuevoPlan(this.planNuevo);
+              this.modalCtrl.dismiss();
+              if(this.prioridadDos == true) {
+                this.nav.navigateRoot('/plan-pausar-page');
+                return;
+              }
+              this.nav.navigateRoot('/tabs/tab2');
+              return;
+            }
           }
           return;
         }
@@ -104,6 +115,10 @@ export class PlanFormPage implements OnInit {
       var ahorrar = 0;
       ahorrar = this.usuarioCargado.ingresoCantidad - this.planNuevo.aportacionMensual;
       return this.alertasUnPlan(margenMax, margenMin, ahorrar, unPLan);
+  }
+
+  masDosPlanes(margenMax: number, margenMin: number) {
+    return true;
   }
 
   async dosPlanes(margenMax: number, margenMin: number) {

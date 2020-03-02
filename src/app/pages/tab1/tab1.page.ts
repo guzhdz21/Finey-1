@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, Inject, LOCALE_ID } from '@angular/core';
 import { ChartType } from 'chart.js';
 import { SingleDataSet, Label } from 'ng2-charts';
 import { Rubro, UsuarioLocal } from '../../interfaces/interfaces';
@@ -48,16 +48,17 @@ export class Tab1Page implements OnInit {
               private modalCtrl: ModalController,
               private nav: NavController,
               private event: Events,
-              private plt: Platform) {}
+              private plt: Platform,
+              @Inject(LOCALE_ID) private locale: string) {}
 
-  ngOnInit() {
+  async ngOnInit() {
     //Condicional para abrir el registro de la app
     if(this.datosService.primera === true) {
-      this.nav.navigateRoot('/modal-registro-page');
+      await this.nav.navigateRoot('/modal-registro-page');
     }
 
     //Evento que escucha cuando el la informacion del usuario es actualiza para actualizar la grafica
-    this.event.subscribe('usuarioActualizado', () => {
+     await this.event.subscribe('usuarioActualizado', () => {
       this.usuarioCargado = this.datosService.usuarioCarga;
       this.gastosCero = true;
       this.datos = [];
@@ -66,13 +67,13 @@ export class Tab1Page implements OnInit {
           this.gastosCero = false;
         }
       this.datos.push(Number(element.porcentaje));
-      this.mostrarSaldo();
       });
+      this.mostrarSaldo();
       this.doughnutChartData = this.datos;
     });
     
     //Evento que escucha cuando el usuario es insertado para cambiar los datos de la grafica
-    this.event.subscribe('usuarioInsertado', () => {
+     await this.event.subscribe('usuarioInsertado', () => {
       this.usuarioCargado = this.datosService.usuarioCarga;
       this.mostrarSaldo();
     });
@@ -126,9 +127,9 @@ export class Tab1Page implements OnInit {
   }
 
   //Metodo que carga los datos cuando un usuario entrara al tabs
-  ionViewWillEnter() {
+  async ionViewWillEnter() {
     this.datosService.cargarDatos();
-    this.event.subscribe('usuarioInsertado', () => {
+    await this.event.subscribe('usuarioInsertado', () => {
     this.usuarioCargado = this.datosService.usuarioCarga;
     });
     this.datos = [];
@@ -164,10 +165,7 @@ export class Tab1Page implements OnInit {
 
   ionViewDidEnter() {
     this.backButtonSub = this.plt.backButton.subscribeWithPriority( 10000, () => {
-      if(window.confirm('¿Deseas salir de la app?'))
-      {
-        navigator["app"].exitApp();
-      }
+      navigator["app"].exitApp();
     });
   }
 }
