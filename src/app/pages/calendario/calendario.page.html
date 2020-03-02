@@ -23,12 +23,12 @@
         <ion-input type="text" placeholder="Descripcion del recordatorio" [(ngModel)]="event.desc"></ion-input>
       </ion-item>
       <ion-item>
-        <ion-label>Inicio</ion-label>
-        <ion-datetime displayFormat="MM/DD/YYYY HH:mm" pickerFormat="MMM D:HH:mm" [(ngModel)]="event.startTime" [min]="minDate"></ion-datetime>
+        <ion-label>Hora de inicio</ion-label>
+        <ion-datetime cancelText="Cancelar" doneText="Aceptar" displayFormat="MM/DD/YYYY HH:mm" pickerFormat="HH:mm" [(ngModel)]="event.startTime" [min]="minDate"></ion-datetime>
       </ion-item>
       <ion-item>
-        <ion-label>Fin</ion-label>
-        <ion-datetime displayFormat="MM/DD/YYYY HH:mm" pickerFormat="MMM D:HH:mm" [(ngModel)]="event.endTime" [min]="minDate"></ion-datetime>
+        <ion-label>Hora de fin</ion-label>
+        <ion-datetime cancelText="Cancelar" doneText="Aceptar" displayFormat="MM/DD/YYYY HH:mm" pickerFormat="HH:mm" [(ngModel)]="event.endTime" [min]="minDate"></ion-datetime>
       </ion-item>
       <ion-button fill="outline" expand="block"  [disabled]="event.title == ''" (click)="registrarNuevoRecordatorio()">Agregar Recordatorio</ion-button>
  
