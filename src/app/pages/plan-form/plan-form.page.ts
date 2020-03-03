@@ -118,6 +118,20 @@ export class PlanFormPage implements OnInit {
   }
 
   masDosPlanes(margenMax: number, margenMin: number) {
+    var ahorrar = 0;
+    var planMenor = this.planes[0];
+    var planMayor = this.planNuevo;
+    var gasto = 0;
+
+    this.planes.forEach(element => {
+      if(planMenor.tiempoRestante > element.tiempoRestante) {
+        planMenor = element;
+      }
+      if(planMayor.tiempoRestante < element.tiempoRestante) {
+        planMayor = element
+      }
+      ahorrar += element.cantidadTotal-element.cantidadAcumulada; 
+    });
     return true;
   }
 
