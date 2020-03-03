@@ -4,6 +4,7 @@ import { Rubro, ColorArray, LabelArray, UsuarioLocal, Gasto, Plan, AlertaGeneral
 import { Storage } from '@ionic/storage';
 import { ToastController, Events} from '@ionic/angular';
 import { AlertController } from '@ionic/angular';
+import { LocalNotifications } from '@ionic-native/local-notifications/ngx';
 
 @Injectable({
   providedIn: 'root'
@@ -14,7 +15,8 @@ export class DatosService {
               private storage: Storage,
               private toastCtrl: ToastController,
               private event: Events,
-              public alertCtrl: AlertController) { 
+              public alertCtrl: AlertController,
+              private localNotifications: LocalNotifications) { 
     this.cargarPrimeraVez();
     this.cargarDatos();
     this.cargarDatosPlan();
@@ -205,6 +207,8 @@ export class DatosService {
     this.recordatoriosCargados.push(recordatorio);
     this.storage.set('Recordatorios', this.recordatoriosCargados);
     this.event.publish('recordatoriosCargados');
+
+    this.mandarNotificacion(recordatorio);
   }
 
   // Metodo que actualiza los recordatorios en el storage
@@ -228,9 +232,24 @@ export class DatosService {
   }
 
   // Metodo que borra un recordatorio del storage
-  async borrarRecordatorio(i:number) {
-    this.recordatoriosCargados = this.recordatoriosCargados.filter( recordatorio => recordatorio != this.recordatoriosCargados[i]);
-    await this.storage.set('recordatorio', this.recordatoriosCargados);
-    this.event.publish('recordatoriosModificados');
+  async borrarRecordatorio(recordatorio_eliminar: Recordatorio) {
+    this.recordatoriosCargados = this.recordatoriosCargados.filter( recordatorio => recordatorio != recordatorio_eliminar);
+    console.log(this.recordatoriosCargados);
+    await this.storage.set('Recordatorios', this.recordatoriosCargados);
+    this.event.publish('recordatoriosCargados');
+    console.log(recordatorio_eliminar);
+  }
+
+  async mandarNotificacion( recordatorio: Recordatorio) {
+    await this.localNotifications.schedule({
+      id: 1,
+      title: 'Guz gay y joto',
+      text: 'Es demasiado gay',
+      trigger: {at: new Date(recordatorio.inicio)},
+      foreground: true,
+      vibrate: true,
+      //sticky: true,
+      icon: 'alarm'
+    });
   }
 }

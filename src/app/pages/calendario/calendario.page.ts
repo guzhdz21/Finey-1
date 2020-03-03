@@ -129,31 +129,37 @@ const alert = await this.alertCtrl.create({
   header: event.title,
   subHeader: event.desc,
   message: 'Inicio:  ' + start + '<br><br>Fin:  ' + end,
-  buttons: [{text: 'Borrar', handler: (blah) => {}},
+  buttons: [{text: 'Borrar', handler: (blah) => { this.borrarRecordatorio(event)}},
             {text: 'Ok'}]
     });
     alert.present();  
  }
 
  //Metodo que le otorga los datos ingresador del recordatorio a nuestra interface Recordatorio e invoca la funcion para guardarlo en storage
-async registrarNuevoRecordatorio(){
+async registrarNuevoRecordatorio() {
   await this.datosService.cargarDatosRecordatorios();
   this.recordatorioFull.title = this.event.title;
   this.recordatorioFull.mensaje = this.event.desc;
-  this.recordatorioFull.inicio = this.event.startTime;
-  this.recordatorioFull.fin = this.event.endTime;
+  this.recordatorioFull.inicio = formatDate(this.event.startTime, 'medium',this.locale);
+  this.recordatorioFull.fin = formatDate(this.event.endTime, 'medium',this.locale);
+  console.log("imprimir antes: ", this.recordatorioFull);
   await this.datosService.guardarNuevoRecordatorio(this.recordatorioFull);
  this.resetEvent();
 }
 
 // Metodo que muestra una alert para borrar un recordatorio del storage
- async borrarRecordatorio(i: number) {
+ async borrarRecordatorio(event) {
   await this.accionesService.presentAlertPlan([{text: 'Cancelar', handler: (blah) => {this.accionesService.borrarRecordatorio = false}},
                                         {text: 'Borrar', handler: (blah) => {this.accionesService.borrarRecordatorio = true}}], 
                                         '¿Estas seguro de que quieres borrar este recordatorio?', 'En caso de que te retractes tendrías que crear uno nuevo similar');
   
   if(this.accionesService.borrarRecordatorio==true) {
-    this.datosService.borrarRecordatorio(i);
+
+    this.recordatorioFull.title = event.title;
+    this.recordatorioFull.mensaje = event.desc;
+    this.recordatorioFull.inicio = formatDate(this.event.startTime, 'medium',this.locale);
+    this.recordatorioFull.fin = formatDate(this.event.endTime, 'medium',this.locale);
+    this.datosService.borrarRecordatorio(this.recordatorioFull);
   } 
 }
 
@@ -191,6 +197,7 @@ async registrarNuevoRecordatorio(){
 
   }
 
+  //Metodo que te regresa a la pantalla tab1 en este caso
   ionViewDidEnter() {
     this.backButtonSub = this.plt.backButton.subscribeWithPriority( 10000, () => {
       this.modalCtrl.dismiss();
