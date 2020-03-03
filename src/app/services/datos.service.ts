@@ -233,8 +233,16 @@ export class DatosService {
 
   // Metodo que borra un recordatorio del storage
   async borrarRecordatorio(recordatorio_eliminar: Recordatorio) {
-    this.recordatoriosCargados = this.recordatoriosCargados.filter( recordatorio => recordatorio != recordatorio_eliminar);
+    this.recordatoriosCargados = this.recordatoriosCargados.filter( recordatorio => recordatorio.title != recordatorio_eliminar.title
+                                                                    && recordatorio.mensaje != recordatorio_eliminar.mensaje
+                                                                    && recordatorio.inicio != recordatorio_eliminar.inicio 
+                                                                    && recordatorio.fin != recordatorio_eliminar.fin);
     console.log(this.recordatoriosCargados);
+    this.recordatoriosCargados.forEach(element => {
+      if(recordatorio_eliminar == element) {
+        console.log("hola");
+      }
+    });
     await this.storage.set('Recordatorios', this.recordatoriosCargados);
     this.event.publish('recordatoriosCargados');
     console.log(recordatorio_eliminar);
