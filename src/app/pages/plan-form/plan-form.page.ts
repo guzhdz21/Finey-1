@@ -80,26 +80,29 @@ export class PlanFormPage implements OnInit {
       {
         if(this.planes.length == 1) {
           if(await this.dosPlanes(margenMax, margenMin)) {
-            this.datosService.guardarNuevoPlan(this.planNuevo);
-            this.modalCtrl.dismiss();
             if(this.prioridadDos == true) {
+              this.datosService.guardarNuevoPlan(this.planNuevo);
+              this.modalCtrl.dismiss();
               this.nav.navigateRoot('/plan-pausar-page');
               return;
             }
+            this.datosService.guardarNuevoPlan(this.planNuevo);
+            this.modalCtrl.dismiss();
             this.nav.navigateRoot('/tabs/tab2');
             return;
-          } else  {
-            if(await this.masDosPlanes(margenMax, margenMin)) {
-              this.datosService.guardarNuevoPlan(this.planNuevo);
-              this.modalCtrl.dismiss();
-              if(this.prioridadDos == true) {
-                this.nav.navigateRoot('/plan-pausar-page');
-                return;
-              }
-              this.nav.navigateRoot('/tabs/tab2');
-              return;
-            }
           }
+          return;
+        }
+      }
+      else  {
+        if(await this.masDosPlanes(margenMax, margenMin)) {
+          this.datosService.guardarNuevoPlan(this.planNuevo);
+          this.modalCtrl.dismiss();
+          if(this.prioridadDos == true) {
+            this.nav.navigateRoot('/plan-pausar-page');
+            return;
+          }
+          this.nav.navigateRoot('/tabs/tab2');
           return;
         }
       }
@@ -156,6 +159,7 @@ export class PlanFormPage implements OnInit {
 
       if(planMenor.aportacionMensual >= ahorrar) {
         if(await this.prioridad(planMenor.nombre)) {
+          this.prioridadDos = false;
           return false;
         } else {
           this.prioridadDos = true;

@@ -251,8 +251,8 @@ export class DatosService {
   async mandarNotificacion( recordatorio: Recordatorio) {
     await this.localNotifications.schedule({
       id: 1,
-      title: 'Guz gay y joto',
-      text: 'Es demasiado gay',
+      title: recordatorio.title,
+      text: recordatorio.mensaje,
       trigger: {at: new Date(recordatorio.inicio)},
       foreground: true,
       vibrate: true,

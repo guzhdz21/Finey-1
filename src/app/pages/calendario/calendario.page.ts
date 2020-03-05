@@ -42,14 +42,14 @@ recordatorioFull: Recordatorio =
   ];
 
 cargaYa = false; //Variable que le indica cuando ya cargar el calendario
-minDate = new Date().toISOString();  
+minDate = new Date(new Date().getHours()).toISOString();  
 viewTitle = ''; //Es la etiqueta que te indica el nombre del mes
 eventSource=[];
 collapseCard: boolean = false;
 backButtonSub: Subscription;
 
     markDisabled = (date: Date) => {
-        var current = new Date(new Date().getTime() - 86400000);
+        var current = new Date(new Date());
         return date < current;
     };
 
