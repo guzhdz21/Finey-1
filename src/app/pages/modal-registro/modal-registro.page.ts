@@ -131,7 +131,7 @@ sexoRadio(event)
       element.nombre = this.rubros[i].texto;
       element.tipo = this.rubros[i].tipo;
       element.icono = this.rubros[i].nombre;
-      element.porcentaje = ((element.cantidad*100)/this.usuario.ingresoCantidad).toString();
+      element.porcentaje = (Math.round(((element.cantidad*100)/this.usuario.ingresoCantidad)*100)/100).toString();
       if (element.tipo === 'Promedio') {
         element.margenMax = element.cantidad+(element.cantidad*0.07);
         element.margenMin = element.cantidad-(element.cantidad*0.07);
