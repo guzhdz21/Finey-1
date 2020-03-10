@@ -5,6 +5,8 @@ import { NavController, ModalController, Platform } from '@ionic/angular';
 import { AccionesService } from '../../services/acciones.service';
 import { UsuarioLocal } from '../../interfaces/interfaces';
 import { Subscription } from 'rxjs';
+import { createNgModule } from '@angular/compiler/src/core';
+import { element } from 'protractor';
 
 @Component({
   selector: 'app-plan-form',
@@ -37,6 +39,8 @@ export class PlanFormPage implements OnInit {
   planes: Plan[] = this.datosService.planesCargados;
 
   prioridadDos: boolean = false; 
+  
+  creado: boolean;
 
   backButtonSub: Subscription;
 
@@ -56,16 +60,12 @@ export class PlanFormPage implements OnInit {
    //Metodo que calcula los datos para agregar un plan nuevo y lo guarda en el Storage
   async calcularYRegistrar() {
     var unPlan = false;
+    var margenMax = 0;
+    var margenMin = 0;
+
     if(this.planes.length < 1) {
       unPlan = true;
     }
-
-    this.planNuevo.aportacionMensual = this.planNuevo.cantidadTotal / this.planNuevo.tiempoTotal;
-    this.planNuevo.cantidadAcumulada = 0;
-    this.planNuevo.tiempoRestante = this.planNuevo.tiempoTotal;
-
-    var margenMax = 0;
-    var margenMin = 0;
 
     this.usuarioCargado.gastos.forEach(element => {
       if( element.cantidad != 0 ) {
@@ -73,44 +73,51 @@ export class PlanFormPage implements OnInit {
         margenMin += element.margenMin;
       } 
     });
+    
+    this.planNuevo.aportacionMensual = this.planNuevo.cantidadTotal / this.planNuevo.tiempoTotal;
+    this.planNuevo.cantidadAcumulada = 0;
+    this.planNuevo.tiempoRestante = this.planNuevo.tiempoTotal;
 
+    if (await this.validarPlan(margenMax, margenMin, unPlan)) { 
 
-    if (await this.validarPlan(margenMax, margenMin, unPlan)) {
-      if(unPlan == false)
-      {
-        if(this.planes.length == 1) {
-          if(await this.dosPlanes(margenMax, margenMin)) {
-            if(this.prioridadDos == true) {
-              this.datosService.guardarNuevoPlan(this.planNuevo);
-              this.modalCtrl.dismiss();
-              this.nav.navigateRoot('/plan-pausar-page');
-              return;
-            }
-            this.datosService.guardarNuevoPlan(this.planNuevo);
+      if(unPlan == false) {
+
+        if(this.planes.length == 1) { 
+          await this.dosPlanes(margenMax, margenMin);
+
+          if(this.prioridadDos == true) {
+            this.planes.push(this.planNuevo);
+            this.datosService.actualizarPlanes(this.planes)
+            this.modalCtrl.dismiss();
+            this.nav.navigateRoot('/plan-pausar-page');
+            return;
+          }
+
+          if(this.creado == true) {
+            this.planes.push(this.planNuevo);
+            this.datosService.actualizarPlanes(this.planes)
             this.modalCtrl.dismiss();
             this.nav.navigateRoot('/tabs/tab2');
             return;
           }
           return;
         }
-      }
-      else  {
-        if(await this.masDosPlanes(margenMax, margenMin)) {
-          this.datosService.guardarNuevoPlan(this.planNuevo);
+        await this.masDosPlanes(margenMax, margenMin);
+        
+        if(this.creado == true) {
+          this.datosService.actualizarPlanes(this.planes)
           this.modalCtrl.dismiss();
-          if(this.prioridadDos == true) {
-            this.nav.navigateRoot('/plan-pausar-page');
-            return;
-          }
           this.nav.navigateRoot('/tabs/tab2');
           return;
         }
       }
-      this.datosService.guardarNuevoPlan(this.planNuevo);
+      this.planes.push(this.planNuevo);
+      this.datosService.actualizarPlanes(this.planes)
       this.modalCtrl.dismiss();
       this.nav.navigateRoot('/tabs/tab2');
       return;
     }
+    return;
   }
 
   //Metodo para validar el ingreso del plan
@@ -120,7 +127,7 @@ export class PlanFormPage implements OnInit {
       return this.alertasUnPlan(margenMax, margenMin, ahorrar, unPLan);
   }
 
-  masDosPlanes(margenMax: number, margenMin: number) {
+  async masDosPlanes(margenMax: number, margenMin: number) {
     var ahorrar = 0;
     var planMenor = this.planes[0];
     var planMayor = this.planNuevo;
@@ -131,10 +138,93 @@ export class PlanFormPage implements OnInit {
         planMenor = element;
       }
       if(planMayor.tiempoRestante < element.tiempoRestante) {
-        planMayor = element
+        planMayor = element;
       }
-      ahorrar += element.cantidadTotal-element.cantidadAcumulada; 
+      ahorrar += element.cantidadTotal - element.cantidadAcumulada; 
     });
+    if(this.planNuevo.tiempoRestante < planMenor.tiempoRestante) {
+      planMenor = this.planNuevo;
+    }
+    ahorrar += this.planNuevo.cantidadTotal - this.planNuevo.cantidadAcumulada;
+    
+    ahorrar /= planMayor.tiempoRestante;
+    gasto = this.usuarioCargado.ingresoCantidad - ahorrar;
+
+    if (gasto  >= margenMax) {
+
+      planMenor.aportacionMensual = (planMenor.cantidadTotal - planMenor.cantidadAcumulada)/planMenor.tiempoRestante;
+
+      if(planMenor.aportacionMensual >= (ahorrar/2)) {
+
+        if(await this.prioridad(planMenor.nombre)) {
+          this.prioridadDos = false;
+          this.creado = false;
+          return;
+        } else {
+          this.prioridadDos = true;
+          this.creado = false;
+          return;
+        }
+
+      } else {
+        var aux = planMenor.aportacionMensual;
+        this.planes = this.planes.filter(plan => plan != planMenor);
+        this.planes.push(this.planNuevo);
+        this.planes.forEach(element => {
+          if(element != planMayor) {
+            element.aportacionMensual = planMenor.aportacionMensual;
+            aux += element.aportacionMensual;
+          }
+        });
+        planMayor.aportacionMensual = ahorrar - aux;
+        this.planes.push(planMenor);
+        await this.accionesService.presentAlertPlan([{text: 'ok', handler: (blah) => {}}], 
+                                                      'Plan creado', 
+        '¡Si te propones gastar menos en tus gastos promedio (luz, agua, etc.) puedes completar tu plan en menos tiempo!');
+        this.creado = true;
+        return;
+      }
+           
+    } else if ( ( gasto < margenMax ) && (ahorrar >= margenMin ) ) {
+
+      planMenor.aportacionMensual = (planMenor.cantidadTotal - planMenor.cantidadAcumulada)/planMenor.tiempoRestante;
+      
+      if(planMenor.aportacionMensual >= (ahorrar)/2) {
+
+        if(await this.prioridad(planMenor.nombre)) {
+          this.prioridadDos = false;
+          this.creado = false;
+          return;
+        } else {
+          this.prioridadDos = true;
+          this.creado = false;
+          return;
+        }
+
+      }
+      else {
+        await this.accionesService.presentAlertPlan([{text: 'Crear', handler: (blah) => {this.accionesService.alertaPlanCrear = true}},
+                                                  {text: 'Modificar', handler: (blah) => {this.accionesService.alertaPlanCrear = false}}], 
+                                                  'Plan que apenas es posible', 
+        'Puedes crear el plan y cumplirlo en el tiempo establecido MIENTRAS te mantengas en GASTOS MINIMOS en los gastos promedio (luz, agua, etc.) o puedes aumentar el tiempo en conseguirlo para que no estes tan presionado');
+        this.creado = this.accionesService.alertaPlanCrear;
+        if(this.creado = true) {
+          var aux = planMenor.aportacionMensual;
+        this.planes = this.planes.filter(plan => plan != planMenor);
+        this.planes.push(this.planNuevo);
+        this.planes.forEach(element => {
+          if(element != planMayor) {
+            element.aportacionMensual = planMenor.aportacionMensual;
+            aux += element.aportacionMensual;
+          }
+        });
+        planMayor.aportacionMensual = ahorrar - aux;
+        this.planes.push(planMenor);
+        }
+        return;
+      }
+
+    }
     return true;
   }
 
@@ -155,35 +245,47 @@ export class PlanFormPage implements OnInit {
 
 
     if (gasto  >= margenMax) {
+
       planMenor.aportacionMensual = (planMenor.cantidadTotal - planMenor.cantidadAcumulada)/planMenor.tiempoRestante;
 
       if(planMenor.aportacionMensual >= ahorrar) {
+
         if(await this.prioridad(planMenor.nombre)) {
           this.prioridadDos = false;
-          return false;
+          this.creado = false;
+          return;
         } else {
           this.prioridadDos = true;
-          return true;
+          this.creado = false;
+          return;
         }
+
       }
       else {
         planMayor.aportacionMensual = ahorrar - planMenor.aportacionMensual;
         await this.accionesService.presentAlertPlan([{text: 'ok', handler: (blah) => {}}], 
                                                       'Plan creado', 
         '¡Si te propones gastar menos en tus gastos promedio (luz, agua, etc.) puedes completar tu plan en menos tiempo!');
-        return true;
+        this.creado = true;
+        return;
       }
            
     } else if ( ( gasto < margenMax ) && (ahorrar >= margenMin ) ) {
+
       planMenor.aportacionMensual = (planMenor.cantidadTotal - planMenor.cantidadAcumulada)/planMenor.tiempoRestante;
       
       if(planMenor.aportacionMensual >= ahorrar) {
+
         if(await this.prioridad(planMenor.nombre)) {
-          return false;
+          this.prioridadDos = false;
+          this.creado = false;
+          return;
         } else {
           this.prioridadDos = true;
-          return true;
+          this.creado = false;
+          return;
         }
+
       }
       else {
         planMayor.aportacionMensual = ahorrar - planMenor.aportacionMensual;
@@ -191,13 +293,15 @@ export class PlanFormPage implements OnInit {
                                                   {text: 'Modificar', handler: (blah) => {this.accionesService.alertaPlanCrear = false}}], 
                                                   'Plan que apenas es posible', 
         'Puedes crear el plan y cumplirlo en el tiempo establecido MIENTRAS te mantengas en GASTOS MINIMOS en los gastos promedio (luz, agua, etc.) o puedes aumentar el tiempo en conseguirlo para que no estes tan presionado');
-        return this.accionesService.alertaPlanCrear;
+        this.creado = this.accionesService.alertaPlanCrear;
+        return;
       }
 
     } else {
       await this.accionesService.presentAlertPlan([{text: 'Modificar', handler: (blah) => {}}], 
       'No puedes completar este plan en ese tiempo', 'Presiona Modificar y aumenta tu tiempo para ser apto de conseguirlo');
-      return false;
+      this.creado = false;
+      return;
      }
   }
 
@@ -206,7 +310,7 @@ export class PlanFormPage implements OnInit {
     await this.accionesService.presentAlertPlan([{text: 'No puedo', handler: (blah) => {modificar = false}},
                                                   {text: 'Modificar', handler: (blah) => {modificar = true}}], 
                                                   'Hemos detectado el plan ' + nombre + ' como prioritario', 
-    'Puedes disminuir la cantidad del plan o aumentar el tiempo del mismo, si no puedes hacer esto escoge "No puedo"');
+    'Puedes modificar los datos del plan nuevo, si no puedes hacer esto escoge "No puedo"');
     return modificar;
   }
   //Metodo que omite el ingreso del primer plan al hacer el registro
