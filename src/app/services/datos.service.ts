@@ -24,6 +24,7 @@ export class DatosService {
 
 // Advertencia sobre si el usuario puede satisfacer sus necesidades basicas con sus datos ingresados
   registrarseAdvertencia: boolean; 
+  hola = true;
 
   // Declaracion de el usuario cargado
   usuarioCarga: UsuarioLocal = 
@@ -48,6 +49,12 @@ export class DatosService {
   primera: boolean; // Variable para saber si es la primera vez que el usuario corre la app
   planesExisten: boolean = false; // Variable para saber si hay planes existentes
   recordatoriosExisten: boolean = false; // Variable para saber si hay planes existentes
+  recordatorioGlobal: Recordatorio = {
+    title: '',
+    mensaje: '',
+    inicio: null,
+    fin: null
+  };
 
   // Variable de tipo plan que adquiere los valores del storage
   planesCargados: Plan[] = [
@@ -208,7 +215,7 @@ export class DatosService {
     this.storage.set('Recordatorios', this.recordatoriosCargados);
     this.event.publish('recordatoriosCargados');
 
-    this.mandarNotificacion(recordatorio);
+    //this.mandarNotificacion(recordatorio);
   }
 
   // Metodo que actualiza los recordatorios en el storage
@@ -233,20 +240,31 @@ export class DatosService {
 
   // Metodo que borra un recordatorio del storage
   async borrarRecordatorio(recordatorio_eliminar: Recordatorio) {
-    this.recordatoriosCargados = this.recordatoriosCargados.filter( recordatorio => recordatorio.title != recordatorio_eliminar.title
-                                                                    && recordatorio.mensaje != recordatorio_eliminar.mensaje
-                                                                    && recordatorio.inicio != recordatorio_eliminar.inicio 
-                                                                    && recordatorio.fin != recordatorio_eliminar.fin);
-    console.log(this.recordatoriosCargados);
-    this.recordatoriosCargados.forEach(element => {
-      if(recordatorio_eliminar == element) {
-        console.log("hola");
-      }
-    });
+
+    console.log("------------------");
+
+    this.recordatorioGlobal.title = recordatorio_eliminar.title;
+    this.recordatorioGlobal.mensaje = recordatorio_eliminar.mensaje;
+    this.recordatorioGlobal.inicio = recordatorio_eliminar.inicio;
+    this.recordatorioGlobal.fin = recordatorio_eliminar.fin;
+
+    //this.recordatoriosCargados = this.recordatoriosCargados.filter(this.Encontrado);
+
+    let eventCopy = { 
+      title: recordatorio_eliminar.title,
+      inicio: recordatorio_eliminar.inicio,
+      fin: recordatorio_eliminar.fin,
+      mensaje: recordatorio_eliminar.mensaje
+    }
+
+    this.recordatoriosCargados = this.recordatoriosCargados.filter(recordatorio => recordatorio !== eventCopy);
+
     await this.storage.set('Recordatorios', this.recordatoriosCargados);
     this.event.publish('recordatoriosCargados');
-    console.log(recordatorio_eliminar);
-  }
+
+    this.recordatoriosCargados.forEach(element => {
+    });
+}
 
   async mandarNotificacion( recordatorio: Recordatorio) {
     await this.localNotifications.schedule({
