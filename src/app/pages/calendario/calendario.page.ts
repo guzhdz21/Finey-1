@@ -153,12 +153,11 @@ async registrarNuevoRecordatorio() {
                                         {text: 'Borrar', handler: (blah) => {this.accionesService.borrarRecordatorio = true}}], 
                                         '¿Estas seguro de que quieres borrar este recordatorio?', 'En caso de que te retractes tendrías que crear uno nuevo similar');
   
-  if(this.accionesService.borrarRecordatorio==true) {
-    console.log("llegue");
+  if(this.accionesService.borrarRecordatorio == true) {
     this.recordatorioFull.title = event.title;
     this.recordatorioFull.mensaje = event.desc;
-    this.recordatorioFull.inicio = formatDate(this.event.startTime, 'medium',this.locale);
-    this.recordatorioFull.fin = formatDate(this.event.endTime, 'medium',this.locale);
+    this.recordatorioFull.inicio = formatDate(event.startTime, 'medium', this.locale)
+    this.recordatorioFull.fin = formatDate(event.endTime, 'medium',this.locale);
    await this.datosService.borrarRecordatorio(this.recordatorioFull);
   } 
 }

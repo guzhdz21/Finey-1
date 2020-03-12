@@ -49,12 +49,6 @@ export class DatosService {
   primera: boolean; // Variable para saber si es la primera vez que el usuario corre la app
   planesExisten: boolean = false; // Variable para saber si hay planes existentes
   recordatoriosExisten: boolean = false; // Variable para saber si hay planes existentes
-  recordatorioGlobal: Recordatorio = {
-    title: '',
-    mensaje: '',
-    inicio: null,
-    fin: null
-  };
 
   // Variable de tipo plan que adquiere los valores del storage
   planesCargados: Plan[] = [
@@ -241,29 +235,24 @@ export class DatosService {
   // Metodo que borra un recordatorio del storage
   async borrarRecordatorio(recordatorio_eliminar: Recordatorio) {
 
-    console.log("------------------");
-
-    this.recordatorioGlobal.title = recordatorio_eliminar.title;
-    this.recordatorioGlobal.mensaje = recordatorio_eliminar.mensaje;
-    this.recordatorioGlobal.inicio = recordatorio_eliminar.inicio;
-    this.recordatorioGlobal.fin = recordatorio_eliminar.fin;
-
     //this.recordatoriosCargados = this.recordatoriosCargados.filter(this.Encontrado);
-
-    let eventCopy = { 
-      title: recordatorio_eliminar.title,
-      inicio: recordatorio_eliminar.inicio,
-      fin: recordatorio_eliminar.fin,
-      mensaje: recordatorio_eliminar.mensaje
-    }
-
-    this.recordatoriosCargados = this.recordatoriosCargados.filter(recordatorio => recordatorio !== eventCopy);
-
+    await this.cargarDatosRecordatorios();
+    let nuevosRecordatorios: Recordatorio[] = []; 
+    console.log(recordatorio_eliminar);
+    console.log(this.recordatoriosCargados);
+    this.recordatoriosCargados.forEach(element => {
+      if(element.title == recordatorio_eliminar.title 
+        && element.mensaje == recordatorio_eliminar.mensaje
+        && element.fin == recordatorio_eliminar.fin 
+        && element.inicio == recordatorio_eliminar.inicio) {
+        } else {
+          nuevosRecordatorios.push(element);
+        }
+    });
+    console.log(nuevosRecordatorios);
+    this.recordatoriosCargados = nuevosRecordatorios;
     await this.storage.set('Recordatorios', this.recordatoriosCargados);
     this.event.publish('recordatoriosCargados');
-
-    this.recordatoriosCargados.forEach(element => {
-    });
 }
 
   async mandarNotificacion( recordatorio: Recordatorio) {

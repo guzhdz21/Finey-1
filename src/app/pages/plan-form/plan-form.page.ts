@@ -63,7 +63,7 @@ export class PlanFormPage implements OnInit {
     var margenMax = 0;
     var margenMin = 0;
 
-    if(this.planes.length < 1) {
+    if( this.planes.length < 1 || this.planes[0] == null) {
       unPlan = true;
     }
 
