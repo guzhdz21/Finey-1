@@ -238,8 +238,6 @@ export class DatosService {
     //this.recordatoriosCargados = this.recordatoriosCargados.filter(this.Encontrado);
     await this.cargarDatosRecordatorios();
     let nuevosRecordatorios: Recordatorio[] = []; 
-    console.log(recordatorio_eliminar);
-    console.log(this.recordatoriosCargados);
     this.recordatoriosCargados.forEach(element => {
       if(element.title == recordatorio_eliminar.title 
         && element.mensaje == recordatorio_eliminar.mensaje
@@ -249,7 +247,6 @@ export class DatosService {
           nuevosRecordatorios.push(element);
         }
     });
-    console.log(nuevosRecordatorios);
     this.recordatoriosCargados = nuevosRecordatorios;
     await this.storage.set('Recordatorios', this.recordatoriosCargados);
     this.event.publish('recordatoriosCargados');

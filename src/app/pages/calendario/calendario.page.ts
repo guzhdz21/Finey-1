@@ -142,7 +142,6 @@ async registrarNuevoRecordatorio() {
   this.recordatorioFull.mensaje = this.event.desc;
   this.recordatorioFull.inicio = formatDate(this.event.startTime, 'medium',this.locale);
   this.recordatorioFull.fin = formatDate(this.event.endTime, 'medium',this.locale);
-  console.log("imprimir antes: ", this.recordatorioFull);
   await this.datosService.guardarNuevoRecordatorio(this.recordatorioFull);
  this.resetEvent();
 }

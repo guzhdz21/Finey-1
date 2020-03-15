@@ -5,8 +5,6 @@ import { NavController, ModalController, Platform } from '@ionic/angular';
 import { AccionesService } from '../../services/acciones.service';
 import { UsuarioLocal } from '../../interfaces/interfaces';
 import { Subscription } from 'rxjs';
-import { createNgModule } from '@angular/compiler/src/core';
-import { element } from 'protractor';
 
 @Component({
   selector: 'app-plan-form',
@@ -63,7 +61,7 @@ export class PlanFormPage implements OnInit {
     var margenMax = 0;
     var margenMin = 0;
 
-    if( this.planes.length < 1 || this.planes[0] == null) {
+    if( this.planes.length < 1 || this.datosService.planesExisten == false) {
       unPlan = true;
     }
 
@@ -111,6 +109,7 @@ export class PlanFormPage implements OnInit {
           return;
         }
       }
+      this.planes = [];
       this.planes.push(this.planNuevo);
       this.datosService.actualizarPlanes(this.planes)
       this.modalCtrl.dismiss();
