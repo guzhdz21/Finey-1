@@ -16,7 +16,16 @@ export class DatosService {
               private toastCtrl: ToastController,
               private event: Events,
               public alertCtrl: AlertController,
-              private localNotifications: LocalNotifications) { 
+              public localNotifications: LocalNotifications) { 
+
+    this.localNotifications.on('click').subscribe(res => {
+
+    });
+
+    this.localNotifications.on('trigger').subscribe(res => {
+      
+    });
+
     this.cargarPrimeraVez();
     this.cargarDatos();
     this.cargarDatosPlan();
@@ -261,7 +270,13 @@ export class DatosService {
       foreground: true,
       vibrate: true,
       //sticky: true,
-      icon: 'alarm'
+      icon: 'alarm',
+      //lockscreen: true
     });
   }
+
+  borrarRecordatorioUsado(){
+    this.localNotifications.on
+  }
+
 }
