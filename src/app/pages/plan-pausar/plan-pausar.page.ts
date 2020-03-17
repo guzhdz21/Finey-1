@@ -43,6 +43,8 @@ export class PlanPausarPage implements OnInit {
       this.datosService.actualizarPlanes(this.planes);
       this.modalCtrl.dismiss();
       this.nav.navigateRoot('/tabs/tab2');
+    } else {
+      
     }
   }
 

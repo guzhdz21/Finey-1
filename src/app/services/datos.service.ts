@@ -168,6 +168,9 @@ export class DatosService {
       this.planesCargados = [];
     }
     this.planesCargados.push(plan);
+    this.planesCargados.forEach(element => {
+      element.aportacionMensual = Math.round(element.aportacionMensual*100)/100;
+    });
     this.storage.set('Planes', this.planesCargados);
     this.event.publish('planesCargados');
   }
@@ -176,6 +179,9 @@ export class DatosService {
   actualizarPlanes(plan: Plan[]) {
     this.planesCargados = [];
     this.planesCargados = plan;
+    this.planesCargados.forEach(element => {
+      element.aportacionMensual = Math.round(element.aportacionMensual*100)/100;
+    });
     this.storage.set('Planes', this.planesCargados);
     this.event.publish('planesCargados');
   }

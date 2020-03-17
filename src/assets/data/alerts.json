@@ -98,5 +98,9 @@
     {
         "titulo": "Descripcion",
         "mensaje": "Puedes ingresar alguna descripción con información extra que quieras guardar en el plan"
+    },
+    {
+        "titulo": "Cantidad acumulada",
+        "mensaje": "Ingresa la cantidad que llevas acumulada del plan, si no llevas nada ingresa un 0"
     }
 ]
