@@ -5,6 +5,7 @@ import { Storage } from '@ionic/storage';
 import { ToastController, Events} from '@ionic/angular';
 import { AlertController } from '@ionic/angular';
 import { LocalNotifications } from '@ionic-native/local-notifications/ngx';
+import { AccionesService } from './acciones.service';
 
 @Injectable({
   providedIn: 'root'
@@ -16,14 +17,11 @@ export class DatosService {
               private toastCtrl: ToastController,
               private event: Events,
               public alertCtrl: AlertController,
-              public localNotifications: LocalNotifications) { 
-
-    this.localNotifications.on('click').subscribe(res => {
-
-    });
+              public localNotifications: LocalNotifications,
+              public accionesService: AccionesService) { 
 
     this.localNotifications.on('trigger').subscribe(res => {
-      
+      this.presentToast("Si funciona el trigger");
     });
 
     this.cargarPrimeraVez();
