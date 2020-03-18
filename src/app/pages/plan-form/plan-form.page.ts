@@ -41,6 +41,7 @@ export class PlanFormPage implements OnInit {
   creado: boolean;
 
   backButtonSub: Subscription;
+  planPrioritario: Plan;
 
   constructor( private datosService: DatosService,
                 private nav: NavController,
@@ -97,9 +98,17 @@ export class PlanFormPage implements OnInit {
           //Verificas si hay un plan prioritario
           if(this.prioridadDos == true) {
             this.planes.push(this.planNuevo);
+            this.planes.forEach(element => {
+              if(element != this.planPrioritario) {
+                element.aportacionMensual = 0;
+                element.pausado = true;
+              } else {
+                element.aportacionMensual = (element.cantidadTotal - element.cantidadAcumulada)/element.tiempoRestante;
+              }
+            });
             this.datosService.actualizarPlanes(this.planes);
             this.modalCtrl.dismiss();
-            this.nav.navigateRoot('/plan-pausar-page');
+            this.nav.navigateRoot('/tabs/tab2');
             return;
           }
 
@@ -308,6 +317,7 @@ export class PlanFormPage implements OnInit {
           return;
         } else {
           this.prioridadDos = true;
+          this.planPrioritario = planMenor;
           this.creado = false;
           return;
         }
@@ -337,6 +347,7 @@ export class PlanFormPage implements OnInit {
           return;
         } else {
           this.prioridadDos = true;
+          this.planPrioritario = planMenor;
           this.creado = false;
           return;
         }
@@ -387,7 +398,8 @@ export class PlanFormPage implements OnInit {
     await this.accionesService.presentAlertPlan([{text: 'No puedo', handler: (blah) => {modificar = false}},
                                                   {text: 'Modificar', handler: (blah) => {modificar = true}}], 
                                                   'Hemos detectado el plan ' + nombre + ' como prioritario', 
-    'Puedes modificar los datos del plan nuevo, si no puedes hacer esto escoge "No puedo"');
+    'Puedes modificar los datos del plan nuevo, si no puedes hacer esto escoge "No puedo" para pausar el' + 
+    ' plan que no es prioritario');
     return modificar;
   }
 
