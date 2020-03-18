@@ -40,7 +40,10 @@ export class PlanFormPage implements OnInit {
   
   creado: boolean;
 
+  pausa: boolean;
+
   backButtonSub: Subscription;
+
   planPrioritario: Plan;
 
   constructor( private datosService: DatosService,
@@ -190,8 +193,9 @@ export class PlanFormPage implements OnInit {
       if(planMayor.tiempoRestante < element.tiempoRestante) {
         planMayor = element;
       }
-      ahorrar += element.cantidadTotal - element.cantidadAcumulada; 
+      ahorrar += (element.cantidadTotal - element.cantidadAcumulada); 
     });
+    
     if(this.planNuevo.tiempoRestante < planMenor.tiempoRestante) {
       planMenor = this.planNuevo;
     }
@@ -205,7 +209,6 @@ export class PlanFormPage implements OnInit {
       planMenor.aportacionMensual = (planMenor.cantidadTotal - planMenor.cantidadAcumulada)/planMenor.tiempoRestante;
 
       if(planMenor.aportacionMensual >= (ahorrar/2)) {
-
         if(await this.prioridad(planMenor.nombre)) {
           this.prioridadDos = false;
           this.creado = false;
@@ -213,6 +216,11 @@ export class PlanFormPage implements OnInit {
         } else {
           this.prioridadDos = true;
           this.creado = false;
+          if(this.pausar()) {
+            this.pausa = true;
+            return;
+          }
+          this.pausa = false;
           return;
         }
 
@@ -240,7 +248,6 @@ export class PlanFormPage implements OnInit {
       planMenor.aportacionMensual = (planMenor.cantidadTotal - planMenor.cantidadAcumulada)/planMenor.tiempoRestante;
       
       if(planMenor.aportacionMensual >= (ahorrar)/2) {
-
         if(await this.prioridad(planMenor.nombre)) {
           this.prioridadDos = false;
           this.creado = false;
@@ -248,10 +255,11 @@ export class PlanFormPage implements OnInit {
         } else {
           this.prioridadDos = true;
           if(this.pausar()) {
-            
-          }
+          
           this.creado = false;
           return;
+          }
+          
         }
 
       } else {
@@ -275,6 +283,7 @@ export class PlanFormPage implements OnInit {
         }
         return;
       }
+      
     } else {
       await this.accionesService.presentAlertPlan([{text: 'Modificar', handler: (blah) => {}}], 
       'No puedes completar este plan en ese tiempo', 'Presiona Modificar y aumenta tu tiempo para ser apto de conseguirlo');
@@ -395,20 +404,28 @@ export class PlanFormPage implements OnInit {
   //Metodo para preguntarle al usuario que se deberia hacer con su plan prioritario
   async prioridad(nombre: string) {
     var modificar;
-    await this.accionesService.presentAlertPlan([{text: 'No puedo', handler: (blah) => {modificar = false}},
+    if(this.planes.length == 1) {
+      await this.accionesService.presentAlertPlan([{text: 'No puedo', handler: (blah) => {modificar = false}},
                                                   {text: 'Modificar', handler: (blah) => {modificar = true}}], 
                                                   'Hemos detectado el plan ' + nombre + ' como prioritario', 
     'Puedes modificar los datos del plan nuevo, si no puedes hacer esto escoge "No puedo" para pausar el' + 
     ' plan que no es prioritario');
     return modificar;
+    }
+    await this.accionesService.presentAlertPlan([{text: 'No puedo', handler: (blah) => {modificar = false}},
+                                                  {text: 'Modificar', handler: (blah) => {modificar = true}}], 
+                                                  'Hemos detectado el plan ' + nombre + ' como prioritario', 
+    'Puedes modificar los datos del plan nuevo, si no puedes hacer esto escoge "No puedo"');
+    return modificar;
   }
 
   async pausar() {
     var pausar;
-    await this.accionesService.presentAlertPlan([{text: 'Pausar', handler: (blah) => {pausar = false}},
-                                                  {text: 'Repartir', handler: (blah) => {pausar = true}}], 
-                                                  'Elije una opcion para proceder', 
-    'Puedes pausar todos los planes hasta que solo queden 2 o al prioritario acumularle lo necesario y del sobrante repartirlo igualitariamente a los demas planes');
+    await this.accionesService.presentAlertPlan([{text: 'Pausar', handler: (blah) => {pausar = true}},
+                                                  {text: 'Repartir', handler: (blah) => {pausar = false}}], 
+                                                  'Elije una opcion para proceder',
+    'Puedes pausar todos los planes hasta que solo queden 2 o al prioritario acumularle lo necesario y del sobrante' + 
+    ' repartirlo igualitariamente a los demas planes');
   }
   //Metodo que omite el ingreso del primer plan al hacer el registro
   omitir() {
