@@ -20,21 +20,15 @@ export class DatosService {
               public localNotifications: LocalNotifications,
               public accionesService: AccionesService) { 
 
-    this.localNotifications.on('trigger').subscribe(res => {
-      if(this.notificacionInicio==false){
-        this.borrarRecordatorio(res);
-      }
-    });
-
     this.cargarPrimeraVez();
     this.cargarDatos();
     this.cargarDatosPlan();
+    this.cargarIdsRecordatorios();
   }
 
 // Advertencia sobre si el usuario puede satisfacer sus necesidades basicas con sus datos ingresados
   registrarseAdvertencia: boolean; 
   notificacionTipoRecordatorio: boolean;
-  notificacionInicio: boolean;
 
   // Declaracion de el usuario cargado
   usuarioCarga: UsuarioLocal = 
@@ -59,6 +53,7 @@ export class DatosService {
   primera: boolean; // Variable para saber si es la primera vez que el usuario corre la app
   planesExisten: boolean = false; // Variable para saber si hay planes existentes
   recordatoriosExisten: boolean = false; // Variable para saber si hay planes existentes
+  idsExisten: boolean;
 
   // Variable de tipo plan que adquiere los valores del storage
   planesCargados: Plan[] = [
@@ -82,6 +77,8 @@ export class DatosService {
       fin: null
     }
   ];
+
+  idsRecordatoios: number[] = [];
   
   // Metodos para obtener caracteristicas de archivos json
   getRubros() {
@@ -217,15 +214,16 @@ export class DatosService {
   }
 
   // Metodo que guarda un nuevo recordatorio en el storage
-  guardarNuevoRecordatorio(recordatorio: Recordatorio) {
+  async guardarNuevoRecordatorio(recordatorio: Recordatorio) {
     if(this.recordatoriosExisten == false) {
       this.recordatoriosCargados = [];
     }
+    await this.cargarIdsRecordatorios();
+    await this.mandarNotificacionInicio(recordatorio);
+    await this.mandarNotificacionFin(recordatorio);
     this.recordatoriosCargados.push(recordatorio);
     this.storage.set('Recordatorios', this.recordatoriosCargados);
     this.event.publish('recordatoriosCargados');
-
-    //this.mandarNotificacion(recordatorio);
   }
 
   // Metodo que actualiza los recordatorios en el storage
@@ -246,6 +244,21 @@ export class DatosService {
     else {
       this.recordatoriosExisten = false;
     }
+  }
+
+  async cargarIdsRecordatorios() {
+    const ids = await this.storage.get('Ids');
+    if(ids) {
+      this.idsRecordatoios = ids;
+      this.idsExisten = true;
+    }
+    else {
+      this.idsExisten = false;
+    }
+  }
+
+  actualizarIds() {
+    this.storage.set('Ids', this.idsRecordatoios);
   }
 
   // Metodo que borra un recordatorio del storage
@@ -269,11 +282,24 @@ export class DatosService {
 }
 
   async mandarNotificacionInicio( recordatorio: Recordatorio) {
-
-    this.notificacionInicio = true;
-
+    await this.cargarIdsRecordatorios();
+    var aux = true;
+    var id = (Math.random() * (10000 - 1)) + 1;
+    if(this.idsExisten) {
+      while(aux) {
+        id = (Math.random() * (10000 - 1)) + 1;
+        aux = false;
+        this.idsRecordatoios.forEach(element => {
+          if(element == id) {
+            aux = true;
+          }
+        });
+      }
+    }
+    this.idsRecordatoios.push(id);
+    this.actualizarIds
     await this.localNotifications.schedule({
-      id: 1,
+      id: id,
       title: recordatorio.title,
       text: recordatorio.mensaje,
       trigger: {at: new Date(recordatorio.inicio)},
@@ -281,14 +307,28 @@ export class DatosService {
       vibrate: true,
       icon: 'alarm',
     });
+    return;   
   }
 
   async mandarNotificacionFin( recordatorio: Recordatorio) {
-
-    this.notificacionInicio = false;
-
+    await this.cargarIdsRecordatorios();
+    var aux = true;
+    var id = (Math.random() * (10000 - 1)) + 1;
+    if(this.idsExisten) {
+      while(aux) {
+        id = (Math.random() * (10000 - 1)) + 1;
+        aux = false;
+        this.idsRecordatoios.forEach(element => {
+          if(element == id) {
+            aux = true;
+          }
+        });
+      }
+    }
+    this.idsRecordatoios.push(id);
+    this.actualizarIds
     await this.localNotifications.schedule({
-      id: 1,
+      id: id,
       title: recordatorio.title,
       text: recordatorio.mensaje,
       trigger: {at: new Date(recordatorio.fin)},
@@ -296,7 +336,6 @@ export class DatosService {
       vibrate: true,
       icon: 'alarm',
     });
-
+    return;
   }
-
 }

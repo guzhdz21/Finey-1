@@ -49,7 +49,8 @@ collapseCard: boolean = false;
 backButtonSub: Subscription;
 
     markDisabled = (date: Date) => {
-        var current = new Date(new Date());
+        var hola = new Date();
+        var current = new Date(new Date().getTime() - 86400000);
         return date < current;
     };
 
@@ -143,7 +144,7 @@ async registrarNuevoRecordatorio() {
   this.recordatorioFull.inicio = formatDate(this.event.startTime, 'medium',this.locale);
   this.recordatorioFull.fin = formatDate(this.event.endTime, 'medium',this.locale);
   await this.datosService.guardarNuevoRecordatorio(this.recordatorioFull);
- this.resetEvent();
+  this.resetEvent();
 }
 
 // Metodo que muestra una alert para borrar un recordatorio del storage
