@@ -21,7 +21,9 @@ export class DatosService {
               public accionesService: AccionesService) { 
 
     this.localNotifications.on('trigger').subscribe(res => {
-      this.presentToast("Si funciona el trigger");
+      if(this.notificacionInicio==false){
+        this.borrarRecordatorio(res);
+      }
     });
 
     this.cargarPrimeraVez();
@@ -31,7 +33,8 @@ export class DatosService {
 
 // Advertencia sobre si el usuario puede satisfacer sus necesidades basicas con sus datos ingresados
   registrarseAdvertencia: boolean; 
-  hola = true;
+  notificacionTipoRecordatorio: boolean;
+  notificacionInicio: boolean;
 
   // Declaracion de el usuario cargado
   usuarioCarga: UsuarioLocal = 
@@ -265,7 +268,10 @@ export class DatosService {
     this.event.publish('recordatoriosCargados');
 }
 
-  async mandarNotificacion( recordatorio: Recordatorio) {
+  async mandarNotificacionInicio( recordatorio: Recordatorio) {
+
+    this.notificacionInicio = true;
+
     await this.localNotifications.schedule({
       id: 1,
       title: recordatorio.title,
@@ -273,14 +279,24 @@ export class DatosService {
       trigger: {at: new Date(recordatorio.inicio)},
       foreground: true,
       vibrate: true,
-      //sticky: true,
       icon: 'alarm',
-      //lockscreen: true
     });
   }
 
-  borrarRecordatorioUsado(){
-    this.localNotifications.on
+  async mandarNotificacionFin( recordatorio: Recordatorio) {
+
+    this.notificacionInicio = false;
+
+    await this.localNotifications.schedule({
+      id: 1,
+      title: recordatorio.title,
+      text: recordatorio.mensaje,
+      trigger: {at: new Date(recordatorio.fin)},
+      foreground: true,
+      vibrate: true,
+      icon: 'alarm',
+    });
+
   }
 
 }
