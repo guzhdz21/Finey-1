@@ -25,9 +25,9 @@ export class DatosService {
     this.cargarDatosPlan();
     this.cargarIdsRecordatorios();
 
-    this.localNotifications.on("trigger").subscribe(res => {
-      this.borrarRecordatorio(res);
-      this.borrarId(res.id);
+    this.localNotifications.on('trigger').subscribe(res => {
+      var id = res.data ? res.data.id : 0;
+      this.presentToast(id + " " + res.title);
     });
   }
 
