@@ -19,7 +19,6 @@ export class PlanPausarPage implements OnInit {
               private modalCtrl: ModalController) { }
 
   ngOnInit() {
-    console.log(this.planPrioritario);
   }
   
   accionPausar(i) {
