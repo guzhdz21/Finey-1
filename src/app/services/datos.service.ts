@@ -24,6 +24,11 @@ export class DatosService {
     this.cargarDatos();
     this.cargarDatosPlan();
     this.cargarIdsRecordatorios();
+
+    this.localNotifications.on("trigger").subscribe(res => {
+      this.borrarRecordatorio(res);
+      this.borrarId(res.id);
+    });
   }
 
 // Advertencia sobre si el usuario puede satisfacer sus necesidades basicas con sus datos ingresados
@@ -78,8 +83,8 @@ export class DatosService {
     }
   ];
 
-  idsRecordatoios: number[] = [];
-  
+  idsRecordatorios: number[] = [];
+
   // Metodos para obtener caracteristicas de archivos json
   getRubros() {
     return this.http.get<Rubro[]>('/assets/data/rubros.json');
@@ -192,7 +197,7 @@ export class DatosService {
     this.storage.set('Planes', this.planesCargados);
     this.event.publish('planesCargados');
   }
-  
+
   // Metodo que carga los datos de un plan desde el storage
   async cargarDatosPlan() {
     const Planes = await this.storage.get('Planes');
@@ -249,7 +254,7 @@ export class DatosService {
   async cargarIdsRecordatorios() {
     const ids = await this.storage.get('Ids');
     if(ids) {
-      this.idsRecordatoios = ids;
+      this.idsRecordatorios = ids;
       this.idsExisten = true;
     }
     else {
@@ -258,7 +263,7 @@ export class DatosService {
   }
 
   actualizarIds() {
-    this.storage.set('Ids', this.idsRecordatoios);
+    this.storage.set('Ids', this.idsRecordatorios);
   }
 
   // Metodo que borra un recordatorio del storage
@@ -289,14 +294,14 @@ export class DatosService {
       while(aux) {
         id = (Math.random() * (10000 - 1)) + 1;
         aux = false;
-        this.idsRecordatoios.forEach(element => {
+        this.idsRecordatorios.forEach(element => {
           if(element == id) {
             aux = true;
           }
         });
       }
     }
-    this.idsRecordatoios.push(id);
+    this.idsRecordatorios.push(id);
     this.actualizarIds
     await this.localNotifications.schedule({
       id: id,
@@ -306,6 +311,7 @@ export class DatosService {
       foreground: true,
       vibrate: true,
       icon: 'alarm',
+      data: { id: id }
     });
     return;   
   }
@@ -318,14 +324,14 @@ export class DatosService {
       while(aux) {
         id = (Math.random() * (10000 - 1)) + 1;
         aux = false;
-        this.idsRecordatoios.forEach(element => {
+        this.idsRecordatorios.forEach(element => {
           if(element == id) {
             aux = true;
           }
         });
       }
     }
-    this.idsRecordatoios.push(id);
+    this.idsRecordatorios.push(id);
     this.actualizarIds
     await this.localNotifications.schedule({
       id: id,
@@ -335,7 +341,14 @@ export class DatosService {
       foreground: true,
       vibrate: true,
       icon: 'alarm',
+      data: { id: id }
     });
     return;
+  }
+
+  async borrarId(i: number) {
+    this.idsRecordatorios = this.idsRecordatorios.filter( id => id != i);
+    await this.storage.set('Planes', this.planesCargados);
+    this.event.publish('planesModificados');
   }
 }
