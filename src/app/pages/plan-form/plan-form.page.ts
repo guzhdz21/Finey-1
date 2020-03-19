@@ -5,6 +5,7 @@ import { NavController, ModalController, Platform } from '@ionic/angular';
 import { AccionesService } from '../../services/acciones.service';
 import { UsuarioLocal } from '../../interfaces/interfaces';
 import { Subscription } from 'rxjs';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-plan-form',
@@ -50,7 +51,8 @@ export class PlanFormPage implements OnInit {
                 private nav: NavController,
                 private modalCtrl: ModalController,
                 private accionesService: AccionesService,
-                private plt: Platform) { }
+                private plt: Platform,
+                private router: Router) { }
 
   ngOnInit() {
     //Metodo que obtiene la informacion de las alertas de un archivo
@@ -143,6 +145,10 @@ export class PlanFormPage implements OnInit {
           this.datosService.actualizarPlanes(this.planes);
           this.modalCtrl.dismiss();
           this.nav.navigateRoot('/plan-pausar-page');
+          this.router.navigate(['/plan-pausar-page'],
+          {
+            queryParams: this.planPrioritario
+          });
           return;
         }
         
@@ -216,7 +222,8 @@ export class PlanFormPage implements OnInit {
         } else {
           this.prioridadDos = true;
           this.creado = false;
-          if(this.pausar()) {
+          this.planPrioritario = planMenor;
+          if(await this.pausar()) {
             this.pausa = true;
             return;
           }
@@ -254,7 +261,8 @@ export class PlanFormPage implements OnInit {
           return;
         } else {
           this.prioridadDos = true;
-          if(this.pausar()) {
+          this.planPrioritario = planMenor;
+          if(await this.pausar()) {
           
           this.creado = false;
           return;
@@ -283,7 +291,7 @@ export class PlanFormPage implements OnInit {
         }
         return;
       }
-      
+
     } else {
       await this.accionesService.presentAlertPlan([{text: 'Modificar', handler: (blah) => {}}], 
       'No puedes completar este plan en ese tiempo', 'Presiona Modificar y aumenta tu tiempo para ser apto de conseguirlo');
@@ -426,6 +434,7 @@ export class PlanFormPage implements OnInit {
                                                   'Elije una opcion para proceder',
     'Puedes pausar todos los planes hasta que solo queden 2 o al prioritario acumularle lo necesario y del sobrante' + 
     ' repartirlo igualitariamente a los demas planes');
+    return pausar;
   }
   //Metodo que omite el ingreso del primer plan al hacer el registro
   omitir() {
