@@ -141,14 +141,17 @@ export class PlanFormPage implements OnInit {
         //Mas de dos planes
         await this.masDosPlanes(margenMax, margenMin);
         if(this.prioridadDos == true) {
+
           this.planes.push(this.planNuevo);
           this.datosService.actualizarPlanes(this.planes);
+          if(this.pausa) {
           this.modalCtrl.dismiss();
           this.nav.navigateRoot('/plan-pausar-page');
           this.router.navigate(['/plan-pausar-page'],
           {
             queryParams: this.planPrioritario
           });
+          }          
           return;
         }
         
@@ -158,6 +161,7 @@ export class PlanFormPage implements OnInit {
           this.nav.navigateRoot('/tabs/tab2');
           return;
         }
+        return;
       }
 
       //Un plan

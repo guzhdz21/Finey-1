@@ -37,12 +37,14 @@ export class PlanPausarPagePage implements OnInit {
   };
   ngOnInit() {
     this.abrirModal();
-    console.log(this.planPrioritario);
   }
 
   async abrirModal() {
     const modal = await this.modalCtrl.create({
     component: PlanPausarPage,
+    componentProps: {
+      planPrioritario: this.planPrioritario
+    }
     });
     await modal.present();
   }

@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, Input } from '@angular/core';
 import { DatosService } from '../../services/datos.service';
 import { Plan } from '../../interfaces/interfaces';
 import { NavController, ModalController } from '@ionic/angular';
@@ -10,6 +10,7 @@ import { NavController, ModalController } from '@ionic/angular';
 })
 export class PlanPausarPage implements OnInit {
 
+  @Input() planPrioritario: Plan;
   planes: Plan[] = this.datosService.planesCargados;
 
   valido: boolean = true;
@@ -18,8 +19,9 @@ export class PlanPausarPage implements OnInit {
               private modalCtrl: ModalController) { }
 
   ngOnInit() {
+    console.log(this.planPrioritario);
   }
-
+  
   accionPausar(i) {
     this.valido = true;
     this.planes[i].pausado = !this.planes[i].pausado
