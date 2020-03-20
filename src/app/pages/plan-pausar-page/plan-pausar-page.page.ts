@@ -13,28 +13,13 @@ export class PlanPausarPagePage implements OnInit {
 
   constructor(private modalCtrl: ModalController,
               private activatedRoute: ActivatedRoute) { 
-    this.activatedRoute.queryParams.subscribe((res: Plan) =>
+    this.activatedRoute.queryParams.subscribe((res) =>
     {
-      this.planPrioritario.nombre = res.nombre;
-      this.planPrioritario.cantidadTotal = Number(res.cantidadTotal);
-      this.planPrioritario.cantidadAcumulada = Number(res.cantidadAcumulada);
-      this.planPrioritario.descripcion = res.descripcion;
-      this.planPrioritario.tiempoTotal = Number(res.tiempoTotal);
-      this.planPrioritario.tiempoRestante = Number(res.tiempoRestante);
-      this.planPrioritario.pausado = Boolean(res.pausado);
+      this.indexPrioritario = Number(res.indexPrioritario);
     });
   }
 
-  planPrioritario: Plan = {
-    nombre: "",
-    cantidadTotal: 0,
-    tiempoTotal: 0,
-    cantidadAcumulada: 0,
-    tiempoRestante: 0,
-    descripcion: "",
-    aportacionMensual: 0,
-    pausado: false
-  };
+  indexPrioritario: number;
   ngOnInit() {
     this.abrirModal();
   }
@@ -43,7 +28,7 @@ export class PlanPausarPagePage implements OnInit {
     const modal = await this.modalCtrl.create({
     component: PlanPausarPage,
     componentProps: {
-      planPrioritario: this.planPrioritario
+      indexPrioritario: this.indexPrioritario
     }
     });
     await modal.present();

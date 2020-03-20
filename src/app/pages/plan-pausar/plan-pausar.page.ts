@@ -10,8 +10,10 @@ import { NavController, ModalController } from '@ionic/angular';
 })
 export class PlanPausarPage implements OnInit {
 
-  @Input() planPrioritario: Plan;
+  @Input() indexPrioritario;
+
   planes: Plan[] = this.datosService.planesCargados;
+  planes2: Plan[] = [];
 
   valido: boolean = true;
   constructor(private datosService: DatosService,
@@ -19,34 +21,35 @@ export class PlanPausarPage implements OnInit {
               private modalCtrl: ModalController) { }
 
   ngOnInit() {
+    for (let index = 0; index < this.planes.length; index++) {
+      if(index != this.indexPrioritario) {
+        this.planes2.push(this.planes[index]);
+      } 
+    }
   }
   
   accionPausar(i) {
-    this.valido = true;
-    this.planes[i].pausado = !this.planes[i].pausado
-    this.planes.forEach(element => {
-      if(element.pausado){
-        this.valido = false;
-        return;
+    var contador = 0;
+    this.valido = false;
+    this.planes2[i].pausado = !this.planes[i].pausado
+    this.planes2.forEach(element => {
+      if(element.pausado == false){
+        contador++;
       }
     });
+    if(contador > 1) {
+      this.valido = true;
+    }
   }
 
   registrarCambios() {
-    if(this.planes.length == 2) {
-      this.planes.forEach(element => {
-        if(element.pausado) {
-          element.aportacionMensual = 0;
-        } else {
-          element.aportacionMensual = (element.cantidadTotal - element.cantidadAcumulada)/element.tiempoRestante;
-        }
-      });
-      this.datosService.actualizarPlanes(this.planes);
-      this.modalCtrl.dismiss();
-      this.nav.navigateRoot('/tabs/tab2');
-    } else {
-      
-    }
+    this.planes2.forEach(element => {
+      if(element.pausado) {
+        element.aportacionMensual = 0;
+      } else {
+        
+      }
+    });
   }
 
 }

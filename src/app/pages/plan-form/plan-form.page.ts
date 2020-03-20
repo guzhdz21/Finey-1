@@ -141,16 +141,20 @@ export class PlanFormPage implements OnInit {
         //Mas de dos planes
         await this.masDosPlanes(margenMax, margenMin);
         if(this.prioridadDos == true) {
-
+          this.planNuevo.aportacionMensual = 0;
           this.planes.push(this.planNuevo);
           this.datosService.actualizarPlanes(this.planes);
           if(this.pausa) {
-          this.modalCtrl.dismiss();
-          this.nav.navigateRoot('/plan-pausar-page');
-          this.router.navigate(['/plan-pausar-page'],
-          {
-            queryParams: this.planPrioritario
-          });
+            const get = (element) => element == this.planPrioritario;
+            var indexPrioritario = this.planes.findIndex(get);
+            this.modalCtrl.dismiss();
+            this.nav.navigateRoot('/plan-pausar-page');
+            this.router.navigate(['/plan-pausar-page'],
+            {
+              queryParams: {
+                indexPrioritario
+              }
+            });
           }          
           return;
         }
@@ -265,13 +269,14 @@ export class PlanFormPage implements OnInit {
           return;
         } else {
           this.prioridadDos = true;
+          this.creado = false;
           this.planPrioritario = planMenor;
           if(await this.pausar()) {
-          
-          this.creado = false;
-          return;
+            this.pausa = true;
+            return;
           }
-          
+          this.pausa = false;
+          return;
         }
 
       } else {
