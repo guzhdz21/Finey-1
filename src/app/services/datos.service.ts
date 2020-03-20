@@ -28,9 +28,18 @@ export class DatosService {
     this.localNotifications.on('click').subscribe(res => {
 
       var inicio = res.data ? res.data.inicio : true;
+      var horainicio = res.data ? res.data.horaInicio : true;
+      var horafin = res.data ? res.data.horaFin : true;
+
+      let recordatorio: Recordatorio = {
+        title: res.title,
+        mensaje: res.text,
+        inicio: horainicio,
+        fin: horafin
+      }
 
       if(inicio == false){
-        this.borrarRecordatorio(res);
+        this.borrarRecordatorio(recordatorio);
         var id = res.data ? res.data.id : 0;
         this.borrarId(id);
       }
@@ -318,7 +327,7 @@ export class DatosService {
       foreground: true,
       vibrate: true,
       icon: 'alarm',
-      data: { inicio: true}
+      data: { inicio: true, horaInicio: recordatorio.inicio, horaFin: recordatorio.fin }
     });
     return;   
   }
@@ -348,7 +357,7 @@ export class DatosService {
       foreground: true,
       vibrate: true,
       icon: 'alarm',
-      data: { inicio: false }
+      data: { inicio: false, horaInicio: recordatorio.inicio, horaFin: recordatorio.fin }
     });
     return;
   }
