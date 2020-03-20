@@ -26,8 +26,14 @@ export class DatosService {
     this.cargarIdsRecordatorios();
 
     this.localNotifications.on('trigger').subscribe(res => {
-      var id = res.data ? res.data.id : 0;
-      this.presentToast(id + " " + res.title);
+
+      var inicio = res.data ? res.data.inicio : 0;
+
+      if(inicio==false){
+        this.borrarRecordatorio(res);
+        var id = res.data ? res.data.id : 0;
+        this.borrarId(id);
+      }
     });
   }
 
@@ -282,6 +288,7 @@ export class DatosService {
         }
     });
     this.recordatoriosCargados = nuevosRecordatorios;
+    this.volverHacerSchedule(this.recordatoriosCargados);
     await this.storage.set('Recordatorios', this.recordatoriosCargados);
     this.event.publish('recordatoriosCargados');
 }
@@ -302,7 +309,7 @@ export class DatosService {
       }
     }
     this.idsRecordatorios.push(id);
-    this.actualizarIds
+    this.actualizarIds();
     await this.localNotifications.schedule({
       id: id,
       title: recordatorio.title,
@@ -311,7 +318,7 @@ export class DatosService {
       foreground: true,
       vibrate: true,
       icon: 'alarm',
-      data: { id: id }
+      data: { inicio: true}
     });
     return;   
   }
@@ -332,7 +339,7 @@ export class DatosService {
       }
     }
     this.idsRecordatorios.push(id);
-    this.actualizarIds
+    this.actualizarIds();
     await this.localNotifications.schedule({
       id: id,
       title: recordatorio.title,
@@ -341,14 +348,22 @@ export class DatosService {
       foreground: true,
       vibrate: true,
       icon: 'alarm',
-      data: { id: id }
+      data: { inicio: false }
     });
     return;
   }
 
   async borrarId(i: number) {
     this.idsRecordatorios = this.idsRecordatorios.filter( id => id != i);
-    await this.storage.set('Planes', this.planesCargados);
-    this.event.publish('planesModificados');
+    await this.storage.set('Ids', this.idsRecordatorios);
+    //this.event.publish('planesModificados');
+  }
+
+  volverHacerSchedule(recordatorios: Recordatorio[]) {
+    this.localNotifications.cancelAll();
+    recordatorios.forEach(element => {
+      this.mandarNotificacionInicio(element);
+      this.mandarNotificacionFin(element);
+    });
   }
 }
