@@ -46,6 +46,26 @@
 {
   text-align: center;
 }
+.alert-head.sc-ion-alert-ios {
+  background-color: var(--ion-color-success) !important;
+}
+
+.alert-title.sc-ion-alert-ios {
+  color: white !important;
+}
+
+.alert-message.sc-ion-alert-ios {
+  margin-top: 30px !important;
+}
+
+.alert-button-group.sc-ion-alert-ios {
+  background-color:var(--ion-color-primary) !important;
+}
+
+.alert-button-inner.sc-ion-alert-ios {
+  font-weight: 100;
+  color: white;
+}
 
 .FF0000
 {

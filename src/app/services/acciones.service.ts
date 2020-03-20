@@ -21,7 +21,8 @@ export class AccionesService {
     const alert = await this.alertCtrl.create({
       header: header,
       message: message,
-      buttons: [] = botones
+      buttons: [] = botones,
+      mode: "ios"
     });
     alert.present();
     await alert.onDidDismiss();
@@ -38,7 +39,8 @@ export class AccionesService {
           text: 'Ok',
           handler: (bla) => {}
         }
-      ]
+      ],
+      mode: "ios"
     });
     alert.present();
     await alert.onDidDismiss();
