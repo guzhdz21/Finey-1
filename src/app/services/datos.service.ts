@@ -256,11 +256,13 @@ export class DatosService {
 
   // Metodo que guarda un nuevo recordatorio en el storage
   async guardarNuevoRecordatorio(recordatorio: Recordatorio) {
+    await this.cargarDatosRecordatorios();
     if(this.recordatoriosExisten == false) {
       this.recordatoriosCargados = [];
     }
-    if(this.compararSiYaExiste(this.recordatoriosCargados, recordatorio)){
-      this.accionesService.presentAlertGenerica("Este plan ya existe", "Este plan ya existe con exactamente los mismos campos, y por ende, no se puede crear");
+    if(await this.compararSiYaExiste(this.recordatoriosCargados, recordatorio)) {
+      await this.accionesService.presentAlertGenerica("Este recordatorio ya existe", "Este recordatorio ya existe con exactamente los mismos campos, y por ende, no se puede crear");
+      return;
     }
     else{
       await this.cargarIdsRecordatorios();
@@ -402,12 +404,16 @@ export class DatosService {
     });
   }
 
-  compararSiYaExiste (recordatorios: Recordatorio[], recordatorio: Recordatorio) :boolean {
+  compararSiYaExiste (recordatorios: Recordatorio[], recordatorio: Recordatorio) {
+    var aux = false;
     recordatorios.forEach(element => {
-      if(element.title == recordatorio.title && element.inicio == recordatorio.inicio && element.mensaje == recordatorio.mensaje && element.fin == recordatorio.fin) {
-        return true;
+      if(element.title == recordatorio.title 
+        && element.inicio == recordatorio.inicio 
+        && element.mensaje == recordatorio.mensaje 
+        && element.fin == recordatorio.fin) {
+        aux = true;
       }
       });
-        return false;
+        return aux;
     }
 }

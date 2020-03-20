@@ -128,10 +128,10 @@ let end = formatDate(event.endTime, 'medium', this.locale);
 //Alerta que muestra la informacion de los recordatorios
 const alert = await this.alertCtrl.create({ 
   header: event.title,
-  subHeader: event.desc,
-  message: 'Inicio:  ' + start + '<br><br>Fin:  ' + end,
+  message: 'Descripcion: '+ event.desc + '<br><br>Inicio:  ' + start + '<br><br>Fin:  ' + end,
   buttons: [{text: 'Borrar', handler: (blah) => { this.borrarRecordatorio(event)}},
-            {text: 'Ok'}]
+            {text: 'Ok'}],
+  mode: "ios"
     });
     alert.present();  
  }
