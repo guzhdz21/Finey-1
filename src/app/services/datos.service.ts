@@ -25,11 +25,11 @@ export class DatosService {
     this.cargarDatosPlan();
     this.cargarIdsRecordatorios();
 
-    this.localNotifications.on('trigger').subscribe(res => {
+    this.localNotifications.on('click').subscribe(res => {
 
-      var inicio = res.data ? res.data.inicio : 0;
+      var inicio = res.data ? res.data.inicio : true;
 
-      if(inicio==false){
+      if(inicio == false){
         this.borrarRecordatorio(res);
         var id = res.data ? res.data.id : 0;
         this.borrarId(id);
@@ -359,9 +359,9 @@ export class DatosService {
     //this.event.publish('planesModificados');
   }
 
-  volverHacerSchedule(recordatorios: Recordatorio[]) {
-    this.localNotifications.cancelAll();
-    recordatorios.forEach(element => {
+ async volverHacerSchedule(recordatorios: Recordatorio[]) {
+    await this.localNotifications.cancelAll();
+    await recordatorios.forEach(element => {
       this.mandarNotificacionInicio(element);
       this.mandarNotificacionFin(element);
     });
