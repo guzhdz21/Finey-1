@@ -259,12 +259,17 @@ export class DatosService {
     if(this.recordatoriosExisten == false) {
       this.recordatoriosCargados = [];
     }
-    await this.cargarIdsRecordatorios();
-    await this.mandarNotificacionInicio(recordatorio);
-    await this.mandarNotificacionFin(recordatorio);
-    this.recordatoriosCargados.push(recordatorio);
-    this.storage.set('Recordatorios', this.recordatoriosCargados);
-    this.event.publish('recordatoriosCargados');
+    if(this.compararSiYaExiste(this.recordatoriosCargados, recordatorio)){
+      this.accionesService.presentAlertGenerica("Este plan ya existe", "Este plan ya existe con exactamente los mismos campos, y por ende, no se puede crear");
+    }
+    else{
+      await this.cargarIdsRecordatorios();
+      await this.mandarNotificacionInicio(recordatorio);
+      await this.mandarNotificacionFin(recordatorio);
+      this.recordatoriosCargados.push(recordatorio);
+      this.storage.set('Recordatorios', this.recordatoriosCargados);
+      this.event.publish('recordatoriosCargados');
+    }
   }
 
   // Metodo que actualiza los recordatorios en el storage
@@ -396,4 +401,13 @@ export class DatosService {
       this.mandarNotificacionFin(element);
     });
   }
+
+  compararSiYaExiste (recordatorios: Recordatorio[], recordatorio: Recordatorio) :boolean {
+    recordatorios.forEach(element => {
+      if(element.title == recordatorio.title && element.inicio == recordatorio.inicio && element.mensaje == recordatorio.mensaje && element.fin == recordatorio.fin) {
+        return true;
+      }
+      });
+        return false;
+    }
 }
