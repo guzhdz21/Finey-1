@@ -29,7 +29,7 @@ opciones: Opcion[] = [
   {
     icono: 'settings',
     nombre: 'Ajustes',
-    redirigirA: ''
+    redirigirA: '/ajustes-page'
   }
 ];
 

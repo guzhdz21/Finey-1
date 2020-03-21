@@ -40,6 +40,14 @@ const routes: Routes = [
   {
     path: 'plan-pausar-page',
     loadChildren: () => import('./pages/plan-pausar-page/plan-pausar-page.module').then( m => m.PlanPausarPagePageModule)
+  },
+  {
+    path: 'ajustes',
+    loadChildren: () => import('./pages/ajustes/ajustes.module').then( m => m.AjustesPageModule)
+  },
+  {
+    path: 'ajustes-page',
+    loadChildren: () => import('./pages/ajustes-page/ajustes-page.module').then( m => m.AjustesPagePageModule)
   }
 
 ];

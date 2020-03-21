@@ -1,5 +1,15 @@
 <app-header></app-header>
 
-<ion-button (click)="mandarNotificacion()">Notificacion</ion-button>
+<ion-content>
 
-<ion-content></ion-content>
+    <ion-item color="primary"> 
+        <ion-label><h1 class="texto_centrado_blanco">Tests disponibles</h1></ion-label>
+      </ion-item>
+
+    <ion-list>
+        <ion-item *ngFor="let test of tests | async">
+            <ion-icon slot="start" name="document"></ion-icon>
+            <ion-label>{{test.texto}}</ion-label>
+        </ion-item>
+    </ion-list>
+</ion-content>
