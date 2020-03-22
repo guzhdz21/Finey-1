@@ -258,7 +258,7 @@ export class PlanFormPage implements OnInit {
         return;
       }
            
-    } else if ( ( gasto < margenMax ) && (ahorrar >= margenMin ) ) {
+    } else if ( ( gasto < margenMax ) && (gasto >= margenMin ) ) {
 
       planMenor.aportacionMensual = (planMenor.cantidadTotal - planMenor.cantidadAcumulada)/planMenor.tiempoRestante;
       
@@ -358,8 +358,8 @@ export class PlanFormPage implements OnInit {
         return;
       }
            
-      //Caso en que quitando lo que debe ahorrar al mes el usuario, solo puede satidfacer sus necesidades basicas en margen minimo
-    } else if ( ( gasto < margenMax ) && (ahorrar >= margenMin ) ) {
+      //Caso en que quitando lo que debe ahorrar al mes el usuario, solo puede satisfacer sus necesidades basicas en margen minimo
+    } else if ( ( gasto < margenMax ) && (gasto >= margenMin ) ) {
 
       planMenor.aportacionMensual = (planMenor.cantidadTotal - planMenor.cantidadAcumulada)/planMenor.tiempoRestante;
       
