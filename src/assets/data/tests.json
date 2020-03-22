@@ -1,0 +1,34 @@
+[
+    {
+        "nombre": "home",
+        "texto": "Vivienda"
+      },
+      {
+        "nombre": "pizza",
+        "texto": "Alimentos"
+      },
+      {
+        "nombre": "trash",
+        "texto": "Cuidado Personal"
+      },
+      {
+        "nombre": "logo-model-s",
+        "texto": "Transporte"
+      },
+      {
+        "nombre": "wifi",
+        "texto": "Internet/Cable/Telefonia"
+      },
+      {
+        "nombre": "battery-charging",
+        "texto": "Electronicos"
+      },
+      {
+        "nombre": "book",
+        "texto": "Educacion"
+      },
+      {
+        "nombre": "logo-game-controller-b",
+        "texto": "Ocio"
+      }
+]

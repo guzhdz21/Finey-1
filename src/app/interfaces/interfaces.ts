@@ -13,6 +13,11 @@ export interface Rubro {
     tipo: string;
 }
 
+export interface Test {
+    nombre: string;
+    texto: string;
+}
+
 export interface ColorArray {
     colores: string[];
 }
