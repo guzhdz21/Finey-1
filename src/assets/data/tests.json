@@ -1,33 +1,41 @@
 [
     {
+        "id": 1,
         "nombre": "home",
         "texto": "Vivienda"
       },
       {
+        "id": 2,
         "nombre": "pizza",
         "texto": "Alimentos"
       },
       {
+        "id": 3,
         "nombre": "trash",
         "texto": "Cuidado Personal"
       },
       {
+        "id": 4,
         "nombre": "logo-model-s",
         "texto": "Transporte"
       },
       {
+        "id": 5,
         "nombre": "wifi",
         "texto": "Internet/Cable/Telefonia"
       },
       {
+        "id": 6,
         "nombre": "battery-charging",
         "texto": "Electronicos"
       },
       {
+        "id": 7,
         "nombre": "book",
         "texto": "Educacion"
       },
       {
+        "id": 8,
         "nombre": "logo-game-controller-b",
         "texto": "Ocio"
       }

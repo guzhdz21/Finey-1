@@ -13,11 +13,6 @@ export interface Rubro {
     tipo: string;
 }
 
-export interface Test {
-    nombre: string;
-    texto: string;
-}
-
 export interface ColorArray {
     colores: string[];
 }
@@ -70,4 +65,29 @@ export interface Recordatorio {
     mensaje: string;
     inicio: string;
     fin: string;
+}
+
+export interface Test {
+    id: number;
+    nombre: string;
+    texto: string;
+    subTests: SubTest[];
+}
+
+export interface SubTest {
+    idTest: number;
+    id: number;
+    preguntas: Pregunta[];
+}
+
+export interface Pregunta {
+    idSubTest: number;
+    id: number;
+    preguntaTexto: string;
+    respuestas: Respuesta[];
+}
+
+export interface Respuesta {
+    respuestaTexto: string;
+    valor: number;
 }
