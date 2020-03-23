@@ -177,6 +177,9 @@ export class PlanFormPage implements OnInit {
       'Reduce el tiempo para completarlo o aumenta la cantidad');
       return;
       }
+      await this.accionesService.presentAlertPlan([{text: 'ok', handler: (blah) => {}}], 
+                                                    'Plan creado', 
+      '¡Si te propones gastar menos en tus gastos promedio (luz, agua, etc.) puedes completar tu plan en menos tiempo!');
       this.planes = [];
       this.planes.push(this.planNuevo);
       this.datosService.actualizarPlanes(this.planes);
@@ -213,7 +216,7 @@ export class PlanFormPage implements OnInit {
     if(this.planNuevo.tiempoRestante < planMenor.tiempoRestante) {
       planMenor = this.planNuevo;
     }
-    ahorrar += this.planNuevo.cantidadTotal - this.planNuevo.cantidadAcumulada;
+    ahorrar += (this.planNuevo.cantidadTotal - this.planNuevo.cantidadAcumulada);
     
     ahorrar /= planMayor.tiempoRestante;
     gasto = this.usuarioCargado.ingresoCantidad - ahorrar;
@@ -319,7 +322,7 @@ export class PlanFormPage implements OnInit {
 
     //Se determina cuanto debe ahorrar el ususario al mes
     ahorrar += (planMenor.cantidadTotal - planMenor.cantidadAcumulada) + planMayor.cantidadTotal;
-    if(planMayor.tiempoTotal < planMenor.tiempoRestante) {
+    if(planMayor.tiempoRestante < planMenor.tiempoRestante) {
       var aux = planMenor;
       planMenor = planMayor;
       planMayor = aux;
@@ -464,11 +467,6 @@ export class PlanFormPage implements OnInit {
   //Imprimir las alertas segun el caso
   async alertasUnPlan( margenMax: number, margenMin: number, ahorrar: number, unPlan: boolean) {
     if (  ahorrar  >= margenMax ) {
-      if(unPlan) {
-        await this.accionesService.presentAlertPlan([{text: 'ok', handler: (blah) => {}}], 
-                                                    'Plan creado', 
-      '¡Si te propones gastar menos en tus gastos promedio (luz, agua, etc.) puedes completar tu plan en menos tiempo!');
-      }
       return true;
      }
      else if ( ( ahorrar < margenMax ) && (ahorrar >= margenMin ) ) {
