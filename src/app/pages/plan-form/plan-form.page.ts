@@ -129,6 +129,9 @@ export class PlanFormPage implements OnInit {
               }
               return;
             }
+            await this.accionesService.presentAlertPlan([{text: 'ok', handler: (blah) => {}}], 
+                                                    'Plan creado', 
+            'Recuerda que si te propones a gastar menos y aportar mas dinero, puedes conseguirlo en menos tiempo');
             this.planes.push(this.planNuevo);
             this.datosService.actualizarPlanes(this.planes);
             this.modalCtrl.dismiss();
@@ -179,7 +182,7 @@ export class PlanFormPage implements OnInit {
       }
       await this.accionesService.presentAlertPlan([{text: 'ok', handler: (blah) => {}}], 
                                                     'Plan creado', 
-      '¡Si te propones gastar menos en tus gastos promedio (luz, agua, etc.) puedes completar tu plan en menos tiempo!');
+      'Recuerda que si te propones a gastar menos y aportar mas dinero, puedes conseguirlo en menos tiempo');
       this.planes = [];
       this.planes.push(this.planNuevo);
       this.datosService.actualizarPlanes(this.planes);
@@ -351,12 +354,9 @@ export class PlanFormPage implements OnInit {
           return;
         }
 
-        //Un plan es aceptado y se le notifica al ususario
+        //Un plan es aceptado y se le notifica al usuario
       } else {
         planMayor.aportacionMensual = ahorrar - planMenor.aportacionMensual;
-        await this.accionesService.presentAlertPlan([{text: 'Ok', handler: (blah) => {}}], 
-                                                      'Plan creado', 
-        '¡Si te propones gastar menos en tus gastos promedio (luz, agua, etc.) puedes completar tu plan en menos tiempo!');
         this.creado = true;
         return;
       }

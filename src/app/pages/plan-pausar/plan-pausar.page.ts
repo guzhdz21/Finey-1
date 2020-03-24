@@ -24,12 +24,17 @@ export class PlanPausarPage implements OnInit {
               private accionesService: AccionesService) { }
 
   ngOnInit() {
-    for (let index = 0; index < this.planes.length; index++) {
-      if(index != this.indexPrioritario) {
-        this.planes2.push(this.planes[index]);
-      } else {
-        this.planPrioritario = this.planes[index];
-      } 
+    if(this.planes.length != 2) {
+      for (let index = 0; index < this.planes.length; index++) {
+        if(index != this.indexPrioritario) {
+          this.planes2.push(this.planes[index]);
+        } else {
+          this.planPrioritario = this.planes[index];
+        } 
+      }
+    }
+    else {
+      this.planes2 = this.planes;
     }
   }
   
@@ -48,6 +53,27 @@ export class PlanPausarPage implements OnInit {
   }
 
  async registrarCambios() {
+   if(this.planes2.length == 2) {
+     this.planes2.forEach(element => {
+       if(element.pausado) {
+         element.aportacionMensual = 0;
+       } else {
+         element.aportacionMensual = (element.cantidadTotal - element.cantidadAcumulada)/element.tiempoRestante;
+       }
+     });
+     this.planes = [];
+     var aux;
+     if(!this.planes2[1].pausado) {
+       aux = this.planes2[0];
+       this.planes2[0] = this.planes2[1];
+       this.planes2[1] = aux;
+     }
+     this.planes = this.planes2;
+     this.datosService.actualizarPlanes(this.planes);
+     this.modalCtrl.dismiss();
+     this.nav.navigateRoot('/tabs/tab2');
+     return;
+   }
     var planSecundario: Plan;
     this.planes2.forEach(element => {
       if(element.pausado) {
