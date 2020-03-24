@@ -16,19 +16,25 @@ export class PlanPausarPagePage implements OnInit {
     this.activatedRoute.queryParams.subscribe((res) =>
     {
       this.indexPrioritario = Number(res.indexPrioritario);
+      this.prioridad = Boolean(res.prioridad);
     });
   }
 
   indexPrioritario: number;
+  prioridad: boolean;
   ngOnInit() {
     this.abrirModal();
   }
 
   async abrirModal() {
+    if(this.prioridad == undefined) {
+      this.prioridad = false;
+    }
     const modal = await this.modalCtrl.create({
     component: PlanPausarPage,
     componentProps: {
-      indexPrioritario: this.indexPrioritario
+      indexPrioritario: this.indexPrioritario,
+      prioridad: this.prioridad
     }
     });
     await modal.present();

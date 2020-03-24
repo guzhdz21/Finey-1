@@ -37,6 +37,8 @@ export class PlanFormPage implements OnInit {
 
   planes: Plan[] = this.datosService.planesCargados;
 
+  planesaux: Plan[] = []
+
   prioridadDos: boolean = false; 
   
   creado: boolean;
@@ -120,7 +122,7 @@ export class PlanFormPage implements OnInit {
           if(this.creado == true) {
             //Verificar si algun plan no recibe el 8% del fondo de ahorro
             if(await this.ocho(margenMax)) {
-              if(this.prioridadDos) {
+              if(this.pausa) {
                 this.planes.push(this.planNuevo);
                 this.datosService.actualizarPlanes(this.planes);
                 this.modalCtrl.dismiss();
@@ -142,7 +144,12 @@ export class PlanFormPage implements OnInit {
         }
 
         //Mas de dos planes
+        this.planesaux = [];
+        this.planes.forEach(element => {
+          this.planesaux.push(element);
+        });
         await this.masDosPlanes(margenMax, margenMin);
+        console.log(this.planesaux);
         if(this.prioridadDos == true) {
           this.planNuevo.aportacionMensual = 0;
           this.planes.push(this.planNuevo);
@@ -155,7 +162,8 @@ export class PlanFormPage implements OnInit {
             this.router.navigate(['/plan-pausar-page'],
             {
               queryParams: {
-                indexPrioritario
+                indexPrioritario,
+                prioridad: true
               }
             });
           }          
@@ -163,8 +171,21 @@ export class PlanFormPage implements OnInit {
         }
         
         if(this.creado == true) {
+          if(await this.ocho(margenMax)) {
+            if(this.pausa) {
+              this.datosService.actualizarPlanes(this.planes);
+              this.modalCtrl.dismiss();
+              this.nav.navigateRoot('/plan-pausar-page');
+              return;
+            }
+            this.planes = this.planesaux;
+            return;
+          }
+          await this.accionesService.presentAlertPlan([{text: 'ok', handler: (blah) => {}}], 
+                                                      'Plan creado', 
+          '¡Si te propones gastar menos en tus gastos promedio (luz, agua, etc.) puedes completar tu plan en menos tiempo!');
           this.datosService.actualizarPlanes(this.planes);
-          this.modalCtrl.dismiss();
+          await this.modalCtrl.dismiss();
           this.nav.navigateRoot('/tabs/tab2');
           return;
         }
@@ -257,9 +278,6 @@ export class PlanFormPage implements OnInit {
         });
         planMayor.aportacionMensual = ahorrar - aux;
         this.planes.push(planMenor);
-        await this.accionesService.presentAlertPlan([{text: 'ok', handler: (blah) => {}}], 
-                                                      'Plan creado', 
-        '¡Si te propones gastar menos en tus gastos promedio (luz, agua, etc.) puedes completar tu plan en menos tiempo!');
         this.creado = true;
         return;
       }
@@ -404,22 +422,42 @@ export class PlanFormPage implements OnInit {
   async ocho(margenMax: number) {
     var ochoPorciento = (this.usuarioCargado.ingresoCantidad - margenMax)*0.08;
 
-    if(this.planes.length == 1) {
-      if(this.planNuevo.aportacionMensual <= ochoPorciento) {
-        await this.accionesService.presentAlertPlan([{text: 'Ok', handler: (blah) => {}}], 
-                                                    'Plan demasiado pequeño', 
-      'Reduce el tiempo para completarlo o aumenta la cantidad');
-      return true;
-      } else if(this.planes[0].aportacionMensual <= ochoPorciento) {
-        await this.accionesService.presentAlertPlan([{text: 'Modificar', handler: (blah) => {this.prioridadDos = false}},
-                                                      {text: 'Pausar', handler: (blah) => {this.prioridadDos = true}}], 
-                                                    'Plan demasiado pequeño', 
-      'Se ha detectado que el otro plan actual recibira muy poco dinero, te pedimos que aumentes' +
-      ' el tiempo del nuevo plan o pauses cualquiera de los dos');
-      return true;
+    if(this.planNuevo.aportacionMensual <= ochoPorciento) {
+      await this.accionesService.presentAlertPlan([{text: 'Ok', handler: (blah) => {}}], 
+                                                  'Plan demasiado pequeño', 
+    'Reduce el tiempo para completarlo o aumenta la cantidad');
+    return true;
+    } else {
+      if(this.planes.length == 1) {
+        if(this.planes[0].aportacionMensual <= ochoPorciento) {
+          await this.accionesService.presentAlertPlan([{text: 'Modificar', handler: (blah) => {this.pausa = false}},
+                                                        {text: 'Pausar', handler: (blah) => {this.pausa = true}}], 
+                                                      'Plan demasiado pequeño', 
+            'Se ha detectado que el otro plan actual recibira muy poco dinero, te pedimos que aumentes' +
+            ' el tiempo del nuevo plan o pauses cualquiera de los dos'
+          );
+          return true;
+        }
+       return false;
+      }
+      var aux = false;
+      await this.planes.forEach(element => {
+        if(element.aportacionMensual <= ochoPorciento) {
+           aux = true;
+        }
+      });
+      if(aux) {
+        await this.accionesService.presentAlertPlan([{text: 'Modificar', handler: (blah) => {this.pausa = false}},
+                                                        {text: 'Pausar', handler: (blah) => {this.pausa = true}}], 
+                                                      'Plan demasiado pequeño', 
+            'Se ha detectado que el otro plan actual recibira muy poco dinero, te pedimos que aumentes' +
+            ' el tiempo del nuevo plan o pauses cualquiera de los dos'
+          );
+          return true;
       }
       return false;
     }
+
   }
   //Metodo para preguntarle al usuario que se deberia hacer con su plan prioritario
   async prioridad(nombre: string) {
