@@ -149,7 +149,6 @@ export class PlanFormPage implements OnInit {
           this.planesaux.push(element);
         });
         await this.masDosPlanes(margenMax, margenMin);
-        console.log(this.planesaux);
         if(this.prioridadDos == true) {
           this.planNuevo.aportacionMensual = 0;
           this.planes.push(this.planNuevo);
@@ -277,7 +276,7 @@ export class PlanFormPage implements OnInit {
           }
         });
         planMayor.aportacionMensual = ahorrar - aux;
-        this.planes.push(planMenor);
+        this.planes.unshift(planMenor);
         this.creado = true;
         return;
       }
@@ -320,7 +319,7 @@ export class PlanFormPage implements OnInit {
           }
         });
         planMayor.aportacionMensual = ahorrar - aux;
-        this.planes.push(planMenor);
+        this.planes.unshift(planMenor);
         }
         return;
       }
