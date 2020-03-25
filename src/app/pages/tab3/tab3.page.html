@@ -7,7 +7,7 @@
       </ion-item>
 
     <ion-list>
-        <ion-item *ngFor="let test of tests | async">
+        <ion-item *ngFor="let test of tests | async" (click)="abrirTest(test.id)">
             <ion-icon slot="start" name="document"></ion-icon>
             <ion-label>{{test.texto}}</ion-label>
         </ion-item>

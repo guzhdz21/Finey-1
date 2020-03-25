@@ -3,7 +3,8 @@ import { LocalNotifications} from '@ionic-native/local-notifications/ngx'
 import { DatosService } from '../../services/datos.service';
 import { Platform, NavController, ModalController } from '@ionic/angular';
 import { Subscription, Observable } from 'rxjs';
-import { Test } from '../../interfaces/interfaces';
+import { Test, SubTest, Pregunta } from '../../interfaces/interfaces';
+import { NavigationExtras } from '@angular/router';
 
 @Component({
   selector: 'app-tab3',
@@ -13,6 +14,7 @@ import { Test } from '../../interfaces/interfaces';
 export class Tab3Page {
 
   backButtonSub: Subscription;
+
   tests: Observable<Test[]> = this.datosService.getTests();
 
   constructor(private localNotifications: LocalNotifications,
@@ -27,4 +29,13 @@ export class Tab3Page {
     });
   }
 
+  async abrirTest(idSeleccionado: number){
+
+    let navigationExtras: NavigationExtras = {
+      queryParams: {
+        idParametro: idSeleccionado
+      }
+  };
+  await this.nav.navigateForward(['test-page'], navigationExtras);
+  }
 }
