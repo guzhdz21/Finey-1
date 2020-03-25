@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
-import { Rubro, ColorArray, LabelArray, UsuarioLocal, Gasto, Plan, AlertaGeneral, Recordatorio, Test } from '../interfaces/interfaces';
+import { Rubro, ColorArray, LabelArray, UsuarioLocal, Gasto, Plan, AlertaGeneral, Recordatorio, Test, SubTest, Pregunta } from '../interfaces/interfaces';
 import { Storage } from '@ionic/storage';
 import { ToastController, Events} from '@ionic/angular';
 import { AlertController } from '@ionic/angular';
@@ -144,6 +144,14 @@ export class DatosService {
 
   getTests() {
     return this.http.get<Test[]>('/assets/data/tests.json');
+  }
+
+  getSubTests() {
+    return this.http.get<SubTest[]>('/assets/data/subTests.json');
+  }
+
+  getPreguntas() {
+    return this.http.get<Pregunta[]>('/assets/data/preguntas.json');
   }
 
   // Metodo que guarda el usuario en el local storage
