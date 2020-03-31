@@ -22,8 +22,19 @@ testEncontrado: Test = {
   subTests: null
 };
 
-subTestsEncontrados: SubTest[];
-aprobarSubTests: boolean[];
+subTestEncontrado: SubTest = {
+  idTest: 5,
+  id: 1,
+  preguntas: [{
+      idSubTest: 1,
+      id: 1,
+      preguntaTexto: 'Guz es gay',
+      respuestas: [{
+          respuestaTexto: 'si',
+          valor: 0
+        }]
+    }]
+}
 
 permiso1: boolean = false;
 permiso2: boolean = false;
@@ -33,10 +44,12 @@ permiso5: boolean = false;
 
   constructor(public datosService: DatosService) { }
 
+  cuantosSubTests = 0;
+
   ngOnInit() {
 
     //Encuentro el test con esa ID
-    this.datosService.getTests().subscribe(val => {
+    this. datosService.getTests().subscribe(val => {
       val.forEach(element => {
         if(element.id == this.id){
           this.testEncontrado = element;
@@ -44,11 +57,35 @@ permiso5: boolean = false;
       });
     });
 
+    this.datosService.getSubTests().subscribe(val => {
+      val.forEach(element => {
+        if(element.idTest == this.id){
+        this.cuantosSubTests++;
+        }
+      });
+    });
+  
   }
 
-  subTest1(event)
-  {
+  obtenerSubTest( idSubTest: number){
+
+    this.datosService.getSubTests().subscribe(val => {
+      val.forEach(element => {
+        if( idSubTest == element.id && element.idTest == this.id){
+          this.subTestEncontrado = element;
+          console.log("encontrado");
+        }
+        else{
+          console.log("No encontrado");
+        }
+      });
+    });
+
+  }
+
+  subTest1(event){
     if(event.detail.value == 'si'){
+      this.obtenerSubTest(1);
       this.permiso1 = true;
     }
     else{
