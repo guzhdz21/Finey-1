@@ -4,7 +4,9 @@ import { Platform, Events } from '@ionic/angular';
 import { SplashScreen } from '@ionic-native/splash-screen/ngx';
 import { StatusBar } from '@ionic-native/status-bar/ngx';
 import { DatosService } from './services/datos.service';
+import { LocalNotifications } from '@ionic-native/local-notifications/ngx';
 
+declare var window;
 @Component({
   selector: 'app-root',
   templateUrl: 'app.component.html',
@@ -21,7 +23,9 @@ export class AppComponent implements OnInit{
     private statusBar: StatusBar,
     private datosService: DatosService,
     private event: Events,
+    private localNotifications: LocalNotifications
   ) {
+    window.skipLocalNotificationReady = true
     this.initializeApp();
     this.datosService.cargarDatos();
   }
@@ -31,6 +35,7 @@ export class AppComponent implements OnInit{
       this.statusBar.styleDefault();
       this.splashScreen.hide();
     });
+    this.localNotifications.fireQueuedEvents();
   }
  async ngOnInit(){
     this.datosService.cargarPrimeraVez();

@@ -2,7 +2,7 @@ import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { Rubro, ColorArray, LabelArray, UsuarioLocal, Gasto, Plan, AlertaGeneral, Recordatorio, Test, SubTest, Pregunta } from '../interfaces/interfaces';
 import { Storage } from '@ionic/storage';
-import { ToastController, Events} from '@ionic/angular';
+import { ToastController, Events, Platform } from '@ionic/angular';
 import { AlertController } from '@ionic/angular';
 import { LocalNotifications } from '@ionic-native/local-notifications/ngx';
 import { AccionesService } from './acciones.service';
@@ -18,53 +18,57 @@ export class DatosService {
               private event: Events,
               public alertCtrl: AlertController,
               public localNotifications: LocalNotifications,
-              public accionesService: AccionesService) { 
+              public accionesService: AccionesService,
+              public plt: Platform) { 
 
     this.cargarPrimeraVez();
     this.cargarDatos();
     this.cargarDatosPlan();
     this.cargarIdsRecordatorios();
 
-    this.localNotifications.on('click').subscribe(res => {
+    this.plt.ready().then(() => {
+      this.localNotifications.on('click').subscribe(res => {
 
-      var inicio = res.data ? res.data.inicio : true;
-      var horainicio = res.data ? res.data.horaInicio : true;
-      var horafin = res.data ? res.data.horaFin : true;
-
-      let recordatorio: Recordatorio = {
-        title: res.title,
-        mensaje: res.text,
-        inicio: horainicio,
-        fin: horafin
-      }
-
-      if(inicio == false){
-        this.borrarRecordatorio(recordatorio);
-        var id = res.data ? res.data.id : 0;
-        this.borrarId(id);
-      }
-    });
-
-    this.localNotifications.on('clear').subscribe(res => {
-
-      var inicio = res.data ? res.data.inicio : true;
-      var horainicio = res.data ? res.data.horaInicio : true;
-      var horafin = res.data ? res.data.horaFin : true;
-
-      let recordatorio: Recordatorio = {
-        title: res.title,
-        mensaje: res.text,
-        inicio: horainicio,
-        fin: horafin
-      }
-
-      if(inicio == false){
-        this.borrarRecordatorio(recordatorio);
-        var id = res.data ? res.data.id : 0;
-        this.borrarId(id);
-      }
-    });
+          var inicio = res.data ? res.data.inicio : true;
+          var horainicio = res.data ? res.data.horaInicio : true;
+          var horafin = res.data ? res.data.horaFin : true;
     
+          let recordatorio: Recordatorio = {
+            title: res.title,
+            mensaje: res.text,
+            inicio: horainicio,
+            fin: horafin
+          }
+    
+          if(inicio == false){
+            this.borrarRecordatorio(recordatorio);
+            var id = res.data ? res.data.id : 0;
+            this.borrarId(id);
+          }
+          this.presentToast('hola');
+      });
+  
+      this.localNotifications.on('clear').subscribe(res => {
+  
+        var inicio = res.data ? res.data.inicio : true;
+        var horainicio = res.data ? res.data.horaInicio : true;
+        var horafin = res.data ? res.data.horaFin : true;
+  
+        let recordatorio: Recordatorio = {
+          title: res.title,
+          mensaje: res.text,
+          inicio: horainicio,
+          fin: horafin
+        }
+  
+        if(inicio == false){
+          this.borrarRecordatorio(recordatorio);
+          var id = res.data ? res.data.id : 0;
+          this.borrarId(id);
+        }
+      });
+
+    });
   }
 
 // Advertencia sobre si el usuario puede satisfacer sus necesidades basicas con sus datos ingresados
@@ -337,7 +341,7 @@ export class DatosService {
         }
     });
     this.recordatoriosCargados = nuevosRecordatorios;
-    this.volverHacerSchedule(this.recordatoriosCargados);
+    await this.volverHacerSchedule(this.recordatoriosCargados);
     await this.storage.set('Recordatorios', this.recordatoriosCargados);
     this.event.publish('recordatoriosCargados');
 }
