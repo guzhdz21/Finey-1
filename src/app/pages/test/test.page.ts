@@ -125,7 +125,6 @@ return subTestEncontrado;
     if(event.detail.value == 'si'){
       this.subTestEncontrado1 = await this.obtenerSubTest(1, this.subTestEncontrado1);
       this.permiso1 = true;
-      //console.log(this.subTestEncontrado1);
     }
     else{
       this.permiso1 = false;
@@ -137,12 +136,21 @@ return subTestEncontrado;
     if(event.detail.value == 'si'){
       this.subTestEncontrado2 = await this.obtenerSubTest(2, this.subTestEncontrado2);
       this.permiso2 = true;
-      //console.log(this.subTestEncontrado2);
     }
     else{
       this.permiso2 = false;
       this.subTestEncontrado2 = null;
-      console.log("no");
+    }
+  }
+
+  async subTest3(event){
+    if(event.detail.value == 'si'){
+      this.subTestEncontrado2 = await this.obtenerSubTest(3, this.subTestEncontrado3);
+      this.permiso3 = true;
+    }
+    else{
+      this.permiso2 = false;
+      this.subTestEncontrado3 = null;
     }
   }
 
