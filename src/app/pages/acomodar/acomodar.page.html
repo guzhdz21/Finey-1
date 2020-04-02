@@ -1,0 +1,38 @@
+<app-header-modal titulo="Ordenar planes" ruta="/tabs/tab2"></app-header-modal>
+
+<ion-content>
+  <ion-item color="primary"> 
+    <ion-label><h1 class="texto_centrado_blanco">Planes Actuales</h1></ion-label>
+  </ion-item>
+
+  <ion-item lines="none"> 
+    <ion-label class="texto_centrado"><p>Mueve los planes y acomodalos a tu gusto</ion-label>
+  </ion-item>
+  
+  <ion-list>
+    <ion-reorder-group disabled="false"
+                        (ionItemReorder)="ordenar($event)">
+      <ion-item *ngFor="let plan of planes">
+        <ion-card>
+
+          <ion-card-title class="titulo">{{plan.nombre}}</ion-card-title>
+
+          <ion-card-content>
+              <ion-item>
+                  <ion-label class="centrar ion-text-wrap">
+                      <p>Cantidad: {{plan.cantidadTotal - plan.cantidadAcumulada}}</p>
+                      <p>Meses: {{plan.tiempoRestante}}</p></ion-label>
+              </ion-item>
+          </ion-card-content>
+          
+      </ion-card>
+        <ion-reorder slot="end"></ion-reorder>
+      </ion-item>
+    </ion-reorder-group>
+  </ion-list>
+
+  <ion-button expand="block"
+                color="success"
+                (click)="guardar()"
+                >Guardar</ion-button>
+</ion-content>

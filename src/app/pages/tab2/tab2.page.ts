@@ -72,8 +72,8 @@ export class Tab2Page implements OnInit{
       this.datosService.planesCargados.forEach(element => {
         this.planes.push({
           doughnutChartData: [
-            (element.cantidadAcumulada*100)/element.cantidadTotal,
-            ((element.cantidadTotal - element.cantidadAcumulada)*100)/element.cantidadTotal
+            Math.round(((element.cantidadAcumulada*100)/element.cantidadTotal)*100)/100,
+            Math.round((((element.cantidadTotal - element.cantidadAcumulada)*100)/element.cantidadTotal)*100)/100
           ],
           plan: element
         });
@@ -120,6 +120,10 @@ export class Tab2Page implements OnInit{
         }
       });
     }
+  }
+
+  irAcomodarPlanes() {
+    this.nav.navigateRoot('/acomodar-page');
   }
 
   // Alerta que presenta la descripcion de un plan

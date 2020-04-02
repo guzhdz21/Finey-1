@@ -72,8 +72,7 @@ export class PlanModificarPage implements OnInit {
 
   //Metodo para calcular los datos necesarios para un plan y guardarlo en el storage
   async calcularYModificar() {
-    this.planes[this.indexAux].aportacionMensual = this.planes[this.indexAux].cantidadTotal / this.planes[this.indexAux].tiempoTotal;
-    this.planes[this.indexAux].cantidadAcumulada = 0;
+    this.planes[this.indexAux].aportacionMensual = (this.planes[this.indexAux].cantidadTotal - this.planes[this.indexAux].cantidadAcumulada) / this.planes[this.indexAux].tiempoTotal;
     this.planes[this.indexAux].tiempoRestante = this.planes[this.indexAux].tiempoTotal;
 
     if ( await this.validarPlan() ) {

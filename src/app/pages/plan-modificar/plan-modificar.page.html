@@ -75,6 +75,24 @@
       </ion-input>
       </ion-item>
 
+      <ion-item>
+
+        <ion-buttons slot="start">
+        <ion-button slots="icon-only" (click)="botonInfo('Cantidad acumulada')">
+          <ion-icon name="information-circle"></ion-icon>
+        </ion-button>
+      </ion-buttons>
+    
+      <ion-label>Cantidad acumulada</ion-label>
+    
+      <ion-input type="number"
+                placeholder="1000"
+                [(ngModel)]="planes[indexAux].cantidadAcumulada"
+                name="cantidadAcumulada"
+                required>
+      </ion-input>
+      </ion-item>
+
     <ion-button expand="block"
                 color="success"
                 (click)="calcularYModificar()"

@@ -56,6 +56,14 @@ const routes: Routes = [
   {
     path: 'test',
     loadChildren: () => import('./pages/test/test.module').then( m => m.TestPageModule)
+  },
+  {
+    path: 'acomodar-page',
+    loadChildren: () => import('./pages/acomodar-page/acomodar-page.module').then( m => m.AcomodarPagePageModule)
+  },
+  {
+    path: 'acomodar',
+    loadChildren: () => import('./pages/acomodar/acomodar.module').then( m => m.AcomodarPageModule)
   }
 
 ];

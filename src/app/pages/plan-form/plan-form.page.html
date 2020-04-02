@@ -68,7 +68,10 @@
                 placeholder="12"
                 [(ngModel)]="planNuevo.tiempoTotal"
                 name="tiempoPlan"
-                required>
+                required
+                (ionChange)="tiempoPlan($event)"
+                #tiempo
+                >
       </ion-input>
       </ion-item>
 

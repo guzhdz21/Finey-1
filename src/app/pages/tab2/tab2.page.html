@@ -143,6 +143,29 @@
         </ion-content>
 
         </ion-slide>
+
+        <ion-slide *ngIf="planesExiste == true && this.planes.length > 1">
+            <ion-content>
+
+                <ion-card>
+                    <ion-item lines="none">
+                        <ion-label><h1 class="acomodar">Ordenar Planes</h1></ion-label>
+                    </ion-item>
+        
+                    <p></p>
+        
+                    <ion-item lines="none">
+                        <ion-button 
+                                        color="success" 
+                                        (click)="irAcomodarPlanes()"
+                                        class="botonNoPlanes"
+                                        size="medium">
+                                <ion-icon slot="icon-only" name="list" mode="ios"></ion-icon>
+                            </ion-button>
+                    </ion-item>
+                </ion-card>
+            </ion-content>
+        </ion-slide>
     
     </ion-slides>
 

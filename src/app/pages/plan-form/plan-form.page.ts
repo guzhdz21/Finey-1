@@ -1,7 +1,7 @@
-import { Component, OnInit, Input } from '@angular/core';
+import { Component, OnInit, Input, ViewChild } from '@angular/core';
 import { Plan, AlertaGeneral } from '../../interfaces/interfaces';
 import { DatosService } from '../../services/datos.service';
-import { NavController, ModalController, Platform } from '@ionic/angular';
+import { NavController, ModalController, Platform, IonInput } from '@ionic/angular';
 import { AccionesService } from '../../services/acciones.service';
 import { UsuarioLocal } from '../../interfaces/interfaces';
 import { Subscription } from 'rxjs';
@@ -16,6 +16,7 @@ export class PlanFormPage implements OnInit {
 
   //Variable que viene del Modal registro y del tab2 y nos indica si es la primera vez que abre la app
   @Input() registro: string;
+  @ViewChild('tiempo',{static: true}) tiempo: IonInput;
 
   //Variable para guardar los datos del nuevo plan
   planNuevo: Plan = {
@@ -132,9 +133,9 @@ export class PlanFormPage implements OnInit {
 
   async casoUnPlan(margenMax: number) {
     //Un plan
-    var ochoPorciento = await this.obtenerOchoPorciento(margenMax);
+    var ochoPorciento = this.obtenerOchoPorciento(margenMax);
     //Verificar si el plan es menor o igual al 8% del dinero destinado ahorrar
-    if(this.siPlanNuevoMuyPequeño(ochoPorciento)) {
+    if(await this.siPlanNuevoMuyPequeño(ochoPorciento)) {
       return;
     }
     this.planes = [];
@@ -168,7 +169,6 @@ export class PlanFormPage implements OnInit {
 
         return;
       }
-        
       this.planes.push(this.planNuevo);
       this.guardarCambiosAPlanes();
       this.nav.navigateRoot('/tabs/tab2');
@@ -233,26 +233,26 @@ export class PlanFormPage implements OnInit {
 
   async calculosMasDosPlanes(margenMax: number, margenMin: number) {
     var ahorrar = 0;
-    var planMenor = this.planes[0];
-    var planMayor = this.planNuevo;
+    this.planMenor = this.planes[0];
+    this.planMayor = this.planNuevo;
     var gasto = 0;
 
     this.planes.forEach(element => {
-      if(planMenor.tiempoRestante > element.tiempoRestante) {
-        planMenor = element;
+      if(this.planMenor.tiempoRestante > element.tiempoRestante) {
+        this.planMenor = element;
       }
-      if(planMayor.tiempoRestante < element.tiempoRestante) {
-        planMayor = element;
+      if(this.planMayor.tiempoRestante < element.tiempoRestante) {
+        this.planMayor = element;
       }
       ahorrar += (element.cantidadTotal - element.cantidadAcumulada); 
     });
     
-    if(this.planNuevo.tiempoRestante < planMenor.tiempoRestante) {
-      planMenor = this.planNuevo;
+    if(this.planNuevo.tiempoRestante < this.planMenor.tiempoRestante) {
+      this.planMenor = this.planNuevo;
     }
     ahorrar += (this.planNuevo.cantidadTotal - this.planNuevo.cantidadAcumulada);
     
-    ahorrar /= planMayor.tiempoRestante;
+    ahorrar /= this.planMayor.tiempoRestante;
     this.ahorrar = ahorrar;
     gasto = this.usuarioCargado.ingresoCantidad - ahorrar;
 
@@ -261,8 +261,7 @@ export class PlanFormPage implements OnInit {
 
   async ocho(margenMax: number) {
     var ochoPorciento = this.obtenerOchoPorciento(margenMax);
-
-    if(this.siPlanNuevoMuyPequeño(ochoPorciento)) {
+    if(await this.siPlanNuevoMuyPequeño(ochoPorciento)) {
       return true;
     } else {
       if(this.planes.length == 1) {
@@ -339,6 +338,7 @@ export class PlanFormPage implements OnInit {
      else {
       await this.accionesService.presentAlertPlan([{text: 'Modificar', handler: (blah) => {}}], 
       'No puedes completar este plan en ese tiempo', 'Presiona Modificar y aumenta tu tiempo para ser apto de conseguirlo');
+      this.calcularEstimacion(margenMin);
       return false;
      }
   }
@@ -404,6 +404,7 @@ export class PlanFormPage implements OnInit {
       await this.accionesService.presentAlertPlan([{text: 'Modificar', handler: (blah) => {}}], 
       'No puedes completar este plan en ese tiempo', 'Presiona Modificar y aumenta tu tiempo para ser apto de conseguirlo');
       this.creado = false;
+      this.calcularEstimacionDosPlanes(margenMin);
       return;
      }
   }
@@ -430,7 +431,7 @@ export class PlanFormPage implements OnInit {
                                                   'Plan que apenas es posible', 
         'Puedes crear el plan y cumplirlo en el tiempo establecido MIENTRAS te mantengas en GASTOS MINIMOS en los gastos promedio (luz, agua, etc.) o puedes aumentar el tiempo en conseguirlo para que no estes tan presionado');
         this.creado = this.accionesService.alertaPlanCrear;
-        if(this.creado = true) {
+        if(this.creado) {
           this.confirmarCreacionMasDosPlanes(ahorrar);
         }
         return;
@@ -440,6 +441,7 @@ export class PlanFormPage implements OnInit {
       await this.accionesService.presentAlertPlan([{text: 'Modificar', handler: (blah) => {}}], 
       'No puedes completar este plan en ese tiempo', 'Presiona Modificar y aumenta tu tiempo para ser apto de conseguirlo');
       this.creado = false;
+      this.calcularEstimacionDosPlanes(margenMin);
       return; 
     }
   }
@@ -530,6 +532,39 @@ export class PlanFormPage implements OnInit {
     return;
   }
 
+  async calcularEstimacion(margenMin: number) {
+    var estimacion = -1 * (this.planNuevo.cantidadTotal-this.planNuevo.cantidadAcumulada);
+    var estimacion = estimacion/(margenMin - this.usuarioCargado.ingresoCantidad);
+    var aux = Math.round(estimacion);
+    if(aux < estimacion) {
+      estimacion = estimacion + 0.5;
+    }
+    await this.accionesService.presentAlertGenerica("ATENCION", "Te sugerimos que aumentes el tiempo de " + 
+    "tu plan minimo a " + Math.round(estimacion) + " para poder cumplirlo");
+  }
+
+  async calcularEstimacionDosPlanes(margenMin: number) {
+    if(this.planes.length == 1 ) { 
+      var estimacion = (this.planNuevo.cantidadTotal - this.planNuevo.cantidadAcumulada) + (this.planes[0].cantidadTotal - this.planes[0].cantidadAcumulada);
+    } else {
+      var estimacion = 0;
+      this.planes.forEach(element => {
+        estimacion += (element.cantidadTotal - element.cantidadAcumulada);
+      });
+      estimacion += (this.planNuevo.cantidadTotal - this.planNuevo.cantidadAcumulada);
+      console.log(estimacion);
+    }
+    
+    estimacion = -1 * estimacion;
+    estimacion = estimacion/(margenMin - this.usuarioCargado.ingresoCantidad);
+    var aux = Math.round(estimacion);
+    if(aux < estimacion) {
+      estimacion = estimacion + 0.5;
+    }
+    await this.accionesService.presentAlertGenerica("ATENCION", "Te sugerimos que aumentes el tiempo de " + 
+    "tu plan minimo a " + Math.round(estimacion) + " para poder cumplirlo");
+  }
+
   //Metodo que omite el ingreso del primer plan al hacer el registro
   omitir() {
     this.modalCtrl.dismiss();
@@ -544,6 +579,12 @@ export class PlanFormPage implements OnInit {
         return;
       }
     });
+  }
+
+  tiempoPlan(event) {
+    if(this.tiempo.value != Math.round(this.planNuevo.tiempoTotal).toString()) {
+      this.tiempo.value = this.tiempo.value.substr(0, this.tiempo.value.length - 1);
+    }
   }
 
   ionViewDidEnter() {
