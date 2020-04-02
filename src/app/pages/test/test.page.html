@@ -13,8 +13,7 @@
     <ion-item>
       <ion-list class="margen_izquierda_60">
         <ion-radio-group required 
-                          #tipoIngreso 
-                          (ionChange)="subTest1($event)">
+                         (ionChange)="subTest1($event)">
           <ion-item lines="none">
             <ion-radio color="dark" value="si"></ion-radio>
             <ion-label class="margen_izquierda_20">Si</ion-label>
@@ -29,27 +28,198 @@
   </div>
   
   <div *ngIf="permiso1==true">
+    <ion-item color="primary"> 
+      <ion-label><h1 class="texto_centrado_blanco">Internet</h1></ion-label>
+    </ion-item>
   <ion-item lines="none">  
-    <ion-label class="margen_derecha_18">{{subTestEncontrado.preguntas[1].preguntaTexto}}</ion-label>
+    <ion-label class="margen_derecha_18">{{subTestEncontrado1.preguntas[0].preguntaTexto}}</ion-label>
     </ion-item>
   
     <ion-item>
       <ion-list class="margen_izquierda_60">
         <ion-radio-group required 
-                          #tipoIngreso 
-                          (ionChange)="subTest1($event)">
+                          #tipoIngreso>
           <ion-item lines="none">
             <ion-radio color="dark" value="si"></ion-radio>
-            <ion-label class="margen_izquierda_20">{{subTestEncontrado.preguntas[1].respuestas[1]}}</ion-label>
+            <ion-label class="margen_izquierda_20">{{subTestEncontrado1.preguntas[0].respuestas[0].respuestaTexto}}</ion-label>
           </ion-item>
           <ion-item lines="none">
             <ion-radio color="dark" value="no"></ion-radio>
-            <ion-label class="margen_izquierda_20">{{subTestEncontrado.preguntas[1].respuestas[2]}}</ion-label>
+            <ion-label class="margen_izquierda_20">{{subTestEncontrado1.preguntas[0].respuestas[1].respuestaTexto}}</ion-label>
           </ion-item>
         </ion-radio-group>
       </ion-list>
     </ion-item>
+
+    <ion-item lines="none">  
+      <ion-label class="margen_derecha_18">{{subTestEncontrado1.preguntas[1].preguntaTexto}}</ion-label>
+      </ion-item>
+    
+      <ion-item>
+        <ion-list class="margen_izquierda_60">
+          <ion-radio-group required>
+            <ion-item lines="none">
+              <ion-radio color="dark" value="1"></ion-radio>
+              <ion-label class="margen_izquierda_20">{{subTestEncontrado1.preguntas[1].respuestas[0].respuestaTexto}}</ion-label>
+            </ion-item>
+            <ion-item lines="none">
+              <ion-radio color="dark" value="2"></ion-radio>
+              <ion-label class="margen_izquierda_20">{{subTestEncontrado1.preguntas[1].respuestas[1].respuestaTexto}}</ion-label>
+            </ion-item>
+            <ion-item lines="none">
+              <ion-radio color="dark" value="3"></ion-radio>
+              <ion-label class="margen_izquierda_20">{{subTestEncontrado1.preguntas[1].respuestas[2].respuestaTexto}}</ion-label>
+            </ion-item>
+            <ion-item lines="none">
+              <ion-radio color="dark" value="4"></ion-radio>
+              <ion-label class="margen_izquierda_20">{{subTestEncontrado1.preguntas[1].respuestas[3].respuestaTexto}}</ion-label>
+            </ion-item>
+            <ion-item lines="none">
+              <ion-radio color="dark" value="5"></ion-radio>
+              <ion-label class="margen_izquierda_20">{{subTestEncontrado1.preguntas[1].respuestas[4].respuestaTexto}}</ion-label>
+            </ion-item>
+          </ion-radio-group>
+        </ion-list>
+      </ion-item>
+
+      <ion-item lines="none">  
+        <ion-label class="margen_derecha_18">{{subTestEncontrado1.preguntas[2].preguntaTexto}}</ion-label>
+        </ion-item>
+
+        <ion-item>
+          <ion-list class="margen_izquierda_60">
+            <ion-radio-group required>
+              <ion-item lines="none">
+                <ion-radio color="dark" value="1"></ion-radio>
+                <ion-label class="margen_izquierda_20">{{subTestEncontrado1.preguntas[2].respuestas[0].respuestaTexto}}</ion-label>
+              </ion-item>
+              <ion-item lines="none">
+                <ion-radio color="dark" value="2"></ion-radio>
+                <ion-label class="margen_izquierda_20">{{subTestEncontrado1.preguntas[2].respuestas[1].respuestaTexto}}</ion-label>
+              </ion-item>
+              <ion-item lines="none">
+                <ion-radio color="dark" value="3"></ion-radio>
+                <ion-label class="margen_izquierda_20">{{subTestEncontrado1.preguntas[2].respuestas[2].respuestaTexto}}</ion-label>
+              </ion-item>
+              <ion-item lines="none">
+                <ion-radio color="dark" value="4"></ion-radio>
+                <ion-label class="margen_izquierda_20">{{subTestEncontrado1.preguntas[2].respuestas[3].respuestaTexto}}</ion-label>
+              </ion-item>
+            </ion-radio-group>
+          </ion-list>
+        </ion-item>
+
   </div>
+
+    <!-- CABLE -->
+
+    <div *ngIf="id==5">
+      <ion-item lines="none">  
+      <ion-label class="margen_derecha_18">¿Cuenta con servicio de cable actualmente?</ion-label>
+      </ion-item>
+  
+      <ion-item>
+        <ion-list class="margen_izquierda_60">
+          <ion-radio-group required 
+                           (ionChange)="subTest2($event)">
+            <ion-item lines="none">
+              <ion-radio color="dark" value="si"></ion-radio>
+              <ion-label class="margen_izquierda_20">Si</ion-label>
+            </ion-item>
+            <ion-item lines="none">
+              <ion-radio color="dark" value="no"></ion-radio>
+              <ion-label class="margen_izquierda_20">No</ion-label>
+            </ion-item>
+          </ion-radio-group>
+        </ion-list>
+      </ion-item> 
+    </div>
+
+    <div *ngIf="permiso2==true">
+      <ion-item color="primary"> 
+        <ion-label><h1 class="texto_centrado_blanco">Cable</h1></ion-label>
+      </ion-item>
+    <ion-item lines="none">  
+      <ion-label class="margen_derecha_18">{{subTestEncontrado2.preguntas[0].preguntaTexto}}</ion-label>
+      </ion-item>
+    
+      <ion-item>
+        <ion-list class="margen_izquierda_60">
+          <ion-radio-group required 
+                            #tipoIngreso>
+            <ion-item lines="none">
+              <ion-radio color="dark" value="si"></ion-radio>
+              <ion-label class="margen_izquierda_20">{{subTestEncontrado2.preguntas[0].respuestas[0].respuestaTexto}}</ion-label>
+            </ion-item>
+            <ion-item lines="none">
+              <ion-radio color="dark" value="no"></ion-radio>
+              <ion-label class="margen_izquierda_20">{{subTestEncontrado2.preguntas[0].respuestas[1].respuestaTexto}}</ion-label>
+            </ion-item>
+          </ion-radio-group>
+        </ion-list>
+      </ion-item>
+  
+      <ion-item lines="none">  
+        <ion-label class="margen_derecha_18">{{subTestEncontrado2.preguntas[1].preguntaTexto}}</ion-label>
+        </ion-item>
+      
+        <ion-item>
+          <ion-list class="margen_izquierda_60">
+            <ion-radio-group required>
+              <ion-item lines="none">
+                <ion-radio color="dark" value="1"></ion-radio>
+                <ion-label class="margen_izquierda_20">{{subTestEncontrado2.preguntas[1].respuestas[0].respuestaTexto}}</ion-label>
+              </ion-item>
+              <ion-item lines="none">
+                <ion-radio color="dark" value="2"></ion-radio>
+                <ion-label class="margen_izquierda_20">{{subTestEncontrado2.preguntas[1].respuestas[1].respuestaTexto}}</ion-label>
+              </ion-item>
+              <ion-item lines="none">
+                <ion-radio color="dark" value="3"></ion-radio>
+                <ion-label class="margen_izquierda_20">{{subTestEncontrado2.preguntas[1].respuestas[2].respuestaTexto}}</ion-label>
+              </ion-item>
+              <ion-item lines="none">
+                <ion-radio color="dark" value="4"></ion-radio>
+                <ion-label class="margen_izquierda_20">{{subTestEncontrado2.preguntas[1].respuestas[3].respuestaTexto}}</ion-label>
+              </ion-item>
+              <ion-item lines="none">
+                <ion-radio color="dark" value="5"></ion-radio>
+                <ion-label class="margen_izquierda_20">{{subTestEncontrado2.preguntas[1].respuestas[4].respuestaTexto}}</ion-label>
+              </ion-item>
+            </ion-radio-group>
+          </ion-list>
+        </ion-item>
+  
+        <ion-item lines="none">  
+          <ion-label class="margen_derecha_18">{{subTestEncontrado2.preguntas[2].preguntaTexto}}</ion-label>
+          </ion-item>
+  
+          <ion-item>
+            <ion-list class="margen_izquierda_60">
+              <ion-radio-group required>
+                <ion-item lines="none">
+                  <ion-radio color="dark" value="1"></ion-radio>
+                  <ion-label class="margen_izquierda_20">{{subTestEncontrado2.preguntas[2].respuestas[0].respuestaTexto}}</ion-label>
+                </ion-item>
+                <ion-item lines="none">
+                  <ion-radio color="dark" value="2"></ion-radio>
+                  <ion-label class="margen_izquierda_20">{{subTestEncontrado2.preguntas[2].respuestas[1].respuestaTexto}}</ion-label>
+                </ion-item>
+                <ion-item lines="none">
+                  <ion-radio color="dark" value="3"></ion-radio>
+                  <ion-label class="margen_izquierda_20">{{subTestEncontrado2.preguntas[2].respuestas[2].respuestaTexto}}</ion-label>
+                </ion-item>
+                <ion-item lines="none">
+                  <ion-radio color="dark" value="4"></ion-radio>
+                  <ion-label class="margen_izquierda_20">{{subTestEncontrado2.preguntas[2].respuestas[3].respuestaTexto}}</ion-label>
+                </ion-item>
+              </ion-radio-group>
+            </ion-list>
+          </ion-item>
+  
+    </div>
+  
+
   </form>
 
 </ion-content>

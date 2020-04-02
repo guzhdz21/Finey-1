@@ -1,6 +1,6 @@
 import { Component, OnInit, Input } from '@angular/core';
 import { Observable } from 'rxjs';
-import { Test, SubTest, Pregunta } from 'src/app/interfaces/interfaces';
+import { Test, SubTest, Pregunta, Respuesta } from 'src/app/interfaces/interfaces';
 import { DatosService } from 'src/app/services/datos.service';
 
 @Component({
@@ -22,16 +22,58 @@ testEncontrado: Test = {
   subTests: null
 };
 
-subTestEncontrado: SubTest = {
-  idTest: 5,
-  id: 1,
+subTestEncontrado1: SubTest = {
+  idTest: null,
+  id: null,
   preguntas: [{
-      idSubTest: 1,
-      id: 1,
-      preguntaTexto: 'Guz es gay',
+      idSubTest: null,
+      id: null,
+      preguntaTexto: '',
       respuestas: [{
-          respuestaTexto: 'si',
-          valor: 0
+          respuestaTexto: '',
+          valor: null
+        }]
+    }]
+}
+
+subTestEncontrado2: SubTest = {
+  idTest: null,
+  id: null,
+  preguntas: [{
+      idSubTest: null,
+      id: null,
+      preguntaTexto: '',
+      respuestas: [{
+          respuestaTexto: '',
+          valor: null
+        }]
+    }]
+}
+
+subTestEncontrado3: SubTest = {
+  idTest: null,
+  id: null,
+  preguntas: [{
+      idSubTest: null,
+      id: null,
+      preguntaTexto: '',
+      respuestas: [{
+          respuestaTexto: '',
+          valor: null
+        }]
+    }]
+}
+
+subTestEncontrado4: SubTest = {
+  idTest: null,
+  id: null,
+  preguntas: [{
+      idSubTest: null,
+      id: null,
+      preguntaTexto: '',
+      respuestas: [{
+          respuestaTexto: '',
+          valor: null
         }]
     }]
 }
@@ -40,11 +82,10 @@ permiso1: boolean = false;
 permiso2: boolean = false;
 permiso3: boolean = false;
 permiso4: boolean = false;
-permiso5: boolean = false;
+
+encontradoExito = false;
 
   constructor(public datosService: DatosService) { }
-
-  cuantosSubTests = 0;
 
   ngOnInit() {
 
@@ -57,39 +98,76 @@ permiso5: boolean = false;
       });
     });
 
-    this.datosService.getSubTests().subscribe(val => {
-      val.forEach(element => {
-        if(element.idTest == this.id){
-        this.cuantosSubTests++;
-        }
-      });
-    });
-  
   }
 
-  obtenerSubTest( idSubTest: number){
-
+  obtenerSubTest(idSubTest: number, subTestEncontrado: SubTest){
+   this.encontradoExito=false;
+    var i=0, ii=0;
     this.datosService.getSubTests().subscribe(val => {
+
       val.forEach(element => {
-        if( idSubTest == element.id && element.idTest == this.id){
-          this.subTestEncontrado = element;
-          console.log("encontrado");
-        }
-        else{
-          console.log("No encontrado");
-        }
-      });
-    });
 
-  }
+        if(idSubTest == element.id && element.idTest == this.id){
+          i=0;
+          subTestEncontrado.idTest = element.idTest;
+          subTestEncontrado.id = element.id;
 
-  subTest1(event){
+          this.datosService.getPreguntas().subscribe(preg => {
+
+            preg.forEach(elementPreg => {
+
+              if(idSubTest == elementPreg.idSubTest){
+
+               ii=0;
+               subTestEncontrado.preguntas[i] = elementPreg;
+
+                  subTestEncontrado.preguntas[i].respuestas.forEach(elementRespu => {
+
+                  subTestEncontrado.preguntas[i].respuestas[ii].respuestaTexto = elementRespu.respuestaTexto;
+                  ii++;   
+                  this.encontradoExito=true;
+                }); 
+              }
+               else{
+                console.log("No encontrado");
+              }
+            
+              i++;
+
+           });
+        });
+      }
+  });
+});
+return subTestEncontrado;
+}
+
+  async subTest1(event){
     if(event.detail.value == 'si'){
-      this.obtenerSubTest(1);
+      do{
+      this.subTestEncontrado1 = this.obtenerSubTest(1, this.subTestEncontrado1);
       this.permiso1 = true;
+      console.log(this.subTestEncontrado1);
+      }while(this.subTestEncontrado1 == null);
     }
     else{
       this.permiso1 = false;
+      this.subTestEncontrado1 = null;
+    }
+  }
+
+  async subTest2(event){
+    if(event.detail.value == 'si'){
+      do{
+      this.subTestEncontrado2 = this.obtenerSubTest(2, this.subTestEncontrado2);
+      this.permiso2 = true;
+      console.log(this.subTestEncontrado2);
+      }while(this.subTestEncontrado2 == null);
+    }
+    else{
+      this.permiso2 = false;
+      this.subTestEncontrado2 = null;
+      console.log("no");
     }
   }
 
