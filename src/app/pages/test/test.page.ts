@@ -88,7 +88,6 @@ encontradoExito = false;
   constructor(public datosService: DatosService) { }
 
   ngOnInit() {
-
     //Encuentro el test con esa ID
     this. datosService.getTests().subscribe(val => {
       val.forEach(element => {
@@ -101,39 +100,19 @@ encontradoExito = false;
   }
 
   obtenerSubTest(idSubTest: number, subTestEncontrado: SubTest){
-   this.encontradoExito=false;
-    var i=0, ii=0;
     this.datosService.getSubTests().subscribe(val => {
-
       val.forEach(element => {
-
         if(idSubTest == element.id && element.idTest == this.id){
-          this.encontradoExito=true;
-          i=0;
           subTestEncontrado.idTest = element.idTest;
           subTestEncontrado.id = element.id;
-
+          subTestEncontrado.preguntas = [];
           this.datosService.getPreguntas().subscribe(preg => {
 
             preg.forEach(elementPreg => {
 
-              if(idSubTest == elementPreg.idSubTest){
-
-               ii=0;
-               subTestEncontrado.preguntas[i] = elementPreg;
-
-                  subTestEncontrado.preguntas[i].respuestas.forEach(elementRespu => {
-
-                  subTestEncontrado.preguntas[i].respuestas[ii].respuestaTexto = elementRespu.respuestaTexto;
-                  ii++;   
-                }); 
+              if(subTestEncontrado.id == elementPreg.idSubTest){
+                subTestEncontrado.preguntas.push(elementPreg); 
               }
-               else{
-                console.log("No encontrado");
-              }
-            
-              i++;
-
            });
         });
       }
@@ -144,7 +123,7 @@ return subTestEncontrado;
 
   async subTest1(event){
     if(event.detail.value == 'si'){
-      this.subTestEncontrado1 = this.obtenerSubTest(1, this.subTestEncontrado1);
+      this.subTestEncontrado1 = await this.obtenerSubTest(1, this.subTestEncontrado1);
       this.permiso1 = true;
       //console.log(this.subTestEncontrado1);
     }
@@ -156,7 +135,7 @@ return subTestEncontrado;
 
   async subTest2(event){
     if(event.detail.value == 'si'){
-      this.subTestEncontrado2 = this.obtenerSubTest(2, this.subTestEncontrado2);
+      this.subTestEncontrado2 = await this.obtenerSubTest(2, this.subTestEncontrado2);
       this.permiso2 = true;
       //console.log(this.subTestEncontrado2);
     }
