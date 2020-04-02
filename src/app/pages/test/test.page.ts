@@ -108,6 +108,7 @@ encontradoExito = false;
       val.forEach(element => {
 
         if(idSubTest == element.id && element.idTest == this.id){
+          this.encontradoExito=true;
           i=0;
           subTestEncontrado.idTest = element.idTest;
           subTestEncontrado.id = element.id;
@@ -125,7 +126,6 @@ encontradoExito = false;
 
                   subTestEncontrado.preguntas[i].respuestas[ii].respuestaTexto = elementRespu.respuestaTexto;
                   ii++;   
-                  this.encontradoExito=true;
                 }); 
               }
                else{
@@ -144,11 +144,9 @@ return subTestEncontrado;
 
   async subTest1(event){
     if(event.detail.value == 'si'){
-      do{
       this.subTestEncontrado1 = this.obtenerSubTest(1, this.subTestEncontrado1);
       this.permiso1 = true;
-      console.log(this.subTestEncontrado1);
-      }while(this.subTestEncontrado1 == null);
+      //console.log(this.subTestEncontrado1);
     }
     else{
       this.permiso1 = false;
@@ -158,11 +156,9 @@ return subTestEncontrado;
 
   async subTest2(event){
     if(event.detail.value == 'si'){
-      do{
       this.subTestEncontrado2 = this.obtenerSubTest(2, this.subTestEncontrado2);
       this.permiso2 = true;
-      console.log(this.subTestEncontrado2);
-      }while(this.subTestEncontrado2 == null);
+      //console.log(this.subTestEncontrado2);
     }
     else{
       this.permiso2 = false;
