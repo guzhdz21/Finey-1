@@ -5,17 +5,20 @@ import { MenuComponent } from './menu/menu.component';
 import { IonicModule } from '@ionic/angular';
 import { HeaderModalComponent } from './header-modal/header-modal.component';
 import { RouterModule } from '@angular/router';
+import { InternetComponent } from './internet/internet.component';
 
 @NgModule({
   declarations: [
     HeaderComponent,
     MenuComponent,
-    HeaderModalComponent
+    HeaderModalComponent,
+    InternetComponent, 
   ],
   exports: [
     HeaderComponent,
     MenuComponent,
-    HeaderModalComponent
+    HeaderModalComponent,
+    InternetComponent,
   ],
   imports: [
     CommonModule,
