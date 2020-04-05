@@ -540,7 +540,7 @@ export class PlanFormPage implements OnInit {
       estimacion = estimacion + 0.5;
     }
     await this.accionesService.presentAlertGenerica("ATENCION", "Te sugerimos que aumentes el tiempo de " + 
-    "tu plan minimo a " + Math.round(estimacion) + " para poder cumplirlo");
+    "tu plan minimo a " + Math.round(estimacion) + " meses para poder cumplirlo");
   }
 
   async calcularEstimacionDosPlanes(margenMin: number) {
@@ -562,7 +562,7 @@ export class PlanFormPage implements OnInit {
       estimacion = estimacion + 0.5;
     }
     await this.accionesService.presentAlertGenerica("ATENCION", "Te sugerimos que aumentes el tiempo de " + 
-    "tu plan minimo a " + Math.round(estimacion) + " para poder cumplirlo");
+    "tu plan minimo a " + Math.round(estimacion) + " meses para poder cumplirlo");
   }
 
   //Metodo que omite el ingreso del primer plan al hacer el registro
