@@ -88,7 +88,7 @@
       <ion-item *ngIf="pregunta.id == 2">
         <ion-list class="margen_izquierda_60">
           <ion-item lines="none" *ngFor="let respuesta of pregunta.respuestas">
-            <ion-checkbox color="dark" value="respuesta.valor"></ion-checkbox>
+            <ion-checkbox color="dark" value="{{respuesta.valor}}" (ionChange)="checkBoxChange($event, pregunta.id, 1)"></ion-checkbox>
             <ion-label class="margen_izquierda_20 ion-text-wrap">{{respuesta.respuestaTexto}}</ion-label>
           </ion-item>
         </ion-list>
@@ -96,10 +96,9 @@
 
       <ion-item *ngIf="pregunta.id != 2">
         <ion-list class="margen_izquierda_60">
-          <ion-radio-group required 
-                            #tipoIngreso>
+          <ion-radio-group required (ionChange)="radioButtonChange($event, pregunta.id, 1)">
             <ion-item lines="none" *ngFor="let respuesta of pregunta.respuestas">
-              <ion-radio color="dark" value="si"></ion-radio>
+              <ion-radio color="dark" value="{{respuesta.valor}}"></ion-radio>
               <ion-label class="margen_izquierda_20 ion-text-wrap">{{respuesta.respuestaTexto}}</ion-label>
             </ion-item>
           </ion-radio-group>
@@ -171,7 +170,13 @@
         </ion-item>
       </div>
 
-      </ion-item>
+    </ion-item>
+
     </ion-list>
 
   </div>
+
+  <ion-button 
+  expand="block" 
+  color="success" 
+  (click)="testFinalizado()">Terminar Test</ion-button>

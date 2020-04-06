@@ -2,6 +2,7 @@ import { Component, OnInit, Input } from '@angular/core';
 import { Observable } from 'rxjs';
 import { Test, SubTest, Pregunta, Respuesta } from 'src/app/interfaces/interfaces';
 import { DatosService } from 'src/app/services/datos.service';
+import { AccionesService } from '../../services/acciones.service';
 
 @Component({
   selector: 'app-internet',
@@ -10,22 +11,28 @@ import { DatosService } from 'src/app/services/datos.service';
 })
 export class InternetComponent implements OnInit {
 
-  constructor(public datosService: DatosService) { }
+  constructor(public datosService: DatosService,
+              public accionesService: AccionesService ) { }
 
   ngOnInit() {
     this.subTestsEncontrados = [];
     this.puntajeAlcanzar = [];
     this.puntajeActual = [];
     this.permisos = [];
+    this.valoresRadio = [];
     this.permisos[1] = false;
     this.permisos[2] = false;
     this.permisos[3] = false;
+    this.puntajeActual[1] = 0; 
+    this.puntajeActual[2] = 0; 
+    this.puntajeActual[3] = 0; 
   }
 
   subTestsEncontrados: SubTest[];
   puntajeAlcanzar: number[];
   puntajeActual: number[];
   permisos: boolean[];
+  valoresRadio: number[];
 
   subTestEncontrado: SubTest = {
     idTest: null,
@@ -91,6 +98,53 @@ async subTest3(event){
   else{
     this.permisos[3] = false;
   }
+}
+
+radioButtonChange(event, idPregunta, idSubTest){
+
+  //SUBTEST1
+  switch(idSubTest){
+    
+  case 1:
+
+    if(idPregunta == 1){ //SI ES EL PUNTAJE A ALCANZAR
+      this.puntajeAlcanzar[idSubTest] = parseInt(event.detail.value);
+    } 
+    else { //SI ES EL PUNTAJE ACTUAL
+      this.valoresRadio[idPregunta] = parseInt(event.detail.value);
+    }
+
+  break;
+
+  }
+
+    }
+
+checkBoxChange(event, idPregunta, idSubTest){
+
+  //SUBTEST1
+  if(idSubTest == 1){
+    if(event.currentTarget.checked == true){
+      this.puntajeActual[idSubTest] += parseInt(event.detail.value); 
+    }
+    else{
+      this.puntajeActual[idSubTest] -= parseInt(event.detail.value); 
+    }
+  }
+}
+
+testFinalizado(){
+  //SUBTEST1
+  this.puntajeActual[1] += this.valoresRadio[3]; //LO DEL CHECK + LO DEL RADIO BUTTON, ES 3 PUES 1 ES LA DE ALCANZAR, 2 EL CHECK
+  if(this.puntajeActual[1] < this.puntajeAlcanzar[1]){
+      this.accionesService.presentAlertConsejo("Consejo de Internet" , "Tu plan de internet es muy grande para el tiempo y uso " +
+      "que le das, te aconsejamos contratar un plan mas pequeño o cambiarte de compañia para gastar lo necesario", true);
+  }
+  else{ //SI SU GASTO SI ESTÁ JUSTIFICADO
+    this.accionesService.presentAlertGenerica("Gasto de Internet justificado", "Aunque tu gasto este arriba de la media nacional" +
+    ", está justificado, pues si lo aprovechas bien o simplemente lo necesitas tal y como es debido a tus respuestas");
+  }
+
 }
 
 }
