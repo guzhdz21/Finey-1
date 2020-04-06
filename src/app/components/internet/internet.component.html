@@ -127,10 +127,9 @@
 
         <ion-item>
           <ion-list class="margen_izquierda_60">
-            <ion-radio-group required 
-                              #tipoIngreso>
+            <ion-radio-group required (ionChange)="radioButtonChange($event, pregunta.id, 2)">
               <ion-item lines="none" *ngFor="let respuesta of pregunta.respuestas">
-                <ion-radio color="dark" value="si"></ion-radio>
+                <ion-radio color="dark" value="{{respuesta.valor}}"></ion-radio>
                 <ion-label class="margen_izquierda_20 ion-text-wrap">{{respuesta.respuestaTexto}}</ion-label>
               </ion-item>
             </ion-radio-group>
@@ -159,10 +158,9 @@
 
         <ion-item>
           <ion-list class="margen_izquierda_60">
-            <ion-radio-group required 
-                              #tipoIngreso>
+            <ion-radio-group required (ionChange)="radioButtonChange($event, pregunta.id, 3)">
               <ion-item lines="none" *ngFor="let respuesta of pregunta.respuestas">
-                <ion-radio color="dark" value="si"></ion-radio>
+                <ion-radio color="dark" value="{{respuesta.valor}}"></ion-radio>
                 <ion-label class="margen_izquierda_20 ion-text-wrap">{{respuesta.respuestaTexto}}</ion-label>
               </ion-item>
             </ion-radio-group>

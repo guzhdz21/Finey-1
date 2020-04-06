@@ -19,7 +19,7 @@ export class InternetComponent implements OnInit {
     this.puntajeAlcanzar = [];
     this.puntajeActual = [];
     this.permisos = [];
-    this.valoresRadio = [];
+    this.valoresRadio = [[],[]];
     this.permisos[1] = false;
     this.permisos[2] = false;
     this.permisos[3] = false;
@@ -32,7 +32,7 @@ export class InternetComponent implements OnInit {
   puntajeAlcanzar: number[];
   puntajeActual: number[];
   permisos: boolean[];
-  valoresRadio: number[];
+  valoresRadio: number[][];
 
   subTestEncontrado: SubTest = {
     idTest: null,
@@ -106,16 +106,28 @@ radioButtonChange(event, idPregunta, idSubTest){
   switch(idSubTest){
     
   case 1:
-
     if(idPregunta == 1){ //SI ES EL PUNTAJE A ALCANZAR
       this.puntajeAlcanzar[idSubTest] = parseInt(event.detail.value);
     } 
     else { //SI ES EL PUNTAJE ACTUAL
-      this.valoresRadio[idPregunta] = parseInt(event.detail.value);
+      this.valoresRadio[idSubTest][idPregunta] = parseInt(event.detail.value);
     }
-
   break;
 
+  case 2:
+    if(idPregunta == 1){
+      this.puntajeAlcanzar[idSubTest] = parseInt(event.detail.value);
+    }
+    else{
+      this.valoresRadio[idSubTest][idPregunta] = parseInt(event.detail.value);
+    }
+  break;
+
+  case 3:
+    this.puntajeAlcanzar[idSubTest] = 10;
+    this.valoresRadio[idSubTest][idPregunta] = parseInt(event.detail.value);
+    console.log("putooo: " + this.valoresRadio[idSubTest][idPregunta]);
+  break;
   }
 
     }
@@ -135,15 +147,59 @@ checkBoxChange(event, idPregunta, idSubTest){
 
 testFinalizado(){
   //SUBTEST1
-  this.puntajeActual[1] += this.valoresRadio[3]; //LO DEL CHECK + LO DEL RADIO BUTTON, ES 3 PUES 1 ES LA DE ALCANZAR, 2 EL CHECK
+if(this.permisos[1]){
+  this.puntajeActual[1] += this.valoresRadio[1][3]; //LO DEL CHECK + LO DEL RADIO BUTTON, ES 3 PUES 1 ES LA DE ALCANZAR, 2 EL CHECK
   if(this.puntajeActual[1] < this.puntajeAlcanzar[1]){
       this.accionesService.presentAlertConsejo("Consejo de Internet" , "Tu plan de internet es muy grande para el tiempo y uso " +
-      "que le das, te aconsejamos contratar un plan mas pequeño o cambiarte de compañia para gastar lo necesario", true);
+      "que le das, te aconsejamos contratar un plan mas pequeño o cambiarte de compañia para gastar lo necesario", false);
   }
   else{ //SI SU GASTO SI ESTÁ JUSTIFICADO
     this.accionesService.presentAlertGenerica("Gasto de Internet justificado", "Aunque tu gasto este arriba de la media nacional" +
     ", está justificado, pues si lo aprovechas bien o simplemente lo necesitas tal y como es debido a tus respuestas");
   }
+}
+
+  //SUBTEST2
+if(this.permisos[2]){
+  this.puntajeActual[2] = this.valoresRadio[2][2] + this.valoresRadio[2][3] + this.valoresRadio[2][4]; //LO DEL CHECK + LO DEL RADIO BUTTON, ES 3 PUES 1 ES LA DE ALCANZAR, 2 EL CHECK
+  if(this.puntajeActual[2] < this.puntajeAlcanzar[2]){
+    if(this.puntajeActual[2] <= 16){
+      if(this.permisos[1]){
+        var consejo = "Se ha determinado que no ves practicamente la television o solo pocos canales y horas, por lo que" +
+        " te sugerimos cancelar el servicio de cable y buscar tus programas favoritos en internet y evitar el gasto innecesario";
+      }
+      else{
+
+      }
+      var consejo = "Se ha determinado que no ves practicamente la television o solo pocos canales y horas, por lo que" +
+      " te sugerimos cancelar el servicio de cable y si quieres ver tus programas favoritos contratar internet o un servicio" +
+      " de streaming y verlos desde ahí";
+    }
+    else{
+      var consejo = "Se ha determinado que usas poco la televisión o no ves realmente la mayoría de los canales que se ofrecen" +
+      " en tu plan, por lo tanto te sugerimos contratar un plan con menos canales o cancelarlo";
+    }
+      this.accionesService.presentAlertConsejo("Consejo de Cable" , consejo , false);
+  }
+  else{ //SI SU GASTO SI ESTÁ JUSTIFICADO
+    this.accionesService.presentAlertGenerica("Gasto de Cable justificado", "Aunque tu gasto este arriba de la media nacional" +
+    ", está justificado, pues si lo aprovechas bien o simplemente lo necesitas tal y como es debido a tus respuestas");
+  }
+}
+
+  //SUBTEST3
+if(this.permisos[3]){
+  this.puntajeActual[3] = this.valoresRadio[3][1] + this.valoresRadio[3][2]; //LO DEL CHECK + LO DEL RADIO BUTTON, ES 3 PUES 1 ES LA DE ALCANZAR, 2 EL CHECK
+  if(this.puntajeActual[3] < this.puntajeAlcanzar[3]){
+      this.accionesService.presentAlertConsejo("Consejo de Internet" , "Se ha determinado que el servicio de telefonía no lo usas" +
+      " para nada, te recomendamos que lo canceles o busques otra compañia que no lo ofrezca dentro de sus planes," +
+      " usa solo el celular para comunicarte y asi evitarás el gasto innecesario", true);
+  }
+  else{ //SI SU GASTO SI ESTÁ JUSTIFICADO
+    this.accionesService.presentAlertGenerica("Gasto de Telefonía justificado", "Aunque tu gasto este arriba de la media nacional" +
+    ", está justificado, pues si lo aprovechas bien o simplemente lo necesitas tal y como es debido a tus respuestas");
+  }
+}
 
 }
 
