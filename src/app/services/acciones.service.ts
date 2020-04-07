@@ -45,4 +45,22 @@ export class AccionesService {
     alert.present();
     await alert.onDidDismiss();
   }
+
+  async presentAlertTiempo(botones: any[],tiempo: number) {
+      
+    const alert = await this.alertCtrl.create({
+      header: 'Ingrese el nuevo tiempo',
+      message: 'Tiempo anterior: ' + tiempo + ' meses',
+      inputs: [ {
+          name: 'tiempo',
+          type: 'number',
+          value: tiempo
+        }
+      ],
+      buttons: [] = botones,
+      mode: "ios"
+    });
+    alert.present();
+    await alert.onDidDismiss();
+  }
 }

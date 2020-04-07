@@ -1,0 +1,46 @@
+<ion-header no-border>
+  <ion-toolbar color="success">
+
+    <ion-title>Modificar Planes</ion-title>
+
+  </ion-toolbar>
+</ion-header>
+
+<ion-content>
+  <ion-item color="primary"> 
+    <ion-label><h1 class="texto_centrado_blanco">Planes Actuales</h1></ion-label>
+  </ion-item>
+
+  <ion-item lines="none"> 
+    <ion-label class="texto_centrado ion-text-wrap"><p>Selecciona el plan al que quieras cambiarle el tiempo</ion-label>
+  </ion-item>
+  
+  <ion-list>
+    <ion-item *ngFor="let plan of planes; let i = index" lines="none">
+      <ion-card (click)="cambiarTiempo(i)">
+        
+        <ion-card-title class="titulo">{{plan.nombre}}</ion-card-title>
+
+        <ion-card-content>
+          <ion-item>
+            <ion-label class="centrar ion-text-wrap">
+              <p>Cantidad: {{plan.cantidadTotal - plan.cantidadAcumulada}}</p>
+              <p>Meses: {{plan.tiempoRestante}}</p></ion-label>
+          </ion-item>
+        </ion-card-content>
+
+      </ion-card>
+    </ion-item>
+  </ion-list>
+
+  <ion-button expand="block"
+                color="success"
+                (click)="guardar()"
+                >Guardar</ion-button>
+
+  <ion-button expand="block"
+              color="danger"
+              (click)="cancelar()">
+    Cancelar
+  </ion-button>
+</ion-content>

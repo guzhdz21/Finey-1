@@ -21,7 +21,7 @@ export class AcomodarPage implements OnInit {
               private datosService: DatosService) { }
 
   async ngOnInit() {
-    this.datosService.cargarDatosPlan();
+    await this.datosService.cargarDatosPlan();
     this.planes = this.datosService.planesCargados;
   }
 
@@ -37,6 +37,7 @@ export class AcomodarPage implements OnInit {
     this.datosService.presentToast("Planes reordenados");
     this.nav.navigateRoot('/tabs/tab2');
   }
+
   ionViewDidEnter() {
     this.backButtonSub = this.plt.backButton.subscribeWithPriority( 10000, () => {
       this.modalCtrl.dismiss();

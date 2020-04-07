@@ -64,6 +64,14 @@ const routes: Routes = [
   {
     path: 'acomodar',
     loadChildren: () => import('./pages/acomodar/acomodar.module').then( m => m.AcomodarPageModule)
+  },
+  {
+    path: 'modificar-tiempo-page',
+    loadChildren: () => import('./pages/modificar-tiempo-page/modificar-tiempo-page.module').then( m => m.ModificarTiempoPagePageModule)
+  },
+  {
+    path: 'modificar-tiempo',
+    loadChildren: () => import('./pages/modificar-tiempo/modificar-tiempo.module').then( m => m.ModificarTiempoPageModule)
   }
 
 ];
