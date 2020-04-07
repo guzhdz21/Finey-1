@@ -5,44 +5,44 @@
       "preguntaTexto": "¿Con cuantos megas de velocidad cuentas actualmente?",
       "respuestas": [{
         "respuestaTexto": "20 o menos",
-        "valor": 0
+        "valor": 10
       },
       {
       "respuestaTexto": "30 o 40",
-      "valor": 0
+      "valor": 40
       },
       {
       "respuestaTexto": "60-80",
-      "valor": 0
+      "valor": 55
       },
       {
       "respuestaTexto": "Más de 80",
-      "valor": 0
+      "valor": 90
       }]
     },
     {
       "idSubTest": 1,
       "id": 2,
-      "preguntaTexto": "¿Para que utilizas el internet principalmente?",
+      "preguntaTexto": "¿Para que utilizas el internet principalmente? (Puedes escoger varias)",
       "respuestas": [{
         "respuestaTexto": "Redes sociales",
-        "valor": 0
+        "valor": 5
       },
       {
       "respuestaTexto": "Descargar/subir videos",
-      "valor": 0
+      "valor": 10
       },
       {
       "respuestaTexto": "Entretenimiento",
-      "valor": 0
+      "valor": 15
       },
       {
       "respuestaTexto": "Trabajo digital",
-      "valor": 0
+      "valor": 20
       },
       {
       "respuestaTexto": "Streaming de videos",
-      "valor": 0
+      "valor": 25
       }]
     },
     {
@@ -51,19 +51,19 @@
       "preguntaTexto": "¿Cuantas horas al dia se usa internet en tu hogar? (Escoge 1)",
       "respuestas": [{
         "respuestaTexto": "Menos de 1 hora",
-        "valor": 0
+        "valor": 6
       },
       {
       "respuestaTexto": "De 1 a 2 horas",
-      "valor": 0
+      "valor": 12
       },
       {
       "respuestaTexto": "De 3 a 4 horas",
-      "valor": 0
+      "valor": 18
       },
       {
       "respuestaTexto": "5 o más horas",
-      "valor": 0
+      "valor": 25
       }]
     },
 
@@ -74,11 +74,11 @@
       "preguntaTexto": "¿Con que plan de canales cuentas actualmente?",
       "respuestas": [{
         "respuestaTexto": "Básico",
-        "valor": 0
+        "valor": 25
       },
       {
       "respuestaTexto": "Premium (HD, todos los canales)",
-      "valor": 0
+      "valor": 31
       }]
     },
     {
@@ -87,11 +87,11 @@
       "preguntaTexto": "¿Sueles contratar a menudo los servicios de peliculas, series, etc. que te ofrece tu compañia de cable?",
       "respuestas": [{
         "respuestaTexto": "Si",
-        "valor": 0
+        "valor": 20
       },
       {
       "respuestaTexto": "No",
-      "valor": 0
+      "valor": 5
       }]
     },
     {
@@ -100,19 +100,19 @@
       "preguntaTexto": "¿Cuanto tiempo se usa el servicio de cable al dia en tu hogar aproximadamente?",
       "respuestas": [{
         "respuestaTexto": "Menos de 1 hora",
-        "valor": 0
+        "valor": 6
       },
       {
       "respuestaTexto": "De 1 a 2 horas",
-      "valor": 0
+      "valor": 12
       },
       {
       "respuestaTexto": "De 3 a 4 horas",
-      "valor": 0
+      "valor": 18
       },
       {
       "respuestaTexto": "5 o más horas",
-      "valor": 0
+      "valor": 25
       }]
     },
     {
@@ -121,23 +121,23 @@
       "preguntaTexto": "Cuando ves televisión, ¿Cuantos canales sueles ver?",
       "respuestas": [{
         "respuestaTexto": "De 1 a 3",
-        "valor": 0
+        "valor": 5
       },
       {
       "respuestaTexto": "De 7 a 10",
-      "valor": 0
+      "valor": 10
       },
       {
       "respuestaTexto": "La mitad de los que tengo",
-      "valor": 0
+      "valor": 15
       },
       {
       "respuestaTexto": "La mayoria",
-      "valor": 0
+      "valor": 20
       },
       {
         "respuestaTexto": "Todos",
-        "valor": 0
+        "valor": 25
         }]
     },
 
@@ -148,15 +148,15 @@
       "preguntaTexto": "¿Cuanto tiempo se usa el telefono al dia en tu hogar?",
       "respuestas": [{
         "respuestaTexto": "No se usa",
-        "valor": 0
+        "valor": 5
       },
       {
       "respuestaTexto": "1 hora o menos",
-      "valor": 0
+      "valor": 10
       },
       {
         "respuestaTexto": "Más de 1 hora",
-        "valor": 0
+        "valor": 15
       }]
     },
     {
@@ -165,15 +165,15 @@
       "preguntaTexto": "¿Te suelen marcar al telefono fijo muy a menudo?",
       "respuestas": [{
         "respuestaTexto": "Si",
-        "valor": 0
+        "valor": 15
       },
       {
       "respuestaTexto": "Algo",
-      "valor": 0
+      "valor": 10
       },
       {
         "respuestaTexto": "No",
-        "valor": 0
+        "valor": 5
       }]
     }    
 ]

@@ -46,6 +46,31 @@ export class AccionesService {
     await alert.onDidDismiss();
   }
 
+  async presentAlertConsejo( header: string, message: string, ultimo: boolean) {
+      
+    if(ultimo){
+    var botonTexto: string = "Cerrar";
+    }
+    else{
+    var botonTexto: string = "Siguiente";
+    }
+
+    const alert = await this.alertCtrl.create({
+      header: header,
+      message: message,
+      buttons: [
+        {
+          text: botonTexto,
+          handler: (bla) => {}
+        }
+      ],
+      mode: "ios"
+    });
+    alert.present();
+    await alert.onDidDismiss();
+  }
+
+
   async presentAlertTiempo(botones: any[],tiempo: number) {
       
     const alert = await this.alertCtrl.create({
