@@ -15,11 +15,11 @@ export class ModificarTiempoPagePage implements OnInit {
               private activatedRoute: ActivatedRoute) { 
     this.activatedRoute.queryParams.subscribe((res) =>
     {
-      this.planesAux = JSON.parse(res.planesOriginales);
+      this.planesOriginales = JSON.parse(res.planesOriginales);
     });
   }
 
-  planesAux: Plan[] = [];
+  planesOriginales: Plan[] = [];
   ngOnInit() {
     this.abrirModal();
   }
@@ -27,7 +27,7 @@ export class ModificarTiempoPagePage implements OnInit {
     const modal = await this.modalCtrl.create({
       component: ModificarTiempoPage,
       componentProps: {
-        planesAux: this.planesAux
+        planesOriginales: this.planesOriginales
       }
     });
     await modal.present();

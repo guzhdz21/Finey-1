@@ -73,13 +73,13 @@
 
 <!-- INTERNET -->
 
-<div *ngIf="permisos[1] == true">
+<div *ngIf="permisos[0] == true">
   <ion-item color="primary"> 
     <ion-label><h1 class="texto_centrado_blanco">Internet</h1></ion-label>
   </ion-item>
 
   <ion-list>
-    <ion-item *ngFor="let pregunta of subTestsEncontrados[1].preguntas">
+    <ion-item *ngFor="let pregunta of subTestsEncontrados[0].preguntas">
       <div>
       <ion-item lines="none">  
         <ion-label class="margen_derecha_18 ion-text-wrap">{{pregunta.preguntaTexto}}</ion-label>
@@ -113,13 +113,13 @@
 
   <!-- CABLE -->
 
-  <div *ngIf="permisos[2] == true">
+  <div *ngIf="permisos[1] == true">
     <ion-item color="primary"> 
       <ion-label><h1 class="texto_centrado_blanco">Cable</h1></ion-label>
     </ion-item>
 
     <ion-list>
-      <ion-item *ngFor="let pregunta of subTestsEncontrados[2].preguntas">
+      <ion-item *ngFor="let pregunta of subTestsEncontrados[1].preguntas">
         <div>
         <ion-item lines="none">  
           <ion-label class="margen_derecha_18 ion-text-wrap">{{pregunta.preguntaTexto}}</ion-label>
@@ -144,13 +144,13 @@
 
   <!-- TELEFONÍA -->
 
-  <div *ngIf="permisos[3] == true">
+  <div *ngIf="permisos[2] == true">
     <ion-item color="primary"> 
       <ion-label><h1 class="texto_centrado_blanco">Telefonía</h1></ion-label>
     </ion-item>
 
     <ion-list>
-      <ion-item *ngFor="let pregunta of subTestsEncontrados[3].preguntas">
+      <ion-item *ngFor="let pregunta of subTestsEncontrados[2].preguntas">
         <div>
         <ion-item lines="none">  
           <ion-label class="margen_derecha_18 ion-text-wrap">{{pregunta.preguntaTexto}}</ion-label>

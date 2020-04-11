@@ -78,6 +78,7 @@ export class PlanFormPage implements OnInit {
 
    //Metodo que calcula los datos para agregar un plan nuevo y lo guarda en el Storage
   async calcularYRegistrar() {
+    this.planesPrioritarios = [];
     //Valores iniciales
     var unPlan = false;
     var margenMax = 0;
@@ -191,7 +192,6 @@ export class PlanFormPage implements OnInit {
           this.nav.navigateRoot('/plan-pausar-page');
           return;
         }
-
         return;
       }
       this.planes.push(this.planNuevo);
@@ -241,29 +241,33 @@ export class PlanFormPage implements OnInit {
     this.planes.forEach(element => {
       this.planesOriginales.push(element);
     });
+
     await this.calculosMasDosPlanes(margenMax, margenMin);
     if(this.prioridadDos == true) {
-      console.log('Prioridad');
-      //this.pausarODividirMasDosPlanes();
+      if(await this.pausarODividirMasDosPlanes(margenMax, margenMin)) {
+        return;
+      }
+      this.planes = this.planesOriginales;
       return;
     }
 
     if(this.modificar == true) {
-      console.log('Modificar');
-       /*this.planesOrigonales = [];
+      this.planesOriginales = [];
       this.planes.forEach(element => {
         this.planesOriginales.push(element);
       });
-      this.planes.push(this.planNuevo);
-      this.datosService.actualizarPlanes(this.planes);
+      this.planes.forEach(element => {
+        this.planesPrioritarios.push(element);
+      });
+      this.datosService.actualizarPlanes(this.planesPrioritarios);
       this.modalCtrl.dismiss();
       this.nav.navigateRoot('/modificar-tiempo-page');
       this.router.navigate(['/modificar-tiempo-page'],
         {
           queryParams: {
-            planesOriginales: JSON.stringify(this.planeOriginales)
+            planesOriginales: JSON.stringify(this.planesOriginales)
           }
-        });*/
+        });
       return;
     }
     
@@ -411,6 +415,7 @@ export class PlanFormPage implements OnInit {
      }
      else if ( ( gasto < margenMax ) && (gasto >= margenMin ) ) {
        if(unPlan) {
+         console.log('hola');
         await this.accionesService.presentAlertPlan([{text: 'Crear', handler: (blah) => {this.accionesService.alertaPlanCrear = true}},
                                                     {text: 'Modificar', handler: (blah) => {this.accionesService.alertaPlanCrear = false}}], 
         'Plan que apenas es posible', 
@@ -561,11 +566,14 @@ export class PlanFormPage implements OnInit {
     } else {
       await this.prioridad(this.planMenor.nombre);
       this.creado = false;
-      if(await this.pausar()) {
-        this.pausa = true;
+      if(this.prioridadDos) {
+        if(await this.pausar()) {
+          this.pausa = true;
+          return;
+        }
+        this.pausa = false;
         return;
       }
-      this.pausa = false;
       return;
     }
   }
@@ -582,33 +590,75 @@ export class PlanFormPage implements OnInit {
     });
   }
 
-  pausarODividirMasDosPlanes() {
-    this.planNuevo.aportacionMensual = 0;
-    this.planes.push(this.planNuevo);
-    this.datosService.actualizarPlanes(this.planes);
-      if(this.pausa) {
-        const get = (element) => element == this.planPrioritario;
-        var indexPrioritario = this.planes.findIndex(get);
-        this.modalCtrl.dismiss();
-        this.nav.navigateRoot('/plan-pausar-page');
-        this.router.navigate(['/plan-pausar-page'],
-        {
-          queryParams: {
-            indexPrioritario,
-            prioridad: true
-          }
-        });
-        return;
+  async pausarODividirMasDosPlanes(margenMax: number, margenMin: number) {
+    if(this.pausa) {
+      this.datosService.actualizarPlanes(this.planes);
+      this.modalCtrl.dismiss();
+      this.nav.navigateRoot('/plan-pausar-page');
+      this.router.navigate(['/plan-pausar-page'],
+      {
+        queryParams: {
+          planesPrioritarios: JSON.stringify(this.planesPrioritarios),
+          margenMax: margenMax,
+          margenMin: margenMin
+        }
+      });
+      return true;
+    }
+
+    var ahorro = 0;
+    this.planesPrioritarios.forEach(element => {
+      ahorro += element.aportacionMensual;
+    });
+    ahorro = this.usuarioCargado.ingresoCantidad - ahorro;
+    var gasto = margenMin;
+    ahorro = ahorro - gasto;
+    ahorro /= this.planes.length;
+    var ochoporciento = this.obtenerOchoPorciento(margenMax);
+    if(ahorro <= ochoporciento) {
+      var pausar;
+      await this.accionesService.presentAlertPlan([{text: 'Pausar', handler: (blah) => {pausar = true}},
+                                                  {text: 'Modificar', handler: (blah) => {pausar = false}}], 
+                                                  'Planes demasiados pequeños',
+      'Hemos detectado que al hacer el reparto los planes reciben muy poco dinero te recomendamos elejir la opcion "Pausar" ' + 
+      ' para pausar algunos planes o modificar los datos del nuevo plan');
+      if(pausar) {
+        this.pausa = pausar;
+        this.pausarODividirMasDosPlanes(margenMax, margenMin);
+        return true;
       }
-      const get = (element) => element == this.planPrioritario;
-      var indexPrioritario = this.planes.findIndex(get);
-      this.planes[indexPrioritario].aportacionMensual = (this.planes[indexPrioritario].cantidadTotal - this.planes[indexPrioritario].cantidadAcumulada)/this.planes[indexPrioritario].tiempoRestante;
-      if(this.planPrioritario.aportacionMensual >= this.ahorrar) {
-      }       
-    return;
+      return false;
+    }
+    this.planes.forEach(element => {
+      element.aportacionMensual = ahorro;
+      if(element.tiempoRestante == 1) {
+        if(ahorro != element.cantidadTotal - element.cantidadAcumulada) {
+          element.tiempoRestante += 1;
+          element.tiempoTotal += 1;
+        }
+      }
+      this.planesPrioritarios.push(element);
+    });
+    this.datosService.actualizarPlanes(this.planesPrioritarios);
+      this.modalCtrl.dismiss();
+      this.nav.navigateRoot('/tabs/tab2');
+    return true;
   }
 
   confirmarCreacionMasDosPlanes(ahorrar: number) {
+    var iguales = true;
+    this.planes.forEach(element => {
+      if(element.tiempoRestante != this.planMenor.tiempoRestante) {
+        iguales = false;
+      }
+    });
+    if(iguales) {
+      this.planes.forEach(element => {
+        element.aportacionMensual = (element.cantidadTotal - element.cantidadAcumulada)/element.tiempoRestante;
+      });
+      this.creado = true;
+      return;
+    }
     var aux = this.planMenor.aportacionMensual;
     this.planes = this.planes.filter(plan => plan != this.planMenor);
     this.planes.forEach(element => {
@@ -664,7 +714,6 @@ export class PlanFormPage implements OnInit {
     });
     ahorrar2 /= this.planMayor.tiempoRestante;
 
-
     this.planMenor.aportacionMensual = (this.planMenor.cantidadTotal - this.planMenor.cantidadAcumulada)/this.planMenor.tiempoRestante;
     if(this.planes.length == 1) {
       ahorrar += ahorrar2;
@@ -686,6 +735,20 @@ export class PlanFormPage implements OnInit {
       if(this.planMenor.aportacionMensual>= (ahorrar2/2)) {
         return this.intentarPrioritario(margenMax,margenMin);
       }
+      var iguales = true;
+      this.planes.forEach(element => {
+        if(element.tiempoRestante != this.planMenor.tiempoRestante) {
+          iguales = false;
+        }
+      });
+      if(iguales) {
+        this.planes.forEach(element => {
+          element.aportacionMensual = (element.cantidadTotal - element.cantidadAcumulada)/element.tiempoRestante;
+        });
+        ahorrar += ahorrar2;
+        gasto = this.usuarioCargado.ingresoCantidad - ahorrar;
+        return this.validarGasto(margenMax,margenMin, gasto);
+    }
       var sobrante = ahorrar2 - this.planMenor.aportacionMensual;
       this.planes.forEach(element => {
         if(element != this.planMenor && element != this.planMayor) {

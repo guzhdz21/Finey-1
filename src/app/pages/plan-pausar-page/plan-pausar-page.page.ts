@@ -15,26 +15,26 @@ export class PlanPausarPagePage implements OnInit {
               private activatedRoute: ActivatedRoute) { 
     this.activatedRoute.queryParams.subscribe((res) =>
     {
-      this.indexPrioritario = Number(res.indexPrioritario);
-      this.prioridad = Boolean(res.prioridad);
+      this.planesPrioritarios = JSON.parse(res.planesPrioritarios);
+      this.margenMax = Number(res.margenMax);
+      this.margenMin = Number(res.margenMin);
     });
   }
 
-  indexPrioritario: number;
-  prioridad: boolean;
+  margenMax: number;
+  margenMin: number;
+  planesPrioritarios: Plan[];
   ngOnInit() {
     this.abrirModal();
   }
 
   async abrirModal() {
-    if(this.prioridad == undefined) {
-      this.prioridad = false;
-    }
     const modal = await this.modalCtrl.create({
     component: PlanPausarPage,
     componentProps: {
-      indexPrioritario: this.indexPrioritario,
-      prioridad: this.prioridad
+      planesPrioritarios: this.planesPrioritarios,
+      margenMax: this.margenMax,
+      margenMin: this.margenMin
     }
     });
     await modal.present();

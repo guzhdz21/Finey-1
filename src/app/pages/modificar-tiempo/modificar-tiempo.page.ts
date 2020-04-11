@@ -11,13 +11,17 @@ import { AccionesService } from '../../services/acciones.service';
 })
 export class ModificarTiempoPage implements OnInit {
 
-  @Input() planesAux;
+  @Input() planesOriginales;
 
   planes: Plan[] = this.datosService.planesCargados;
 
   planMenor: Plan;
 
   planMayor: Plan;
+
+  planesPrioritarios: Plan[] = [];
+  
+  planesaux: Plan[] = [];
 
   constructor(
               private modalCtrl: ModalController,
@@ -43,6 +47,7 @@ export class ModificarTiempoPage implements OnInit {
   }
 
   async guardar() {
+    this.planesPrioritarios = [];
     var margenMax = 0;
     var margenMin = 0;
     this.datosService.usuarioCarga.gastos.forEach(element => {
@@ -52,7 +57,20 @@ export class ModificarTiempoPage implements OnInit {
       } 
     });
 
-    if(await this.calculosDosPlanes(margenMax, margenMin)) {
+    if(this.planes.length == 2) {
+      if(await this.calculosDosPlanes(margenMax, margenMin)) {
+        if(await this.ocho(margenMax, margenMin)) {
+          return;
+        }
+        this.guardarCambios();
+        return;
+      } else {
+        await this.accionesService.presentAlertPlan([{text: 'Modificar', handler: (blah) => {}}], 
+        'No puedes completar los planes en ese tiempo', 'Presiona Modificar y aumenta los tiempos para ser apto de conseguirlos');
+        return;
+      }
+    }
+    if(await this.calculosMasDosPlanes(margenMax, margenMin)) {
       if(await this.ocho(margenMax, margenMin)) {
         return;
       }
@@ -134,6 +152,94 @@ export class ModificarTiempoPage implements OnInit {
      }
   }
 
+  async calculosMasDosPlanes(margenMax: number, margenMin: number) {
+    var ahorrar = 0;
+    this.planMenor = this.planes[0];
+    this.planMayor = this.planes[1];
+    var gasto = 0;
+
+    this.planes.forEach(element => {
+      if(this.planMenor.tiempoRestante >= element.tiempoRestante) {
+        if(this.planMenor.tiempoRestante == element.tiempoRestante) { 
+          if((this.planMenor.cantidadTotal - this.planMenor.cantidadAcumulada) 
+            < (element.cantidadTotal - element.cantidadAcumulada)) { 
+              this.planMenor = element;
+            }
+        } else {
+          this.planMenor = element;
+        }
+      }
+      if(this.planMayor.tiempoRestante <= element.tiempoRestante) {
+        if(this.planMayor.tiempoRestante == element.tiempoRestante) { 
+          if((this.planMayor.cantidadTotal - this.planMayor.cantidadAcumulada) 
+            > (element.cantidadTotal - element.cantidadAcumulada)) { 
+              this.planMayor = element;
+            }
+        } else {
+          this.planMayor = element;
+        }
+      }
+      ahorrar += (element.cantidadTotal - element.cantidadAcumulada); 
+    });
+    
+    ahorrar /= this.planMayor.tiempoRestante;
+    gasto = this.datosService.usuarioCarga.ingresoCantidad - ahorrar;
+    return await this.validarMasDosPlanes(ahorrar, gasto, margenMax, margenMin);
+  }
+
+  async validarMasDosPlanes(ahorrar: number, gasto: number, margenMax: number, margenMin: number) {
+    this.planMenor.aportacionMensual = (this.planMenor.cantidadTotal - this.planMenor.cantidadAcumulada)/this.planMenor.tiempoRestante;
+    
+    if (gasto  >= margenMax) {
+
+      if(this.planMenor.aportacionMensual >= (ahorrar/2)) {
+        return await this.opcionesPrioridadDos(margenMax, margenMin, gasto);
+      } else {
+        this.confirmarCreacionMasDosPlanes(ahorrar);
+        return true;
+      }
+           
+    } else if ( ( gasto < margenMax ) && (gasto >= margenMin ) ) {
+
+      if(this.planMenor.aportacionMensual >= (ahorrar)/2) {
+        return await this.opcionesPrioridadDos(margenMax, margenMin, gasto);
+      } else {
+        this.confirmarCreacionMasDosPlanes(ahorrar);
+        return true;
+      }
+
+    } else {
+      return false; 
+    }
+  }
+
+  confirmarCreacionMasDosPlanes(ahorrar: number) {
+    var iguales = true;
+    this.planes.forEach(element => {
+      if(element.tiempoRestante != this.planMenor.tiempoRestante) {
+        iguales = false;
+      }
+    });
+    if(iguales) {
+      this.planes.forEach(element => {
+        element.aportacionMensual = (element.cantidadTotal - element.cantidadAcumulada)/element.tiempoRestante;
+      });
+      return;
+    }
+
+    var aux = this.planMenor.aportacionMensual;
+    this.planes = this.planes.filter(plan => plan != this.planMenor);
+    this.planes.forEach(element => {
+      if(element != this.planMayor) {
+        element.aportacionMensual = this.planMenor.aportacionMensual;
+        aux += element.aportacionMensual;
+      }
+    });
+    this.planMayor.aportacionMensual = ahorrar - aux;
+    this.planes.unshift(this.planMenor);
+    return;
+  }
+
   async opcionesPrioridad(margenMax: number, margenMin: number, gasto: number) {
       if(await this.intentarPrioritario(margenMax, margenMin, gasto)) {
         return true;
@@ -142,12 +248,115 @@ export class ModificarTiempoPage implements OnInit {
       }
   }
 
+  async opcionesPrioridadDos(margenMax: number, margenMin: number, gasto: number) {
+    if(await this.intentarPrioritario(margenMax, margenMin, gasto)) {
+      this.planesaux = [];
+      this.planes.forEach(element => {
+        this.planesaux.push(element);
+      });
+      this.planes = []
+      this.planesPrioritarios.forEach(element => {
+        this.planes.push(element);
+      });
+      this.planesaux.forEach(element => {
+        this.planes.push(element);
+      });
+      return true;
+    } else {
+      return false;
+    }
+  }
+
   async intentarPrioritario(margenMax: number, margenMin: number, gasto: number) {
+
+    var ahorrar = 0;
+    if(this.planes.length == 2) {
       this.planMenor.aportacionMensual = (this.planMenor.cantidadTotal - this.planMenor.cantidadAcumulada)/this.planMenor.tiempoRestante;
       this.planMayor.aportacionMensual = (this.planMayor.cantidadTotal - this.planMayor.cantidadAcumulada)/this.planMayor.tiempoRestante;
-      var ahorrar = this.planMenor.aportacionMensual + this.planMayor.aportacionMensual;
-      var gasto = this.datosService.usuarioCarga.ingresoCantidad - ahorrar;
-      return await this.validarGasto(margenMax,margenMin, gasto )
+       ahorrar = this.planMenor.aportacionMensual + this.planMayor.aportacionMensual;
+      gasto = this.datosService.usuarioCarga.ingresoCantidad - ahorrar;
+      return await this.validarGasto(margenMax,margenMin, gasto);
+    }
+      
+    console.log('Prioridad');
+    var ahorrar2 = 0;
+    this.planMenor.aportacionMensual = (this.planMenor.cantidadTotal - this.planMenor.cantidadAcumulada)/this.planMenor.tiempoRestante;
+    this.planesPrioritarios.push(this.planMenor);
+    this.planesPrioritarios.forEach(element => {
+      ahorrar += element.aportacionMensual;
+    });
+    gasto = this.datosService.usuarioCarga.ingresoCantidad - ahorrar;
+
+    if(!await this.validarGasto(margenMax,margenMin, gasto)) {
+      this.planesPrioritarios = this.planesPrioritarios.filter(plan => plan != this.planMenor);
+      console.log('no deberia entrar aqui');
+      return false;
+    }
+
+    this.planes = this.planes.filter(plan => plan != this.planMenor);
+    this.planMenor = this.planes[0];
+    this.planes.forEach(element => {
+      if(this.planMenor.tiempoRestante >= element.tiempoRestante) {
+        if(this.planMenor.tiempoRestante == element.tiempoRestante) { 
+          if((this.planMenor.cantidadTotal - this.planMenor.cantidadAcumulada) 
+            < (element.cantidadTotal - element.cantidadAcumulada)) { 
+              this.planMenor = element;
+            }
+        } else {
+          this.planMenor = element;
+        }
+      }
+      ahorrar2 += (element.cantidadTotal - element.cantidadAcumulada);
+    });
+    ahorrar2 /= this.planMayor.tiempoRestante;
+
+    this.planMenor.aportacionMensual = (this.planMenor.cantidadTotal - this.planMenor.cantidadAcumulada)/this.planMenor.tiempoRestante;
+    if(this.planes.length == 1) {
+      ahorrar += ahorrar2;
+      gasto = this.datosService.usuarioCarga.ingresoCantidad - ahorrar;
+      return this.validarGasto(margenMax,margenMin, gasto);
+    } 
+    
+    else if(this.planes.length == 2) {
+      if(this.planMenor.aportacionMensual >= (ahorrar2)) {
+        return this.intentarPrioritario(margenMax,margenMin, gasto);
+      }
+      this.planMayor.aportacionMensual = ahorrar2 - this.planMenor.aportacionMensual;
+      ahorrar += ahorrar2;
+      gasto = this.datosService.usuarioCarga.ingresoCantidad - ahorrar;
+      return this.validarGasto(margenMax,margenMin, gasto);
+    } 
+    
+    else {
+      if(this.planMenor.aportacionMensual>= (ahorrar2/2)) {
+        return this.intentarPrioritario(margenMax, margenMin, gasto);
+      }
+      var iguales = true;
+      this.planes.forEach(element => {
+        if(element.tiempoRestante != this.planMenor.tiempoRestante) {
+          iguales = false;
+        }
+      });
+      if(iguales) {
+        this.planes.forEach(element => {
+          element.aportacionMensual = (element.cantidadTotal - element.cantidadAcumulada)/element.tiempoRestante;
+        });
+        ahorrar += ahorrar2;
+        gasto = this.datosService.usuarioCarga.ingresoCantidad - ahorrar;
+        return this.validarGasto(margenMax,margenMin, gasto);
+    }
+      var sobrante = ahorrar2 - this.planMenor.aportacionMensual;
+      this.planes.forEach(element => {
+        if(element != this.planMenor && element != this.planMayor) {
+          element.aportacionMensual = this.planMenor.aportacionMensual;
+          sobrante -= this.planMenor.aportacionMensual;
+        }
+      });
+      this.planMayor.aportacionMensual = sobrante;
+      ahorrar += ahorrar2;
+      gasto = this.datosService.usuarioCarga.ingresoCantidad - ahorrar;
+      return this.validarGasto(margenMax,margenMin, gasto);
+    }
   }
   
   validarGasto(margenMax: number, margenMin: number, gasto: number) {
@@ -173,13 +382,21 @@ export class ModificarTiempoPage implements OnInit {
         await this.accionesService.presentAlertPlan([{text: 'Modificar', handler: (blah) => {}}], 
         'Plan demasiado pequeño', 'Se ha detectado que alguno(s) planes recibiran poco dinero, ' + 
         'te pedimos que aumentes el tiempo del plan con menor tiempo ya que se detecto que se lleva todo tu fondo de ahorro');
-      } else {
-        await this.accionesService.presentAlertPlan([{text: 'Modificar', handler: (blah) => {}}], 
+        return aux;
+      } else if(this.planesPrioritarios.length != 0) {
+        if(this.planesPrioritarios[0].aportacionMensual >= this.datosService.usuarioCarga.ingresoCantidad - margenMin - ochoPorciento) {
+          await this.accionesService.presentAlertPlan([{text: 'Modificar', handler: (blah) => {}}], 
+        'Plan demasiado pequeño', 'Se ha detectado que alguno(s) planes recibiran poco dinero, ' + 
+        'te pedimos que aumentes el tiempo del plan con menor tiempo ya que se detecto que se lleva todo tu fondo de ahorro');
+        return aux;
+        }
+      }
+      await this.accionesService.presentAlertPlan([{text: 'Modificar', handler: (blah) => {}}], 
           'Plan demasiado pequeño', 'Se ha detectado que alguno(s) planes recibiran poco dinero, ' + 
           'te pedimos que aumentes el tiempo de los planes que puedas');
-      }
+      return aux;
     }
-    return aux;
+   return aux;
   }
 
   obtenerOchoPorciento(margenMax: number) {
@@ -194,7 +411,8 @@ export class ModificarTiempoPage implements OnInit {
       'Si cancelas se borrara el nuevo plan que ingresaste');
     
     if(cancelar) {
-      this.datosService.actualizarPlanes(this.planesAux);
+      console.log(this.planesOriginales);
+      this.datosService.actualizarPlanes(this.planesOriginales);
       await this.modalCtrl.dismiss();
       this.nav.navigateRoot('tabs/tab2');
     }
