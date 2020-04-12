@@ -18,12 +18,14 @@ export class PlanPausarPagePage implements OnInit {
       this.planesPrioritarios = JSON.parse(res.planesPrioritarios);
       this.margenMax = Number(res.margenMax);
       this.margenMin = Number(res.margenMin);
+      this.planesOriginales = JSON.parse(res.planesOriginales);
     });
   }
 
   margenMax: number;
   margenMin: number;
   planesPrioritarios: Plan[];
+  planesOriginales: Plan[];
   ngOnInit() {
     this.abrirModal();
   }
@@ -34,7 +36,8 @@ export class PlanPausarPagePage implements OnInit {
     componentProps: {
       planesPrioritarios: this.planesPrioritarios,
       margenMax: this.margenMax,
-      margenMin: this.margenMin
+      margenMin: this.margenMin,
+      planesOriginales: this.planesOriginales
     }
     });
     await modal.present();

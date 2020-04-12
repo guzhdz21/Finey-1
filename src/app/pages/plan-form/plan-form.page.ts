@@ -6,6 +6,7 @@ import { AccionesService } from '../../services/acciones.service';
 import { UsuarioLocal } from '../../interfaces/interfaces';
 import { Subscription } from 'rxjs';
 import { Router } from '@angular/router';
+import { JsonPipe } from '@angular/common';
 
 @Component({
   selector: 'app-plan-form',
@@ -16,6 +17,7 @@ export class PlanFormPage implements OnInit {
 
   //Variable que viene del Modal registro y del tab2 y nos indica si es la primera vez que abre la app
   @Input() registro: string;
+  //ViewChild que nos permite ver el valor del input tiempo
   @ViewChild('tiempo',{static: true}) tiempo: IonInput;
 
   //Variable para guardar los datos del nuevo plan
@@ -36,31 +38,39 @@ export class PlanFormPage implements OnInit {
   //Variable que guarda la informacion del usuario
   usuarioCargado: UsuarioLocal = this.datosService.usuarioCarga;
 
+  //Variable que guarda los datos de los planes registrados y luego se usa para manipularlos
   planes: Plan[] = this.datosService.planesCargados;
 
+  //Varibale auciliar que guarda un arreglo de planes
   planesaux: Plan[] = []
 
+  //Variable auxiliar que guardara los planes originales antes de hacer todos los cambios
   planesOriginales: Plan[] = []
 
+  //Variable que guarda los planes que son prioritarios
   planesPrioritarios: Plan[] = [];
 
+  //Variable que nos indica si se encontro algun plan prioritario y si se deberian pausar
   prioridadDos: boolean = false; 
+
+  //Varibales que guardan el plan mayor y el menor de todo un arreglo de planes
+  planMayor: Plan;
+  planMenor: Plan;
   
+  //Variable que nos indica si el plan uevo fue creado sin ningun  inconveniente
   creado: boolean;
 
-  pausa: boolean;
+  //Variable que nos indica si el ususario escogio la opcion de pausar
+  pausa: boolean = false;
 
+  //Variable que nos indica so el usuario escogio la opcion de modificar
   modificar: boolean;
 
+  //Variable que nos indica si el usuario escogio la opcion de modificar cuando se encontro que un plan recibia muy poco
+  modificarOcho: boolean;
+
+  //Variable que se usa para el regreso o boton back nativo del celular
   backButtonSub: Subscription;
-
-  planPrioritario: Plan;
-
-  planMayor: Plan;
-
-  planMenor: Plan;
-
-  ahorrar: number;
 
   constructor( private datosService: DatosService,
                 private nav: NavController,
@@ -76,9 +86,13 @@ export class PlanFormPage implements OnInit {
     });
    }
 
-   //Metodo que calcula los datos para agregar un plan nuevo y lo guarda en el Storage
+   //Metodo que manda llamar los metodos para calcular los datos para agregar un plan nuevo y lo guarda en el Storage si es que es valido
   async calcularYRegistrar() {
+
+    //Inicializacion de variables
     this.planesPrioritarios = [];
+    this.planesOriginales = JSON.parse(JSON.stringify(this.planes));
+
     //Valores iniciales
     var unPlan = false;
     var margenMax = 0;
@@ -110,41 +124,75 @@ export class PlanFormPage implements OnInit {
     //Verifica si el plan es posible
     if (await this.validarPlan(margenMax, margenMin, unPlan)) { 
 
-      //Mas de un plan
+      //Casos mas de un plan
       if(unPlan == false) {
 
-        //Dos planes
+        //Caso dos planes
         if(this.planes.length == 1) { 
           await this.casoDosPlanes(margenMax, margenMin);
           return;
         }
 
-        //Mas de dos planes
+        //caso mas de dos planes
         this.casoMasDosPlanes(margenMax, margenMin);
         return;
       }
 
-      //Un plan
+      //Caso un plan
       this.casoUnPlan(margenMax);
       return;
     }
+
     return;
   }
 
   //Metodo para validar el ingreso del plan
   async validarPlan(margenMax: number, margenMin: number, unPlan: boolean) {
+    //Calculamos gasto y mandamos llamar el metodo que mostrara la alerta segun el caso
       var gasto = 0;
       gasto = this.usuarioCargado.ingresoCantidad - this.planNuevo.aportacionMensual;
       return this.alertasUnPlan(margenMax, margenMin, gasto, unPlan);
   }
 
+  //Metodo que valida el caso de ingreso de plan e imprime una alerta segun el caso
+  async alertasUnPlan( margenMax: number, margenMin: number, gasto: number, unPlan: boolean) {
+    //Caso que es posible en el margen maximo (no se imprime alerta ya que esa se imprime ya que ingresa el plan)
+    if (gasto >= margenMax) {
+      return true;
+    //Caso que es posible en margen minimo (se imprime sol si es un plan la alerta ya que para mas se imprime despues)
+    } else if ( ( gasto < margenMax ) && (gasto >= margenMin ) ) {
+       
+      if(unPlan) {
+        await this.accionesService.presentAlertPlan([{text: 'Crear', handler: (blah) => {this.accionesService.alertaPlanCrear = true}},
+                                                    {text: 'Modificar', handler: (blah) => {this.accionesService.alertaPlanCrear = false}}], 
+        'Plan que apenas es posible', 
+        'Puedes crear el plan y cumplirlo en el tiempo establecido MIENTRAS te mantengas en GASTOS MINIMOS en los ' + 
+        'gastos promedio (luz, agua, etc.) o puedes aumentar el tiempo en conseguirlo para que no estes tan presionado');
+        return this.accionesService.alertaPlanCrear;
+      }
+
+      return true;
+
+      //Caso que no es posible
+    } else {
+      await this.accionesService.presentAlertPlan([{text: 'Modificar', handler: (blah) => {}}], 
+      'No puedes completar este plan en ese tiempo', 'Presiona Modificar y aumenta tu tiempo para ser apto de conseguirlo');
+      this.calcularEstimacion(margenMin);
+      return false;
+    }
+  }
+
+  //Metodo que ejecuta todos lo necesario para validar e ingresar un plan
   async casoUnPlan(margenMax: number) {
-    //Un plan
+    //Obtenemos el ochoporciento del fondo de ahorro del ussuario llamamos el metdo que lo valida
     var ochoPorciento = this.obtenerOchoPorciento(margenMax);
-    //Verificar si el plan es menor o igual al 8% del dinero destinado ahorrar
+
     if(await this.siPlanNuevoMuyPequeño(ochoPorciento)) {
+      //Retorna si noe s valido
       return;
     }
+
+    //Guarda el nuevo plan
     this.planes = [];
     this.planes.push(this.planNuevo);
     this.guardarCambiosAPlanes();
@@ -152,48 +200,71 @@ export class PlanFormPage implements OnInit {
     return;
   }
 
+  //Metodo que calcula la estimacion de meses para hacer valido un plan
+  async calcularEstimacion(margenMin: number) {
+    var estimacion = -1 * (this.planNuevo.cantidadTotal - this.planNuevo.cantidadAcumulada);
+    var estimacion = estimacion/(margenMin - this.usuarioCargado.ingresoCantidad);
+    var aux = Math.round(estimacion);
+    if(aux < estimacion) {
+      estimacion = estimacion + 0.5;
+    }
+    await this.accionesService.presentAlertGenerica("ATENCION", "Te sugerimos que aumentes el tiempo de " + 
+    "tu plan minimo a " + Math.round(estimacion) + " meses para poder cumplirlo");
+  }
+
+  //Metodo que ejecuta todos lo necesario para validar e ingresar un plan cuando ya hay uno ingresado
   async casoDosPlanes(margenMax: number, margenMin: number){
+    //Llammos el metodo que realiza los calculos
     await this.calculosDosPlanes(margenMax, margenMin);
-    //Verificas si hay un plan prioritario
+
+    //Casos en que se encuentra un plan prioritario y nose puede satisfacer con el sueldo del ussuario
+    //Caso en que el usuario escogio pausar los no prioritarios
     if(this.prioridadDos == true) {
-      this.planPrioritario = this.planMenor;
-      await this.pausarPorPrioridadDosPlanes();
+      var planPrioritario = this.planMenor;
+      await this.pausarPorPrioridadDosPlanes(planPrioritario);
       this.datosService.actualizarPlanes(this.planes);
       this.modalCtrl.dismiss();
       this.nav.navigateRoot('/tabs/tab2');
       return;
     }
 
+    //Caso en que el usuario escogio modificar tiempos
     if(this.modificar == true) {
-      this.planesOriginales = [];
-      this.planes.forEach(element => {
-        this.planesOriginales.push(element);
-      });
+      this.planesOriginales = JSON.parse(JSON.stringify(this.planes));
       this.planes.push(this.planNuevo);
       this.datosService.actualizarPlanes(this.planes);
-      this.modalCtrl.dismiss();
-      this.nav.navigateRoot('/modificar-tiempo-page');
-      this.router.navigate(['/modificar-tiempo-page'],
-        {
-          queryParams: {
-            planesOriginales: JSON.stringify(this.planesOriginales)
-          }
-        });
+      this.irAPlanModificar();
       return;
     }
 
+    //Caso en que el los planes fueron validos
     if(this.creado) {
-      //Verificar si algun plan no recibe el 8% del fondo de ahorro
+
+      //Verificamos si no reciben menos del ocho porciento
       if(await this.ocho(margenMax)) {
+
+        //Casos si si reciben menos
+        //Caso en que el ussuario decidio pausar planes
         if(this.pausa) {
+          this.planesOriginales = JSON.parse(JSON.stringify(this.planes));
           this.planes.push(this.planNuevo);
           this.datosService.actualizarPlanes(this.planes);
-          this.modalCtrl.dismiss();
-          this.nav.navigateRoot('/plan-pausar-page');
+          this.irAPlanPausar(margenMax, margenMin);
           return;
         }
+        //Caso en que el ussuario decidio modificar tiempos
+        if(this.modificarOcho) {
+          this.planesOriginales = JSON.parse(JSON.stringify(this.planes));
+          this.planes.push(this.planNuevo);
+          this.datosService.actualizarPlanes(this.planes);
+          this.irAPlanModificar();
+          return;
+        }
+
         return;
       }
+
+      //Se inserta plan
       this.planes.push(this.planNuevo);
       this.guardarCambiosAPlanes();
       this.nav.navigateRoot('/tabs/tab2');
@@ -202,15 +273,15 @@ export class PlanFormPage implements OnInit {
     return;
   }
 
-  //Metodo que ingresa dos planes
+  //Metodo que realiza calculos inciales para validar
   async calculosDosPlanes(margenMax: number, margenMin: number) {
-    //Variables iniciales
+    //Valores inciales de variables
     var ahorrar = 0;
     this.planMenor = this.planes[0];
-     this.planMayor = this.planNuevo;
+    this.planMayor = this.planNuevo;
     var gasto = 0;
 
-    //Se determina cuanto debe ahorrar el ususario al mes
+    //Buacamos que plan de los dos es mayor y cual menor
     if(this.planMayor.tiempoRestante <= this.planMenor.tiempoRestante) {
       if(this.planMayor.tiempoRestante == this.planMenor.tiempoRestante) {
         if((this.planMayor.cantidadTotal - this.planMayor.cantidadAcumulada) 
@@ -225,78 +296,168 @@ export class PlanFormPage implements OnInit {
         this.planMayor = aux;
       }
     }
+
+    //Obtenemos cuanto debe ahorrar y aportacion mensual del menor
     ahorrar += (this.planMenor.cantidadTotal - this.planMenor.cantidadAcumulada) + (this.planMayor.cantidadTotal - this.planMayor.cantidadAcumulada);
     ahorrar /= this.planMayor.tiempoRestante;
     gasto = this.usuarioCargado.ingresoCantidad - ahorrar;
 
     this.planMenor.aportacionMensual = (this.planMenor.cantidadTotal - this.planMenor.cantidadAcumulada)/this.planMenor.tiempoRestante;
-    //Verificamos el caso de los planes
-    //Caso en que quitando lo que debe ahorrar al mes el usuario, puede satisfacer sus necesidades basicas en los dos margenes
+    
+    //Llamamos el metodoq ue valida
     await this.validarDosplanes(ahorrar, gasto, margenMax, margenMin)
   }
 
-  async casoMasDosPlanes(margenMax, margenMin) {
-    //Mas de dos planes
-    this.planesOriginales = [];
-    this.planes.forEach(element => {
-      this.planesOriginales.push(element);
-    });
+  //Metodo que valida dos planes y procede segun el caso
+  async validarDosplanes(ahorrar: number, gasto: number, margenMax: number, margenMin: number){
+    //Caso en que son posibles en margen maximo
+    if (gasto  >= margenMax) {
 
+      //Verificamso si hay prioritario
+      if(this.planMenor.aportacionMensual >= ahorrar) {
+        //Llamamos al metodo que hace los procesos de prioridad
+        await this.opcionesPrioridad(margenMax, margenMin);
+        return;
+      } else {
+        //Calculos finales de validacion
+        this.planMayor.aportacionMensual = ahorrar - this.planMenor.aportacionMensual;
+        this.creado = true;
+        return;
+      }
+
+      //Caso en que son posibles en margen minimo
+    } else if ( ( gasto < margenMax ) && (gasto >= margenMin ) ) {
+      
+      //Varificamos si hay plan prioritario
+      if(this.planMenor.aportacionMensual >= ahorrar) {
+        //Llamamos el metodo que ejecuta los procesos para prioridad
+        await this.opcionesPrioridad(margenMax, margenMin);
+        return;
+
+      } else {
+        //Alerta para el ususario y se decide que hacer
+        this.planMayor.aportacionMensual = ahorrar - this.planMenor.aportacionMensual;
+        await this.accionesService.presentAlertPlan([{text: 'Crear', handler: (blah) => {this.accionesService.alertaPlanCrear = true}},
+                                                  {text: 'Modificar', handler: (blah) => {this.accionesService.alertaPlanCrear = false}}], 
+                                                  'Plan que apenas es posible', 
+        'Puedes crear el plan y cumplirlo en el tiempo establecido MIENTRAS te mantengas en GASTOS MINIMOS en los gastos promedio (luz, agua, etc.) o puedes aumentar el tiempo en conseguirlo para que no estes tan presionado');
+        this.creado = this.accionesService.alertaPlanCrear;
+        return;
+      }
+
+      //Caso en que no son posibles
+    } else {
+      await this.accionesService.presentAlertPlan([{text: 'Modificar', handler: (blah) => {}}], 
+      'No puedes completar este plan en ese tiempo', 'Presiona Modificar y aumenta tu tiempo para ser apto de conseguirlo');
+      this.creado = false;
+      this.calcularEstimacionDosPlanes(margenMin);
+      return;
+    }
+  }
+
+  //Metodo que ejecuta los procesos para el caso de encontrar un plan de prioridad
+  async opcionesPrioridad(margenMax: number, margenMin: number) {
+    //Vemos si es posible darle al prioritario lo necesario y que no afecte al ussuario
+    if(await this.intentarPrioritario(margenMax, margenMin)) {
+      this.prioridadDos = false;
+      this.creado = true;
+      return;
+    } else {
+      //Si no es posible entonces se llama el metodo que le da opciones al ussuario
+      await this.prioridad(this.planMenor.nombre);
+      this.creado = false;
+      return;
+    }
+  }
+
+  //Metodo que Pausa el plan no proritario si el ussuario escogio esa opcion
+  pausarPorPrioridadDosPlanes(planPrioiritario: Plan) {
+    this.planes.push(this.planNuevo);
+    this.planes.forEach(element => {
+      if(element != planPrioiritario) {
+          element.aportacionMensual = 0;
+          element.pausado = true;
+      } else {
+          element.aportacionMensual = (element.cantidadTotal - element.cantidadAcumulada)/element.tiempoRestante;
+      }
+    });
+  }
+
+  //Metodo que ejecuta todos lo necesario para validar e ingresar un plan cuando ya hay dos o mas ingresados
+  async casoMasDosPlanes(margenMax, margenMin) {
+     //Llammos el metodo que realiza los calculos
     await this.calculosMasDosPlanes(margenMax, margenMin);
+
+    //Casos en que se encuentra un plan prioritario y nose puede satisfacer con el sueldo del ussuario
+    //Caso en que el usuario escogio pausar los no prioritarios
     if(this.prioridadDos == true) {
       if(await this.pausarODividirMasDosPlanes(margenMax, margenMin)) {
         return;
       }
+
       this.planes = this.planesOriginales;
       return;
     }
 
+    //Caso en que el ussuario escogio modificar tiempos
     if(this.modificar == true) {
-      this.planesOriginales = [];
-      this.planes.forEach(element => {
-        this.planesOriginales.push(element);
-      });
       this.planes.forEach(element => {
         this.planesPrioritarios.push(element);
       });
+
       this.datosService.actualizarPlanes(this.planesPrioritarios);
-      this.modalCtrl.dismiss();
-      this.nav.navigateRoot('/modificar-tiempo-page');
-      this.router.navigate(['/modificar-tiempo-page'],
-        {
-          queryParams: {
-            planesOriginales: JSON.stringify(this.planesOriginales)
-          }
-        });
+      this.irAPlanModificar();
       return;
     }
     
+    //Caso en que el los planes fueron validos
     if(this.creado) {
+
+      //Verificamos si no reciben menos del ocho porciento
       if(await this.ocho(margenMax)) {
+
+        //Casos si si reciben menos
+        //Caso en que el ussuario decidio pausar planes
         if(this.pausa) {
           this.datosService.actualizarPlanes(this.planes);
-          this.modalCtrl.dismiss();
-          this.nav.navigateRoot('/plan-pausar-page');
+          this.irAPlanPausar(margenMax, margenMin);
           return;
         }
-        console.log('no');
+
+         //Caso en que el ussuario decidio modificar tiempos
+        if(this.modificarOcho) {
+
+          this.planes.forEach(element => {
+            this.planesPrioritarios.push(element);
+          });
+          this.datosService.actualizarPlanes(this.planesPrioritarios);
+          this.irAPlanModificar();
+          return;
+        }
+
         this.planes = this.planesOriginales;
         return;
       }
+
+       //Se inserta plan
       this.guardarCambiosAPlanes();
       this.nav.navigateRoot('/tabs/tab2');
       return;
     }
+
     this.planes = this.planesOriginales;
     return;
   }
 
+  //Metodo que realiza calculos inciales para validar
   async calculosMasDosPlanes(margenMax: number, margenMin: number) {
+    //Valores iniciales de variables
     var ahorrar = 0;
     this.planMenor = this.planes[0];
     this.planMayor = this.planNuevo;
     var gasto = 0;
 
+    //Determinamos que plan es mayor y cual es menor
     this.planes.forEach(element => {
       if(this.planMenor.tiempoRestante >= element.tiempoRestante) {
         if(this.planMenor.tiempoRestante == element.tiempoRestante) { 
@@ -321,6 +482,7 @@ export class PlanFormPage implements OnInit {
       ahorrar += (element.cantidadTotal - element.cantidadAcumulada); 
     });
     
+    //Veos si el plan nuevo es mayor o menor del resultado anterios
     if(this.planNuevo.tiempoRestante <= this.planMenor.tiempoRestante) {
       if(this.planNuevo.tiempoRestante == this.planMenor.tiempoRestante) { 
         if((this.planNuevo.cantidadTotal - this.planNuevo.cantidadAcumulada) 
@@ -333,199 +495,54 @@ export class PlanFormPage implements OnInit {
     }
     ahorrar += (this.planNuevo.cantidadTotal - this.planNuevo.cantidadAcumulada);
     
+    //Calculamos cuanto debe ahorrar el susuario, agregamos nuevo plan y vemos si es valido
     ahorrar /= this.planMayor.tiempoRestante;
-    this.ahorrar = ahorrar;
     gasto = this.usuarioCargado.ingresoCantidad - ahorrar;
     this.planes.push(this.planNuevo);
     await this.validarMasDosPlanes(ahorrar, gasto, margenMax, margenMin);
   }
 
-  async ocho(margenMax: number) {
-    var ochoPorciento = this.obtenerOchoPorciento(margenMax);
-    if(await this.siPlanNuevoMuyPequeño(ochoPorciento)) {
-      return true;
-    } else {
-      if(this.planes.length == 1) {
-        if(this.planes[0].aportacionMensual <= ochoPorciento) {
-          await this.accionesService.presentAlertPlan([{text: 'Modificar', handler: (blah) => {this.pausa = false}},
-                                                        {text: 'Pausar', handler: (blah) => {this.pausa = true}}], 
-                                                      'Plan demasiado pequeño', 
-            'Se ha detectado que el otro plan actual recibira muy poco dinero, te pedimos que aumentes' +
-            ' el tiempo del nuevo plan o pauses cualquiera de los dos'
-          );
-          return true;
-        }
-       return false;
-      }
-      var aux = false;
-      await this.planes.forEach(element => {
-        if(element.aportacionMensual <= ochoPorciento) {
-           aux = true;
-           console.log(element);
-        }
-      });
-      if(aux) {
-        await this.accionesService.presentAlertPlan([{text: 'Modificar', handler: (blah) => {this.pausa = false}},
-                                                        {text: 'Pausar', handler: (blah) => {this.pausa = true}}], 
-                                                      'Plan demasiado pequeño', 
-            'Se ha detectado que alguno(s) planes recibiran muy poco dinero, te pedimos que aumentes' +
-            ' el tiempo del nuevo plan o pauses cualquiera de los dos'
-          );
-          return true;
-      }
-      return false;
-    }
-
-  }
-  //Metodo para preguntarle al usuario que se deberia hacer con su plan prioritario
-  async prioridad(nombre: string) {
-    if(this.planes.length == 1) {
-      await this.accionesService.presentAlertPlan([{text: 'No puedo', handler: (blah) => {this.modificar = false, this.prioridadDos = true}},
-                                                  {text: 'Modificar', handler: (blah) => {this.modificar = true, this.prioridadDos = false}},
-                                                  {text: 'Cancelar', handler: (blah) => {this.modificar = false, this.prioridadDos = false}}], 
-                                                  'Se ha detectado el plan ' + nombre + ' como de maxima prioridad', 
-    'Puedes crear el nuevo plan y modificar el tiempo de los planes para hacer posible ' + 
-    ' completar los planes, si no puedes hacer esto escoge "No puedo" para pausar el' + 
-    ' plan que no es prioritario');
-    return;
-    }
-    await this.accionesService.presentAlertPlan([{text: 'No puedo', handler: (blah) => {this.modificar = false, this.prioridadDos = true}},
-                                                  {text: 'Modificar', handler: (blah) => {this.modificar = true, this.prioridadDos = false}},
-                                                  {text: 'Cancelar', handler: (blah) => {this.modificar = false, this.prioridadDos = false}}], 
-                                                  'Se ha detectado el plan ' + nombre + ' como de maxima prioridad', 
-    'Puedes crear el nuevo plan y modificar el tiempo de los planes para hacer posible ' + 
-    ' completar los planes, si no puedes hacer esto escoge "No puedo"');
-    return;
-  }
-
-  async pausar() {
-    var pausar;
-    await this.accionesService.presentAlertPlan([{text: 'Pausar', handler: (blah) => {pausar = true}},
-                                                  {text: 'Repartir', handler: (blah) => {pausar = false}}], 
-                                                  'Elije una opcion para proceder',
-    'Puedes pausar todos los planes que escogas (excepto los prioritarios) o al prioritario acumularle lo necesario y del sobrante' + 
-    ' repartirlo igualitariamente a los demas planes');
-    return pausar;
-  }
-
-  //Imprimir las alertas segun el caso
-  async alertasUnPlan( margenMax: number, margenMin: number, gasto: number, unPlan: boolean) {
-    if (  gasto  >= margenMax ) {
-      return true;
-     }
-     else if ( ( gasto < margenMax ) && (gasto >= margenMin ) ) {
-       if(unPlan) {
-         console.log('hola');
-        await this.accionesService.presentAlertPlan([{text: 'Crear', handler: (blah) => {this.accionesService.alertaPlanCrear = true}},
-                                                    {text: 'Modificar', handler: (blah) => {this.accionesService.alertaPlanCrear = false}}], 
-        'Plan que apenas es posible', 
-        'Puedes crear el plan y cumplirlo en el tiempo establecido MIENTRAS te mantengas en GASTOS MINIMOS en los gastos promedio (luz, agua, etc.) o puedes aumentar el tiempo en conseguirlo para que no estes tan presionado');
-        return this.accionesService.alertaPlanCrear;
-       }
-       return true;
-     }
-     else {
-      await this.accionesService.presentAlertPlan([{text: 'Modificar', handler: (blah) => {}}], 
-      'No puedes completar este plan en ese tiempo', 'Presiona Modificar y aumenta tu tiempo para ser apto de conseguirlo');
-      this.calcularEstimacion(margenMin);
-      return false;
-     }
-  }
-
-  async guardarCambiosAPlanes() {
-     await this.accionesService.presentAlertPlan([{text: 'Ok', handler: (blah) => {}}], 
-                                                      'Plan creado', 
-          '¡Si te propones gastar menos en tus gastos promedio (luz, agua, etc.) puedes completar tu plan en menos tiempo!');
-      this.datosService.actualizarPlanes(this.planes);
-      await this.modalCtrl.dismiss();
-  }
-
-  obtenerOchoPorciento(margenMax: number) {
-    return (this.usuarioCargado.ingresoCantidad - margenMax)*0.08;
-  }
-
-  async siPlanNuevoMuyPequeño(ochoPorciento: number) {
-    if(this.planNuevo.aportacionMensual <= ochoPorciento) {
-      await this.accionesService.presentAlertPlan([{text: 'Ok', handler: (blah) => {}}], 
-                                                  'Plan demasiado pequeño', 
-    'Reduce el tiempo para completarlo o aumenta la cantidad');
-    return true;
-    }
-    return false;
-  }
-
-  async validarDosplanes(ahorrar: number, gasto: number, margenMax: number, margenMin: number){
-    if (gasto  >= margenMax) {
-      //Verificar si el plan menor es prioritario
-      if(this.planMenor.aportacionMensual >= ahorrar) {
-
-        //Determinar si el ussuario desea pausar un plan 
-        await this.opcionesPrioridad(margenMax, margenMin);
-        //Un plan es aceptado y se le notifica al usuario
-      } else {
-        this.planMayor.aportacionMensual = ahorrar - this.planMenor.aportacionMensual;
-        this.creado = true;
-        return;
-      }
-           
-      //Caso en que quitando lo que debe ahorrar al mes el usuario, solo puede satisfacer sus necesidades basicas en margen minimo
-    } else if ( ( gasto < margenMax ) && (gasto >= margenMin ) ) {
-      
-      //Veridficar si el plan menor es prioritario
-      if(this.planMenor.aportacionMensual >= ahorrar) {
-
-        //Determinar que desea hacer el ususario con el plan prioritario
-        await this.opcionesPrioridad(margenMax, margenMin);
-
-        //Plan es valido y se le da opcion al ussuario si desea modificarlo o crearlo 
-      } else {
-        this.planMayor.aportacionMensual = ahorrar - this.planMenor.aportacionMensual;
-        await this.accionesService.presentAlertPlan([{text: 'Crear', handler: (blah) => {this.accionesService.alertaPlanCrear = true}},
-                                                  {text: 'Modificar', handler: (blah) => {this.accionesService.alertaPlanCrear = false}}], 
-                                                  'Plan que apenas es posible', 
-        'Puedes crear el plan y cumplirlo en el tiempo establecido MIENTRAS te mantengas en GASTOS MINIMOS en los gastos promedio (luz, agua, etc.) o puedes aumentar el tiempo en conseguirlo para que no estes tan presionado');
-        this.creado = this.accionesService.alertaPlanCrear;
-        return;
-      }
-
-      //Caso en que el sueldo del ususario no puede obtener el plan ese plan
-    } else {
-      await this.accionesService.presentAlertPlan([{text: 'Modificar', handler: (blah) => {}}], 
-      'No puedes completar este plan en ese tiempo', 'Presiona Modificar y aumenta tu tiempo para ser apto de conseguirlo');
-      this.creado = false;
-      this.calcularEstimacionDosPlanes(margenMin);
-      return;
-     }
-  }
-
+  //Metodo que valida mas de dos planes y procede segun el caso
   async validarMasDosPlanes(ahorrar: number, gasto: number, margenMax: number, margenMin: number) {
+
+    //Obtenemos la paortacion mensual del plan menor
     this.planMenor.aportacionMensual = (this.planMenor.cantidadTotal - this.planMenor.cantidadAcumulada)/this.planMenor.tiempoRestante;
-    
+    //Caso en que son posibles en margen maximo
     if (gasto  >= margenMax) {
 
+      //Verificamso si hay prioritario
       if(this.planMenor.aportacionMensual >= (ahorrar/2)) {
         await this.opcionesPrioridadDos(margenMax, margenMin);
+        //Llamamos al metodo que hace los procesos de prioridad
       } else {
+        //Llamamos al metodo que hace los calculos finales de validacion
         this.confirmarCreacionMasDosPlanes(ahorrar);
         return;
       }
            
+      //Caso en que son posibles en margen minimo
     } else if ( ( gasto < margenMax ) && (gasto >= margenMin ) ) {
 
+      //Verificamso si hay prioritario
       if(this.planMenor.aportacionMensual >= (ahorrar)/2) {
         await this.opcionesPrioridadDos(margenMax, margenMin);
+
       } else {
+        //Alerta al ususario con ocpiones
         await this.accionesService.presentAlertPlan([{text: 'Crear', handler: (blah) => {this.accionesService.alertaPlanCrear = true}},
                                                   {text: 'Modificar', handler: (blah) => {this.accionesService.alertaPlanCrear = false}}], 
                                                   'Plan que apenas es posible', 
         'Puedes crear el plan y cumplirlo en el tiempo establecido MIENTRAS te mantengas en GASTOS MINIMOS en los gastos promedio (luz, agua, etc.) o puedes aumentar el tiempo en conseguirlo para que no estes tan presionado');
         this.creado = this.accionesService.alertaPlanCrear;
+
+        //Procedemos segun la opcion
         if(this.creado) {
           this.confirmarCreacionMasDosPlanes(ahorrar);
         }
         return;
       }
 
+      //Caso e que no son posibles
     } else {
       await this.accionesService.presentAlertPlan([{text: 'Modificar', handler: (blah) => {}}], 
       'No puedes completar este plan en ese tiempo', 'Presiona Modificar y aumenta tu tiempo para ser apto de conseguirlo');
@@ -535,20 +552,12 @@ export class PlanFormPage implements OnInit {
     }
   }
 
-  async opcionesPrioridad(margenMax: number, margenMin: number) {
-    if(await this.intentarPrioritario(margenMax, margenMin)) {
-      this.prioridadDos = false;
-      this.creado = true;
-      return;
-    } else {
-      await this.prioridad(this.planMenor.nombre);
-      this.creado = false;
-      return;
-    }
-  }
-
+  //Metodo que ejecuta los procesos para el caso de encontrar un plan de prioridad
   async opcionesPrioridadDos(margenMax: number, margenMin: number) {
+
+    //Vemos si es posible darle al prioritario lo necesario y que no afecte al ussuario
     if(await this.intentarPrioritario(margenMax, margenMin)) {
+      //Calculos finales en el caso de que si se pueda 
       this.prioridadDos = false;
       this.planesaux = [];
       this.planes.forEach(element => {
@@ -563,10 +572,14 @@ export class PlanFormPage implements OnInit {
       });
       this.creado = true;
       return;
+
     } else {
+      //Vemos que opcion escoge el ussuario
       await this.prioridad(this.planMenor.nombre);
       this.creado = false;
+
       if(this.prioridadDos) {
+        //Vemos si el ussuario desea pausar o no
         if(await this.pausar()) {
           this.pausa = true;
           return;
@@ -574,47 +587,69 @@ export class PlanFormPage implements OnInit {
         this.pausa = false;
         return;
       }
+
       return;
     }
   }
 
-  pausarPorPrioridadDosPlanes() {
-    this.planes.push(this.planNuevo);
+  //Calculos finales para la incorporacion del nuevo plan
+  confirmarCreacionMasDosPlanes(ahorrar: number) {
+    //Vemos si todos los planes tienen el mismo tiempo
+    var iguales = true;
     this.planes.forEach(element => {
-      if(element != this.planPrioritario) {
-          element.aportacionMensual = 0;
-          element.pausado = true;
-      } else {
-          element.aportacionMensual = (element.cantidadTotal - element.cantidadAcumulada)/element.tiempoRestante;
+      if(element.tiempoRestante != this.planMenor.tiempoRestante) {
+        iguales = false;
       }
     });
+    //Caso en el que si tengan el mismo tiempo
+    if(iguales) {
+      this.planes.forEach(element => {
+        element.aportacionMensual = (element.cantidadTotal - element.cantidadAcumulada)/element.tiempoRestante;
+      });
+      this.creado = true;
+      return;
+    }
+
+    //Caso diferente tiempo
+    var aux = this.planMenor.aportacionMensual;
+    this.planes = this.planes.filter(plan => plan != this.planMenor);
+    this.planes.forEach(element => {
+      if(element != this.planMayor) {
+        element.aportacionMensual = this.planMenor.aportacionMensual;
+        aux += element.aportacionMensual;
+      }
+    });
+
+    this.planMayor.aportacionMensual = ahorrar - aux;
+    this.planes.unshift(this.planMenor);
+    this.creado = true;
+    return;
   }
 
+  //Metodo que va al menu de pausa o dividide igualitariamente el sobrante entre los planes no prioritarios
   async pausarODividirMasDosPlanes(margenMax: number, margenMin: number) {
+
+    //Caso de pausar
     if(this.pausa) {
       this.datosService.actualizarPlanes(this.planes);
-      this.modalCtrl.dismiss();
-      this.nav.navigateRoot('/plan-pausar-page');
-      this.router.navigate(['/plan-pausar-page'],
-      {
-        queryParams: {
-          planesPrioritarios: JSON.stringify(this.planesPrioritarios),
-          margenMax: margenMax,
-          margenMin: margenMin
-        }
-      });
+      this.irAPlanPausar(margenMax, margenMin);
       return true;
     }
 
+    //Calculos para dividir igualirtariamente
     var ahorro = 0;
     this.planesPrioritarios.forEach(element => {
       ahorro += element.aportacionMensual;
     });
+
     ahorro = this.usuarioCargado.ingresoCantidad - ahorro;
     var gasto = margenMin;
     ahorro = ahorro - gasto;
     ahorro /= this.planes.length;
+
     var ochoporciento = this.obtenerOchoPorciento(margenMax);
+
+    //Comprobamos que ninguna reciba menos del 8%
     if(ahorro <= ochoporciento) {
       var pausar;
       await this.accionesService.presentAlertPlan([{text: 'Pausar', handler: (blah) => {pausar = true}},
@@ -622,13 +657,16 @@ export class PlanFormPage implements OnInit {
                                                   'Planes demasiados pequeños',
       'Hemos detectado que al hacer el reparto los planes reciben muy poco dinero te recomendamos elejir la opcion "Pausar" ' + 
       ' para pausar algunos planes o modificar los datos del nuevo plan');
+
       if(pausar) {
         this.pausa = pausar;
         this.pausarODividirMasDosPlanes(margenMax, margenMin);
         return true;
       }
+
       return false;
     }
+
     this.planes.forEach(element => {
       element.aportacionMensual = ahorro;
       if(element.tiempoRestante == 1) {
@@ -639,43 +677,74 @@ export class PlanFormPage implements OnInit {
       }
       this.planesPrioritarios.push(element);
     });
+
     this.datosService.actualizarPlanes(this.planesPrioritarios);
-      this.modalCtrl.dismiss();
-      this.nav.navigateRoot('/tabs/tab2');
+    this.modalCtrl.dismiss();
+    this.nav.navigateRoot('/tabs/tab2');
     return true;
   }
 
-  confirmarCreacionMasDosPlanes(ahorrar: number) {
-    var iguales = true;
-    this.planes.forEach(element => {
-      if(element.tiempoRestante != this.planMenor.tiempoRestante) {
-        iguales = false;
-      }
-    });
-    if(iguales) {
-      this.planes.forEach(element => {
-        element.aportacionMensual = (element.cantidadTotal - element.cantidadAcumulada)/element.tiempoRestante;
-      });
-      this.creado = true;
-      return;
-    }
-    var aux = this.planMenor.aportacionMensual;
-    this.planes = this.planes.filter(plan => plan != this.planMenor);
-    this.planes.forEach(element => {
-      if(element != this.planMayor) {
-        element.aportacionMensual = this.planMenor.aportacionMensual;
-        aux += element.aportacionMensual;
-      }
-    });
-    this.planMayor.aportacionMensual = ahorrar - aux;
-    this.planes.unshift(this.planMenor);
-    this.creado = true;
-    return;
+  //Metodo que obtiene el ocho porciento del fondo de ahorro del usuario
+  obtenerOchoPorciento(margenMax: number) {
+    return (this.usuarioCargado.ingresoCantidad - margenMax)*0.08;
   }
 
+  //Metodo que verifica si los planes reciben menos o el 8%
+  async ocho(margenMax: number) {
+    var ochoPorciento = this.obtenerOchoPorciento(margenMax);
+    if(await this.siPlanNuevoMuyPequeño(ochoPorciento)) {
+      return true;
+    } else {
+      if(this.planes.length == 1) {
+        if(this.planes[0].aportacionMensual <= ochoPorciento) {
+          await this.accionesService.presentAlertPlan([{text: 'Modificar', handler: (blah) => {this.pausa = false, this.modificarOcho = true}},
+                                                        {text: 'Pausar', handler: (blah) => {this.pausa = true, this.modificarOcho = false}}], 
+                                                      'Plan demasiado pequeño', 
+            'Se ha detectado que el otro plan actual recibira muy poco dinero, te pedimos que modifiques' +
+            ' el tiempo de los planes o pauses cualquiera de los dos'
+          );
+          return true;
+        }
+       return false;
+      }
+      var aux = false;
+      await this.planes.forEach(element => {
+        if(element.aportacionMensual <= ochoPorciento) {
+           aux = true;
+           console.log(element);
+        }
+      });
+      if(aux) {
+        await this.accionesService.presentAlertPlan([{text: 'Modificar', handler: (blah) => {this.pausa = false, this.modificarOcho = true}},
+                                                        {text: 'Pausar', handler: (blah) => {this.pausa = true, this.modificarOcho = false}}], 
+                                                      'Plan demasiado pequeño', 
+            'Se ha detectado que alguno(s) planes recibiran muy poco dinero, te pedimos que modifiques' +
+            ' el tiempo de los planes o pauses algunos'
+          );
+          return true;
+      }
+      return false;
+    }
+
+  }
+
+  //Metodo que es llamado cuando el plan nuevo recibe menos o el 8%
+  async siPlanNuevoMuyPequeño(ochoPorciento: number) {
+    if(this.planNuevo.aportacionMensual <= ochoPorciento) {
+      await this.accionesService.presentAlertPlan([{text: 'Ok', handler: (blah) => {}}], 
+                                                  'Plan demasiado pequeño', 
+    'Reduce el tiempo para completarlo o aumenta la cantidad');
+    return true;
+    }
+    
+    return false;
+  }
+
+  //Metodo que hace los procedimeinto necesarios para intentar satisfacer los planes prioritarios (analizalo arlex)
   async intentarPrioritario(margenMax: number, margenMin: number) {
     var ahorrar: number = 0;
     var gasto: number;
+
     if(this.planes.length == 1) {
       this.planMenor.aportacionMensual = (this.planMenor.cantidadTotal - this.planMenor.cantidadAcumulada)/this.planMenor.tiempoRestante;
       this.planMayor.aportacionMensual = (this.planMayor.cantidadTotal - this.planMayor.cantidadAcumulada)/this.planMayor.tiempoRestante;
@@ -725,6 +794,7 @@ export class PlanFormPage implements OnInit {
       if(this.planMenor.aportacionMensual >= (ahorrar2)) {
         return this.intentarPrioritario(margenMax,margenMin);
       }
+
       this.planMayor.aportacionMensual = ahorrar2 - this.planMenor.aportacionMensual;
       ahorrar += ahorrar2;
       gasto = this.usuarioCargado.ingresoCantidad - ahorrar;
@@ -735,6 +805,7 @@ export class PlanFormPage implements OnInit {
       if(this.planMenor.aportacionMensual>= (ahorrar2/2)) {
         return this.intentarPrioritario(margenMax,margenMin);
       }
+
       var iguales = true;
       this.planes.forEach(element => {
         if(element.tiempoRestante != this.planMenor.tiempoRestante) {
@@ -748,7 +819,8 @@ export class PlanFormPage implements OnInit {
         ahorrar += ahorrar2;
         gasto = this.usuarioCargado.ingresoCantidad - ahorrar;
         return this.validarGasto(margenMax,margenMin, gasto);
-    }
+      }
+
       var sobrante = ahorrar2 - this.planMenor.aportacionMensual;
       this.planes.forEach(element => {
         if(element != this.planMenor && element != this.planMayor) {
@@ -763,6 +835,7 @@ export class PlanFormPage implements OnInit {
     }
   }
 
+  //Metodo que valida el gasto que se hace cuando se intenta satisfacer los planes prioriatrios
   validarGasto(margenMax: number, margenMin: number, gasto: number) {
     if (  gasto  >= margenMax ) {
       return true;
@@ -775,17 +848,50 @@ export class PlanFormPage implements OnInit {
      }
   }
 
-  async calcularEstimacion(margenMin: number) {
-    var estimacion = -1 * (this.planNuevo.cantidadTotal-this.planNuevo.cantidadAcumulada);
-    var estimacion = estimacion/(margenMin - this.usuarioCargado.ingresoCantidad);
-    var aux = Math.round(estimacion);
-    if(aux < estimacion) {
-      estimacion = estimacion + 0.5;
+  //Metodo que imprime las alertas de casos de prioridad y procede segun los escogido pro el susuario
+  async prioridad(nombre: string) {
+    if(this.planes.length == 1) {
+      await this.accionesService.presentAlertPlan([{text: 'No puedo', handler: (blah) => {this.modificar = false, this.prioridadDos = true}},
+                                                  {text: 'Modificar', handler: (blah) => {this.modificar = true, this.prioridadDos = false}},
+                                                  {text: 'Cancelar', handler: (blah) => {this.modificar = false, this.prioridadDos = false}}], 
+                                                  'Se ha detectado el plan ' + nombre + ' como de maxima prioridad', 
+    'Puedes crear el nuevo plan y modificar el tiempo de los planes para hacer posible ' + 
+    ' completar los planes, si no puedes hacer esto escoge "No puedo" para pausar el' + 
+    ' plan que no es prioritario');
+    return;
+
     }
-    await this.accionesService.presentAlertGenerica("ATENCION", "Te sugerimos que aumentes el tiempo de " + 
-    "tu plan minimo a " + Math.round(estimacion) + " meses para poder cumplirlo");
+
+    await this.accionesService.presentAlertPlan([{text: 'No puedo', handler: (blah) => {this.modificar = false, this.prioridadDos = true}},
+                                                  {text: 'Modificar', handler: (blah) => {this.modificar = true, this.prioridadDos = false}},
+                                                  {text: 'Cancelar', handler: (blah) => {this.modificar = false, this.prioridadDos = false}}], 
+                                                  'Se ha detectado el plan ' + nombre + ' como de maxima prioridad', 
+    'Puedes crear el nuevo plan y modificar el tiempo de los planes para hacer posible ' + 
+    ' completar los planes, si no puedes hacer esto escoge "No puedo"');
+    return;
   }
 
+  //Metodo que imprime alerta donde el suuario decidira si pausar o modificar los planes
+  async pausar() {
+    var pausar;
+    await this.accionesService.presentAlertPlan([{text: 'Pausar', handler: (blah) => {pausar = true}},
+                                                  {text: 'Repartir', handler: (blah) => {pausar = false}}], 
+                                                  'Elije una opcion para proceder',
+    'Puedes pausar todos los planes que escogas (excepto los prioritarios) o al prioritario acumularle lo necesario y del sobrante' + 
+    ' repartirlo igualitariamente a los demas planes');
+    return pausar;
+  }
+
+  //Metodo que guarda los cambios en los planes (se inserta uno nuevo correctamente)
+  async guardarCambiosAPlanes() {
+     await this.accionesService.presentAlertPlan([{text: 'Ok', handler: (blah) => {}}], 
+                                                      'Plan creado', 
+          '¡Si te propones gastar menos en tus gastos promedio (luz, agua, etc.) puedes completar tu plan en menos tiempo!');
+      this.datosService.actualizarPlanes(this.planes);
+      await this.modalCtrl.dismiss();
+  }
+
+  //Metodo que calcula ala estimacion de los meses para que dos o mas planes puedan ser cumplidos
   async calcularEstimacionDosPlanes(margenMin: number) {
     if(this.planes.length == 1 ) { 
       var estimacion = (this.planNuevo.cantidadTotal - this.planNuevo.cantidadAcumulada) + (this.planes[0].cantidadTotal - this.planes[0].cantidadAcumulada);
@@ -799,7 +905,6 @@ export class PlanFormPage implements OnInit {
     estimacion = -1 * estimacion;
     estimacion = estimacion/(margenMin - this.usuarioCargado.ingresoCantidad);
     var aux = Math.round(estimacion);
-    console.log(estimacion + ' ' + aux);
     if(aux < estimacion) {
       estimacion = estimacion + 0.5;
     }
@@ -807,13 +912,13 @@ export class PlanFormPage implements OnInit {
     "tu plan minimo a " + Math.round(estimacion) + " meses para poder cumplirlo");
   }
 
-  //Metodo que omite el ingreso del primer plan al hacer el registro
+  //Metodo que omite el ingreso de un plan al inciar la app por primera vez
   omitir() {
     this.modalCtrl.dismiss();
     this.nav.navigateRoot('/tabs/tab1');
   }
 
-  //Metodo que muestra la informacion del elemento seleecionado por el boton de informacion
+  //Metodo que imprime la informacion de lo que se debe llenar 
   botonInfo(titulo: string) {
     this.alertas.forEach(element => {
       if(titulo == element.titulo) {
@@ -823,8 +928,9 @@ export class PlanFormPage implements OnInit {
     });
   }
 
+  //Metodo que valdia el tiempo que ingresa el ususario
   tiempoPlan(event) {
-    if(this.tiempo.value != Math.round(this.planNuevo.tiempoTotal).toString()) {
+    if(this.tiempo.value.toString().includes('.')) {
       this.tiempo.value = this.tiempo.value.substr(0, this.tiempo.value.length - 1);
     }
   }
@@ -836,6 +942,32 @@ export class PlanFormPage implements OnInit {
         this.nav.navigateRoot('/tabs/tab1');
       } else {
       this.nav.navigateRoot('/tabs/tab2');
+      }
+    });
+  }
+
+  //Metodo que redirecciona a la page de pasuar planes
+  irAPlanPausar(margenMax: number, margenMin) {
+    this.modalCtrl.dismiss();
+    this.nav.navigateRoot('/plan-pausar-page');
+    this.router.navigate(['/plan-pausar-page'], {
+      queryParams: {
+        planesPrioritarios: JSON.stringify(this.planesPrioritarios),
+        margenMax: margenMax,
+        margenMin: margenMin,
+        planesOriginales: JSON.stringify(this.planesOriginales)
+      }
+    });
+    return;
+  }
+
+  //Metodo que redirecciona a la page de modificar tiempo de planes
+  irAPlanModificar() {
+    this.modalCtrl.dismiss();
+    this.nav.navigateRoot('/modificar-tiempo-page');
+    this.router.navigate(['/modificar-tiempo-page'], {
+      queryParams: {
+        planesOriginales: JSON.stringify(this.planesOriginales)
       }
     });
   }

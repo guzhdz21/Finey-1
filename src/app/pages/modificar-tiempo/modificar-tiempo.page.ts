@@ -40,7 +40,9 @@ export class ModificarTiempoPage implements OnInit {
           bla.tiempo = this.planes[i].tiempoRestante;
           this.datosService.presentToast('No se pueden insertar meses con punto decimal');
         } else {
+          var diferencia =  bla.tiempo - this.planes[i].tiempoRestante;
           this.planes[i].tiempoRestante = bla.tiempo;
+          this.planes[i].tiempoTotal += diferencia;
         }
       }
     }, {text: 'Cancelar',handler: (bla) => {}}], this.planes[i].tiempoRestante);

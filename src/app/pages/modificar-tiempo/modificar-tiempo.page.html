@@ -1,7 +1,13 @@
 <ion-header no-border>
   <ion-toolbar color="success">
 
-    <ion-title>Modificar Planes</ion-title>
+    <ion-buttons slot="start">
+      <ion-button (click)="cancelar()" slot="icon-only">
+        <ion-icon slot="start" name="arrow-round-back"></ion-icon>
+      </ion-button>
+    </ion-buttons>
+
+    <ion-title>Planes</ion-title>
 
   </ion-toolbar>
 </ion-header>
@@ -12,7 +18,9 @@
   </ion-item>
 
   <ion-item lines="none"> 
-    <ion-label class="texto_centrado ion-text-wrap"><p>Selecciona el plan al que quieras cambiarle el tiempo</ion-label>
+    <ion-label class="texto_centrado ion-text-wrap"><p>Selecciona el plan al que quieras cambiarle el tiempo,
+      te aconsejamos aumentar el tiempo de los planes con menor tiempo
+    </ion-label>
   </ion-item>
   
   <ion-list>
@@ -37,10 +45,4 @@
                 color="success"
                 (click)="guardar()"
                 >Guardar</ion-button>
-
-  <ion-button expand="block"
-              color="danger"
-              (click)="cancelar()">
-    Cancelar
-  </ion-button>
 </ion-content>

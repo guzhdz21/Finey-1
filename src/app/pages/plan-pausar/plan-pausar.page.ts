@@ -14,6 +14,7 @@ export class PlanPausarPage implements OnInit {
   @Input() planesPrioritarios: Plan[];
   @Input() margenMax: number;
   @Input() margenMin: number;
+  @Input() planesOriginales: Plan[];
 
   planes: Plan[] = this.datosService.planesCargados;
 
@@ -339,6 +340,21 @@ export class PlanPausarPage implements OnInit {
           return true;
       }
       return false;
+    }
+  }
+
+  async cancelar() {
+    var cancelar;
+    await this.accionesService.presentAlertPlan([{text: 'Si', handler: (blah) => {cancelar = true}},
+                                                  {text: 'No', handler: (blah) => {cancelar = false}}], 
+                                                  '¿Seguro que quieres volver?', 
+      'Si cancelas se borrara el nuevo plan que ingresaste');
+    
+    if(cancelar) {
+      console.log(this.planesOriginales);
+      this.datosService.actualizarPlanes(this.planesOriginales);
+      await this.modalCtrl.dismiss();
+      this.nav.navigateRoot('tabs/tab2');
     }
   }
 }
