@@ -33,7 +33,7 @@ export class InternetComponent implements OnInit {
   permisos: boolean[];
   valoresRadio: number[][];
 
-  subTestEncontrado: SubTest = {
+  subTestEncontrado1: SubTest = {
     idTest: null,
     id: null,
     preguntas: [{
@@ -46,6 +46,35 @@ export class InternetComponent implements OnInit {
           }]
       }]
   }
+
+  subTestEncontrado2: SubTest = {
+    idTest: null,
+    id: null,
+    preguntas: [{
+        idSubTest: null,
+        id: null,
+        preguntaTexto: '',
+        respuestas: [{
+            respuestaTexto: '',
+            valor: null
+          }]
+      }]
+  }
+
+  subTestEncontrado3: SubTest = {
+    idTest: null,
+    id: null,
+    preguntas: [{
+        idSubTest: null,
+        id: null,
+        preguntaTexto: '',
+        respuestas: [{
+            respuestaTexto: '',
+            valor: null
+          }]
+      }]
+  }
+
 
   obtenerSubTest(idSubTest: number, subTestEncontrado: SubTest){
     this.datosService.getSubTests().subscribe(val => {
@@ -71,7 +100,7 @@ return subTestEncontrado;
 
 async subTest1(event){
   if(event.detail.value == 'si'){
-    this.subTestsEncontrados[0] = await this.obtenerSubTest(1, this.subTestEncontrado);
+    this.subTestsEncontrados[0] = await this.obtenerSubTest(1, this.subTestEncontrado1);
     this.permisos[0] = true;
   }
   else{
@@ -81,7 +110,7 @@ async subTest1(event){
 
 async subTest2(event){
   if(event.detail.value == 'si'){
-    this.subTestsEncontrados[1] = await this.obtenerSubTest(2, this.subTestEncontrado);
+    this.subTestsEncontrados[1] = await this.obtenerSubTest(2, this.subTestEncontrado2);
     this.permisos[1] = true;
   }
   else{
@@ -91,7 +120,7 @@ async subTest2(event){
 
 async subTest3(event){
   if(event.detail.value == 'si'){
-    this.subTestsEncontrados[2] = await this.obtenerSubTest(3, this.subTestEncontrado);
+    this.subTestsEncontrados[2] = await this.obtenerSubTest(3, this.subTestEncontrado3);
     this.permisos[2] = true;
   }
   else{
