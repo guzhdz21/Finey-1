@@ -25,7 +25,6 @@ export class AppComponent implements OnInit{
     private event: Events,
     private localNotifications: LocalNotifications
   ) {
-    window.skipLocalNotificationReady = true
     this.initializeApp();
     this.datosService.cargarDatos();
   }
@@ -35,7 +34,6 @@ export class AppComponent implements OnInit{
       this.statusBar.styleDefault();
       this.splashScreen.hide();
     });
-    this.localNotifications.fireQueuedEvents();
   }
  async ngOnInit(){
     this.datosService.cargarPrimeraVez();
