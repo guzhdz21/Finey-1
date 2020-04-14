@@ -18,8 +18,8 @@ export class CalendarioPage implements OnInit {
 event = {
   title: '',
   desc: '',
-  startTime: '',
-  endTime: ''
+  startTime: null,
+  endTime: null
 };
 
 //Declaracion vacia de la estructura del recordatorio
@@ -98,7 +98,6 @@ cargarEventosStorage(){
       endTime: new Date(element.fin),
       desc: element.mensaje
     }
-
   this.eventSource.push(eventCopy);
   });
 }
@@ -141,14 +140,15 @@ async registrarNuevoRecordatorio() {
   await this.datosService.cargarDatosRecordatorios();
   this.recordatorioFull.title = this.event.title;
   this.recordatorioFull.mensaje = this.event.desc;
-  this.recordatorioFull.inicio = formatDate(this.event.startTime, 'medium',this.locale);
-  this.recordatorioFull.fin = formatDate(this.event.endTime, 'medium',this.locale);
+  this.recordatorioFull.inicio = this.event.startTime;
+  this.recordatorioFull.fin = this.event.endTime;
   await this.datosService.guardarNuevoRecordatorio(this.recordatorioFull);
   this.resetEvent();
 }
 
 // Metodo que muestra una alert para borrar un recordatorio del storage
  async borrarRecordatorio(event) {
+   console.log(event);
   await this.accionesService.presentAlertPlan([{text: 'Cancelar', handler: (blah) => {this.accionesService.borrarRecordatorio = false}},
                                         {text: 'Borrar', handler: (blah) => {this.accionesService.borrarRecordatorio = true}}], 
                                         '¿Estas seguro de que quieres borrar este recordatorio?', 'En caso de que te retractes tendrías que crear uno nuevo similar');
@@ -156,8 +156,8 @@ async registrarNuevoRecordatorio() {
   if(this.accionesService.borrarRecordatorio == true) {
     this.recordatorioFull.title = event.title;
     this.recordatorioFull.mensaje = event.desc;
-    this.recordatorioFull.inicio = formatDate(event.startTime, 'medium', this.locale)
-    this.recordatorioFull.fin = formatDate(event.endTime, 'medium',this.locale);
+    this.recordatorioFull.inicio = event.startTime.toISOString();
+    this.recordatorioFull.fin = event.endTime.toISOString();
    await this.datosService.borrarRecordatorio(this.recordatorioFull);
   } 
 }

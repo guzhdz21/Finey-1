@@ -6,6 +6,8 @@ import {Observable, Subscription} from 'rxjs';
 import { DatosService } from '../../services/datos.service';
 import { ModalController, NavController, Events, Platform } from '@ionic/angular';
 import { DescripcionGastoPage } from '../descripcion-gasto/descripcion-gasto.page';
+import { LocalNotifications } from '@ionic-native/local-notifications/ngx';
+import { AccionesService } from '../../services/acciones.service';
 
 @Component({
   selector: 'app-tab1',
@@ -49,9 +51,12 @@ export class Tab1Page implements OnInit {
               private nav: NavController,
               private event: Events,
               private plt: Platform,
-              @Inject(LOCALE_ID) private locale: string) {}
+              @Inject(LOCALE_ID) private locale: string,
+              private localNotifications: LocalNotifications, 
+              private accionesService: AccionesService) {}
 
   async ngOnInit() {
+    this.localNotifications.fireQueuedEvents();
     //Condicional para abrir el registro de la app
     if(this.datosService.primera === true) {
       await this.nav.navigateRoot('/modal-registro-page');
@@ -163,6 +168,12 @@ export class Tab1Page implements OnInit {
       this.saldo = saldo;
   }
 
+  ionViewDidLoad () {
+    this.plt.ready().then(() => {
+      this.localNotifications.fireQueuedEvents();
+    }); 
+  }
+  
   ionViewDidEnter() {
     this.backButtonSub = this.plt.backButton.subscribeWithPriority( 10000, () => {
       navigator["app"].exitApp();

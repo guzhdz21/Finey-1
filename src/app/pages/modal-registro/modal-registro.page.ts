@@ -5,6 +5,7 @@ import { UsuarioLocal, Rubro, AlertaGeneral } from '../../interfaces/interfaces'
 import { Router } from '@angular/router';
 import { AccionesService } from '../../services/acciones.service';
 import { Subscription } from 'rxjs';
+import { LocalNotifications } from '@ionic-native/local-notifications/ngx';
 
 @Component({
   selector: 'app-modal-registro',
@@ -43,7 +44,8 @@ export class ModalRegistroPage implements OnInit {
                 private nav: NavController,
                 private router: Router,
                 private accionesService: AccionesService,
-                private plt: Platform) { }
+                private plt: Platform, 
+                private localNotifications: LocalNotifications) { }
 
 ngOnInit() {
   //Llamado al metodo del servicio datos Service para obtener gastos iniciales de un archivo
@@ -107,7 +109,7 @@ sexoRadio(event)
           value: true
         }
       });
-      this.datosService.presentToast('Registro exitoso');
+      await this.mandarNotificacion();
     }
   }
   else {
@@ -119,7 +121,7 @@ sexoRadio(event)
          value: true
         }
     });
-    this.datosService.presentToast('Registro exitoso');
+    await this.mandarNotificacion();
   }
 }
 
@@ -186,6 +188,10 @@ sexoRadio(event)
       }
     });
     this.requerido = false;
+  }
+
+  async mandarNotificacion() {
+    await this.datosService.mandarNotificacionDiaria();
   }
     
   ionViewDidEnter() {

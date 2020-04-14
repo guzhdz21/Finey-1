@@ -4,7 +4,7 @@ import { Rubro, ColorArray, LabelArray, UsuarioLocal, Gasto, Plan, AlertaGeneral
 import { Storage } from '@ionic/storage';
 import { ToastController, Events, Platform } from '@ionic/angular';
 import { AlertController } from '@ionic/angular';
-import { LocalNotifications } from '@ionic-native/local-notifications/ngx';
+import { LocalNotifications, ELocalNotificationTriggerUnit } from '@ionic-native/local-notifications/ngx';
 import { AccionesService } from './acciones.service';
 
 @Injectable({
@@ -25,6 +25,7 @@ export class DatosService {
     this.cargarDatos();
     this.cargarDatosPlan();
     this.cargarIdsRecordatorios();
+    this.localNotifications.fireQueuedEvents();
 
     this.plt.ready().then(() => {
       this.localNotifications.on('click').subscribe(res => {
@@ -45,7 +46,6 @@ export class DatosService {
             var id = res.data ? res.data.id : 0;
             this.borrarId(id);
           }
-          this.presentToast('hola');
       });
   
       this.localNotifications.on('clear').subscribe(res => {
@@ -303,6 +303,20 @@ export class DatosService {
     const Recordatorios = await this.storage.get('Recordatorios');
     if(Recordatorios) {
       this.recordatoriosCargados = Recordatorios;
+      var recordatoriosNuevos: Recordatorio[] = [];
+      this.recordatoriosCargados.forEach(element => {
+        let fin = new Date(element.fin);
+        if( fin > new Date()) {
+          recordatoriosNuevos.push(element);
+        } 
+      });
+      this.recordatoriosCargados = recordatoriosNuevos;
+      this.actualizarRecordatorios(recordatoriosNuevos);
+      if(recordatoriosNuevos.length == 0) {
+        this.recordatoriosCargados = [];
+        this.recordatoriosExisten = false;
+        return;
+      }
       this.recordatoriosExisten = true;
     }
     else {
@@ -334,15 +348,15 @@ export class DatosService {
     this.recordatoriosCargados.forEach(element => {
       if(element.title == recordatorio_eliminar.title 
         && element.mensaje == recordatorio_eliminar.mensaje
-        && element.fin == recordatorio_eliminar.fin 
+        && element.fin == recordatorio_eliminar.fin
         && element.inicio == recordatorio_eliminar.inicio) {
         } else {
           nuevosRecordatorios.push(element);
         }
     });
     this.recordatoriosCargados = nuevosRecordatorios;
-    await this.volverHacerSchedule(this.recordatoriosCargados);
     await this.storage.set('Recordatorios', this.recordatoriosCargados);
+    await this.volverHacerSchedule(this.recordatoriosCargados);
     this.event.publish('recordatoriosCargados');
 }
 
@@ -371,7 +385,8 @@ export class DatosService {
       foreground: true,
       vibrate: true,
       icon: 'alarm',
-      data: { inicio: true, horaInicio: recordatorio.inicio, horaFin: recordatorio.fin }
+      data: { inicio: true, horaInicio: recordatorio.inicio, horaFin: recordatorio.fin },
+      launch: true
     });
     return;   
   }
@@ -401,7 +416,8 @@ export class DatosService {
       foreground: true,
       vibrate: true,
       icon: 'alarm',
-      data: { inicio: false, horaInicio: recordatorio.inicio, horaFin: recordatorio.fin }
+      data: { inicio: false, horaInicio: recordatorio.inicio, horaFin: recordatorio.fin },
+      launch: true
     });
     return;
   }
@@ -409,11 +425,12 @@ export class DatosService {
   async borrarId(i: number) {
     this.idsRecordatorios = this.idsRecordatorios.filter( id => id != i);
     await this.storage.set('Ids', this.idsRecordatorios);
-    //this.event.publish('planesModificados');
   }
 
  async volverHacerSchedule(recordatorios: Recordatorio[]) {
     await this.localNotifications.cancelAll();
+    this.idsRecordatorios = [];
+    await this.mandarNotificacionDiaria();
     await recordatorios.forEach(element => {
       this.mandarNotificacionInicio(element);
       this.mandarNotificacionFin(element);
@@ -431,5 +448,23 @@ export class DatosService {
       }
       });
         return aux;
-    }
+  }
+
+  async mandarNotificacionDiaria() {
+    var id = 0;
+    this.idsRecordatorios = [];
+    this.idsRecordatorios.push(id);
+    await this.localNotifications.schedule({
+      id: 0,
+      title: 'Gastos del Dia',
+      text: 'Entra a la aplicacion para los gastos que realizaste en este dia',
+      trigger: { every: {hour: 15, minute: 53}, count: 1},
+      foreground: true,
+      vibrate: true,
+      icon: 'alarm',
+      launch: true
+    });
+    await this.presentToast('notificacion lista');
+    this.actualizarIds();
+  }
 }
