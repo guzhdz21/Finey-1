@@ -110,6 +110,7 @@ sexoRadio(event)
         }
       });
       await this.mandarNotificacion();
+      this.datosService.presentToast('Registro exitoso');
     }
   }
   else {
@@ -122,6 +123,8 @@ sexoRadio(event)
         }
     });
     await this.mandarNotificacion();
+    await this.guardarFechaMes();
+    this.datosService.presentToast('Registro exitoso');
   }
 }
 
@@ -192,6 +195,16 @@ sexoRadio(event)
 
   async mandarNotificacion() {
     await this.datosService.mandarNotificacionDiaria();
+  }
+
+  async guardarFechaMes() {
+    if(new Date().getDay() > 28) {
+      var mes = new Date().getMonth();
+      var año = new Date().getFullYear();
+      await this.datosService.guardarDiaDelMes(new Date(año, mes, 28));
+    } else {
+      await this.datosService.guardarDiaDelMes(new Date());
+    }
   }
     
   ionViewDidEnter() {

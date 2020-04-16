@@ -27,7 +27,6 @@ export class Tab1Page implements OnInit {
   saldo: number;
 
   //Variables de descicion
-  primera: boolean;
   gastosCero: boolean = true;
 
   backButtonSub: Subscription;
@@ -60,6 +59,12 @@ export class Tab1Page implements OnInit {
     //Condicional para abrir el registro de la app
     if(this.datosService.primera === true) {
       await this.nav.navigateRoot('/modal-registro-page');
+    }
+
+    if(new Date().getHours() > 10 && new Date().getHours() < 24) {
+      if(this.datosService.fechaDiaria == null || this.datosService.fechaDiaria.getDay() < new Date().getDay()) {
+        await this.nav.navigateRoot('/gastos-diarios-page');
+      }
     }
 
     //Evento que escucha cuando el la informacion del usuario es actualiza para actualizar la grafica
@@ -158,6 +163,10 @@ export class Tab1Page implements OnInit {
     var gastosCantidad = 0;
       for( var i = 0; i < 17; i++ ) {
 
+        if(this.usuarioCargado.gastos.length < 2) {
+          this.ngOnInit();
+          return;
+        } 
         if ( this.usuarioCargado.gastos[i].cantidad != 0 ) {
           gastosCantidad += this.usuarioCargado.gastos[i].cantidad;
         } 

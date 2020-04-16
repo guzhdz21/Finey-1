@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
-import { Rubro, ColorArray, LabelArray, UsuarioLocal, Gasto, Plan, AlertaGeneral, Recordatorio, Test, SubTest, Pregunta } from '../interfaces/interfaces';
+import { Rubro, ColorArray, LabelArray, UsuarioLocal, Gasto, Plan, AlertaGeneral, Recordatorio, Test, SubTest, Pregunta, GastosMensual } from '../interfaces/interfaces';
 import { Storage } from '@ionic/storage';
 import { ToastController, Events, Platform } from '@ionic/angular';
 import { AlertController } from '@ionic/angular';
@@ -25,6 +25,10 @@ export class DatosService {
     this.cargarDatos();
     this.cargarDatosPlan();
     this.cargarIdsRecordatorios();
+    this.cargarFechaDiaria();
+    this.cargarGastosMensuales();
+    this.cargarDiaDelMes();
+    this.cargarMes();
     this.localNotifications.fireQueuedEvents();
 
     this.plt.ready().then(() => {
@@ -99,6 +103,9 @@ export class DatosService {
   planesExisten: boolean = false; // Variable para saber si hay planes existentes
   recordatoriosExisten: boolean = false; // Variable para saber si hay planes existentes
   idsExisten: boolean;
+  fechaDiaria: Date;
+  fechaMes: Date;
+  mes: number;
 
   // Variable de tipo plan que adquiere los valores del storage
   planesCargados: Plan[] = [
@@ -111,6 +118,14 @@ export class DatosService {
       descripcion: '',
       aportacionMensual: null,
       pausado: false
+    }
+  ];
+
+  gastosMensualesCargados: GastosMensual[] = [
+    {
+      mes: 0,
+      nombre: '',
+      cantidad: null,
     }
   ];
 
@@ -173,12 +188,79 @@ export class DatosService {
 
   // Metodo que le da un valor a la variable "primera" segun si la encuentra en el storage o no
    async cargarPrimeraVez()
+    {
+      const primera = await this.storage.get('Primera');
+      if(primera === false) {
+        this.primera = primera;
+      } else {
+        this.primera = true;
+      }
+    }
+
+  guardarFechaDiaria(fechaDiaria: Date)
   {
-    const primera = await this.storage.get('Primera');
-    if(primera === false) {
-      this.primera = primera;
+    this.fechaDiaria = fechaDiaria;
+    this.storage.set('FechaDiaria', fechaDiaria);
+  }
+
+  async cargarFechaDiaria()
+  {
+    const fechaDiaria = await this.storage.get('FechaDiaria');
+    if(fechaDiaria) {
+      this.fechaDiaria = fechaDiaria;
     } else {
-      this.primera = true;
+      this.fechaDiaria = null;
+    }
+  }
+
+  guardarDiaDelMes(fecha: Date)
+  {
+    this.fechaMes = fecha;
+    this.storage.set('FechaMes', fecha);
+  }
+
+  async cargarDiaDelMes()
+  {
+    const fecha = await this.storage.get('FechaMes');
+    if(fecha) {
+      this.fechaMes = fecha;
+    } else {
+      this.fechaMes = new Date();
+      this.guardarDiaDelMes(this.fechaMes);
+    }
+  }
+
+  guardarMes(mes: number)
+  {
+    this.mes = mes;
+    this.storage.set('Mes', mes);
+  }
+
+  async cargarMes()
+  {
+    const mes = await this.storage.get('Mes');
+    if(mes) {
+      this.mes = mes;
+    } else {
+      this.mes = 1;
+      this.guardarMes(this.mes);
+    }
+  }
+
+  guardarGastosMensuales(gastos: GastosMensual[])
+  {
+    this.gastosMensualesCargados = gastos;
+    this.storage.set('GastosMensuales', gastos);
+  }
+
+
+  async cargarGastosMensuales()
+  {
+    const gastos = await this.storage.get('GastosMensuales');
+    if(gastos) {
+      this.gastosMensualesCargados = gastos;
+    } else {
+      this.gastosMensualesCargados = [];
     }
   }
 
@@ -458,13 +540,12 @@ export class DatosService {
       id: 0,
       title: 'Gastos del Dia',
       text: 'Entra a la aplicacion para los gastos que realizaste en este dia',
-      trigger: { every: {hour: 15, minute: 53}, count: 1},
+      trigger: { every: {hour: 15, minute: 53}},
       foreground: true,
       vibrate: true,
       icon: 'alarm',
       launch: true
     });
-    await this.presentToast('notificacion lista');
     this.actualizarIds();
   }
 }

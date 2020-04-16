@@ -72,6 +72,14 @@ const routes: Routes = [
   {
     path: 'modificar-tiempo',
     loadChildren: () => import('./pages/modificar-tiempo/modificar-tiempo.module').then( m => m.ModificarTiempoPageModule)
+  },
+  {
+    path: 'gastos-diarios-page',
+    loadChildren: () => import('./pages/gastos-diarios-page/gastos-diarios-page.module').then( m => m.GastosDiariosPagePageModule)
+  },
+  {
+    path: 'gastos-diarios',
+    loadChildren: () => import('./pages/gastos-diarios/gastos-diarios.module').then( m => m.GastosDiariosPageModule)
   }
 
 ];

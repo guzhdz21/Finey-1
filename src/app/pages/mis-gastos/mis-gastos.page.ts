@@ -39,7 +39,7 @@ export class MisGastosPage implements OnInit {
               private plt: Platform) { }
 
   ngOnInit() {
-    //Llamada a metodo que carga los datos del ussuario
+    //Llamada a metodo que carga los datos del usuario
     this.datosService.cargarDatos();
 
     //Lllamada a metodo que obtiene la informacion de las alertas de un archivo
@@ -58,7 +58,7 @@ export class MisGastosPage implements OnInit {
     //Asignacion del tipo de ingreso a la variable
     this.tipoIngreso.value = this.usuarioModificado.tipoIngreso;
     
-    //Llmada a metodo que obtiene los rubros de un archivo
+    //Llamada a metodo que obtiene los rubros de un archivo
     this.datosService.getRubros().subscribe (val => {
       this.rubros = val;
     });

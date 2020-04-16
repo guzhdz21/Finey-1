@@ -102,5 +102,73 @@
     {
         "titulo": "Cantidad acumulada",
         "mensaje": "Ingresa la cantidad que llevas acumulada del plan, si no llevas nada ingresa un 0"
+    },
+    {
+        "titulo": "Vivienda2",
+        "mensaje": "Ingresa el gasto que realizaste en tu vivienda, ya sea que pages renta o mantenimiento (Jardinero, Reparaciones, etc.)"
+    },
+    {
+        "titulo": "Agua2",
+        "mensaje": "Ingresa el gasto que realizaste en agua (recibo del agua)"
+    },
+    {
+        "titulo": "Luz2",
+        "mensaje": "Ingresa el gasto que realizaste en luz (recibo de luz)"
+    },
+    {
+        "titulo": "Gas2",
+        "mensaje": "Ingresa el gasto que realizaste en gas (recibo de gas)"
+    },
+    {
+        "titulo": "Comida2",
+        "mensaje": "Ingresa el gasto que realizaste en comida (supermercado, carniceria"
+    },
+    {
+        "titulo": "Ropa2",
+        "mensaje": "Ingresa el gasto que realizaste en ropa (zapatos, playeras, pantalón/falda, etc.)"
+    },
+    {
+        "titulo": "Mobiliario2",
+        "mensaje": "Ingresa el gasto que realizaste en Mobiliario (mesas, sillas, camas, etc. Ya sea reparación o cambio)"
+    },
+    {
+        "titulo": "Limpieza2",
+        "mensaje": "Ingresa el gasto que realizaste en limpieza (jabón, shampoo, maquillaje, desodorante, etc.)"
+    },
+    {
+        "titulo": "Transporte2",
+        "mensaje": "Ingresa el gasto que realizaste en transporte (gasolina, camión, metro, etc.)"
+    },
+    {
+        "titulo": "Internet/Cable/Telefonia2",
+        "mensaje": "Ingresa el pago que realizaste en tu plan actual, ya sea que solo tengas uno o los tres servicios"
+    },
+    {
+        "titulo": "Seguro2",
+        "mensaje": "Ingresa el gasto que realizaste en seguro de vida"
+    },
+    {
+        "titulo": "Electrodomesticos2",
+        "mensaje": "Ingresa el gasto que realizaste en electodomesticos (licuadora, lampara, refrigerador, etc. Ya sea reparación o cambio)"
+    },
+    {
+        "titulo": "Electronicos2",
+        "mensaje": "Ingresa el gasto que realizaste en electrónicos (celular, computadora, etc. ya sea reparacion o cambio)"
+    },
+    {
+        "titulo": "Educacion2",
+        "mensaje": "Ingresa el gasto que realizaste en educación (colegiatura, libros, cursos, etc.)"
+    },
+    {
+        "titulo": "Ocio2",
+        "mensaje": "Ingresa el gasto que realizaste en ocio (entretenimiento, juegos, libros, bebidas, cine, gym, etc.)"
+    },
+    {
+        "titulo": "Salud2",
+        "mensaje": "Ingresa el gasto que realizaste en salud (medicinas, hospital, etc)"
+    },
+    {
+        "titulo": "Extra2",
+        "mensaje": "Si relaizaste un pago a la deuda que ingresaste en este rubro ingresa cuanto"
     }
 ]

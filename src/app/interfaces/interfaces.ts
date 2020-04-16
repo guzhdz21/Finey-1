@@ -1,4 +1,3 @@
-import { SingleDataSet } from 'ng2-charts';
 
 export interface Opcion {
     icono: string;
@@ -29,6 +28,12 @@ export interface Gasto {
     icono: string;
     margenMin: number;
     margenMax: number;
+}
+
+export interface GastosMensual {
+    mes: number,
+    nombre: string,
+    cantidad: number
 }
 
 export interface UsuarioLocal {

@@ -22,9 +22,8 @@ export class AppComponent implements OnInit{
     private splashScreen: SplashScreen,
     private statusBar: StatusBar,
     private datosService: DatosService,
-    private event: Events,
-    private localNotifications: LocalNotifications
-  ) {
+    private event: Events) {
+
     this.initializeApp();
     this.datosService.cargarDatos();
   }
@@ -37,6 +36,7 @@ export class AppComponent implements OnInit{
   }
  async ngOnInit(){
     this.datosService.cargarPrimeraVez();
+    this.datosService.cargarFechaDiaria();
     await this.datosService.cargarDatos();
     this.nombre = this.datosService.usuarioCarga.nombre;
     this.event.subscribe('usuarioInsertado', () => {
