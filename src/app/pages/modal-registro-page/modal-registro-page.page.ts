@@ -21,6 +21,7 @@ export class ModalRegistroPagePage implements OnInit {
     const modal = await this.modalCtrl.create({
       component: ModalRegistroPage
     });
-    await modal.present();
+     modal.present();
+    await modal.onDidDismiss();
   }
 }

@@ -55,14 +55,24 @@ export class Tab1Page implements OnInit {
               private accionesService: AccionesService) {}
 
   async ngOnInit() {
+    await  this.datosService.cargarFechaDiaria();
+    await this.datosService.cargarDiaDelMes();
     this.localNotifications.fireQueuedEvents();
     //Condicional para abrir el registro de la app
     if(this.datosService.primera === true) {
       await this.nav.navigateRoot('/modal-registro-page');
     }
 
+    var año = this.datosService.fechaMes.getFullYear();
+    var mes = this.datosService.fechaMes.getMonth() + 1;
+    var dia = this.datosService.fechaMes.getDate();
+    var fechaProxima = new Date(año, mes, dia);
+    if( new Date() >= fechaProxima) {
+      //Note olvides de actualizar la fecha del mes
+    }
+
     if(new Date().getHours() > 10 && new Date().getHours() < 24) {
-      if(this.datosService.fechaDiaria == null || this.datosService.fechaDiaria.getDay() < new Date().getDay()) {
+      if(this.datosService.fechaDiaria == null || this.datosService.fechaDiaria.getDate() < new Date().getDate()) {
         await this.nav.navigateRoot('/gastos-diarios-page');
       }
     }
@@ -96,6 +106,7 @@ export class Tab1Page implements OnInit {
       val.colores.forEach(element => {
         this.colores.push(element.toString());
       });
+      console.log(this.colores.length == 0);
     });
     this.chartColors = [{
       backgroundColor: [ ] = this.colores
@@ -112,6 +123,8 @@ export class Tab1Page implements OnInit {
     //LLamada a funcion del servicio que carga los datos y 
     this.datosService.cargarDatos();
 
+    this.doughnutChartData = [4];
+    this.datos = []
     //Asignacion a la variable de la grafica de los datos de los gastos
     this.datosService.usuarioCarga.gastos.forEach(element => {
       this.datos.push(Number(element.porcentaje));
@@ -120,6 +133,10 @@ export class Tab1Page implements OnInit {
       }
     });
     this.doughnutChartData = this.datos;
+    console.log(this.datos);
+    console.log(this.doughnutChartData);
+    console.log(this.colores);
+    console.log(this.etiquetas);
   }
 
 
@@ -136,6 +153,9 @@ export class Tab1Page implements OnInit {
     await modal.present();
   }
 
+  nuevoMes() {
+
+  }
   //Metodo que carga los datos cuando un usuario entrara al tabs
   async ionViewWillEnter() {
     this.datosService.cargarDatos();
@@ -164,6 +184,8 @@ export class Tab1Page implements OnInit {
       for( var i = 0; i < 17; i++ ) {
 
         if(this.usuarioCargado.gastos.length < 2) {
+          this.colores = [];
+          this.etiquetas = [];
           this.ngOnInit();
           return;
         } 

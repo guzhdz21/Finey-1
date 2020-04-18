@@ -37,6 +37,7 @@ export class AppComponent implements OnInit{
  async ngOnInit(){
     this.datosService.cargarPrimeraVez();
     this.datosService.cargarFechaDiaria();
+    this.datosService.cargarDiaDelMes();
     await this.datosService.cargarDatos();
     this.nombre = this.datosService.usuarioCarga.nombre;
     this.event.subscribe('usuarioInsertado', () => {

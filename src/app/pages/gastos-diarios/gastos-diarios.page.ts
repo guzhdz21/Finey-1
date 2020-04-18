@@ -21,7 +21,6 @@ export class GastosDiariosPage implements OnInit {
     }
   ];
   gastosMensuales: GastosMensual[] = this.datosService.gastosMensualesCargados;
-  fechaMensual: Date = this.datosService.fechaMes;
   mes: number = this.datosService.mes;
 
   constructor(private datosService: DatosService,
@@ -31,7 +30,6 @@ export class GastosDiariosPage implements OnInit {
 
   ngOnInit() {
     this.datosService.cargarGastosMensuales();
-    this.datosService.cargarDiaDelMes();
     this.datosService.cargarMes();
 
     this.datosService.getAlertasJson().subscribe(val => {
@@ -64,9 +62,6 @@ export class GastosDiariosPage implements OnInit {
   }
 
   async ingresar() {
-    if(this.fechaMensual.getMonth() != new Date().getMonth() && this.fechaMensual.getDay() == new Date().getDay()) {
-      this.nuevoMes();
-    }
     if(this.gastosMensuales.length == 0) {
       this.gastos.forEach(element => {
         this.gastosMensuales.push(element);
@@ -84,9 +79,5 @@ export class GastosDiariosPage implements OnInit {
     await this.datosService.guardarFechaDiaria(new Date());
     this.modalCtrl.dismiss();
     this.nav.navigateRoot('/tabs/tab1');
-  }
-
-  nuevoMes() {
-
   }
 }
