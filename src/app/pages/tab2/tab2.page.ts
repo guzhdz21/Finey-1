@@ -64,7 +64,7 @@ export class Tab2Page implements OnInit{
   usuarioCargado: UsuarioLocal = this.datosService.usuarioCarga;
 
   //Variable que guarda los datos de los planes registrados y luego se usa para manipularlos
-  planes: Plan[] = []
+  planes: Plan[] = JSON.parse(JSON.stringify(this.datosService.planesCargados));
 
   //Varibale auciliar que guarda un arreglo de planes
   planesaux: Plan[] = []
@@ -73,6 +73,8 @@ export class Tab2Page implements OnInit{
   planesOriginales: Plan[] = []
 
   planesRetornados: Plan[] = []
+
+  planesCopia: Plan[] = []
 
   //Variable que guarda los planes que son prioritarios
   planesPrioritarios: Plan[] = [];
@@ -200,26 +202,39 @@ export class Tab2Page implements OnInit{
     
     if(this.accionesService.borrar == true) {
       await this.datosService.borrarPlan(i);
-      this.planesRetornados = this.datosService.planesCargados;
+      this.planes = JSON.parse(JSON.stringify(this.datosService.planesCargados));
+      this.planesRetornados = JSON.parse(JSON.stringify(this.planes)); //Nuevo
       this.datosService.planesExisten = false;
       this.borrado=true;
+
       this.planesRetornados.forEach(element => {
-        console.log(element.nombre);
-        this.calcularYRegistrar(element);
+
+        var extra: Plan = {
+          nombre: element.nombre,
+          cantidadTotal: element.cantidadTotal,
+          tiempoTotal: element.tiempoTotal,
+          cantidadAcumulada: element.cantidadAcumulada,
+          tiempoRestante: element.tiempoRestante,
+          descripcion: element.descripcion,
+          aportacionMensual: element.aportacionMensual,
+          pausado: element.pausado
+        };
+
+        this.planNuevo = JSON.parse(JSON.stringify(extra));
+        console.log("Nombre: " + this.planNuevo.nombre)
+        this.calcularYRegistrar();
         this.datosService.planesExisten = true;
-      })
+      });
       this.borrado = false;
-      this.datosService.planesCargados = this.planes;
     } 
   }
 
-   //Metodo que manda llamar los metodos para calcular los datos para agregar un plan nuevo y lo guarda en el Storage si es que es valido
-   async calcularYRegistrar(planParametro: Plan) {
+  //Metodo que manda llamar los metodos para calcular los datos para agregar un plan nuevo y lo guarda en el Storage si es que es valido
+  async calcularYRegistrar() {
 
     //Inicializacion de variables
     this.planesPrioritarios = [];
     this.planesOriginales = JSON.parse(JSON.stringify(this.planes));
-    this.planNuevo = planParametro;
 
     //Valores iniciales
     var unPlan = false;
@@ -227,11 +242,11 @@ export class Tab2Page implements OnInit{
     var margenMin = 0;
 
     //Verificar si hay planes previos
-    console.log("el lenght es de: " + this.planes.length);
-    console.log("lo de datosservice es: " + this.datosService.planesExisten);
-    if(this.planes.length < 1 || this.datosService.planesExisten == false) {
+    if( this.planes.length < 1 || this.datosService.planesExisten == false) {
       unPlan = true;
     }
+
+    console.log("Un plan es: " +unPlan)
 
     //Obtner margenes maximos y minimos
     this.usuarioCargado.gastos.forEach(element => {
@@ -245,7 +260,7 @@ export class Tab2Page implements OnInit{
     this.planNuevo.aportacionMensual = (this.planNuevo.cantidadTotal - this.planNuevo.cantidadAcumulada) / this.planNuevo.tiempoTotal;
     if(this.planNuevo.aportacionMensual <= 0) {
       await this.accionesService.presentAlertPlan([{text: 'Modificar', handler: (blah) => {}}], 
-                                                      'Plan Invalido', 
+                                                      'PLan Invalido', 
         'No puedes ingresar una cantidad acumulada mayor o igual al costo del plan');
         return;
     }
@@ -253,30 +268,30 @@ export class Tab2Page implements OnInit{
 
     //Verifica si el plan es posible
     if (await this.validarPlan(margenMax, margenMin, unPlan)) { 
-
+      console.log("VALIDADOOOO")
       //Casos mas de un plan
       if(unPlan == false) {
 
-        console.log("Mas de un plan: " + unPlan);
-
         //Caso dos planes
         if(this.planes.length == 1) { 
+          console.log("Caso 2 planes: " + this.planNuevo.nombre);
           await this.casoDosPlanes(margenMax, margenMin);
           return;
         }
 
         //caso mas de dos planes
+        console.log("Caso maaas de 2 planes: " + this.planNuevo.nombre);
         this.casoMasDosPlanes(margenMax, margenMin);
         return;
       }
 
-      console.log("Un puto plan: " + unPlan)
-
       //Caso un plan
+      console.log("Caso un plan: " + this.planNuevo.nombre);
       this.casoUnPlan(margenMax);
       return;
     }
 
+    console.log("no possible bro")
     return;
   }
 
@@ -323,14 +338,15 @@ export class Tab2Page implements OnInit{
 
     if(await this.siPlanNuevoMuyPequeño(ochoPorciento)) {
       //Retorna si noe s valido
+      console.log("NO ES VALIDO: " + this.planNuevo.nombre)
       return;
     }
 
     //Guarda el nuevo plan
     this.planes = [];
     this.planes.push(this.planNuevo);
-    console.log("Un plan:" + this.planNuevo.nombre);
     this.guardarCambiosAPlanes();
+    this.nav.navigateRoot('/tabs/tab2');
     return;
   }
 
@@ -357,6 +373,8 @@ export class Tab2Page implements OnInit{
       var planPrioritario = this.planMenor;
       await this.pausarPorPrioridadDosPlanes(planPrioritario);
       this.datosService.actualizarPlanes(this.planes);
+      //this.modalCtrl.dismiss();
+      this.nav.navigateRoot('/tabs/tab2');
       return;
     }
 
@@ -398,8 +416,8 @@ export class Tab2Page implements OnInit{
 
       //Se inserta plan
       this.planes.push(this.planNuevo);
-      console.log("Segundo plan: " + this.planNuevo)
       this.guardarCambiosAPlanes();
+      this.nav.navigateRoot('/tabs/tab2');
       return;
     }
     return;
@@ -573,6 +591,7 @@ export class Tab2Page implements OnInit{
 
        //Se inserta plan
       this.guardarCambiosAPlanes();
+      this.nav.navigateRoot('/tabs/tab2');
       return;
     }
 
@@ -810,6 +829,8 @@ export class Tab2Page implements OnInit{
     });
 
     this.datosService.actualizarPlanes(this.planesPrioritarios);
+    //this.modalCtrl.dismiss();
+    this.nav.navigateRoot('/tabs/tab2');
     return true;
   }
 
@@ -1013,11 +1034,9 @@ export class Tab2Page implements OnInit{
 
   //Metodo que guarda los cambios en los planes (se inserta uno nuevo correctamente)
   async guardarCambiosAPlanes() {
-    if(this.borrado = false){
      await this.accionesService.presentAlertPlan([{text: 'Ok', handler: (blah) => {}}], 
                                                       'Plan creado', 
           '¡Si te propones gastar menos en tus gastos promedio (luz, agua, etc.) puedes completar tu plan en menos tiempo!');
-    }
       this.datosService.actualizarPlanes(this.planes);
       //await this.modalCtrl.dismiss();
   }
@@ -1045,6 +1064,7 @@ export class Tab2Page implements OnInit{
 
   //Metodo que omite el ingreso de un plan al inciar la app por primera vez
   omitir() {
+    //this.modalCtrl.dismiss();
     this.nav.navigateRoot('/tabs/tab1');
   }
 
