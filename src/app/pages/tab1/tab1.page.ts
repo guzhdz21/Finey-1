@@ -1,6 +1,6 @@
 import { Component, OnInit, Inject, LOCALE_ID } from '@angular/core';
 import { ChartType } from 'chart.js';
-import { SingleDataSet, Label } from 'ng2-charts';
+import { SingleDataSet, Label, ThemeService } from 'ng2-charts';
 import { Rubro, UsuarioLocal } from '../../interfaces/interfaces';
 import {Observable, Subscription} from 'rxjs';
 import { DatosService } from '../../services/datos.service';
@@ -9,6 +9,7 @@ import { DescripcionGastoPage } from '../descripcion-gasto/descripcion-gasto.pag
 import { LocalNotifications } from '@ionic-native/local-notifications/ngx';
 import { AccionesService } from '../../services/acciones.service';
 import { ModalRegistroPage } from '../modal-registro/modal-registro.page';
+import { GastosDiariosPage } from '../gastos-diarios/gastos-diarios.page';
 
 @Component({
   selector: 'app-tab1',
@@ -34,6 +35,10 @@ export class Tab1Page implements OnInit {
 
   //Datos del ussuario
   usuarioCargado: UsuarioLocal = this.datosService.usuarioCarga;
+
+  mes = this.datosService.mes;
+
+  gastosMensuales = this.datosService.gastosMensualesCargados;
   
   //Variables de asignacion al Chart
   public doughnutChartLabels: Label[] = ['Vivienda'];
@@ -56,29 +61,8 @@ export class Tab1Page implements OnInit {
               private accionesService: AccionesService) {}
 
   async ngOnInit() {
-    await  this.datosService.cargarFechaDiaria();
-    await this.datosService.cargarDiaDelMes();
-    this.localNotifications.fireQueuedEvents();
-    //Condicional para abrir el registro de la app
-    if(this.datosService.primera === true) {
-      await this.abrirRegistro();
-    }
 
-    var año = this.datosService.fechaMes.getFullYear();
-    var mes = this.datosService.fechaMes.getMonth() + 1;
-    var dia = this.datosService.fechaMes.getDate();
-    var fechaProxima = new Date(año, mes, dia);
-    if( new Date() >= fechaProxima) {
-      //Note olvides de actualizar la fecha del mes
-    }
-
-    if(new Date().getHours() > 10 && new Date().getHours() < 24) {
-      if(this.datosService.fechaDiaria == null || this.datosService.fechaDiaria.getDate() < new Date().getDate()) {
-        await this.nav.navigateRoot('/gastos-diarios-page');
-      }
-    }
-
-    //Evento que escucha cuando el la informacion del usuario es actualiza para actualizar la grafica
+      //Evento que escucha cuando el la informacion del usuario es actualiza para actualizar la grafica
      await this.event.subscribe('usuarioActualizado', () => {
       this.usuarioCargado = this.datosService.usuarioCarga;
       this.gastosCero = true;
@@ -98,6 +82,30 @@ export class Tab1Page implements OnInit {
       this.usuarioCargado = this.datosService.usuarioCarga;
       this.mostrarSaldo();
     });
+
+    await this.datosService.cargarGastosMensuales()
+    await this.datosService.cargarMes();
+    await  this.datosService.cargarFechaDiaria();
+    await this.datosService.cargarDiaDelMes();
+    this.localNotifications.fireQueuedEvents();
+    //Condicional para abrir el registro de la app
+    if(this.datosService.primera === true) {
+      await this.abrirRegistro();
+    }
+
+    var año = this.datosService.fechaMes.getFullYear();
+    var mes = this.datosService.fechaMes.getMonth() + 1;
+    var dia = this.datosService.fechaMes.getDate();
+    var fechaProxima = new Date(año, mes, dia);
+    if(new Date() >= fechaProxima) {
+      this.nuevoMes();
+    }
+
+    if(new Date().getHours() > 10 && new Date().getHours() < 24) {
+      if(this.datosService.fechaDiaria == null || this.datosService.fechaDiaria.getDate() != new Date().getDate()) {
+        await this.abrirGastosDiarios();
+      }
+    }
 
     //Asignacion al arreglo de rubros por la funcion qdel servicio datosService que obtiene los rubros de un archicvo
     this.rubros = this.datosService.getRubros();
@@ -134,10 +142,6 @@ export class Tab1Page implements OnInit {
       }
     });
     this.doughnutChartData = this.datos;
-    console.log(this.datos);
-    console.log(this.doughnutChartData);
-    console.log(this.colores);
-    console.log(this.etiquetas);
   }
 
 
@@ -163,9 +167,52 @@ export class Tab1Page implements OnInit {
     await modal.onDidDismiss();
   }
 
-  nuevoMes() {
+  async abrirGastosDiarios() {
+    const modal = await this.modalCtrl.create({
+      component: GastosDiariosPage
+    });
+    modal.present();
+    await modal.onDidDismiss();
+  } 
 
+  async nuevoMes() {
+    if(this.mes == 1) {
+      this.mes++;
+      this.datosService.guardarMes(this.mes);
+      return;
+    }
+
+    var meses = this.gastosMensuales.length / 17;
+    this.usuarioCargado.gastos.forEach(gastos => {
+      var promedio = 0;
+      var datos = [];
+      
+      this.gastosMensuales.forEach(gastosMen => {
+        if(gastosMen.nombre == gastos.nombre && gastos.tipo == 'Promedio') {
+          promedio += gastosMen.cantidad;
+          datos.push(gastosMen.cantidad);
+        }
+      });
+      promedio /= meses;
+      gastos.cantidad = promedio;
+      var sumatoria = 0;
+
+      datos.forEach(element => {
+        var aux = element - promedio;
+        aux *= aux;
+        sumatoria += aux;
+      });
+      var desviacion = sumatoria / meses;
+      desviacion = Math.sqrt(desviacion);
+      gastos.margenMax = gastos.cantidad + desviacion;
+      gastos.margenMin = gastos.cantidad + desviacion;
+    });
+    this.mes++;
+    this.datosService.guardarMes(this.mes);
+    this.datosService.guardarUsuarioInfo(this.usuarioCargado);
+    await this.datosService.cargarDatos();
   }
+
   //Metodo que carga los datos cuando un usuario entrara al tabs
   async ionViewWillEnter() {
     this.datosService.cargarDatos();
@@ -194,7 +241,6 @@ export class Tab1Page implements OnInit {
       for( var i = 0; i < 17; i++ ) {
 
         if(this.usuarioCargado.gastos.length < 2) {
-          this.colores = [];
           this.etiquetas = [];
           this.ngOnInit();
           return;

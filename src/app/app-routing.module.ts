@@ -15,10 +15,6 @@ const routes: Routes = [
     loadChildren: () => import('./pages/descripcion-gasto/descripcion-gasto.module').then( m => m.DescripcionGastoPageModule)
   },
   {
-    path: 'modal-registro-page',
-    loadChildren: () => import('./pages/modal-registro-page/modal-registro-page.module').then( m => m.ModalRegistroPagePageModule)
-  },
-  {
     path: 'modal-avatar-page',
     loadChildren: () => import('./pages/modal-avatar-page/modal-avatar-page.module').then( m => m.ModalAvatarPagePageModule)
   },
@@ -33,7 +29,8 @@ const routes: Routes = [
   {
     path: 'plan-modificar-page',
     loadChildren: () => import('./pages/plan-modificar-page/plan-modificar-page.module').then( m => m.PlanModificarPagePageModule)
-  },  {
+  },
+  {
     path: 'plan-pausar',
     loadChildren: () => import('./pages/plan-pausar/plan-pausar.module').then( m => m.PlanPausarPageModule)
   },

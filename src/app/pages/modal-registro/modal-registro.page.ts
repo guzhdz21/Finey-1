@@ -198,7 +198,7 @@ sexoRadio(event)
   }
 
   async guardarFechaMes() {
-    if(new Date().getDay() > 28) {
+    if(new Date().getDate() > 28) {
       var mes = new Date().getMonth();
       var año = new Date().getFullYear();
       await this.datosService.guardarDiaDelMes(new Date(año, mes, 28));

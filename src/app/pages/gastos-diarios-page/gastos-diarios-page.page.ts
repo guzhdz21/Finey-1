@@ -21,6 +21,6 @@ export class GastosDiariosPagePage implements OnInit {
     });
     modal.present();
     await modal.onDidDismiss();
-}
+  } 
 
 }
