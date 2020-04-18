@@ -8,10 +8,13 @@ import { ComponentsModule } from '../../components/components.module';
 import { ChartsModule } from 'ng2-charts';
 import { DescripcionGastoPage } from '../descripcion-gasto/descripcion-gasto.page';
 import { DescripcionGastoPageModule } from '../descripcion-gasto/descripcion-gasto.module';
+import { ModalRegistroPage } from '../modal-registro/modal-registro.page';
+import { ModalRegistroPageModule } from '../modal-registro/modal-registro.module';
 
 @NgModule({
   entryComponents: [
-    DescripcionGastoPage
+    DescripcionGastoPage, 
+    ModalRegistroPage
   ],
   imports: [
     IonicModule,
@@ -19,6 +22,7 @@ import { DescripcionGastoPageModule } from '../descripcion-gasto/descripcion-gas
     FormsModule,
     ComponentsModule,
     DescripcionGastoPageModule,
+    ModalRegistroPageModule,
     ChartsModule,
     RouterModule.forChild([{ path: '', component: Tab1Page }])
   ],

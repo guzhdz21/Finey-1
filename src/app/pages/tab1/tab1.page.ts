@@ -8,6 +8,7 @@ import { ModalController, NavController, Events, Platform } from '@ionic/angular
 import { DescripcionGastoPage } from '../descripcion-gasto/descripcion-gasto.page';
 import { LocalNotifications } from '@ionic-native/local-notifications/ngx';
 import { AccionesService } from '../../services/acciones.service';
+import { ModalRegistroPage } from '../modal-registro/modal-registro.page';
 
 @Component({
   selector: 'app-tab1',
@@ -60,7 +61,7 @@ export class Tab1Page implements OnInit {
     this.localNotifications.fireQueuedEvents();
     //Condicional para abrir el registro de la app
     if(this.datosService.primera === true) {
-      await this.nav.navigateRoot('/modal-registro-page');
+      await this.abrirRegistro();
     }
 
     var año = this.datosService.fechaMes.getFullYear();
@@ -151,6 +152,15 @@ export class Tab1Page implements OnInit {
       }
     });
     await modal.present();
+  }
+
+  async abrirRegistro() {
+
+    const modal = await this.modalCtrl.create({
+      component: ModalRegistroPage
+    });
+     modal.present();
+    await modal.onDidDismiss();
   }
 
   nuevoMes() {

@@ -19,7 +19,8 @@ export class GastosDiariosPagePage implements OnInit {
     const modal = await this.modalCtrl.create({
       component: GastosDiariosPage
     });
-    await modal.present();
+    modal.present();
+    await modal.onDidDismiss();
 }
 
 }
