@@ -319,6 +319,7 @@ export class DatosService {
     });
     this.storage.set('Planes', this.planesCargados);
     this.event.publish('planesCargados');
+    this.planesExisten = true;
   }
 
   // Metodo que actualiza los planes en el storage
@@ -330,6 +331,7 @@ export class DatosService {
     });
     this.storage.set('Planes', this.planesCargados);
     this.event.publish('planesCargados');
+    this.planesExisten = true;
   }
 
   // Metodo que carga los datos de un plan desde el storage

@@ -115,7 +115,6 @@ export class Tab1Page implements OnInit {
       val.colores.forEach(element => {
         this.colores.push(element.toString());
       });
-      console.log(this.colores.length == 0);
     });
     this.chartColors = [{
       backgroundColor: [ ] = this.colores
@@ -236,13 +235,16 @@ export class Tab1Page implements OnInit {
   }
 
   //Metodo para calcular y mostrar los gastos y saldo del proyecto
-  mostrarSaldo() {
+  async mostrarSaldo() {
     var gastosCantidad = 0;
       for( var i = 0; i < 17; i++ ) {
 
         if(this.usuarioCargado.gastos.length < 2) {
           this.etiquetas = [];
-          this.ngOnInit();
+          await this.datosService.cargarDatos();
+          this.usuarioCargado = this.datosService.usuarioCarga;
+          this.saldo = 0;
+          console.log('hola');
           return;
         } 
         if ( this.usuarioCargado.gastos[i].cantidad != 0 ) {

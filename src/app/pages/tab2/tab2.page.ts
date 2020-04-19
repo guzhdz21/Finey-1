@@ -125,13 +125,14 @@ export class Tab2Page implements OnInit{
       if(this.datosService.planesCargados.length <= 0) {
         this.planesExiste = false;
         this.planesDis = [this.planDis];
-        console.log(this.datosService.planesCargados)
+        this.planes = [];
         return;
       }
       else {
         this.planesExiste = true;
       }
       this.planesDis = [];
+      this.planes = JSON.parse(JSON.stringify(this.datosService.planesCargados));
       this.datosService.planesCargados.forEach(element => {
         this.planesDis.push({
           doughnutChartData: [
@@ -148,9 +149,11 @@ export class Tab2Page implements OnInit{
       if(this.datosService.planesCargados.length <= 0) {
         this.planesExiste = false;
         this.planesDis = [this.planDis];
+        this.planes = [];
         return;
       }
       this.planesDis = [];
+      this.planes = JSON.parse(JSON.stringify(this.datosService.planesCargados));
       this.datosService.planesCargados.forEach(element => {
         this.planesDis.push({
           doughnutChartData: [
@@ -202,31 +205,19 @@ export class Tab2Page implements OnInit{
     
     if(this.accionesService.borrar == true) {
       await this.datosService.borrarPlan(i);
-      this.planes = JSON.parse(JSON.stringify(this.datosService.planesCargados));
       this.planesRetornados = JSON.parse(JSON.stringify(this.planes)); //Nuevo
+      this.planes = [];
       this.datosService.planesExisten = false;
       this.borrado=true;
 
-      this.planesRetornados.forEach(element => {
-
-        var extra: Plan = {
-          nombre: element.nombre,
-          cantidadTotal: element.cantidadTotal,
-          tiempoTotal: element.tiempoTotal,
-          cantidadAcumulada: element.cantidadAcumulada,
-          tiempoRestante: element.tiempoRestante,
-          descripcion: element.descripcion,
-          aportacionMensual: element.aportacionMensual,
-          pausado: element.pausado
-        };
-
-        this.planNuevo = JSON.parse(JSON.stringify(extra));
+      for( var plan of this.planesRetornados) {
+        this.planNuevo = plan;
         console.log("Nombre: " + this.planNuevo.nombre)
-        this.calcularYRegistrar();
+        await this.calcularYRegistrar();
         this.datosService.planesExisten = true;
-      });
+      }
       this.borrado = false;
-    } 
+    }
   }
 
   //Metodo que manda llamar los metodos para calcular los datos para agregar un plan nuevo y lo guarda en el Storage si es que es valido
