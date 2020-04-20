@@ -30,10 +30,14 @@ export interface Gasto {
     margenMax: number;
 }
 
-export interface GastosMensual {
-    mes: number,
-    nombre: string,
-    cantidad: number
+export interface GastosMensuales {
+    mes: number;
+    gastos: GastoMensual[];
+}
+
+export interface GastoMensual {
+    nombre: string;
+    cantidad: number;
 }
 
 export interface UsuarioLocal {
@@ -42,6 +46,8 @@ export interface UsuarioLocal {
     tipoIngreso: string;
     ingresoCantidad: number;
     gastos: Gasto[];
+    fondoPlanes: number;
+    fondoAhorro: number;
 }
 
 export interface Plan {
@@ -95,4 +101,11 @@ export interface Pregunta {
 export interface Respuesta {
     respuestaTexto: string;
     valor: number;
+}
+
+export interface GastoMayor {
+    nombre: string;
+    mayor: boolean;
+    cantidadOriginal: number;
+    cantidadNueva: number; 
 }

@@ -69,6 +69,8 @@ export class PlanFormPage implements OnInit {
   //Variable que nos indica si el usuario escogio la opcion de modificar cuando se encontro que un plan recibia muy poco
   modificarOcho: boolean;
 
+  diferenciaFondo: number;
+
   //Variable que se usa para el regreso o boton back nativo del celular
   backButtonSub: Subscription;
 
@@ -97,6 +99,7 @@ export class PlanFormPage implements OnInit {
     var unPlan = false;
     var margenMax = 0;
     var margenMin = 0;
+    var gastos = 0;
 
     //Verificar si hay planes previos
     if( this.planes.length < 1 || this.datosService.planesExisten == false) {
@@ -108,9 +111,12 @@ export class PlanFormPage implements OnInit {
       if( element.cantidad != 0 ) {
         margenMax += element.margenMax;
         margenMin += element.margenMin;
+        gastos += element.cantidad;
       } 
     });
     
+    this.diferenciaFondo = this.usuarioCargado.ingresoCantidad - gastos;
+    this.diferenciaFondo -= (this.usuarioCargado.fondoPlanes - this.usuarioCargado.fondoAhorro) 
     //Obtner la aportacion mensual de nuevo plan y verificar si es valido
     this.planNuevo.aportacionMensual = (this.planNuevo.cantidadTotal - this.planNuevo.cantidadAcumulada) / this.planNuevo.tiempoTotal;
     if(this.planNuevo.aportacionMensual <= 0) {
@@ -150,7 +156,7 @@ export class PlanFormPage implements OnInit {
   async validarPlan(margenMax: number, margenMin: number, unPlan: boolean) {
     //Calculamos gasto y mandamos llamar el metodo que mostrara la alerta segun el caso
       var gasto = 0;
-      gasto = this.usuarioCargado.ingresoCantidad - this.planNuevo.aportacionMensual;
+      gasto = this.usuarioCargado.ingresoCantidad - this.planNuevo.aportacionMensual - this.diferenciaFondo;
       return this.alertasUnPlan(margenMax, margenMin, gasto, unPlan);
   }
 
@@ -188,7 +194,7 @@ export class PlanFormPage implements OnInit {
     var ochoPorciento = this.obtenerOchoPorciento(margenMax);
 
     if(await this.siPlanNuevoMuyPequeño(ochoPorciento)) {
-      //Retorna si noe s valido
+      //Retorna si no es valido
       return;
     }
 
@@ -196,6 +202,7 @@ export class PlanFormPage implements OnInit {
     this.planes = [];
     this.planes.push(this.planNuevo);
     this.guardarCambiosAPlanes();
+    this.actualizarUsuario();
     this.nav.navigateRoot('/tabs/tab2');
     return;
   }
@@ -203,7 +210,7 @@ export class PlanFormPage implements OnInit {
   //Metodo que calcula la estimacion de meses para hacer valido un plan
   async calcularEstimacion(margenMin: number) {
     var estimacion = -1 * (this.planNuevo.cantidadTotal - this.planNuevo.cantidadAcumulada);
-    var estimacion = estimacion/(margenMin - this.usuarioCargado.ingresoCantidad);
+    var estimacion = estimacion/(margenMin - this.usuarioCargado.ingresoCantidad + this.diferenciaFondo);
     var aux = Math.round(estimacion);
     if(aux < estimacion) {
       estimacion = estimacion + 0.5;
@@ -223,6 +230,7 @@ export class PlanFormPage implements OnInit {
       var planPrioritario = this.planMenor;
       await this.pausarPorPrioridadDosPlanes(planPrioritario);
       this.datosService.actualizarPlanes(this.planes);
+      this.actualizarUsuario();
       this.modalCtrl.dismiss();
       this.nav.navigateRoot('/tabs/tab2');
       return;
@@ -267,6 +275,8 @@ export class PlanFormPage implements OnInit {
       //Se inserta plan
       this.planes.push(this.planNuevo);
       this.guardarCambiosAPlanes();
+      this.actualizarUsuario();
+      this.modalCtrl.dismiss();
       this.nav.navigateRoot('/tabs/tab2');
       return;
     }
@@ -300,7 +310,7 @@ export class PlanFormPage implements OnInit {
     //Obtenemos cuanto debe ahorrar y aportacion mensual del menor
     ahorrar += (this.planMenor.cantidadTotal - this.planMenor.cantidadAcumulada) + (this.planMayor.cantidadTotal - this.planMayor.cantidadAcumulada);
     ahorrar /= this.planMayor.tiempoRestante;
-    gasto = this.usuarioCargado.ingresoCantidad - ahorrar;
+    gasto = this.usuarioCargado.ingresoCantidad - ahorrar - this.diferenciaFondo;
 
     this.planMenor.aportacionMensual = (this.planMenor.cantidadTotal - this.planMenor.cantidadAcumulada)/this.planMenor.tiempoRestante;
     
@@ -441,6 +451,8 @@ export class PlanFormPage implements OnInit {
 
        //Se inserta plan
       this.guardarCambiosAPlanes();
+      this.actualizarUsuario();
+      this.modalCtrl.dismiss();
       this.nav.navigateRoot('/tabs/tab2');
       return;
     }
@@ -497,7 +509,7 @@ export class PlanFormPage implements OnInit {
     
     //Calculamos cuanto debe ahorrar el susuario, agregamos nuevo plan y vemos si es valido
     ahorrar /= this.planMayor.tiempoRestante;
-    gasto = this.usuarioCargado.ingresoCantidad - ahorrar;
+    gasto = this.usuarioCargado.ingresoCantidad - ahorrar - this.diferenciaFondo;
     this.planes.push(this.planNuevo);
     await this.validarMasDosPlanes(ahorrar, gasto, margenMax, margenMin);
   }
@@ -679,6 +691,7 @@ export class PlanFormPage implements OnInit {
     });
 
     this.datosService.actualizarPlanes(this.planesPrioritarios);
+    this.actualizarUsuario();
     this.modalCtrl.dismiss();
     this.nav.navigateRoot('/tabs/tab2');
     return true;
@@ -686,7 +699,7 @@ export class PlanFormPage implements OnInit {
 
   //Metodo que obtiene el ocho porciento del fondo de ahorro del usuario
   obtenerOchoPorciento(margenMax: number) {
-    return (this.usuarioCargado.ingresoCantidad - margenMax)*0.08;
+    return (this.usuarioCargado.ingresoCantidad - margenMax - this.diferenciaFondo)*0.08;
   }
 
   //Metodo que verifica si los planes reciben menos o el 8%
@@ -760,7 +773,7 @@ export class PlanFormPage implements OnInit {
       ahorrar += element.aportacionMensual;
     });
 
-    gasto = this.usuarioCargado.ingresoCantidad - ahorrar;
+    gasto = this.usuarioCargado.ingresoCantidad - ahorrar - this.diferenciaFondo;
     if(!await this.validarGasto(margenMax,margenMin, gasto)) {
       this.planesPrioritarios = this.planesPrioritarios.filter(plan => plan != this.planMenor);
       return false;
@@ -903,13 +916,21 @@ export class PlanFormPage implements OnInit {
     }
     
     estimacion = -1 * estimacion;
-    estimacion = estimacion/(margenMin - this.usuarioCargado.ingresoCantidad);
+    estimacion = estimacion/(margenMin - this.usuarioCargado.ingresoCantidad + this.diferenciaFondo);
     var aux = Math.round(estimacion);
     if(aux < estimacion) {
       estimacion = estimacion + 0.5;
     }
     await this.accionesService.presentAlertGenerica("ATENCION", "Te sugerimos que aumentes el tiempo de " + 
     "tu plan minimo a " + Math.round(estimacion) + " meses para poder cumplirlo");
+  }
+  
+  async actualizarUsuario() {
+    this.planes.forEach(element => {
+      this.usuarioCargado.fondoPlanes += element.aportacionMensual; 
+    });
+    this.usuarioCargado.fondoAhorro = this.usuarioCargado.ingresoCantidad - this.usuarioCargado.fondoPlanes - this.diferenciaFondo;
+    await this.datosService.guardarUsuarioInfo(this.usuarioCargado);
   }
 
   //Metodo que omite el ingreso de un plan al inciar la app por primera vez

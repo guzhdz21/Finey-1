@@ -125,6 +125,16 @@ export class MisGastosPage implements OnInit {
     i++;
   });
 
+  var gastosTotales = 0;
+    this.usuarioModificado.gastos.forEach(element => {
+      if(element.cantidad != 0) {
+        gastosTotales += element.cantidad
+      }
+    });
+
+    this.usuarioModificado.fondoPlanes = 0;
+    this.usuarioModificado.fondoAhorro = this.usuarioModificado.ingresoCantidad - gastosTotales;
+
   this.datosService.guardarUsuarioInfo(this.usuarioModificado);
   this.event.publish('usuarioActualizado');
   this.modalCtrl.dismiss();

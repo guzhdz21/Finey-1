@@ -1,6 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { DatosService } from '../../services/datos.service';
-import { AlertaGeneral, GastosMensual } from '../../interfaces/interfaces';
+import { AlertaGeneral, GastosMensuales, GastoMensual } from '../../interfaces/interfaces';
 import { AccionesService } from '../../services/acciones.service';
 import { ModalController, NavController } from '@ionic/angular';
 
@@ -13,14 +13,17 @@ export class GastosDiariosPage implements OnInit {
 
   alertas: AlertaGeneral[] = [];
   etiquetas: string[] = ['Vivienda'];
-  gastos: GastosMensual[] = [
-    {
-      mes: 1,
-      nombre: '',
-      cantidad: 0
-    }
-  ];
-  gastosMensuales: GastosMensual[] = this.datosService.gastosMensualesCargados;
+  gastos: GastosMensuales = {
+    mes: 1,
+    gastos: [
+      {
+        nombre: '',
+        cantidad: 0
+      }
+    ]
+  }
+  
+  gastosMensuales: GastosMensuales[] = this.datosService.gastosMensualesCargados;
   mes: number = this.datosService.mes;
 
   constructor(private datosService: DatosService,
@@ -39,15 +42,18 @@ export class GastosDiariosPage implements OnInit {
     this.datosService.getEtiquetas().subscribe (val => {
       this.etiquetas = val.nombre;
 
-      this.gastos = [];
+      var gastos: GastosMensuales = {
+        mes: this.mes,
+        gastos: []
+      }
       val.nombre.forEach(element => {
-        var gasto: GastosMensual = {
-          mes: this.mes,
-          cantidad: null,
-          nombre: element
-        };
-       this.gastos.push(gasto);
+        var gasto: GastoMensual = {
+          nombre: element,
+          cantidad: 0
+        } 
+       gastos.gastos.push(gasto);
       });
+      this.gastos = gastos;
     });
   }
 
@@ -63,17 +69,20 @@ export class GastosDiariosPage implements OnInit {
 
   async ingresar() {
     if(this.gastosMensuales.length == 0) {
-      this.gastos.forEach(element => {
-        this.gastosMensuales.push(element);
-      });
+      this.gastosMensuales.push(this.gastos);
     } else {
-      this.gastos.forEach(gasto => {
-        this.gastosMensuales.forEach(mensual => {
-          if(gasto.mes == mensual.mes && gasto.nombre == mensual.nombre && gasto.cantidad != 0) {
-            mensual.cantidad += gasto.cantidad;
+      for(var mensual of this.gastosMensuales) {
+        if(mensual.mes == this.gastos.mes) {
+          for(var gasto of this.gastos.gastos) {
+            for (var gastoMensual of mensual.gastos) {
+              if(gasto.nombre == gastoMensual.nombre && gasto.cantidad != 0) {
+                gastoMensual.cantidad += gasto.cantidad;
+              }
+            }
           }
-        });
-      });
+        }
+        return;
+      }
     }
     await this.datosService.guardarGastosMensuales(this.gastosMensuales);
     await this.datosService.guardarFechaDiaria(new Date());

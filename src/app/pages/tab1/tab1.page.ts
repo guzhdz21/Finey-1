@@ -1,7 +1,7 @@
 import { Component, OnInit, Inject, LOCALE_ID } from '@angular/core';
 import { ChartType } from 'chart.js';
 import { SingleDataSet, Label, ThemeService } from 'ng2-charts';
-import { Rubro, UsuarioLocal } from '../../interfaces/interfaces';
+import { Rubro, UsuarioLocal, GastoMayor } from '../../interfaces/interfaces';
 import {Observable, Subscription} from 'rxjs';
 import { DatosService } from '../../services/datos.service';
 import { ModalController, NavController, Events, Platform } from '@ionic/angular';
@@ -10,6 +10,7 @@ import { LocalNotifications } from '@ionic-native/local-notifications/ngx';
 import { AccionesService } from '../../services/acciones.service';
 import { ModalRegistroPage } from '../modal-registro/modal-registro.page';
 import { GastosDiariosPage } from '../gastos-diarios/gastos-diarios.page';
+import { GastosMayoresPage } from '../gastos-mayores/gastos-mayores.page';
 
 @Component({
   selector: 'app-tab1',
@@ -172,25 +173,72 @@ export class Tab1Page implements OnInit {
     });
     modal.present();
     await modal.onDidDismiss();
+  }
+
+  async abrirGastosMayores(gastosMayores: GastoMayor[]) {
+    const modal = await this.modalCtrl.create({
+      component: GastosMayoresPage,
+      componentProps: {
+        gastosMayores: gastosMayores
+      }
+    });
+    modal.present();
+    await modal.onDidDismiss();
   } 
 
   async nuevoMes() {
+    do {
+      this.datosService.cargarDatos();
+      this.usuarioCargado = this.datosService.usuarioCarga;
+      console.log('repeti');
+    } while(this.usuarioCargado.gastos.length < 2);
+
     if(this.mes == 1) {
       this.mes++;
       this.datosService.guardarMes(this.mes);
       return;
     }
 
+    var gastosMayores: GastoMayor[] = []
+
+    this.gastosMensuales.forEach(mensuales => {
+      if(mensuales.mes == this.mes) {
+        this.usuarioCargado.gastos.forEach(gastos => {
+          mensuales.gastos.forEach(element => {
+            if(gastos.nombre == element.nombre) {
+              var gastoMayor: GastoMayor =  {
+                nombre: gastos.nombre,
+                mayor: false,
+                cantidadOriginal: gastos.cantidad,
+                cantidadNueva: element.cantidad
+              }
+              if(gastos.cantidad < element.cantidad) {
+                gastoMayor.mayor = true;
+              }
+              gastosMayores.push(gastoMayor);
+            }
+          });
+        });
+      }
+    });
+    console.log(gastosMayores);
+    if(gastosMayores.length != 0) {
+      await this.abrirGastosMayores(gastosMayores);
+    }
+
+    //Desvicaion no terminada
     var meses = this.gastosMensuales.length / 17;
     this.usuarioCargado.gastos.forEach(gastos => {
       var promedio = 0;
       var datos = [];
       
       this.gastosMensuales.forEach(gastosMen => {
-        if(gastosMen.nombre == gastos.nombre && gastos.tipo == 'Promedio') {
-          promedio += gastosMen.cantidad;
-          datos.push(gastosMen.cantidad);
-        }
+        gastosMen.gastos.forEach(element => {
+          if(element.nombre == gastos.nombre && gastos.tipo == 'Promedio') {
+            promedio += element.cantidad;
+            datos.push(element.cantidad);
+          }
+        });
       });
       promedio /= meses;
       gastos.cantidad = promedio;
@@ -244,7 +292,6 @@ export class Tab1Page implements OnInit {
           await this.datosService.cargarDatos();
           this.usuarioCargado = this.datosService.usuarioCarga;
           this.saldo = 0;
-          console.log('hola');
           return;
         } 
         if ( this.usuarioCargado.gastos[i].cantidad != 0 ) {

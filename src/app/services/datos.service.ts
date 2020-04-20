@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
-import { Rubro, ColorArray, LabelArray, UsuarioLocal, Gasto, Plan, AlertaGeneral, Recordatorio, Test, SubTest, Pregunta, GastosMensual } from '../interfaces/interfaces';
+import { Rubro, ColorArray, LabelArray, UsuarioLocal, Gasto, Plan, AlertaGeneral, Recordatorio, Test, SubTest, Pregunta, GastosMensuales } from '../interfaces/interfaces';
 import { Storage } from '@ionic/storage';
 import { ToastController, Events, Platform } from '@ionic/angular';
 import { AlertController } from '@ionic/angular';
@@ -96,7 +96,9 @@ export class DatosService {
         margenMin: null,
         margenMax: null
       }   
-    ]
+    ],
+    fondoPlanes: null,
+    fondoAhorro: null 
   };
 
   primera: boolean; // Variable para saber si es la primera vez que el usuario corre la app
@@ -121,11 +123,15 @@ export class DatosService {
     }
   ];
 
-  gastosMensualesCargados: GastosMensual[] = [
+  gastosMensualesCargados: GastosMensuales[] = [
     {
       mes: 0,
-      nombre: '',
-      cantidad: null,
+      gastos: [
+        {
+          nombre: '',
+          cantidad: null,
+        }
+      ]
     }
   ];
 
@@ -247,7 +253,7 @@ export class DatosService {
     }
   }
 
-  guardarGastosMensuales(gastos: GastosMensual[])
+  guardarGastosMensuales(gastos: GastosMensuales[])
   {
     this.gastosMensualesCargados = gastos;
     this.storage.set('GastosMensuales', gastos);

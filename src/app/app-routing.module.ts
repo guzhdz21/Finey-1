@@ -77,6 +77,10 @@ const routes: Routes = [
   {
     path: 'gastos-diarios',
     loadChildren: () => import('./pages/gastos-diarios/gastos-diarios.module').then( m => m.GastosDiariosPageModule)
+  },
+  {
+    path: 'gastos-mayores',
+    loadChildren: () => import('./pages/gastos-mayores/gastos-mayores.module').then( m => m.GastosMayoresPageModule)
   }
 
 ];

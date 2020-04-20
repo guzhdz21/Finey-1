@@ -12,12 +12,15 @@ import { ModalRegistroPage } from '../modal-registro/modal-registro.page';
 import { ModalRegistroPageModule } from '../modal-registro/modal-registro.module';
 import { GastosDiariosPage } from '../gastos-diarios/gastos-diarios.page';
 import { GastosDiariosPageModule } from '../gastos-diarios/gastos-diarios.module';
+import { GastosMayoresPage } from '../gastos-mayores/gastos-mayores.page';
+import { GastosMayoresPageModule } from '../gastos-mayores/gastos-mayores.module';
 
 @NgModule({
   entryComponents: [
     DescripcionGastoPage, 
     ModalRegistroPage,
-    GastosDiariosPage
+    GastosDiariosPage,
+    GastosMayoresPage
   ],
   imports: [
     IonicModule,
@@ -27,6 +30,7 @@ import { GastosDiariosPageModule } from '../gastos-diarios/gastos-diarios.module
     DescripcionGastoPageModule,
     ModalRegistroPageModule,
     GastosDiariosPageModule,
+    GastosMayoresPageModule,
     ChartsModule,
     RouterModule.forChild([{ path: '', component: Tab1Page }])
   ],

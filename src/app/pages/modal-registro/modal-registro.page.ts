@@ -35,7 +35,9 @@ export class ModalRegistroPage implements OnInit {
     sexo: '',
     tipoIngreso: '',
     ingresoCantidad: null,
-    gastos: []
+    gastos: [],
+    fondoPlanes: null,
+    fondoAhorro: null
   };
 
   //Constructor con las inyecciones de servicios y controladores necesarias
@@ -148,6 +150,15 @@ sexoRadio(event)
       i++;
     });
 
+    var gastosTotales = 0;
+    this.usuario.gastos.forEach(element => {
+      if(element.cantidad != 0) {
+        gastosTotales += element.cantidad
+      }
+    });
+    this.usuario.fondoPlanes = 0;
+    this.usuario.fondoAhorro = this.usuario.ingresoCantidad - gastosTotales;
+    
     this.datosService.guardarUsuarioInfo(this.usuario);
     this.datosService.guardarPrimeraVez(false);
     this.datosService.cargarDatos();
