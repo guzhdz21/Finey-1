@@ -253,7 +253,7 @@ export class Tab2Page implements OnInit{
     });
     
     this.diferenciaFondo = this.usuarioCargado.ingresoCantidad - gastos;
-    this.diferenciaFondo -= (this.usuarioCargado.fondoPlanes - this.usuarioCargado.fondoAhorro);
+    this.diferenciaFondo -= (this.usuarioCargado.fondoPlanes + this.usuarioCargado.fondoAhorro);
 
     //Obtner la aportacion mensual de nuevo plan y verificar si es valido
     this.planNuevo.aportacionMensual = (this.planNuevo.cantidadTotal - this.planNuevo.cantidadAcumulada) / this.planNuevo.tiempoTotal;
@@ -344,7 +344,7 @@ export class Tab2Page implements OnInit{
     //Guarda el nuevo plan
     this.planes = [];
     this.planes.push(this.planNuevo);
-    this.guardarCambiosAPlanes();
+    await this.guardarCambiosAPlanes();
     this.actualizarUsuario();
     this.nav.navigateRoot('/tabs/tab2');
     return;
@@ -372,7 +372,7 @@ export class Tab2Page implements OnInit{
     if(this.prioridadDos == true) {
       var planPrioritario = this.planMenor;
       await this.pausarPorPrioridadDosPlanes(planPrioritario);
-      this.datosService.actualizarPlanes(this.planes);
+      await this.datosService.actualizarPlanes(this.planes);
       this.actualizarUsuario();
       //this.modalCtrl.dismiss();
       this.nav.navigateRoot('/tabs/tab2');
@@ -417,7 +417,7 @@ export class Tab2Page implements OnInit{
 
       //Se inserta plan
       this.planes.push(this.planNuevo);
-      this.guardarCambiosAPlanes();
+      await this.guardarCambiosAPlanes();
       this.actualizarUsuario();
       this.nav.navigateRoot('/tabs/tab2');
       return;
@@ -592,7 +592,7 @@ export class Tab2Page implements OnInit{
       }
 
        //Se inserta plan
-      this.guardarCambiosAPlanes();
+      await this.guardarCambiosAPlanes();
       this.actualizarUsuario();
       this.nav.navigateRoot('/tabs/tab2');
       return;
@@ -831,7 +831,7 @@ export class Tab2Page implements OnInit{
       this.planesPrioritarios.push(element);
     });
 
-    this.datosService.actualizarPlanes(this.planesPrioritarios);
+    await this.datosService.actualizarPlanes(this.planesPrioritarios);
     //this.modalCtrl.dismiss();
     this.actualizarUsuario();
     this.nav.navigateRoot('/tabs/tab2');
@@ -1038,7 +1038,7 @@ export class Tab2Page implements OnInit{
 
   //Metodo que guarda los cambios en los planes (se inserta uno nuevo correctamente)
   async guardarCambiosAPlanes() {
-      this.datosService.actualizarPlanes(this.planes);
+      await this.datosService.actualizarPlanes(this.planes);
   }
 
   //Metodo que calcula ala estimacion de los meses para que dos o mas planes puedan ser cumplidos
@@ -1063,10 +1063,20 @@ export class Tab2Page implements OnInit{
   }
 
   async actualizarUsuario() {
-    this.planes.forEach(element => {
+    this.usuarioCargado.fondoPlanes = 0;
+    this.datosService.planesCargados.forEach(element => {
       this.usuarioCargado.fondoPlanes += element.aportacionMensual; 
     });
-    this.usuarioCargado.fondoAhorro = this.usuarioCargado.ingresoCantidad - this.usuarioCargado.fondoPlanes - this.diferenciaFondo;
+    var gastos = 0;
+    this.datosService.usuarioCarga.gastos.forEach(element => {
+      if(element.cantidad != 0) {
+
+      }
+      gastos += element.cantidad;
+    });
+
+    this.usuarioCargado.fondoAhorro = this.usuarioCargado.ingresoCantidad - this.usuarioCargado.fondoPlanes - this.diferenciaFondo -gastos;
+    this.usuarioCargado.fondoAhorro = Math.round(this.usuarioCargado.fondoAhorro*100)/100;
     await this.datosService.guardarUsuarioInfo(this.usuarioCargado);
   }
   //Metodo que omite el ingreso de un plan al inciar la app por primera vez
@@ -1101,7 +1111,8 @@ export class Tab2Page implements OnInit{
         planesPrioritarios: JSON.stringify(this.planesPrioritarios),
         margenMax: margenMax,
         margenMin: margenMin,
-        planesOriginales: JSON.stringify(this.planesOriginales)
+        planesOriginales: JSON.stringify(this.planesOriginales),
+        diferenciaFondo: this.diferenciaFondo
       }
     });
     return;

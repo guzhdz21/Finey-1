@@ -15,6 +15,7 @@ export class PlanPausarPage implements OnInit {
   @Input() margenMax: number;
   @Input() margenMin: number;
   @Input() planesOriginales: Plan[];
+  @Input() diferenciaFondo: number;
 
   planes: Plan[] = this.datosService.planesCargados;
 
@@ -65,13 +66,13 @@ export class PlanPausarPage implements OnInit {
     });
 
     var ahorrar = this.determinarAhorro();
-    var gasto = this.datosService.usuarioCarga.ingresoCantidad - ahorrar;
+    var gasto = this.datosService.usuarioCarga.ingresoCantidad - ahorrar - this.diferenciaFondo;
     if(await this.validarGasto(this.margenMax, this.margenMin, gasto)) {
 
       if(this.multiplan) {
         await this.acomodar();
         if(this.planesAux.length == 0) {
-          var ochoPorciento = (this.datosService.usuarioCarga.ingresoCantidad - this.margenMax)*0.08;
+          var ochoPorciento = (this.datosService.usuarioCarga.ingresoCantidad - this.margenMax - this.diferenciaFondo)*0.08;
           if(await this.ocho(ochoPorciento)) {
             this.planes = [];
             this.planesIniciales.forEach(element => {
@@ -90,7 +91,7 @@ export class PlanPausarPage implements OnInit {
       } else {
         if(this.planes.length == 1) {
           if(await !this.verificarTodosPausados()) {
-            var ochoPorciento = (this.datosService.usuarioCarga.ingresoCantidad - this.margenMax)*0.08;
+            var ochoPorciento = (this.datosService.usuarioCarga.ingresoCantidad - this.margenMax - this.diferenciaFondo)*0.08;
             if(await this.ocho(ochoPorciento)) {
               this.planes = [];
               this.planesIniciales.forEach(element => {
@@ -111,7 +112,7 @@ export class PlanPausarPage implements OnInit {
             this.planes[1] = aux;
           }
           if(await !this.verificarTodosPausados()) {
-            var ochoPorciento = (this.datosService.usuarioCarga.ingresoCantidad - this.margenMax)*0.08;
+            var ochoPorciento = (this.datosService.usuarioCarga.ingresoCantidad - this.margenMax - this.diferenciaFondo)*0.08;
             if(await this.ocho(ochoPorciento)) {
               this.planes = [];
               this.planesIniciales.forEach(element => {
@@ -237,11 +238,12 @@ export class PlanPausarPage implements OnInit {
     return pausados;
   }
 
-  procesoDeGuardado() {
+  async procesoDeGuardado() {
     this.planes.forEach(element => {
       this.planesPrioritarios.push(element);
     });
-    this.datosService.actualizarPlanes(this.planesPrioritarios);
+    await this.datosService.actualizarPlanes(this.planesPrioritarios);
+    this.actualizarUsuario();
     this.modalCtrl.dismiss();
     this.nav.navigateRoot('/tabs/tab2');
     return;
@@ -341,6 +343,23 @@ export class PlanPausarPage implements OnInit {
       }
       return false;
     }
+  }
+
+  async actualizarUsuario() {
+    this.datosService.usuarioCarga.fondoPlanes = 0;
+    this.datosService.planesCargados.forEach(element => {
+      this.datosService.usuarioCarga.fondoPlanes += element.aportacionMensual; 
+    });
+    var gastos = 0;
+    this.datosService.usuarioCarga.gastos.forEach(element => {
+      if(element.cantidad != 0) {
+
+      }
+      gastos += element.cantidad;
+    });
+    this.datosService.usuarioCarga.fondoAhorro = this.datosService.usuarioCarga.ingresoCantidad - this.datosService.usuarioCarga.fondoPlanes - this.diferenciaFondo -gastos;
+    this.datosService.usuarioCarga.fondoAhorro = Math.round(this.datosService.usuarioCarga.fondoAhorro*100)/100;
+    await this.datosService.guardarUsuarioInfo(this.datosService.usuarioCarga);
   }
 
   async cancelar() {

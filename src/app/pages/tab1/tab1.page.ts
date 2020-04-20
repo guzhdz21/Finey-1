@@ -300,8 +300,6 @@ export class Tab1Page implements OnInit {
 
       }
       this.cantidadGastos = gastosCantidad;
-      var saldo = this.usuarioCargado.ingresoCantidad - gastosCantidad;
-      this.saldo = saldo;
   }
 
   ionViewDidLoad () {

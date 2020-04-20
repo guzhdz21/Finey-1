@@ -21,7 +21,7 @@ export class GastosDiariosPage implements OnInit {
         cantidad: 0
       }
     ]
-  }
+  };
   
   gastosMensuales: GastosMensuales[] = this.datosService.gastosMensualesCargados;
   mes: number = this.datosService.mes;
@@ -31,8 +31,8 @@ export class GastosDiariosPage implements OnInit {
               private modalCtrl: ModalController,
               private nav: NavController) { }
 
-  ngOnInit() {
-    this.datosService.cargarGastosMensuales();
+  async ngOnInit() {
+    await this.datosService.cargarGastosMensuales();
     this.datosService.cargarMes();
 
     this.datosService.getAlertasJson().subscribe(val => {
@@ -49,7 +49,7 @@ export class GastosDiariosPage implements OnInit {
       val.nombre.forEach(element => {
         var gasto: GastoMensual = {
           nombre: element,
-          cantidad: 0
+          cantidad: null
         } 
        gastos.gastos.push(gasto);
       });
@@ -70,6 +70,7 @@ export class GastosDiariosPage implements OnInit {
   async ingresar() {
     if(this.gastosMensuales.length == 0) {
       this.gastosMensuales.push(this.gastos);
+      console.log('hola');
     } else {
       for(var mensual of this.gastosMensuales) {
         if(mensual.mes == this.gastos.mes) {
@@ -81,7 +82,7 @@ export class GastosDiariosPage implements OnInit {
             }
           }
         }
-        return;
+        break;
       }
     }
     await this.datosService.guardarGastosMensuales(this.gastosMensuales);

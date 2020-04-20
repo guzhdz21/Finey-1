@@ -116,7 +116,8 @@ export class PlanFormPage implements OnInit {
     });
     
     this.diferenciaFondo = this.usuarioCargado.ingresoCantidad - gastos;
-    this.diferenciaFondo -= (this.usuarioCargado.fondoPlanes - this.usuarioCargado.fondoAhorro);
+    this.diferenciaFondo -= (this.usuarioCargado.fondoPlanes + this.usuarioCargado.fondoAhorro);
+    console.log(this.diferenciaFondo);
     //Obtner la aportacion mensual de nuevo plan y verificar si es valido
     this.planNuevo.aportacionMensual = (this.planNuevo.cantidadTotal - this.planNuevo.cantidadAcumulada) / this.planNuevo.tiempoTotal;
     if(this.planNuevo.aportacionMensual <= 0) {
@@ -201,7 +202,7 @@ export class PlanFormPage implements OnInit {
     //Guarda el nuevo plan
     this.planes = [];
     this.planes.push(this.planNuevo);
-    this.guardarCambiosAPlanes();
+    await this.guardarCambiosAPlanes();
     this.actualizarUsuario();
     this.nav.navigateRoot('/tabs/tab2');
     return;
@@ -229,7 +230,7 @@ export class PlanFormPage implements OnInit {
     if(this.prioridadDos == true) {
       var planPrioritario = this.planMenor;
       await this.pausarPorPrioridadDosPlanes(planPrioritario);
-      this.datosService.actualizarPlanes(this.planes);
+      await this.datosService.actualizarPlanes(this.planes);
       this.actualizarUsuario();
       this.modalCtrl.dismiss();
       this.nav.navigateRoot('/tabs/tab2');
@@ -274,7 +275,7 @@ export class PlanFormPage implements OnInit {
 
       //Se inserta plan
       this.planes.push(this.planNuevo);
-      this.guardarCambiosAPlanes();
+      await this.guardarCambiosAPlanes();
       this.actualizarUsuario();
       this.modalCtrl.dismiss();
       this.nav.navigateRoot('/tabs/tab2');
@@ -450,7 +451,7 @@ export class PlanFormPage implements OnInit {
       }
 
        //Se inserta plan
-      this.guardarCambiosAPlanes();
+      await this.guardarCambiosAPlanes();
       this.actualizarUsuario();
       this.modalCtrl.dismiss();
       this.nav.navigateRoot('/tabs/tab2');
@@ -690,7 +691,7 @@ export class PlanFormPage implements OnInit {
       this.planesPrioritarios.push(element);
     });
 
-    this.datosService.actualizarPlanes(this.planesPrioritarios);
+    await this.datosService.actualizarPlanes(this.planesPrioritarios);
     this.actualizarUsuario();
     this.modalCtrl.dismiss();
     this.nav.navigateRoot('/tabs/tab2');
@@ -900,7 +901,7 @@ export class PlanFormPage implements OnInit {
      await this.accionesService.presentAlertPlan([{text: 'Ok', handler: (blah) => {}}], 
                                                       'Plan creado', 
           '¡Si te propones gastar menos en tus gastos promedio (luz, agua, etc.) puedes completar tu plan en menos tiempo!');
-      this.datosService.actualizarPlanes(this.planes);
+      await this.datosService.actualizarPlanes(this.planes);
       await this.modalCtrl.dismiss();
   }
 
@@ -926,10 +927,19 @@ export class PlanFormPage implements OnInit {
   }
   
   async actualizarUsuario() {
-    this.planes.forEach(element => {
+    this.usuarioCargado.fondoPlanes = 0;
+    this.datosService.planesCargados.forEach(element => {
       this.usuarioCargado.fondoPlanes += element.aportacionMensual; 
     });
-    this.usuarioCargado.fondoAhorro = this.usuarioCargado.ingresoCantidad - this.usuarioCargado.fondoPlanes - this.diferenciaFondo;
+    var gastos = 0;
+    this.datosService.usuarioCarga.gastos.forEach(element => {
+      if(element.cantidad != 0) {
+
+      }
+      gastos += element.cantidad;
+    });
+    this.usuarioCargado.fondoAhorro = this.usuarioCargado.ingresoCantidad - this.usuarioCargado.fondoPlanes - this.diferenciaFondo -gastos;
+    this.usuarioCargado.fondoAhorro = Math.round(this.usuarioCargado.fondoAhorro*100)/100;
     await this.datosService.guardarUsuarioInfo(this.usuarioCargado);
   }
 
@@ -976,7 +986,8 @@ export class PlanFormPage implements OnInit {
         planesPrioritarios: JSON.stringify(this.planesPrioritarios),
         margenMax: margenMax,
         margenMin: margenMin,
-        planesOriginales: JSON.stringify(this.planesOriginales)
+        planesOriginales: JSON.stringify(this.planesOriginales),
+        diferenciaFondo: this.diferenciaFondo
       }
     });
     return;

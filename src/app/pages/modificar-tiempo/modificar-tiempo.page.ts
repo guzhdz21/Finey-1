@@ -23,6 +23,8 @@ export class ModificarTiempoPage implements OnInit {
   
   planesaux: Plan[] = [];
 
+  diferenciaFondo: number;
+
   constructor(
               private modalCtrl: ModalController,
               private nav: NavController,
@@ -52,13 +54,17 @@ export class ModificarTiempoPage implements OnInit {
     this.planesPrioritarios = [];
     var margenMax = 0;
     var margenMin = 0;
+    var gastos = 0;
     this.datosService.usuarioCarga.gastos.forEach(element => {
       if( element.cantidad != 0 ) {
         margenMax += element.margenMax;
         margenMin += element.margenMin;
+        gastos += element.cantidad;
       } 
     });
 
+    this.diferenciaFondo = this.datosService.usuarioCarga.ingresoCantidad - this.datosService.usuarioCarga.fondoPlanes - gastos;
+    this.diferenciaFondo -= this.datosService.usuarioCarga.fondoAhorro;
     if(this.planes.length == 2) {
       if(await this.calculosDosPlanes(margenMax, margenMin)) {
         if(await this.ocho(margenMax, margenMin)) {
@@ -88,7 +94,8 @@ export class ModificarTiempoPage implements OnInit {
   async guardarCambios() {
     await this.accionesService.presentAlertPlan([{text: 'Ok', handler: (blah) => {}}], 
       'Planes Modificados', '¡Si te propones gastar menos en tus gastos promedio (luz, agua, etc.) puedes completar tus planes en menos tiempo!');
-    this.datosService.actualizarPlanes(this.planes);
+    await this.datosService.actualizarPlanes(this.planes);
+    this.actualizarUsuario();
     this.modalCtrl.dismiss();
     this.nav.navigateRoot('/tabs/tab2');
   }
@@ -97,7 +104,7 @@ export class ModificarTiempoPage implements OnInit {
     //Variables iniciales
     var ahorrar = 0;
     this.planMenor = this.planes[0];
-     this.planMayor = this.planes[1];
+    this.planMayor = this.planes[1];
     var gasto = 0;
 
     //Se determina cuanto debe ahorrar el ususario al mes
@@ -108,7 +115,7 @@ export class ModificarTiempoPage implements OnInit {
     }
     ahorrar += (this.planMenor.cantidadTotal - this.planMenor.cantidadAcumulada) + (this.planMayor.cantidadTotal - this.planMayor.cantidadAcumulada);
     ahorrar /= this.planMayor.tiempoRestante;
-    gasto = this.datosService.usuarioCarga.ingresoCantidad - ahorrar;
+    gasto = this.datosService.usuarioCarga.ingresoCantidad - ahorrar - this.diferenciaFondo;
 
     this.planMenor.aportacionMensual = (this.planMenor.cantidadTotal - this.planMenor.cantidadAcumulada)/this.planMenor.tiempoRestante;
     //Verificamos el caso de los planes
@@ -185,7 +192,7 @@ export class ModificarTiempoPage implements OnInit {
     });
     
     ahorrar /= this.planMayor.tiempoRestante;
-    gasto = this.datosService.usuarioCarga.ingresoCantidad - ahorrar;
+    gasto = this.datosService.usuarioCarga.ingresoCantidad - ahorrar - this.diferenciaFondo;
     return await this.validarMasDosPlanes(ahorrar, gasto, margenMax, margenMin);
   }
 
@@ -276,7 +283,7 @@ export class ModificarTiempoPage implements OnInit {
       this.planMenor.aportacionMensual = (this.planMenor.cantidadTotal - this.planMenor.cantidadAcumulada)/this.planMenor.tiempoRestante;
       this.planMayor.aportacionMensual = (this.planMayor.cantidadTotal - this.planMayor.cantidadAcumulada)/this.planMayor.tiempoRestante;
        ahorrar = this.planMenor.aportacionMensual + this.planMayor.aportacionMensual;
-      gasto = this.datosService.usuarioCarga.ingresoCantidad - ahorrar;
+      gasto = this.datosService.usuarioCarga.ingresoCantidad - ahorrar - this.diferenciaFondo;
       return await this.validarGasto(margenMax,margenMin, gasto);
     }
       
@@ -287,11 +294,10 @@ export class ModificarTiempoPage implements OnInit {
     this.planesPrioritarios.forEach(element => {
       ahorrar += element.aportacionMensual;
     });
-    gasto = this.datosService.usuarioCarga.ingresoCantidad - ahorrar;
+    gasto = this.datosService.usuarioCarga.ingresoCantidad - ahorrar - this.diferenciaFondo;
 
     if(!await this.validarGasto(margenMax,margenMin, gasto)) {
       this.planesPrioritarios = this.planesPrioritarios.filter(plan => plan != this.planMenor);
-      console.log('no deberia entrar aqui');
       return false;
     }
 
@@ -315,7 +321,7 @@ export class ModificarTiempoPage implements OnInit {
     this.planMenor.aportacionMensual = (this.planMenor.cantidadTotal - this.planMenor.cantidadAcumulada)/this.planMenor.tiempoRestante;
     if(this.planes.length == 1) {
       ahorrar += ahorrar2;
-      gasto = this.datosService.usuarioCarga.ingresoCantidad - ahorrar;
+      gasto = this.datosService.usuarioCarga.ingresoCantidad - ahorrar - this.diferenciaFondo;
       return this.validarGasto(margenMax,margenMin, gasto);
     } 
     
@@ -325,7 +331,7 @@ export class ModificarTiempoPage implements OnInit {
       }
       this.planMayor.aportacionMensual = ahorrar2 - this.planMenor.aportacionMensual;
       ahorrar += ahorrar2;
-      gasto = this.datosService.usuarioCarga.ingresoCantidad - ahorrar;
+      gasto = this.datosService.usuarioCarga.ingresoCantidad - ahorrar - this.diferenciaFondo;
       return this.validarGasto(margenMax,margenMin, gasto);
     } 
     
@@ -344,7 +350,7 @@ export class ModificarTiempoPage implements OnInit {
           element.aportacionMensual = (element.cantidadTotal - element.cantidadAcumulada)/element.tiempoRestante;
         });
         ahorrar += ahorrar2;
-        gasto = this.datosService.usuarioCarga.ingresoCantidad - ahorrar;
+        gasto = this.datosService.usuarioCarga.ingresoCantidad - ahorrar - this.diferenciaFondo;
         return this.validarGasto(margenMax,margenMin, gasto);
     }
       var sobrante = ahorrar2 - this.planMenor.aportacionMensual;
@@ -356,7 +362,7 @@ export class ModificarTiempoPage implements OnInit {
       });
       this.planMayor.aportacionMensual = sobrante;
       ahorrar += ahorrar2;
-      gasto = this.datosService.usuarioCarga.ingresoCantidad - ahorrar;
+      gasto = this.datosService.usuarioCarga.ingresoCantidad - ahorrar - this.diferenciaFondo;
       return this.validarGasto(margenMax,margenMin, gasto);
     }
   }
@@ -402,7 +408,24 @@ export class ModificarTiempoPage implements OnInit {
   }
 
   obtenerOchoPorciento(margenMax: number) {
-    return (this.datosService.usuarioCarga.ingresoCantidad - margenMax)*0.08;
+    return (this.datosService.usuarioCarga.ingresoCantidad - margenMax - this.diferenciaFondo)*0.08;
+  }
+
+  async actualizarUsuario() {
+    this.datosService.usuarioCarga.fondoPlanes = 0;
+    this.datosService.planesCargados.forEach(element => {
+      this.datosService.usuarioCarga.fondoPlanes += element.aportacionMensual; 
+    });
+    var gastos = 0;
+    this.datosService.usuarioCarga.gastos.forEach(element => {
+      if(element.cantidad != 0) {
+
+      }
+      gastos += element.cantidad;
+    });
+    this.datosService.usuarioCarga.fondoAhorro = this.datosService.usuarioCarga.ingresoCantidad - this.datosService.usuarioCarga.fondoPlanes - this.diferenciaFondo -gastos;
+    this.datosService.usuarioCarga.fondoAhorro = Math.round(this.datosService.usuarioCarga.fondoAhorro*100)/100;
+    await this.datosService.guardarUsuarioInfo(this.datosService.usuarioCarga);
   }
 
   async cancelar() {
