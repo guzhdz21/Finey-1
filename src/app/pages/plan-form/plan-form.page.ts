@@ -116,7 +116,7 @@ export class PlanFormPage implements OnInit {
     });
     
     this.diferenciaFondo = this.usuarioCargado.ingresoCantidad - gastos;
-    this.diferenciaFondo -= (this.usuarioCargado.fondoPlanes - this.usuarioCargado.fondoAhorro) 
+    this.diferenciaFondo -= (this.usuarioCargado.fondoPlanes - this.usuarioCargado.fondoAhorro);
     //Obtner la aportacion mensual de nuevo plan y verificar si es valido
     this.planNuevo.aportacionMensual = (this.planNuevo.cantidadTotal - this.planNuevo.cantidadAcumulada) / this.planNuevo.tiempoTotal;
     if(this.planNuevo.aportacionMensual <= 0) {
@@ -799,7 +799,7 @@ export class PlanFormPage implements OnInit {
     this.planMenor.aportacionMensual = (this.planMenor.cantidadTotal - this.planMenor.cantidadAcumulada)/this.planMenor.tiempoRestante;
     if(this.planes.length == 1) {
       ahorrar += ahorrar2;
-      gasto = this.usuarioCargado.ingresoCantidad - ahorrar;
+      gasto = this.usuarioCargado.ingresoCantidad - ahorrar - this.diferenciaFondo;
       return this.validarGasto(margenMax,margenMin, gasto);
     } 
     
@@ -810,7 +810,7 @@ export class PlanFormPage implements OnInit {
 
       this.planMayor.aportacionMensual = ahorrar2 - this.planMenor.aportacionMensual;
       ahorrar += ahorrar2;
-      gasto = this.usuarioCargado.ingresoCantidad - ahorrar;
+      gasto = this.usuarioCargado.ingresoCantidad - ahorrar - this.diferenciaFondo;
       return this.validarGasto(margenMax,margenMin, gasto);
     } 
     
@@ -830,7 +830,7 @@ export class PlanFormPage implements OnInit {
           element.aportacionMensual = (element.cantidadTotal - element.cantidadAcumulada)/element.tiempoRestante;
         });
         ahorrar += ahorrar2;
-        gasto = this.usuarioCargado.ingresoCantidad - ahorrar;
+        gasto = this.usuarioCargado.ingresoCantidad - ahorrar - this.diferenciaFondo;
         return this.validarGasto(margenMax,margenMin, gasto);
       }
 
@@ -843,7 +843,7 @@ export class PlanFormPage implements OnInit {
       });
       this.planMayor.aportacionMensual = sobrante;
       ahorrar += ahorrar2;
-      gasto = this.usuarioCargado.ingresoCantidad - ahorrar;
+      gasto = this.usuarioCargado.ingresoCantidad - ahorrar - this.diferenciaFondo;
       return this.validarGasto(margenMax,margenMin, gasto);
     }
   }
