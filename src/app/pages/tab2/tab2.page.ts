@@ -217,6 +217,7 @@ export class Tab2Page implements OnInit{
         this.datosService.planesExisten = true;
       }
       this.borrado = false;
+      //Aqui va el TOAST
     }
   }
 
@@ -233,7 +234,7 @@ export class Tab2Page implements OnInit{
     var margenMin = 0;
 
     //Verificar si hay planes previos
-    if( this.planes.length < 1 || this.datosService.planesExisten == false) {
+    if( this.datosService.planesExisten == false) {
       unPlan = true;
     }
 
@@ -1025,11 +1026,7 @@ export class Tab2Page implements OnInit{
 
   //Metodo que guarda los cambios en los planes (se inserta uno nuevo correctamente)
   async guardarCambiosAPlanes() {
-     await this.accionesService.presentAlertPlan([{text: 'Ok', handler: (blah) => {}}], 
-                                                      'Plan creado', 
-          '¡Si te propones gastar menos en tus gastos promedio (luz, agua, etc.) puedes completar tu plan en menos tiempo!');
       this.datosService.actualizarPlanes(this.planes);
-      //await this.modalCtrl.dismiss();
   }
 
   //Metodo que calcula ala estimacion de los meses para que dos o mas planes puedan ser cumplidos
