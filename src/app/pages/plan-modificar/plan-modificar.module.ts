@@ -15,7 +15,6 @@ import { ComponentsModule } from '../../components/components.module';
     FormsModule,
     IonicModule,
     ComponentsModule,
-    PlanModificarPageRoutingModule,
     ComponentsModule
   ],
   declarations: [PlanModificarPage]
