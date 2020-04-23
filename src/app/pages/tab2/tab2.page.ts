@@ -2,11 +2,12 @@ import { Component, OnInit, Input, ViewChild } from '@angular/core';
 import { Label} from 'ng2-charts';
 import { ChartType } from 'chart.js';
 import { PlanDisplay, Plan, AlertaGeneral, UsuarioLocal } from '../../interfaces/interfaces';
-import { NavController, Events, Platform, IonInput } from '@ionic/angular';
+import { NavController, Events, Platform, IonInput, ModalController } from '@ionic/angular';
 import { DatosService } from '../../services/datos.service';
 import { AccionesService } from '../../services/acciones.service';
 import { Router } from '@angular/router';
 import { Subscription } from 'rxjs';
+import { PlanModificarPage } from '../plan-modificar/plan-modificar.page';
 
 @Component({
   selector: 'app-tab2',
@@ -118,7 +119,8 @@ export class Tab2Page implements OnInit{
               private datosService: DatosService,
               private accionesService: AccionesService,
               private router: Router,
-              private plt: Platform) {}
+              private plt: Platform,
+              public modalCtrl: ModalController) {}
 
   ngOnInit() {
     //Metodo para cargar los planes haya o no
@@ -169,7 +171,7 @@ export class Tab2Page implements OnInit{
   }
 
   // Metodo que abre el formulario para insertar un nuevo plan o modificar alguno ya existente
-  abrirFormulario(opcion: string, i: number) {
+  async abrirFormulario(opcion: string, i: number) {
     if(opcion == 'planNuevo') {
       this.nav.navigateRoot('/plan-form-page');
       this.router.navigate(['/plan-form-page'],
@@ -180,15 +182,33 @@ export class Tab2Page implements OnInit{
       });
     }
     else if(opcion == 'modificar'){
-      this.nav.navigateRoot('/plan-modificar-page');
-      this.router.navigate(['/plan-modificar-page'],
-      {
-        queryParams: {
-          index: i
-        }
-      });
+
+      await this.abrirModal(i);
+
+      this.planesRetornados = JSON.parse(JSON.stringify(this.planes));
+      this.planes = [];
+      this.datosService.planesExisten = false;
+
+      for( var plan of this.planesRetornados) {
+        this.planNuevo = plan;
+        console.log("Nombre: " + this.planNuevo.nombre)
+        await this.calcularYRegistrar();
+        this.datosService.planesExisten = true;
+      }
+      this.datosService.presentToast("Plan modificado");
     }
   }
+
+  async abrirModal(i: number) {
+    const modal = await this.modalCtrl.create({
+      component: PlanModificarPage,
+      componentProps: {
+        index: i
+      }
+    });
+    await modal.present();
+    await modal.onDidDismiss();
+    }
 
   irAcomodarPlanes() {
     this.nav.navigateRoot('/acomodar-page');
@@ -207,7 +227,7 @@ export class Tab2Page implements OnInit{
     
     if(this.accionesService.borrar == true) {
       await this.datosService.borrarPlan(i);
-      this.planesRetornados = JSON.parse(JSON.stringify(this.planes)); //Nuevo
+      this.planesRetornados = JSON.parse(JSON.stringify(this.planes));
       this.planes = [];
       this.datosService.planesExisten = false;
       this.borrado=true;
@@ -219,7 +239,7 @@ export class Tab2Page implements OnInit{
         this.datosService.planesExisten = true;
       }
       this.borrado = false;
-      //Aqui va el TOAST
+      this.datosService.presentToast("Plan borrado");
     }
   }
 
