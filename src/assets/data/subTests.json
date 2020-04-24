@@ -13,5 +13,27 @@
       "idTest": 5,
       "id": 3,
       "texto": "Telefono fijo"
+    },
+
+
+    {
+      "idTest": 4,
+      "id": 1,
+      "texto": "Motocicleta"
+    },
+    {
+      "idTest": 4,
+      "id": 2,
+      "texto": "Automovil particular"
+    },
+    {
+      "idTest": 4,
+      "id": 3,
+      "texto": "Transporte publico"
+    },
+    {
+      "idTest": 4,
+      "id": 4,
+      "texto": "Uber/taxi"
     }
 ]

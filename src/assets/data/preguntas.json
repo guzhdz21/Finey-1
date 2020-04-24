@@ -175,5 +175,224 @@
         "respuestaTexto": "No",
         "valor": 5
       }]
-    }    
+    },
+
+    
+    {
+      "idSubTest": 1,
+      "id": 1,
+      "preguntaTexto": "¿Con cuanto rendimiento de combustible cuenta tu motocicleta?",
+      "respuestas": [{
+        "respuestaTexto": "Menos de 15km/Lt",
+        "valor": 40
+      },
+      {
+      "respuestaTexto": "Entre 16km/Lt y 25km/Lt",
+      "valor": 20
+      },
+      {
+      "respuestaTexto": "Entre 26km/Lt y 35km/Lt",
+      "valor": 20
+      },
+      {
+      "respuestaTexto": "Más de 36km/Lt",
+      "valor": 10
+      }]
+    }, 
+    {
+      "idSubTest": 1,
+      "id": 2,
+      "preguntaTexto": "¿A donde sueles ir en tu motocicleta? (Puedes escoger varias)",
+      "respuestas": [{
+        "respuestaTexto": "Trabajo/escuela",
+        "valor": 10
+      },
+      {
+      "respuestaTexto": "Salida ocasional",
+      "valor": 10
+      },
+      {
+      "respuestaTexto": "Trabajo en ella (repartidor)",
+      "valor": 20
+      },
+      {
+      "respuestaTexto": "Viajes",
+      "valor": 20
+      },
+      {
+        "respuestaTexto": "Carreras legales",
+        "valor": 41
+        }]
+    }, 
+
+    
+    {
+      "idSubTest": 2,
+      "id": 1,
+      "preguntaTexto": "¿Con cuanto rendimiento de combustible cuenta tu automovil?",
+      "respuestas": [{
+        "respuestaTexto": "Menos de 10km/Lt",
+        "valor": 40
+      },
+      {
+      "respuestaTexto": "Entre 11km/Lt y 20km/Lt",
+      "valor": 20
+      },
+      {
+      "respuestaTexto": "Entre 21km/Lt y 29km/Lt",
+      "valor": 20
+      },
+      {
+      "respuestaTexto": "Más de 30km/Lt",
+      "valor": 10
+      }]
+    },
+    {
+      "idSubTest": 2,
+      "id": 2,
+      "preguntaTexto": "¿A donde sueles ir en tu automovil? (Puedes escoger varias)",
+      "respuestas": [{
+        "respuestaTexto": "Trabajo/escuela",
+        "valor": 10
+      },
+      {
+      "respuestaTexto": "Salida ocasional",
+      "valor": 10
+      },
+      {
+      "respuestaTexto": "Trabajo en el (taxi, transporte de producto)",
+      "valor": 20
+      },
+      {
+      "respuestaTexto": "Viajes",
+      "valor": 20
+      },
+      {
+        "respuestaTexto": "Carreras legales",
+        "valor": 41
+        }]
+    }, 
+    {
+      "idSubTest": 2,
+      "id": 3,
+      "preguntaTexto": "¿Cuentas con camioneta o carro?",
+      "respuestas": [{
+        "respuestaTexto": "Carro",
+        "valor": 20
+      },
+      {
+      "respuestaTexto": "Camioneta",
+      "valor": 40
+      }]
+    }, 
+    {
+      "idSubTest": 2,
+      "id": 4,
+      "preguntaTexto": "¿Cuantas personas se transportan contigo en tu vehiculo la mayor parte del tiempo?",
+      "respuestas": [{
+        "respuestaTexto": "Solo yo",
+        "valor": 21
+      },
+      {
+      "respuestaTexto": "Menos de 5 pero más de 2 contandome",
+      "valor": 30
+      },
+      {
+      "respuestaTexto": "Más de 5 contandome",
+      "valor": 41
+      }]
+    }, 
+
+    {
+      "idSubTest": 3,
+      "id": 1,
+      "preguntaTexto": "En promedio ¿Cuántas veces al día usas el transporte público? (un viaje de ida es 1 viaje)",
+      "respuestas": [{
+        "respuestaTexto": "Una vez",
+        "valor": false
+      },
+      {
+      "respuestaTexto": "2 veces",
+      "valor": false
+      },
+      {
+      "respuestaTexto": "Más de 3 veces",
+      "valor": true
+      }]
+    }, 
+    {
+      "idSubTest": 3,
+      "id": 2,
+      "preguntaTexto": "A cuanta distancia está su destino cuando usa el transporte público habitualmente?",
+      "respuestas": [{
+        "respuestaTexto": "Menos de 2 km",
+        "valor": true
+      },
+      {
+      "respuestaTexto": "Más de 2 km",
+      "valor": false
+      }]
+    },
+    {
+      "idSubTest": 3,
+      "id": 3,
+      "preguntaTexto": "¿Cuenta con bienevales o apoyos de transporte por parte del gobierno?",
+      "respuestas": [{
+        "respuestaTexto": "Si, yo los tramité",
+        "valor": false
+      },
+      {
+      "respuestaTexto": "No, no he tramitado el apoyo y si soy estudiante o de la 3ra edad",
+      "valor": true
+      },
+      {
+      "respuestaTexto": "No, no puedo tramitarlo, no soy estudiante ni de la 3ra edad",
+      "valor": false
+      }]
+    },
+
+    {
+      "idSubTest": 4,
+      "id": 1,
+      "preguntaTexto": "¿Cuantos uber/taxi tomas a la semana aproximadamente?",
+      "respuestas": [{
+        "respuestaTexto": "De 1 a 6 veces",
+        "valor": false
+      },
+      {
+      "respuestaTexto": "Más de 6 veces",
+      "valor": true
+      }]
+    },
+    {
+      "idSubTest": 4,
+      "id": 2,
+      "preguntaTexto": "¿A que hora solicita el uber/taxi normalmente?",
+      "respuestas": [{
+        "respuestaTexto": "Horas pico (8 AM, 9 AM, 2 PM, 3 PM, 6 PM, 7 PM )",
+        "valor": true
+      },
+      {
+      "respuestaTexto": "Horas medianamente o no transitadas (Todas las horas excepto las pico de la respuesta anterior)",
+      "valor": false
+      },
+      {
+      "respuestaTexto": "Más de 3 veces",
+      "valor": true
+      }]
+    },
+    {
+      "idSubTest": 4,
+      "id": 3,
+      "preguntaTexto": "¿Sueles llegar a tu destino cuando pides uber/taxi en una hora establecida (trabajo,escuela) o puedes demorarte un poco a llegar a este (ir al parque)?",
+      "respuestas": [
+      {
+      "respuestaTexto": "Necesito llegar en una hora establecida cuando tomo uber/taxi",
+      "valor": false
+      },
+      {
+      "respuestaTexto": "No necesariamnete necesito llegar a una hora establecida cuando pido uber/taxi",
+      "valor": true
+      }]
+    }
 ]
