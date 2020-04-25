@@ -1,17 +1,17 @@
-import { Component, OnInit, Input } from '@angular/core';
-import { Test, SubTest, Pregunta, Respuesta } from 'src/app/interfaces/interfaces';
+import { Component, OnInit } from '@angular/core';
+import { SubTest } from 'src/app/interfaces/interfaces';
 import { DatosService } from 'src/app/services/datos.service';
-import { AccionesService } from '../../services/acciones.service';
+import { AccionesService } from 'src/app/services/acciones.service';
 
 @Component({
-  selector: 'app-internet',
-  templateUrl: './internet.component.html',
-  styleUrls: ['./internet.component.scss'],
+  selector: 'app-transporte',
+  templateUrl: './transporte.component.html',
+  styleUrls: ['./transporte.component.scss'],
 })
-export class InternetComponent implements OnInit {
+export class TransporteComponent implements OnInit {
 
-  constructor(public datosService: DatosService,
-              public accionesService: AccionesService ) { }
+  constructor( public datosService: DatosService,
+               public accionesService: AccionesService ) { }
 
   ngOnInit() {
     this.subTestsEncontrados = []; //Arreglo que guarda los subtests encontrados
@@ -22,9 +22,12 @@ export class InternetComponent implements OnInit {
     this.permisos[0] = false;
     this.permisos[1] = false;
     this.permisos[2] = false;
+    this.permisos[3] = false;
     this.puntajeActual[0] = 0; 
     this.puntajeActual[1] = 0; 
     this.puntajeActual[2] = 0; 
+    this.puntajeActual[3] = 0; 
+    this.YaAbiertos = [];
   }
 
   subTestsEncontrados: SubTest[];
@@ -32,6 +35,7 @@ export class InternetComponent implements OnInit {
   puntajeActual: number[];
   permisos: boolean[];
   valoresRadio: number[][];
+  YaAbiertos: boolean[]; //Para saber si ya fue abierto o no el subtest
 
   subTestEncontrado1: SubTest = {
     idTest: null,
@@ -75,6 +79,20 @@ export class InternetComponent implements OnInit {
       }]
   }
 
+  subTestEncontrado4: SubTest = {
+    idTest: null,
+    id: null,
+    preguntas: [{
+        idSubTest: null,
+        id: null,
+        preguntaTexto: '',
+        respuestas: [{
+            respuestaTexto: '',
+            valor: null
+          }]
+      }]
+  }
+
   obtenerSubTest(idSubTest: number, subTestEncontrado: SubTest){
     this.datosService.getSubTests().subscribe(val => {
       val.forEach(element => {
@@ -95,36 +113,6 @@ export class InternetComponent implements OnInit {
   });
 });
 return subTestEncontrado;
-}
-
-async subTest1(event){
-  if(event.detail.value == 'si'){
-    this.subTestsEncontrados[0] = await this.obtenerSubTest(1, this.subTestEncontrado1);
-    this.permisos[0] = true;
-  }
-  else{
-    this.permisos[0] = false;
-  }
-}
-
-async subTest2(event){
-  if(event.detail.value == 'si'){
-    this.subTestsEncontrados[1] = await this.obtenerSubTest(2, this.subTestEncontrado2);
-    this.permisos[1] = true;
-  }
-  else{
-    this.permisos[1] = false;
-  }
-}
-
-async subTest3(event){
-  if(event.detail.value == 'si'){
-    this.subTestsEncontrados[2] = await this.obtenerSubTest(3, this.subTestEncontrado3);
-    this.permisos[2] = true;
-  }
-  else{
-    this.permisos[2] = false;
-  }
 }
 
 radioButtonChange(event, idPregunta, idSubTest){
@@ -153,21 +141,62 @@ radioButtonChange(event, idPregunta, idSubTest){
   case 3:
     this.puntajeAlcanzar[idSubTest - 1] = 10;
     this.valoresRadio[idSubTest - 1][idPregunta - 1] = parseInt(event.detail.value);
-    console.log("putooo: " + this.valoresRadio[idSubTest - 1][idPregunta - 1]);
+    console.log("" + this.valoresRadio[idSubTest - 1][idPregunta - 1]);
   break;
   }
 
     }
 
-checkBoxChange(event, idPregunta, idSubTest){
+async checkBoxInicial(event, idSub){
+  if(event.currentTarget.checked == true){
+    switch(idSub){
+      case 0:
+       if(this.YaAbiertos[0] == false){
+        this.subTestsEncontrados[0] = await this.obtenerSubTest(1, this.subTestEncontrado1);
+          this.permisos[0];
+          this.YaAbiertos[0]=true;
+       }
+       else{
+        this.permisos[0] = false;
+        this.YaAbiertos[0] = false;
+       }
+      break;
 
-  //SUBTEST1
-  if(idSubTest == 1){
-    if(event.currentTarget.checked == true){
-      this.puntajeActual[idSubTest - 1] += parseInt(event.detail.value); 
-    }
-    else{
-      this.puntajeActual[idSubTest - 1 ] -= parseInt(event.detail.value); 
+      case 1:
+        if(this.YaAbiertos[1] == false){
+          this.subTestsEncontrados[1] = await this.obtenerSubTest(2, this.subTestEncontrado2);
+          this.permisos[1];
+          this.YaAbiertos[1]=true;
+        }
+        else{
+          this.permisos[1] = false;
+          this.YaAbiertos[1] = false;
+        }
+      break;
+
+      case 2:
+        if(this.YaAbiertos[2] == false){
+          this.subTestsEncontrados[2] = await this.obtenerSubTest(3, this.subTestEncontrado3);
+          this.permisos[2];
+          this.YaAbiertos[2]=true;
+          }
+          else{
+            this.permisos[2] = false;
+            this.YaAbiertos[2] = false;
+          }
+      break;
+
+      case 3:
+        if(this.YaAbiertos[3] == false){
+          this.subTestsEncontrados[3] = await this.obtenerSubTest(4, this.subTestEncontrado4);
+          this.permisos[3];
+          this.YaAbiertos[3]=true;
+          }
+          else{
+            this.permisos[3] = false;
+            this.YaAbiertos[3] = false;
+          }
+      break;
     }
   }
 }
@@ -232,5 +261,6 @@ if(this.permisos[2]){
 }
 
 }
+
 
 }
