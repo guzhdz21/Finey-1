@@ -20,6 +20,7 @@ export class PlanPausarPagePage implements OnInit {
       this.margenMin = Number(res.margenMin);
       this.planesOriginales = JSON.parse(res.planesOriginales);
       this.diferenciaFondo = Number(res.diferenciaFondo);
+      this.planesPausados = JSON.parse(res.planesOPausados);
     });
   }
 
@@ -27,6 +28,7 @@ export class PlanPausarPagePage implements OnInit {
   margenMin: number;
   planesPrioritarios: Plan[];
   planesOriginales: Plan[];
+  planesPausados: Plan[];
   diferenciaFondo: number;
   ngOnInit() {
     this.abrirModal();

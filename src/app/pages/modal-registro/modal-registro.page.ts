@@ -131,7 +131,7 @@ sexoRadio(event)
 }
 
 //Metodo que registra el Ususario en el Storage y hace las operaciones necesarias
-  registrarUsuario()
+  async registrarUsuario()
   {
     var i = 0;
     this.usuario.gastos.forEach(element => {
@@ -159,7 +159,7 @@ sexoRadio(event)
     this.usuario.fondoPlanes = 0;
     this.usuario.fondoAhorro = this.usuario.ingresoCantidad - gastosTotales;
     
-    this.datosService.guardarUsuarioInfo(this.usuario);
+    await this.datosService.guardarUsuarioInfo(this.usuario);
     this.datosService.guardarPrimeraVez(false);
     this.datosService.cargarDatos();
     this.modalCtrl.dismiss();

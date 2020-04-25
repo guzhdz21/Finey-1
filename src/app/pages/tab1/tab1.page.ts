@@ -1,7 +1,7 @@
 import { Component, OnInit, Inject, LOCALE_ID } from '@angular/core';
 import { ChartType } from 'chart.js';
 import { SingleDataSet, Label, ThemeService } from 'ng2-charts';
-import { Rubro, UsuarioLocal, GastoMayor } from '../../interfaces/interfaces';
+import { Rubro, UsuarioLocal, GastoMayor, Gasto } from '../../interfaces/interfaces';
 import {Observable, Subscription} from 'rxjs';
 import { DatosService } from '../../services/datos.service';
 import { ModalController, NavController, Events, Platform } from '@ionic/angular';
@@ -26,7 +26,7 @@ export class Tab1Page implements OnInit {
   datos: number[] =[];
 
   //Variables visuales en el HTML
-  cantidadGastos: number;
+  cantidadGastos: number = 0;
   saldo: number;
 
   //Variables de descicion
@@ -94,20 +94,6 @@ export class Tab1Page implements OnInit {
       await this.abrirRegistro();
     }
 
-    var año = this.datosService.fechaMes.getFullYear();
-    var mes = this.datosService.fechaMes.getMonth() + 1;
-    var dia = this.datosService.fechaMes.getDate();
-    var fechaProxima = new Date(año, mes, dia);
-    if(new Date() >= fechaProxima) {
-      this.nuevoMes();
-    }
-
-    if(new Date().getHours() > 10 && new Date().getHours() < 24) {
-      if(this.datosService.fechaDiaria == null || this.datosService.fechaDiaria.getDate() != new Date().getDate()) {
-        await this.abrirGastosDiarios();
-      }
-    }
-
     //Asignacion al arreglo de rubros por la funcion qdel servicio datosService que obtiene los rubros de un archicvo
     this.rubros = this.datosService.getRubros();
 
@@ -142,6 +128,20 @@ export class Tab1Page implements OnInit {
       }
     });
     this.doughnutChartData = this.datos;
+    
+    if(new Date().getHours() > 10 && new Date().getHours() < 24) {
+      if(this.datosService.fechaDiaria == null || this.datosService.fechaDiaria.getDate() != new Date().getDate()) {
+        await this.abrirGastosDiarios();
+      }
+    }
+
+    var año = this.datosService.fechaMes.getFullYear();
+    var mes = this.datosService.fechaMes.getMonth() + 1;
+    var dia = this.datosService.fechaMes.getDate();
+    var fechaProxima = new Date(año, mes, dia);
+    if(new Date() >= fechaProxima) {
+      this.nuevoMes();
+    }
   }
 
 
@@ -285,17 +285,13 @@ export class Tab1Page implements OnInit {
   //Metodo para calcular y mostrar los gastos y saldo del proyecto
   async mostrarSaldo() {
     var gastosCantidad = 0;
-      for( var i = 0; i < 17; i++ ) {
-
-        if(this.usuarioCargado.gastos.length < 2) {
-          this.etiquetas = [];
-          await this.datosService.cargarDatos();
-          this.usuarioCargado = this.datosService.usuarioCarga;
-          this.saldo = 0;
-          return;
-        } 
-        if ( this.usuarioCargado.gastos[i].cantidad != 0 ) {
-          gastosCantidad += this.usuarioCargado.gastos[i].cantidad;
+    if(this.usuarioCargado.gastos.length < 2) {
+      this.etiquetas = [];
+      await this.datosService.cargarDatos();
+    }
+      for( var gasto of this.usuarioCargado.gastos) {
+        if ( gasto.cantidad != 0 ) {
+          gastosCantidad += gasto.cantidad;
         } 
 
       }

@@ -208,7 +208,7 @@ export class Tab2Page implements OnInit{
     });
     await modal.present();
     await modal.onDidDismiss();
-    }
+  }
 
   irAcomodarPlanes() {
     this.nav.navigateRoot('/acomodar-page');
@@ -226,6 +226,7 @@ export class Tab2Page implements OnInit{
                                                 '¿Estas seguro de que quieres borrar este plan?', 'No podrás recuperar el progreso guardado en este plan');
     
     if(this.accionesService.borrar == true) {
+      this.planesOriginales = JSON.parse(JSON.stringify(this.planes));
       await this.datosService.borrarPlan(i);
       this.planesRetornados = JSON.parse(JSON.stringify(this.planes));
       this.planes = [];
@@ -258,7 +259,6 @@ export class Tab2Page implements OnInit{
 
     //Inicializacion de variables
     this.planesPrioritarios = [];
-    this.planesOriginales = JSON.parse(JSON.stringify(this.planes));
 
     //Valores iniciales
     var unPlan = false;
@@ -433,7 +433,6 @@ export class Tab2Page implements OnInit{
 
     //Caso en que el usuario escogio modificar tiempos
     if(this.modificar == true) {
-      this.planesOriginales = JSON.parse(JSON.stringify(this.planes));
       this.planes = this.planesRetornados;
       this.datosService.actualizarPlanes(this.planes);
       this.irAPlanModificar();
@@ -449,7 +448,6 @@ export class Tab2Page implements OnInit{
         //Casos si si reciben menos
         //Caso en que el ussuario decidio pausar planes
         if(this.pausa) {
-          this.planesOriginales = JSON.parse(JSON.stringify(this.planes));
           this.planes = this.planesRetornados;
           this.datosService.actualizarPlanes(this.planes);
           this.irAPlanPausar(margenMax, margenMin);
@@ -457,7 +455,6 @@ export class Tab2Page implements OnInit{
         }
         //Caso en que el ussuario decidio modificar tiempos
         if(this.modificarOcho) {
-          this.planesOriginales = JSON.parse(JSON.stringify(this.planes));
           this.planes = this.planesRetornados;
           this.datosService.actualizarPlanes(this.planes);
           this.irAPlanModificar();
@@ -1135,14 +1132,15 @@ export class Tab2Page implements OnInit{
   async actualizarUsuario() {
     this.usuarioCargado.fondoPlanes = 0;
     this.datosService.planesCargados.forEach(element => {
-      this.usuarioCargado.fondoPlanes += element.aportacionMensual; 
+      if(element.pausado != true) {
+        this.usuarioCargado.fondoPlanes += element.aportacionMensual; 
+      }
     });
     var gastos = 0;
     this.datosService.usuarioCarga.gastos.forEach(element => {
       if(element.cantidad != 0) {
-
+        gastos += element.cantidad;
       }
-      gastos += element.cantidad;
     });
 
     this.usuarioCargado.fondoAhorro = this.usuarioCargado.ingresoCantidad - this.usuarioCargado.fondoPlanes - this.diferenciaFondo -gastos;

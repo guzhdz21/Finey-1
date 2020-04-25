@@ -16,6 +16,7 @@ export class PlanPausarPage implements OnInit {
   @Input() margenMin: number;
   @Input() planesOriginales: Plan[];
   @Input() diferenciaFondo: number;
+  @Input() planesPausados: Plan[];
 
   planes: Plan[] = this.datosService.planesCargados;
 
@@ -242,6 +243,9 @@ export class PlanPausarPage implements OnInit {
     this.planes.forEach(element => {
       this.planesPrioritarios.push(element);
     });
+    this.planesPausados.forEach(element => {
+      this.planesPrioritarios.push(element);
+    });
     await this.datosService.actualizarPlanes(this.planesPrioritarios);
     this.actualizarUsuario();
     this.modalCtrl.dismiss();
@@ -348,14 +352,15 @@ export class PlanPausarPage implements OnInit {
   async actualizarUsuario() {
     this.datosService.usuarioCarga.fondoPlanes = 0;
     this.datosService.planesCargados.forEach(element => {
-      this.datosService.usuarioCarga.fondoPlanes += element.aportacionMensual; 
+      if(element.pausado != true) {
+        this.datosService.usuarioCarga.fondoPlanes += element.aportacionMensual; 
+      }
     });
     var gastos = 0;
     this.datosService.usuarioCarga.gastos.forEach(element => {
       if(element.cantidad != 0) {
-
+        gastos += element.cantidad;
       }
-      gastos += element.cantidad;
     });
     this.datosService.usuarioCarga.fondoAhorro = this.datosService.usuarioCarga.ingresoCantidad - this.datosService.usuarioCarga.fondoPlanes - this.diferenciaFondo -gastos;
     this.datosService.usuarioCarga.fondoAhorro = Math.round(this.datosService.usuarioCarga.fondoAhorro*100)/100;
@@ -367,7 +372,7 @@ export class PlanPausarPage implements OnInit {
     await this.accionesService.presentAlertPlan([{text: 'Si', handler: (blah) => {cancelar = true}},
                                                   {text: 'No', handler: (blah) => {cancelar = false}}], 
                                                   '¿Seguro que quieres volver?', 
-      'Si cancelas se borrara el nuevo plan que ingresaste');
+      'Si cancelas se borraran todos los cambios a tus planes y volvera a como estaban antes');
     
     if(cancelar) {
       console.log(this.planesOriginales);

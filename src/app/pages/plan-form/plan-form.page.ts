@@ -42,10 +42,12 @@ export class PlanFormPage implements OnInit {
   planes: Plan[] = this.datosService.planesCargados;
 
   //Varibale auciliar que guarda un arreglo de planes
-  planesaux: Plan[] = []
+  planesaux: Plan[] = [];
 
   //Variable auxiliar que guardara los planes originales antes de hacer todos los cambios
-  planesOriginales: Plan[] = []
+  planesOriginales: Plan[] = [];
+
+  planesPausados: Plan[] = [];
 
   //Variable que guarda los planes que son prioritarios
   planesPrioritarios: Plan[] = [];
@@ -94,6 +96,12 @@ export class PlanFormPage implements OnInit {
     //Inicializacion de variables
     this.planesPrioritarios = [];
     this.planesOriginales = JSON.parse(JSON.stringify(this.planes));
+    this.planes.forEach(element => {
+      if(element.pausado == true) {
+        this.planesPausados.push(element);
+      }
+    });
+    this.planes = this.planes.filter(plan => plan.pausado != true);
 
     //Valores iniciales
     var unPlan = false;
@@ -117,7 +125,7 @@ export class PlanFormPage implements OnInit {
     
     this.diferenciaFondo = this.usuarioCargado.ingresoCantidad - gastos;
     this.diferenciaFondo -= (this.usuarioCargado.fondoPlanes + this.usuarioCargado.fondoAhorro);
-    console.log(this.diferenciaFondo);
+    
     //Obtner la aportacion mensual de nuevo plan y verificar si es valido
     this.planNuevo.aportacionMensual = (this.planNuevo.cantidadTotal - this.planNuevo.cantidadAcumulada) / this.planNuevo.tiempoTotal;
     if(this.planNuevo.aportacionMensual <= 0) {
@@ -230,6 +238,9 @@ export class PlanFormPage implements OnInit {
     if(this.prioridadDos == true) {
       var planPrioritario = this.planMenor;
       await this.pausarPorPrioridadDosPlanes(planPrioritario);
+      this.planesPausados.forEach(element => {
+        this.planes.push(element);
+      });
       await this.datosService.actualizarPlanes(this.planes);
       this.actualizarUsuario();
       this.modalCtrl.dismiss();
@@ -691,6 +702,10 @@ export class PlanFormPage implements OnInit {
       this.planesPrioritarios.push(element);
     });
 
+    this.planesPausados.forEach(element => {
+      this.planesPrioritarios.push(element);
+    });
+
     await this.datosService.actualizarPlanes(this.planesPrioritarios);
     this.actualizarUsuario();
     this.modalCtrl.dismiss();
@@ -901,6 +916,9 @@ export class PlanFormPage implements OnInit {
      await this.accionesService.presentAlertPlan([{text: 'Ok', handler: (blah) => {}}], 
                                                       'Plan creado', 
           '¡Si te propones gastar menos en tus gastos promedio (luz, agua, etc.) puedes completar tu plan en menos tiempo!');
+      this.planesPausados.forEach(element => {
+        this.planes.push(element);
+      });
       await this.datosService.actualizarPlanes(this.planes);
       await this.modalCtrl.dismiss();
   }
@@ -929,17 +947,23 @@ export class PlanFormPage implements OnInit {
   async actualizarUsuario() {
     this.usuarioCargado.fondoPlanes = 0;
     this.datosService.planesCargados.forEach(element => {
-      this.usuarioCargado.fondoPlanes += element.aportacionMensual; 
+      if(element.pausado != true) {
+        this.usuarioCargado.fondoPlanes += element.aportacionMensual; 
+      }
     });
     var gastos = 0;
     this.datosService.usuarioCarga.gastos.forEach(element => {
       if(element.cantidad != 0) {
-
+        gastos += element.cantidad;
       }
-      gastos += element.cantidad;
     });
+
     this.usuarioCargado.fondoAhorro = this.usuarioCargado.ingresoCantidad - this.usuarioCargado.fondoPlanes - this.diferenciaFondo -gastos;
     this.usuarioCargado.fondoAhorro = Math.round(this.usuarioCargado.fondoAhorro*100)/100;
+
+    if(this.usuarioCargado.fondoAhorro < 1) {
+
+    }
     await this.datosService.guardarUsuarioInfo(this.usuarioCargado);
   }
 
@@ -987,7 +1011,8 @@ export class PlanFormPage implements OnInit {
         margenMax: margenMax,
         margenMin: margenMin,
         planesOriginales: JSON.stringify(this.planesOriginales),
-        diferenciaFondo: this.diferenciaFondo
+        diferenciaFondo: this.diferenciaFondo,
+        planesPausados: JSON.stringify(this.planesPausados)
       }
     });
     return;
@@ -999,7 +1024,8 @@ export class PlanFormPage implements OnInit {
     this.nav.navigateRoot('/modificar-tiempo-page');
     this.router.navigate(['/modificar-tiempo-page'], {
       queryParams: {
-        planesOriginales: JSON.stringify(this.planesOriginales)
+        planesOriginales: JSON.stringify(this.planesOriginales),
+        planesPausados: JSON.stringify(this.planesPausados)
       }
     });
   }

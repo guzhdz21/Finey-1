@@ -133,6 +133,11 @@ export class MisGastosPage implements OnInit {
     });
 
     this.usuarioModificado.fondoPlanes = 0;
+    this.datosService.planesCargados.forEach(element => {
+      if(element.pausado != true) {
+        this.usuarioModificado.fondoPlanes += element.aportacionMensual; 
+      }
+    });
     this.usuarioModificado.fondoAhorro = this.usuarioModificado.ingresoCantidad - gastosTotales;
 
   this.datosService.guardarUsuarioInfo(this.usuarioModificado);

@@ -11,7 +11,8 @@ import { AccionesService } from '../../services/acciones.service';
 })
 export class ModificarTiempoPage implements OnInit {
 
-  @Input() planesOriginales;
+  @Input() planesOriginales: Plan[];
+  @Input() planesPausados: Plan[];
 
   planes: Plan[] = this.datosService.planesCargados;
 
@@ -94,6 +95,9 @@ export class ModificarTiempoPage implements OnInit {
   async guardarCambios() {
     await this.accionesService.presentAlertPlan([{text: 'Ok', handler: (blah) => {}}], 
       'Planes Modificados', '¡Si te propones gastar menos en tus gastos promedio (luz, agua, etc.) puedes completar tus planes en menos tiempo!');
+    this.planesPausados.forEach(element => {
+      this.planes.push(element);
+    });
     await this.datosService.actualizarPlanes(this.planes);
     this.actualizarUsuario();
     this.modalCtrl.dismiss();
@@ -414,14 +418,15 @@ export class ModificarTiempoPage implements OnInit {
   async actualizarUsuario() {
     this.datosService.usuarioCarga.fondoPlanes = 0;
     this.datosService.planesCargados.forEach(element => {
-      this.datosService.usuarioCarga.fondoPlanes += element.aportacionMensual; 
+      if(element.pausado != true) {
+        this.datosService.usuarioCarga.fondoPlanes += element.aportacionMensual; 
+      }
     });
     var gastos = 0;
     this.datosService.usuarioCarga.gastos.forEach(element => {
       if(element.cantidad != 0) {
-
+        gastos += element.cantidad;
       }
-      gastos += element.cantidad;
     });
     this.datosService.usuarioCarga.fondoAhorro = this.datosService.usuarioCarga.ingresoCantidad - this.datosService.usuarioCarga.fondoPlanes - this.diferenciaFondo -gastos;
     this.datosService.usuarioCarga.fondoAhorro = Math.round(this.datosService.usuarioCarga.fondoAhorro*100)/100;
@@ -433,7 +438,7 @@ export class ModificarTiempoPage implements OnInit {
     await this.accionesService.presentAlertPlan([{text: 'Si', handler: (blah) => {cancelar = true}},
                                                   {text: 'No', handler: (blah) => {cancelar = false}}], 
                                                   '¿Seguro que quieres volver?', 
-      'Si cancelas se borrara el nuevo plan que ingresaste');
+      'Si cancelas se borraran todos los cambios a tus planes y volvera a como estaban antes');
     
     if(cancelar) {
       console.log(this.planesOriginales);
