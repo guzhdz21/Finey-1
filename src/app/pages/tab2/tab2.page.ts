@@ -99,7 +99,7 @@ export class Tab2Page implements OnInit{
   //Variable que nos indica si el usuario escogio la opcion de modificar cuando se encontro que un plan recibia muy poco
   modificarOcho: boolean;
 
-  diferenciaFondo: number;
+  diferenciaFondo: number = this.datosService.diferencia;
 
   //Variable que se usa para el regreso o boton back nativo del celular
   backButtonSub: Subscription;
@@ -245,8 +245,6 @@ export class Tab2Page implements OnInit{
         } 
       });
       
-      this.diferenciaFondo = this.usuarioCargado.ingresoCantidad - gastos;
-      this.diferenciaFondo -= (this.usuarioCargado.fondoPlanes + this.usuarioCargado.fondoAhorro);
       await this.datosService.actualizarPlanes(this.planes);
       await this.actualizarUsuario();
       this.borrado = false;
@@ -264,7 +262,6 @@ export class Tab2Page implements OnInit{
     var unPlan = false;
     var margenMax = 0;
     var margenMin = 0;
-    var gastos = 0;
 
     //Verificar si hay planes previos
     if( this.planesRetornados.length == 1) {
@@ -278,12 +275,9 @@ export class Tab2Page implements OnInit{
       if( element.cantidad != 0 ) {
         margenMax += element.margenMax;
         margenMin += element.margenMin;
-        gastos += element.cantidad;
       } 
     });
     
-    this.diferenciaFondo = this.usuarioCargado.ingresoCantidad - gastos;
-    this.diferenciaFondo -= (this.usuarioCargado.fondoPlanes + this.usuarioCargado.fondoAhorro);
 
     //Obtner la aportacion mensual de nuevo plan y verificar si es valido
     /*this.planNuevo.aportacionMensual = (this.planNuevo.cantidadTotal - this.planNuevo.cantidadAcumulada) / this.planNuevo.tiempoTotal;
@@ -1137,13 +1131,22 @@ export class Tab2Page implements OnInit{
       }
     });
     var gastos = 0;
+    var margenMin = 0;
     this.datosService.usuarioCarga.gastos.forEach(element => {
       if(element.cantidad != 0) {
         gastos += element.cantidad;
+        margenMin += element.margenMin;
       }
     });
 
-    this.usuarioCargado.fondoAhorro = this.usuarioCargado.ingresoCantidad - this.usuarioCargado.fondoPlanes - this.diferenciaFondo -gastos;
+    this.usuarioCargado.fondoAhorro = this.usuarioCargado.ingresoCantidad - this.usuarioCargado.fondoPlanes - gastos;
+    console.log(this.usuarioCargado.fondoAhorro);
+    if(this.usuarioCargado.fondoAhorro < 0) {
+      console.log('hola');
+      this.usuarioCargado.fondoAhorro = this.usuarioCargado.ingresoCantidad - this.usuarioCargado.fondoPlanes - margenMin;
+    }
+    console.log(this.diferenciaFondo);
+    this.usuarioCargado.fondoAhorro -= this.diferenciaFondo;
     this.usuarioCargado.fondoAhorro = Math.round(this.usuarioCargado.fondoAhorro*100)/100;
     await this.datosService.guardarUsuarioInfo(this.usuarioCargado);
   }

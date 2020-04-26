@@ -88,6 +88,7 @@ export class Tab1Page implements OnInit {
     await this.datosService.cargarMes();
     await  this.datosService.cargarFechaDiaria();
     await this.datosService.cargarDiaDelMes();
+    await this.datosService.cargarDiferencia();
     this.localNotifications.fireQueuedEvents();
     //Condicional para abrir el registro de la app
     if(this.datosService.primera === true) {
@@ -128,19 +129,19 @@ export class Tab1Page implements OnInit {
       }
     });
     this.doughnutChartData = this.datos;
-    
-    if(new Date().getHours() > 10 && new Date().getHours() < 24) {
-      if(this.datosService.fechaDiaria == null || this.datosService.fechaDiaria.getDate() != new Date().getDate()) {
-        await this.abrirGastosDiarios();
-      }
-    }
 
     var año = this.datosService.fechaMes.getFullYear();
     var mes = this.datosService.fechaMes.getMonth() + 1;
     var dia = this.datosService.fechaMes.getDate();
     var fechaProxima = new Date(año, mes, dia);
     if(new Date() >= fechaProxima) {
-      this.nuevoMes();
+      await this.nuevoMes();
+    }
+    
+    if(new Date().getHours() > 10 && new Date().getHours() < 24) {
+      if(this.datosService.fechaDiaria == null || this.datosService.fechaDiaria.getDate() != new Date().getDate()) {
+        await this.abrirGastosDiarios();
+      }
     }
   }
 
@@ -187,17 +188,12 @@ export class Tab1Page implements OnInit {
   } 
 
   async nuevoMes() {
-    do {
-      this.datosService.cargarDatos();
-      this.usuarioCargado = this.datosService.usuarioCarga;
-      console.log('repeti');
-    } while(this.usuarioCargado.gastos.length < 2);
 
-    if(this.mes == 1) {
+    /*if(this.mes == 1) {
       this.mes++;
       this.datosService.guardarMes(this.mes);
       return;
-    }
+    }*/
 
     var gastosMayores: GastoMayor[] = []
 
@@ -222,6 +218,7 @@ export class Tab1Page implements OnInit {
       }
     });
     console.log(gastosMayores);
+
     if(gastosMayores.length != 0) {
       await this.abrirGastosMayores(gastosMayores);
     }

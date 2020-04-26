@@ -28,6 +28,8 @@ export class MisGastosPage implements OnInit {
   //Variable para guardar los datos del ususario
   usuarioModificado: UsuarioLocal = this.datosService.usuarioCarga;
 
+  diferenciaAhorro: number = this.datosService.diferencia;
+
   backButtonSub: Subscription;
 
   //Constructor con todas las inyecciones y controladores necesarios
@@ -126,9 +128,11 @@ export class MisGastosPage implements OnInit {
   });
 
   var gastosTotales = 0;
+  var margenMin = 0;
     this.usuarioModificado.gastos.forEach(element => {
       if(element.cantidad != 0) {
         gastosTotales += element.cantidad
+        margenMin += element.margenMin;
       }
     });
 
@@ -138,7 +142,11 @@ export class MisGastosPage implements OnInit {
         this.usuarioModificado.fondoPlanes += element.aportacionMensual; 
       }
     });
-    this.usuarioModificado.fondoAhorro = this.usuarioModificado.ingresoCantidad - gastosTotales;
+    this.usuarioModificado.fondoAhorro = this.usuarioModificado.ingresoCantidad - gastosTotales - this.usuarioModificado.fondoPlanes;
+    if(this.usuarioModificado.fondoAhorro < 0) {
+      this.usuarioModificado.fondoAhorro = this.usuarioModificado.ingresoCantidad - margenMin - this.usuarioModificado.fondoPlanes;
+    }
+    this.usuarioModificado.fondoAhorro -= this.diferenciaAhorro;
 
   this.datosService.guardarUsuarioInfo(this.usuarioModificado);
   this.event.publish('usuarioActualizado');

@@ -81,6 +81,10 @@ const routes: Routes = [
   {
     path: 'gastos-mayores',
     loadChildren: () => import('./pages/gastos-mayores/gastos-mayores.module').then( m => m.GastosMayoresPageModule)
+  },
+  {
+    path: 'gasto-mayor-justify',
+    loadChildren: () => import('./pages/gasto-mayor-justify/gasto-mayor-justify.module').then( m => m.GastoMayorJustifyPageModule)
   }
 
 ];

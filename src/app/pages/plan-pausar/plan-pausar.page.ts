@@ -357,12 +357,21 @@ export class PlanPausarPage implements OnInit {
       }
     });
     var gastos = 0;
+    var margenMin = 0;
     this.datosService.usuarioCarga.gastos.forEach(element => {
       if(element.cantidad != 0) {
         gastos += element.cantidad;
+        margenMin += element.margenMin
       }
     });
-    this.datosService.usuarioCarga.fondoAhorro = this.datosService.usuarioCarga.ingresoCantidad - this.datosService.usuarioCarga.fondoPlanes - this.diferenciaFondo -gastos;
+    this.datosService.usuarioCarga.fondoAhorro = this.datosService.usuarioCarga.ingresoCantidad - this.datosService.usuarioCarga.fondoPlanes -gastos;
+    if(this.datosService.usuarioCarga.fondoAhorro < 0) {
+      this.datosService.usuarioCarga.fondoAhorro = this.datosService.usuarioCarga.ingresoCantidad - this.datosService.usuarioCarga.fondoPlanes - margenMin;
+      await this.accionesService.presentAlertGenerica('Gastos Minimos', 'Ahora estas en un sistema de gastos minimos, '+ 
+      'por lo tanto tus gastos seran tomados en cuenta como menores, pero recuerda que el ahorro sera menor debido que '+ 
+      'los planes se estan llevando casi todo');
+    }
+    this.datosService.usuarioCarga.fondoAhorro -= this.diferenciaFondo;
     this.datosService.usuarioCarga.fondoAhorro = Math.round(this.datosService.usuarioCarga.fondoAhorro*100)/100;
     await this.datosService.guardarUsuarioInfo(this.datosService.usuarioCarga);
   }

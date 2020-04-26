@@ -99,6 +99,9 @@ sexoRadio(event)
     //Verificar si el usuario no puede satisfacer sus necesidades basicas y se insertan sus datos  
     if(this.registrarseAdvertencia) {
         this.registrarUsuario();
+        await this.mandarNotificacion();
+        await this.guardarDiferencia();
+        await this.guardarFechaMes();
         this.nav.navigateRoot('/tabs/tab3');
       }
     }
@@ -112,6 +115,8 @@ sexoRadio(event)
         }
       });
       await this.mandarNotificacion();
+      await this.guardarDiferencia();
+      await this.guardarFechaMes();
       this.datosService.presentToast('Registro exitoso');
     }
   }
@@ -126,6 +131,7 @@ sexoRadio(event)
     });
     await this.mandarNotificacion();
     await this.guardarFechaMes();
+    await this.guardarDiferencia();
     this.datosService.presentToast('Registro exitoso');
   }
 }
@@ -216,6 +222,10 @@ sexoRadio(event)
     } else {
       await this.datosService.guardarDiaDelMes(new Date());
     }
+  }
+
+  async guardarDiferencia() {
+    await this.datosService.guardarDiferencia(0);
   }
     
   ionViewDidEnter() {

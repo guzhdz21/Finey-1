@@ -108,6 +108,7 @@ export class DatosService {
   fechaDiaria: Date;
   fechaMes: Date;
   mes: number;
+  diferencia: number;
 
   // Variable de tipo plan que adquiere los valores del storage
   planesCargados: Plan[] = [
@@ -269,6 +270,23 @@ export class DatosService {
       this.gastosMensualesCargados = [];
     }
   }
+
+  guardarDiferencia(diferencia: number)
+  {
+    this.diferencia = diferencia;
+    this.storage.set('Diferencia', diferencia);
+  }
+
+  async cargarDiferencia()
+    {
+      const diferencia = await this.storage.get('Diferencia');
+      if(diferencia) {
+        this.diferencia = diferencia;
+      } else {
+        this.diferencia = 0;
+      }
+    }
+  
 
   // metodo que carga los datos de el usuario
    async cargarDatos() {
