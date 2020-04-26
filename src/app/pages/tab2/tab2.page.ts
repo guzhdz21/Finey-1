@@ -236,15 +236,10 @@ export class Tab2Page implements OnInit{
       if(this.planesRetornados.length != 0) {
         await this.calcularYRegistrar();
         this.datosService.planesExisten = true;
+        this.datosService.presentToast("Plan borrado");
         return;
       }
       var gastos = 0;
-      this.usuarioCargado.gastos.forEach(element => {
-        if( element.cantidad != 0 ) {
-          gastos += element.cantidad;
-        } 
-      });
-      
       await this.datosService.actualizarPlanes(this.planes);
       await this.actualizarUsuario();
       this.borrado = false;
@@ -1140,12 +1135,9 @@ export class Tab2Page implements OnInit{
     });
 
     this.usuarioCargado.fondoAhorro = this.usuarioCargado.ingresoCantidad - this.usuarioCargado.fondoPlanes - gastos;
-    console.log(this.usuarioCargado.fondoAhorro);
     if(this.usuarioCargado.fondoAhorro < 0) {
-      console.log('hola');
       this.usuarioCargado.fondoAhorro = this.usuarioCargado.ingresoCantidad - this.usuarioCargado.fondoPlanes - margenMin;
     }
-    console.log(this.diferenciaFondo);
     this.usuarioCargado.fondoAhorro -= this.diferenciaFondo;
     this.usuarioCargado.fondoAhorro = Math.round(this.usuarioCargado.fondoAhorro*100)/100;
     await this.datosService.guardarUsuarioInfo(this.usuarioCargado);
