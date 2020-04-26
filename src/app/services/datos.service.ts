@@ -106,7 +106,7 @@ export class DatosService {
   recordatoriosExisten: boolean = false; // Variable para saber si hay planes existentes
   idsExisten: boolean;
   fechaDiaria: Date;
-  fechaMes: Date;
+  fechaMes: Date; 
   mes: number;
   diferencia: number;
 
