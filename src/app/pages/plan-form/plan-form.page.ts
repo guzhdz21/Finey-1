@@ -245,7 +245,6 @@ export class PlanFormPage implements OnInit {
 
     //Caso en que el usuario escogio modificar tiempos
     if(this.modificar == true) {
-      this.planesOriginales = JSON.parse(JSON.stringify(this.planes));
       this.planes.push(this.planNuevo);
       this.datosService.actualizarPlanes(this.planes);
       this.irAPlanModificar();
@@ -261,7 +260,6 @@ export class PlanFormPage implements OnInit {
         //Casos si si reciben menos
         //Caso en que el ussuario decidio pausar planes
         if(this.pausa) {
-          this.planesOriginales = JSON.parse(JSON.stringify(this.planes));
           this.planes.push(this.planNuevo);
           this.datosService.actualizarPlanes(this.planes);
           this.irAPlanPausar(margenMax, margenMin);
@@ -269,7 +267,6 @@ export class PlanFormPage implements OnInit {
         }
         //Caso en que el ussuario decidio modificar tiempos
         if(this.modificarOcho) {
-          this.planesOriginales = JSON.parse(JSON.stringify(this.planes));
           this.planes.push(this.planNuevo);
           this.datosService.actualizarPlanes(this.planes);
           this.irAPlanModificar();

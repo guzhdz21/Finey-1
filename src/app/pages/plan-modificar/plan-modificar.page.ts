@@ -44,6 +44,8 @@ export class PlanModificarPage implements OnInit {
 
   planesPrioritarios: Plan[] = []
 
+  planesPausados: Plan[] = [];
+
   //Varibale auciliar que guarda un arreglo de planes
   planesaux: Plan[] = []
 
@@ -189,6 +191,13 @@ export class PlanModificarPage implements OnInit {
 
     //Inicializacion de variables
     this.planesPrioritarios = [];
+    this.planesPausados = [];
+    this.planesRetornados.forEach(element => {
+      if(element.pausado == true) {
+        this.planesPausados.push(element);
+      }
+    });
+    this.planesRetornados = this.planesRetornados.filter(plan => plan.pausado != true);
 
     //Valores iniciales
     var unPlan = false;
@@ -350,6 +359,9 @@ export class PlanModificarPage implements OnInit {
     if(this.prioridadDos == true) {
       var planPrioritario = this.planMenor;
       await this.pausarPorPrioridadDosPlanes(planPrioritario);
+      this.planesPausados.forEach(element => {
+        this.planesRetornados.push(element);
+      });
       this.planes = this.planesRetornados;
       await this.datosService.actualizarPlanes(this.planes);
       this.actualizarUsuario();
@@ -810,6 +822,10 @@ export class PlanModificarPage implements OnInit {
       this.planesPrioritarios.push(element);
     });
 
+    this.planesPausados.forEach(element => {
+      this.planesPrioritarios.push(element);
+    });
+
     await this.datosService.actualizarPlanes(this.planesPrioritarios);
     this.modalCtrl.dismiss();
     this.actualizarUsuario();
@@ -1034,6 +1050,9 @@ export class PlanModificarPage implements OnInit {
 
   //Metodo que guarda los cambios en los planes (se inserta uno nuevo correctamente)
   async guardarCambiosAPlanes() {
+    this.planesPausados.forEach(element => {
+      this.planes.push(element);
+    });
       await this.datosService.actualizarPlanes(this.planes);
   }
 
@@ -1115,7 +1134,8 @@ export class PlanModificarPage implements OnInit {
         margenMax: margenMax,
         margenMin: margenMin,
         planesOriginales: JSON.stringify(this.planesOriginales),
-        diferenciaFondo: this.diferenciaFondo
+        diferenciaFondo: this.diferenciaFondo,
+        planesPausados: JSON.stringify(this.planesPausados)
       }
     });
     return;
@@ -1127,7 +1147,8 @@ export class PlanModificarPage implements OnInit {
     this.nav.navigateRoot('/modificar-tiempo-page');
     this.router.navigate(['/modificar-tiempo-page'], {
       queryParams: {
-        planesOriginales: JSON.stringify(this.planesOriginales)
+        planesOriginales: JSON.stringify(this.planesOriginales),
+        planesPausados: JSON.stringify(this.planesPausados)
       }
     });
   }

@@ -75,6 +75,8 @@ export class Tab2Page implements OnInit{
 
   planesRetornados: Plan[] = []
 
+  planesPausados: Plan[] = [];
+
   planesCopia: Plan[] = []
 
   //Variable que guarda los planes que son prioritarios
@@ -184,18 +186,6 @@ export class Tab2Page implements OnInit{
     else if(opcion == 'modificar'){
 
       await this.abrirModal(i);
-
-      this.planesRetornados = JSON.parse(JSON.stringify(this.planes));
-      this.planes = [];
-      this.datosService.planesExisten = false;
-
-      for( var plan of this.planesRetornados) {
-        this.planNuevo = plan;
-        console.log("Nombre: " + this.planNuevo.nombre)
-        await this.calcularYRegistrar();
-        this.datosService.planesExisten = true;
-      }
-      this.datosService.presentToast("Plan modificado");
     }
   }
 
@@ -239,7 +229,6 @@ export class Tab2Page implements OnInit{
         this.datosService.presentToast("Plan borrado");
         return;
       }
-      var gastos = 0;
       await this.datosService.actualizarPlanes(this.planes);
       await this.actualizarUsuario();
       this.borrado = false;
@@ -252,6 +241,13 @@ export class Tab2Page implements OnInit{
 
     //Inicializacion de variables
     this.planesPrioritarios = [];
+    this.planesPausados = [];
+    this.planesRetornados.forEach(element => {
+      if(element.pausado == true) {
+        this.planesPausados.push(element);
+      }
+    });
+    this.planesRetornados = this.planesRetornados.filter(plan => plan.pausado != true);
 
     //Valores iniciales
     var unPlan = false;
@@ -412,6 +408,9 @@ export class Tab2Page implements OnInit{
     if(this.prioridadDos == true) {
       var planPrioritario = this.planMenor;
       await this.pausarPorPrioridadDosPlanes(planPrioritario);
+      this.planesPausados.forEach(element => {
+        this.planesRetornados.push(element);
+      });
       this.planes = this.planesRetornados;
       await this.datosService.actualizarPlanes(this.planes);
       this.actualizarUsuario();
@@ -449,7 +448,7 @@ export class Tab2Page implements OnInit{
           this.irAPlanModificar();
           return;
         }
-
+        this.planes = this.planesOriginales;
         return;
       }
 
@@ -460,6 +459,7 @@ export class Tab2Page implements OnInit{
       this.nav.navigateRoot('/tabs/tab2');
       return;
     }
+    this.planes = this.planesOriginales;
     return;
   }
 
@@ -870,6 +870,10 @@ export class Tab2Page implements OnInit{
       this.planesPrioritarios.push(element);
     });
 
+    this.planesPausados.forEach(element => {
+      this.planesPrioritarios.push(element);
+    });
+
     await this.datosService.actualizarPlanes(this.planesPrioritarios);
     //this.modalCtrl.dismiss();
     this.actualizarUsuario();
@@ -1094,6 +1098,9 @@ export class Tab2Page implements OnInit{
 
   //Metodo que guarda los cambios en los planes (se inserta uno nuevo correctamente)
   async guardarCambiosAPlanes() {
+    this.planesPausados.forEach(element => {
+      this.planes.push(element);
+    });
       await this.datosService.actualizarPlanes(this.planes);
   }
 
@@ -1135,6 +1142,7 @@ export class Tab2Page implements OnInit{
     });
 
     this.usuarioCargado.fondoAhorro = this.usuarioCargado.ingresoCantidad - this.usuarioCargado.fondoPlanes - gastos;
+    console.log(this.usuarioCargado.fondoAhorro);
     if(this.usuarioCargado.fondoAhorro < 0) {
       this.usuarioCargado.fondoAhorro = this.usuarioCargado.ingresoCantidad - this.usuarioCargado.fondoPlanes - margenMin;
     }
@@ -1175,7 +1183,8 @@ export class Tab2Page implements OnInit{
         margenMax: margenMax,
         margenMin: margenMin,
         planesOriginales: JSON.stringify(this.planesOriginales),
-        diferenciaFondo: this.diferenciaFondo
+        diferenciaFondo: this.diferenciaFondo,
+        planesPausados: JSON.stringify(this.planesPausados)
       }
     });
     return;
@@ -1187,7 +1196,8 @@ export class Tab2Page implements OnInit{
     this.nav.navigateRoot('/modificar-tiempo-page');
     this.router.navigate(['/modificar-tiempo-page'], {
       queryParams: {
-        planesOriginales: JSON.stringify(this.planesOriginales)
+        planesOriginales: JSON.stringify(this.planesOriginales),
+        planesPausados: JSON.stringify(this.planesPausados)
       }
     });
   }
