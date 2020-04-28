@@ -15,7 +15,10 @@ export class GastoMayorJustifyPage implements OnInit {
   //Variable que guarda la informacion de las alertas
   alertas: AlertaGeneral[] = [];
 
-  gusto: boolean = false;
+  gusto: String = null;
+  extra: String = null;
+  pregunta2: boolean = false;
+  valido: boolean = true;
 
   constructor(private accionesService: AccionesService,
               private datosService: DatosService) { }
@@ -40,14 +43,22 @@ export class GastoMayorJustifyPage implements OnInit {
   gustoRadio(event)
   {
     this.gusto = event.detail.value;
+    if(this.gusto == 'false') {
+      this.pregunta2 = true;
+      this.valido = true;
+    } else {
+      this.pregunta2 = false;
+      this.valido = false;
+    }
   }
 
-  hola() {
-    
+  extraRadio(event)
+  {
+    this.extra = event.detail.value;
+    this.valido = false;
   }
 
   finalizar() {
-
   }
 
 }

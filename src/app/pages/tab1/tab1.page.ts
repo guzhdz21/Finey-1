@@ -217,6 +217,7 @@ export class Tab1Page implements OnInit {
         });
       }
     });
+    console.log(this.gastosMensuales);
     console.log(gastosMayores);
 
     if(gastosMayores.length != 0) {
@@ -224,7 +225,7 @@ export class Tab1Page implements OnInit {
     }
 
     //Desvicaion no terminada
-    var meses = this.gastosMensuales.length / 17;
+    /*var meses = this.gastosMensuales.length / 17;
     this.usuarioCargado.gastos.forEach(gastos => {
       var promedio = 0;
       var datos = [];
@@ -254,7 +255,7 @@ export class Tab1Page implements OnInit {
     this.mes++;
     this.datosService.guardarMes(this.mes);
     this.datosService.guardarUsuarioInfo(this.usuarioCargado);
-    await this.datosService.cargarDatos();
+    await this.datosService.cargarDatos(); */
   }
 
   //Metodo que carga los datos cuando un usuario entrara al tabs
