@@ -37,6 +37,7 @@ export class InternetComponent implements OnInit {
     idTest: null,
     id: null,
     preguntas: [{
+      idTest: null,
         idSubTest: null,
         id: null,
         preguntaTexto: '',
@@ -51,6 +52,7 @@ export class InternetComponent implements OnInit {
     idTest: null,
     id: null,
     preguntas: [{
+      idTest: null,
         idSubTest: null,
         id: null,
         preguntaTexto: '',
@@ -65,6 +67,7 @@ export class InternetComponent implements OnInit {
     idTest: null,
     id: null,
     preguntas: [{
+      idTest: null,
         idSubTest: null,
         id: null,
         preguntaTexto: '',
@@ -86,7 +89,7 @@ export class InternetComponent implements OnInit {
 
             preg.forEach(elementPreg => {
 
-              if(subTestEncontrado.id == elementPreg.idSubTest){
+              if(subTestEncontrado.id == elementPreg.idSubTest && elementPreg.idTest == 5){
                 subTestEncontrado.preguntas.push(elementPreg); 
               }
            });
@@ -221,7 +224,7 @@ if(this.permisos[2]){
   console.log("Valor a alcanzar:" + this.puntajeAlcanzar[2]);
   console.log("Valor actual:" + this.puntajeActual[2]);
   if(this.puntajeActual[2] <= this.puntajeAlcanzar[2]){
-      this.accionesService.presentAlertConsejo("Consejo de Internet" , "Se ha determinado que el servicio de telefonía no lo usas" +
+      this.accionesService.presentAlertConsejo("Consejo de Telefonía" , "Se ha determinado que el servicio de telefonía no lo usas" +
       " para nada, te recomendamos que lo canceles o busques otra compañia que no lo ofrezca dentro de sus planes," +
       " usa solo el celular para comunicarte y asi evitarás el gasto innecesario", true);
   }

@@ -1,5 +1,6 @@
 [
     {
+      "idTest": 5,
       "idSubTest": 1,
       "id": 1,
       "preguntaTexto": "¿Con cuantos megas de velocidad cuentas actualmente?",
@@ -21,6 +22,7 @@
       }]
     },
     {
+      "idTest": 5,
       "idSubTest": 1,
       "id": 2,
       "preguntaTexto": "¿Para que utilizas el internet principalmente? (Puedes escoger varias)",
@@ -46,6 +48,7 @@
       }]
     },
     {
+      "idTest": 5,
       "idSubTest": 1,
       "id": 3,
       "preguntaTexto": "¿Cuantas horas al dia se usa internet en tu hogar? (Escoge 1)",
@@ -69,6 +72,7 @@
 
 
     {
+      "idTest": 5,
       "idSubTest": 2,
       "id": 1,
       "preguntaTexto": "¿Con que plan de canales cuentas actualmente?",
@@ -82,6 +86,7 @@
       }]
     },
     {
+      "idTest": 1,
       "idSubTest": 2,
       "id": 2,
       "preguntaTexto": "¿Sueles contratar a menudo los servicios de peliculas, series, etc. que te ofrece tu compañia de cable?",
@@ -95,6 +100,7 @@
       }]
     },
     {
+      "idTest": 5,
       "idSubTest": 2,
       "id": 3,
       "preguntaTexto": "¿Cuanto tiempo se usa el servicio de cable al dia en tu hogar aproximadamente?",
@@ -116,6 +122,7 @@
       }]
     },
     {
+      "idTest": 5,
       "idSubTest": 2,
       "id": 4,
       "preguntaTexto": "Cuando ves televisión, ¿Cuantos canales sueles ver?",
@@ -143,6 +150,7 @@
 
 
     {
+      "idTest": 5,
       "idSubTest": 3,
       "id": 1,
       "preguntaTexto": "¿Cuanto tiempo se usa el telefono al dia en tu hogar?",
@@ -160,6 +168,7 @@
       }]
     },
     {
+      "idTest": 5,
       "idSubTest": 3,
       "id": 2,
       "preguntaTexto": "¿Te suelen marcar al telefono fijo muy a menudo?",
@@ -179,6 +188,7 @@
 
     
     {
+      "idTest": 4,
       "idSubTest": 1,
       "id": 1,
       "preguntaTexto": "¿Con cuanto rendimiento de combustible cuenta tu motocicleta?",
@@ -200,6 +210,7 @@
       }]
     }, 
     {
+      "idTest": 4,
       "idSubTest": 1,
       "id": 2,
       "preguntaTexto": "¿A donde sueles ir en tu motocicleta? (Puedes escoger varias)",
@@ -227,6 +238,7 @@
 
     
     {
+      "idTest": 4,
       "idSubTest": 2,
       "id": 1,
       "preguntaTexto": "¿Con cuanto rendimiento de combustible cuenta tu automovil?",
@@ -248,6 +260,7 @@
       }]
     },
     {
+      "idTest": 4,
       "idSubTest": 2,
       "id": 2,
       "preguntaTexto": "¿A donde sueles ir en tu automovil? (Puedes escoger varias)",
@@ -273,6 +286,7 @@
         }]
     }, 
     {
+      "idTest": 4,
       "idSubTest": 2,
       "id": 3,
       "preguntaTexto": "¿Cuentas con camioneta o carro?",
@@ -286,6 +300,7 @@
       }]
     }, 
     {
+      "idTest": 4,
       "idSubTest": 2,
       "id": 4,
       "preguntaTexto": "¿Cuantas personas se transportan contigo en tu vehiculo la mayor parte del tiempo?",
@@ -304,95 +319,93 @@
     }, 
 
     {
+      "idTest": 4,
       "idSubTest": 3,
       "id": 1,
       "preguntaTexto": "En promedio ¿Cuántas veces al día usas el transporte público? (un viaje de ida es 1 viaje)",
       "respuestas": [{
-        "respuestaTexto": "Una vez",
-        "valor": false
-      },
-      {
-      "respuestaTexto": "2 veces",
-      "valor": false
+        "respuestaTexto": "1 o 2 veces",
+        "valor": 0
       },
       {
       "respuestaTexto": "Más de 3 veces",
-      "valor": true
+      "valor": 1
       }]
     }, 
     {
+      "idTest": 4,
       "idSubTest": 3,
       "id": 2,
       "preguntaTexto": "A cuanta distancia está su destino cuando usa el transporte público habitualmente?",
       "respuestas": [{
         "respuestaTexto": "Menos de 2 km",
-        "valor": true
+        "valor": 1
       },
       {
       "respuestaTexto": "Más de 2 km",
-      "valor": false
+      "valor": 0
       }]
     },
     {
+      "idTest": 4,
       "idSubTest": 3,
       "id": 3,
       "preguntaTexto": "¿Cuenta con bienevales o apoyos de transporte por parte del gobierno?",
       "respuestas": [{
         "respuestaTexto": "Si, yo los tramité",
-        "valor": false
+        "valor": 0
       },
       {
       "respuestaTexto": "No, no he tramitado el apoyo y si soy estudiante o de la 3ra edad",
-      "valor": true
+      "valor": 1
       },
       {
       "respuestaTexto": "No, no puedo tramitarlo, no soy estudiante ni de la 3ra edad",
-      "valor": false
+      "valor": 0
       }]
     },
 
     {
+      "idTest": 4,
       "idSubTest": 4,
       "id": 1,
       "preguntaTexto": "¿Cuantos uber/taxi tomas a la semana aproximadamente?",
       "respuestas": [{
         "respuestaTexto": "De 1 a 6 veces",
-        "valor": false
+        "valor": 0
       },
       {
       "respuestaTexto": "Más de 6 veces",
-      "valor": true
+      "valor": 1
       }]
     },
     {
+      "idTest": 4,
       "idSubTest": 4,
       "id": 2,
       "preguntaTexto": "¿A que hora solicita el uber/taxi normalmente?",
       "respuestas": [{
         "respuestaTexto": "Horas pico (8 AM, 9 AM, 2 PM, 3 PM, 6 PM, 7 PM )",
-        "valor": true
+        "valor": 1
       },
       {
       "respuestaTexto": "Horas medianamente o no transitadas (Todas las horas excepto las pico de la respuesta anterior)",
-      "valor": false
-      },
-      {
-      "respuestaTexto": "Más de 3 veces",
-      "valor": true
+      "valor": 0
       }]
     },
     {
+      "idTest": 4,
       "idSubTest": 4,
       "id": 3,
       "preguntaTexto": "¿Sueles llegar a tu destino cuando pides uber/taxi en una hora establecida (trabajo,escuela) o puedes demorarte un poco a llegar a este (ir al parque)?",
       "respuestas": [
       {
       "respuestaTexto": "Necesito llegar en una hora establecida cuando tomo uber/taxi",
-      "valor": false
+      "valor": 0
       },
       {
       "respuestaTexto": "No necesariamnete necesito llegar a una hora establecida cuando pido uber/taxi",
-      "valor": true
+      "valor": 1
       }]
     }
 ]
