@@ -92,6 +92,7 @@ export interface SubTest {
 }
 
 export interface Pregunta {
+    idTest: number;
     idSubTest: number;
     id: number;
     preguntaTexto: string;
