@@ -268,7 +268,7 @@ if(this.permisos[0]){
     " gasolina, o que la que tienes actualmente la lleves con un mecanico para que revise por que gasta tanta gasolina", false);
   }
   else{ //SI SU GASTO SI ESTÁ JUSTIFICADO
-    this.accionesService.presentAlertGenerica("Gasto de Motocicleta", "Aunque tu gasto este arriba de la media nacional" +
+    this.accionesService.presentAlertGenerica("Gasto de Motocicleta justificado", "Aunque tu gasto este arriba de la media nacional" +
     ", está justificado, pues si lo aprovechas bien o simplemente lo necesitas tal y como es debido a tus respuestas");
   }
 }

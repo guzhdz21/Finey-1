@@ -1,4 +1,177 @@
 [
+  {
+  "idTest": 3,
+  "idSubTest": 1,
+  "id": 1,
+  "preguntaTexto": "¿Compras algun producto para tratar alguna enfermedad estetica (piel seca, pasta de dientes especial, etc.)?",
+  "respuestas": [{
+    "respuestaTexto": "Si",
+    "valor": 1
+  },
+  {
+  "respuestaTexto": "No",
+  "valor": 0
+  }]
+},
+{
+  "idTest": 3,
+  "idSubTest": 1,
+  "id": 2,
+  "preguntaTexto": "¿Asistes con algun medico de cuidado personal (dermatólogo, odontólogo, etc.) ocasionalmente?",
+  "respuestas": [{
+    "respuestaTexto": "Si",
+    "valor": 1
+  },
+  {
+  "respuestaTexto": "No",
+  "valor": 0
+  }]
+},
+{
+  "idTest": 3,
+  "idSubTest": 1,
+  "id": 3,
+  "preguntaTexto": "¿Cuanto sueles gastar en desodorante al mes?",
+  "respuestas": [{
+    "respuestaTexto": "No uso desodorante",
+    "valor": 0
+  },
+  {
+  "respuestaTexto": "Menos o igual a 60 pesos",
+  "valor": 0
+  },
+  {
+    "respuestaTexto": "Más de 60 pesos",
+    "valor": 1
+    }]
+},
+{
+  "idTest": 3,
+  "idSubTest": 1,
+  "id": 4,
+  "preguntaTexto": "¿Cuantas personas viven en donde mismo que tu (que utilicen la misma pasta, jabón, etc)?",
+  "respuestas": [{
+    "respuestaTexto": "Solo yo",
+    "valor": 0
+  },
+  {
+  "respuestaTexto": "Yo y alguien más",
+  "valor": 0
+  },
+  {
+    "respuestaTexto": "3 o más (contandome)",
+    "valor": 1
+    }]
+},
+{
+  "idTest": 3,
+  "idSubTest": 1,
+  "id": 5,
+  "preguntaTexto": "Cuando viajas... ¿Sueles llevarte  tus productos de cuidado personal o cuando llegas a tu destino los compras?",
+  "respuestas": [{
+    "respuestaTexto": "No viajo",
+    "valor": 0
+  },
+  {
+  "respuestaTexto": "Me llevo los productos que puedo",
+  "valor": 0
+  },
+  {
+    "respuestaTexto": "Compro los productos en mi lugar de destino",
+    "valor": 1
+    }]
+},
+
+{
+  "idTest": 3,
+  "idSubTest": 2,
+  "id": 1,
+  "preguntaTexto": "¿Sueles gastar dinero debido a alguna enfermedad crónica (diabetes, cancer, etc.)?",
+  "respuestas": [{
+    "respuestaTexto": "Si",
+    "valor": 1
+  },
+  {
+  "respuestaTexto": "No",
+  "valor": 0
+  }]
+},
+{
+  "idTest": 3,
+  "idSubTest": 2,
+  "id": 2,
+  "preguntaTexto": "¿Cuentas con algun kit básico de primeros auxilios o medicamentos en casa?",
+  "respuestas": [{
+    "respuestaTexto": "Si",
+    "valor": 0
+  },
+  {
+  "respuestaTexto": "No",
+  "valor": 1
+  }]
+},
+{
+  "idTest": 3,
+  "idSubTest": 2,
+  "id": 3,
+  "preguntaTexto": "¿Sueles comprar medicamentos de marca libre (farmacias similares)?",
+  "respuestas": [{
+    "respuestaTexto": "Si",
+    "valor": 0
+  },
+  {
+  "respuestaTexto": "No",
+  "valor": 1
+  }]
+},
+
+{
+  "idTest": 3,
+  "idSubTest": 3,
+  "id": 1,
+  "preguntaTexto": "¿Sueles comprar ropa de marca de arriba de $600 por prenda?",
+  "respuestas": [{
+    "respuestaTexto": "Si",
+    "valor": 1
+  },
+  {
+  "respuestaTexto": "Aveces",
+  "valor": 0
+  },
+  {
+    "respuestaTexto": "No",
+    "valor": 0
+    }]
+},
+{
+  "idTest": 3,
+  "idSubTest": 3,
+  "id": 2,
+  "preguntaTexto": "¿Sueles usar toda la ropa de tu closet?",
+  "respuestas": [{
+    "respuestaTexto": "Si",
+    "valor": 0
+  },
+  {
+  "respuestaTexto": "No toda",
+  "valor": 1
+  }]
+},
+{
+  "idTest": 3,
+  "idSubTest": 3,
+  "id": 3,
+  "preguntaTexto": "¿Que porcentaje de la ropa de tu closet la adquiriste en oferta?",
+  "respuestas": [{
+    "respuestaTexto": "Menos del 40%",
+    "valor": 1
+  },
+  {
+  "respuestaTexto": "Más del 40%",
+  "valor": 0
+  }]
+},
+
     {
       "idTest": 5,
       "idSubTest": 1,
