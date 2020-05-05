@@ -1,5 +1,185 @@
 [
   {
+    "idTest": 1,
+    "idSubTest": 1,
+    "id": 1,
+    "preguntaTexto": "¿En que situación se encuentra tu vivienda?",
+    "respuestas": [{
+      "respuestaTexto": "La estoy rentando",
+      "valor": 1
+    },
+    {
+    "respuestaTexto": "Me pertenece y ya está pagada",
+    "valor": 2
+    },
+    {
+      "respuestaTexto": "Me pertenece pero la sigo pagando",
+      "valor": 3
+    },
+    {
+      "respuestaTexto": "Vivo con mis padres o familiares todavía",
+      "valor": 4
+    }]
+  },
+  {
+    "idTest": 1,
+    "idSubTest": 1,
+    "id": 2,
+    "preguntaTexto": "Aproximadamente... ¿Cuantas horas permaneces en casa al día (sin contar las horas que duermes en ella)?",
+    "respuestas": [{
+      "respuestaTexto": "Menos de 3 horas",
+      "valor": 1
+    },
+    {
+    "respuestaTexto": "Más de 3 horas",
+    "valor": 0
+    }]
+  },
+  {
+    "idTest": 1,
+    "idSubTest": 1,
+    "id": 3,
+    "preguntaTexto": "¿Como consideras la plusvalía del lugar en el que vives?",
+    "respuestas": [{
+      "respuestaTexto": "Alta",
+      "valor": 1
+    },
+    {
+    "respuestaTexto": "Media",
+    "valor": 0
+    },
+    {
+      "respuestaTexto": "Baja",
+      "valor": 0
+      }]
+  },
+  {
+    "idTest": 1,
+    "idSubTest": 1,
+    "id": 4,
+    "preguntaTexto": "¿Con cuanta gente compartes vivienda?",
+    "respuestas": [{
+      "respuestaTexto": "Solo yo",
+      "valor": 1
+    },
+    {
+    "respuestaTexto": "Yo y alguien más",
+    "valor": 1
+    },
+    {
+      "respuestaTexto": "3 o más (contandote)",
+      "valor": 0
+      }]
+  },
+  {
+    "idTest": 1,
+    "idSubTest": 1,
+    "id": 5,
+    "preguntaTexto": "¿De cuántos pisos es tu vivienda?",
+    "respuestas": [{
+      "respuestaTexto": "1",
+      "valor": 0
+    },
+    {
+    "respuestaTexto": "2",
+    "valor": 1
+    },
+    {
+      "respuestaTexto": "3 o más",
+      "valor": 1
+      }]
+  },
+  {
+    "idTest": 1,
+    "idSubTest": 1,
+    "id": 6,
+    "preguntaTexto": "Cuando te bañas... ¿Cómo lo haces?",
+    "respuestas": [{
+      "respuestaTexto": "Llenando la tina o bañera",
+      "valor": 1
+    },
+    {
+    "respuestaTexto": "En regadera",
+    "valor": 2
+    },
+    {
+      "respuestaTexto": "De otra forma",
+      "valor": 0
+      }]
+  },
+  {
+    "idTest": 1,
+    "idSubTest": 1,
+    "id": 7,
+    "preguntaTexto": "Cuando lavas tu vehiculo o motocicleta... ¿Cómo lo haces?",
+    "respuestas": [{
+    "respuestaTexto": "Con manguera y cubeta",
+    "valor": 0
+    },
+    {
+    "respuestaTexto": "Nomás con manguera, sin cubeta",
+    "valor": 1
+    },
+    {
+    "respuestaTexto": "Karcher o algún otro aparato",
+    "valor": 0
+    },
+    {
+    "respuestaTexto": "Autolavado",
+    "valor": 2
+    },
+    {
+    "respuestaTexto": "No tengo automóvil ni motocicleta",
+    "valor": 0
+    }]
+  },
+  {
+    "idTest": 1,
+    "idSubTest": 1,
+    "id": 8,
+    "preguntaTexto": "La limpieza de la vivienda... ¿Quien la hace?",
+    "respuestas": [{
+      "respuestaTexto": "Yo la hago",
+      "valor": 0
+    },
+    {
+    "respuestaTexto": "Cuento con alguien que me hace la limpieza (personal de aseo)",
+    "valor": 1
+    },
+    {
+      "respuestaTexto": "Alguien más que vive conmigo la hace",
+      "valor": 0
+      }]
+  },
+  {
+    "idTest": 1,
+    "idSubTest": 1,
+    "id": 9,
+    "preguntaTexto": "¿Cual proceso de lavado de ropa sueles utilizar?",
+    "respuestas": [{
+      "respuestaTexto": "La mando a la lavandería",
+      "valor": 1
+    },
+    {
+    "respuestaTexto": "Uso lavadora y secadora en casa",
+    "valor": 2
+    },
+    {
+      "respuestaTexto": "Lavo a mano y sin secadora",
+      "valor": 0
+      },
+      {
+        "respuestaTexto": "Uso lavadora pero no secadora en casa",
+        "valor": 0
+        },
+        {
+          "respuestaTexto": "Alguien me hace el favor de hacer el proceso en sus casas (algún familiar, amigo, etc.)",
+          "valor": 0
+          }]
+  },
+
+
+  {
   "idTest": 3,
   "idSubTest": 1,
   "id": 1,

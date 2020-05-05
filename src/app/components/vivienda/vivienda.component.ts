@@ -1,4 +1,7 @@
 import { Component, OnInit } from '@angular/core';
+import { SubTest } from 'src/app/interfaces/interfaces';
+import { DatosService } from 'src/app/services/datos.service';
+import { AccionesService } from 'src/app/services/acciones.service';
 
 @Component({
   selector: 'app-vivienda',
@@ -7,8 +10,141 @@ import { Component, OnInit } from '@angular/core';
 })
 export class ViviendaComponent implements OnInit {
 
-  constructor() { }
+  constructor(public datosService: DatosService,
+              public accionesService: AccionesService ) { }
 
-  ngOnInit() {}
+  ngOnInit() {
+    this.subTestsEncontrados = []; //Arreglo que guarda los subtests encontrados
+    this.respuestasContestadas= [[],[],[]];
+    this.subTestEncontrado1 = this.obtenerSubTest(1, this.subTestEncontrado1);
+    this.subTestsEncontrados.push(this.subTestEncontrado1);
+  }
+
+  subTestsEncontrados: SubTest[];
+  respuestasContestadas: number[][];
+
+  subTestEncontrado1: SubTest = {
+    idTest: null,
+    id: null,
+    preguntas: [{
+      idTest: null,
+        idSubTest: null,
+        id: null,
+        preguntaTexto: '',
+        respuestas: [{
+            respuestaTexto: '',
+            valor: null
+          }]
+      }]
+  }
+
+  obtenerSubTest(idSubTest: number, subTestEncontrado: SubTest){
+    this.datosService.getSubTests().subscribe(val => {
+      val.forEach(element => {
+        if(idSubTest == element.id && element.idTest == 1){
+          console.log("cumple")
+          subTestEncontrado.idTest = element.idTest;
+          subTestEncontrado.id = element.id;
+          subTestEncontrado.preguntas = [];
+          this.datosService.getPreguntas().subscribe(preg => {
+
+            preg.forEach(elementPreg => {
+
+              if(subTestEncontrado.id == elementPreg.idSubTest && elementPreg.idTest == 1){
+                subTestEncontrado.preguntas.push(elementPreg); 
+                console.log("pusheado");
+              }
+           });
+        });
+      }
+  });
+});
+return subTestEncontrado;
+}
+
+radioButtonChange(event, idPregunta, idSubTest){
+
+  this.respuestasContestadas[idSubTest-1][idPregunta] = parseInt(event.detail.value);
+
+  }
+
+
+testFinalizado(){
+
+  if(this.respuestasContestadas[0][1] == 1 && this.respuestasContestadas[0][2] == 1 && this.respuestasContestadas[0][4] == 1){
+    var consejo1 = " • Te recomendamos rentar en otro lugar más economico aunque sea mas chico, pues no pasas mucho tiempo en tu casa" +
+    ", literal nomás llegas a dormir, por eso no hay motivo de rentar algo tan completo <br><br>"
+  }
+  else{
+    var consejo1 = "";
+  }
+
+  if(this.respuestasContestadas[0][1] == 1 && this.respuestasContestadas[0][3] == 1){
+    var consejo2 = " • Te recomendamos buscar otro lugar donde rentar que sea más economico, aunque no tenga la misma plusvalía <br><br>"
+  }
+  else{
+    var consejo2 = "";
+  }
+
+  if(this.respuestasContestadas[0][5] == 1 && this.respuestasContestadas[0][4] == 1 && this.respuestasContestadas[0][1] == 1){
+    var consejo3 = " • Te recomendamos rentar en un lugar más barato debido a que tu casa es más grande de lo necesario para el número de personas que viven en ella <br><br>"
+  }
+  else{
+    var consejo3 = "";
+  }
+
+  if(this.respuestasContestadas[0][6] == 1){
+    var consejo4 = " • Te recomendamos usar más la regadera y que la tina/bañera la llenes de vez en cuando, no siempre <br><br>"
+  }
+  else{
+    var consejo4 = "";
+  }
+
+  if(this.respuestasContestadas[0][6] == 2){
+    var consejo5 = " • Te recomendamos comprar un aspersor para la regadera para que ahorre agua, a largo plazo es demasiado conveniente <br><br>"
+  }
+  else{
+    var consejo5 = "";
+  }
+
+  if(this.respuestasContestadas[0][7] == 1){
+    var consejo6 = " • Te recomendamos usar la cubeta para lavar tu vehiculo, ya que asi ahorrarás mucha agua <br><br>"
+  }
+  else{
+    var consejo6 = "";
+  }
+
+  if(this.respuestasContestadas[0][7] == 2){
+    var consejo7 = " • Te recomendamos dejar de llevar tu vehiculo al autolavado, y lavarlo tu mismo con cubeta y manguera" +
+    ", si no tienes el tiempo para hacerlo, puedes ofrecerle una propina a algun hijo/sobrino tuyo por hacerlo <br><br>"
+  }
+  else{
+    var consejo7 = "";
+  }
+
+  if(this.respuestasContestadas[0][8] == 1){
+    var consejo8 = " • Te recomendamos que la limpieza del hogar la realices tu o alguien que viva contigo, se pueden turnar los días <br><br>"
+  }
+  else{
+    var consejo8 = "";
+  }
+
+  if(this.respuestasContestadas[0][9] == 1){
+    var consejo9 = " • Te recomendamos dejar de mandar tu ropa a la lavandería, puedes lavarla a mano en casa o puedes conseguirte una lavadora economica <br><br>"
+  }
+  else{
+    var consejo9 = "";
+  }
+
+  if(this.respuestasContestadas[0][9] == 2){
+    var consejo10 = " • Te recomendamos laves los días soleados para que puedas ahorrarte la secadora y secar tus prendas en el sol <br><br>"
+  }
+  else{
+    var consejo10 = "";
+  }
+
+  this.accionesService.presentAlertGenerica("Consejos de vivienda", consejo1 + consejo2 + consejo3 + consejo4 + consejo5 + consejo6 + consejo7 + consejo8 + consejo9 + consejo10);    
+}
+
 
 }

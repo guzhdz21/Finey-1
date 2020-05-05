@@ -15,13 +15,6 @@ export class CuidadoComponent implements OnInit {
 
   ngOnInit() {
     this.subTestsEncontrados = []; //Arreglo que guarda los subtests encontrados
-    this.puntajeAlcanzar = []; //Arreglo que guarda los valores d epuntaje a alcanzar 
-    this.puntajeActual = [];
-    this.puntajeActual[0] = 0; 
-    this.puntajeActual[1] = 0; 
-    this.puntajeActual[2] = 0; 
-    this.puntajeActual[3] = 0;
-    this.respuestasContestadas = [];
     this.respuestasContestadas= [[],[],[]];
     this.subTestEncontrado1 = this.obtenerSubTest(1, this.subTestEncontrado1);
     this.subTestEncontrado2 = this.obtenerSubTest(2, this.subTestEncontrado2);
@@ -32,8 +25,6 @@ export class CuidadoComponent implements OnInit {
   }
 
   subTestsEncontrados: SubTest[];
-  puntajeAlcanzar: number[];
-  puntajeActual: number[];
   respuestasContestadas: number[][];
 
   subTestEncontrado1: SubTest = {
