@@ -1,4 +1,491 @@
 [
+  {
+    "idTest": 1,
+    "idSubTest": 1,
+    "id": 1,
+    "preguntaTexto": "¿En que situación se encuentra tu vivienda?",
+    "respuestas": [{
+      "respuestaTexto": "La estoy rentando",
+      "valor": 1
+    },
+    {
+    "respuestaTexto": "Me pertenece y ya está pagada",
+    "valor": 2
+    },
+    {
+      "respuestaTexto": "Me pertenece pero la sigo pagando",
+      "valor": 3
+    },
+    {
+      "respuestaTexto": "Vivo con mis padres o familiares todavía",
+      "valor": 4
+    }]
+  },
+  {
+    "idTest": 1,
+    "idSubTest": 1,
+    "id": 2,
+    "preguntaTexto": "Aproximadamente... ¿Cuantas horas permaneces en casa al día (sin contar las horas que duermes en ella)?",
+    "respuestas": [{
+      "respuestaTexto": "Menos de 3 horas",
+      "valor": 1
+    },
+    {
+    "respuestaTexto": "Más de 3 horas",
+    "valor": 0
+    }]
+  },
+  {
+    "idTest": 1,
+    "idSubTest": 1,
+    "id": 3,
+    "preguntaTexto": "¿Como consideras la plusvalía del lugar en el que vives?",
+    "respuestas": [{
+      "respuestaTexto": "Alta",
+      "valor": 1
+    },
+    {
+    "respuestaTexto": "Media",
+    "valor": 0
+    },
+    {
+      "respuestaTexto": "Baja",
+      "valor": 0
+      }]
+  },
+  {
+    "idTest": 1,
+    "idSubTest": 1,
+    "id": 4,
+    "preguntaTexto": "¿Con cuanta gente compartes vivienda?",
+    "respuestas": [{
+      "respuestaTexto": "Solo yo",
+      "valor": 1
+    },
+    {
+    "respuestaTexto": "Yo y alguien más",
+    "valor": 1
+    },
+    {
+      "respuestaTexto": "3 o más (contandote)",
+      "valor": 0
+      }]
+  },
+  {
+    "idTest": 1,
+    "idSubTest": 1,
+    "id": 5,
+    "preguntaTexto": "¿De cuántos pisos es tu vivienda?",
+    "respuestas": [{
+      "respuestaTexto": "1",
+      "valor": 0
+    },
+    {
+    "respuestaTexto": "2",
+    "valor": 1
+    },
+    {
+      "respuestaTexto": "3 o más",
+      "valor": 1
+      }]
+  },
+  {
+    "idTest": 1,
+    "idSubTest": 1,
+    "id": 6,
+    "preguntaTexto": "Cuando te bañas... ¿Cómo lo haces?",
+    "respuestas": [{
+      "respuestaTexto": "Llenando la tina o bañera",
+      "valor": 1
+    },
+    {
+    "respuestaTexto": "En regadera",
+    "valor": 2
+    },
+    {
+      "respuestaTexto": "De otra forma",
+      "valor": 0
+      }]
+  },
+  {
+    "idTest": 1,
+    "idSubTest": 1,
+    "id": 7,
+    "preguntaTexto": "Cuando lavas tu vehiculo o motocicleta... ¿Cómo lo haces?",
+    "respuestas": [{
+    "respuestaTexto": "Con manguera y cubeta",
+    "valor": 0
+    },
+    {
+    "respuestaTexto": "Nomás con manguera, sin cubeta",
+    "valor": 1
+    },
+    {
+    "respuestaTexto": "Karcher o algún otro aparato",
+    "valor": 0
+    },
+    {
+    "respuestaTexto": "Autolavado",
+    "valor": 2
+    },
+    {
+    "respuestaTexto": "No tengo automóvil ni motocicleta",
+    "valor": 0
+    }]
+  },
+  {
+    "idTest": 1,
+    "idSubTest": 1,
+    "id": 8,
+    "preguntaTexto": "La limpieza de la vivienda... ¿Quien la hace?",
+    "respuestas": [{
+      "respuestaTexto": "Yo la hago",
+      "valor": 0
+    },
+    {
+    "respuestaTexto": "Cuento con alguien que me hace la limpieza (personal de aseo)",
+    "valor": 1
+    },
+    {
+      "respuestaTexto": "Alguien más que vive conmigo la hace",
+      "valor": 0
+      }]
+  },
+  {
+    "idTest": 1,
+    "idSubTest": 1,
+    "id": 9,
+    "preguntaTexto": "¿Cual proceso de lavado de ropa sueles utilizar?",
+    "respuestas": [{
+      "respuestaTexto": "La mando a la lavandería",
+      "valor": 1
+    },
+    {
+    "respuestaTexto": "Uso lavadora y secadora en casa",
+    "valor": 2
+    },
+    {
+      "respuestaTexto": "Lavo a mano y sin secadora",
+      "valor": 0
+      },
+      {
+        "respuestaTexto": "Uso lavadora pero no secadora en casa",
+        "valor": 0
+        },
+        {
+          "respuestaTexto": "Alguien me hace el favor de hacer el proceso en sus casas (algún familiar, amigo, etc.)",
+          "valor": 0
+          }]
+  },
+
+
+  {
+    "idTest": 2,
+    "idSubTest": 1,
+    "id": 1,
+    "preguntaTexto": "¿Sueles comer más comida de la calle o preparada en tu casa?",
+    "respuestas": [{
+      "respuestaTexto": "De la calle",
+      "valor": 1
+    },
+    {
+    "respuestaTexto": "De mi casa",
+    "valor": 0
+    }]
+  },
+  {
+    "idTest": 2,
+    "idSubTest": 1,
+    "id": 2,
+    "preguntaTexto": "Cuando cocinas en tu casa....¿Cocinas sólo lo del día o aprovechas y también cocinas lo de días posteriores para congelarlo?",
+    "respuestas": [{
+      "respuestaTexto": "Sólo lo del día",
+      "valor": 1
+    },
+    {
+    "respuestaTexto": "Cocino también lo de días posteriores",
+    "valor": 0
+    },
+    {
+      "respuestaTexto": "A veces lo del día, aveces tambien los posteriores",
+      "valor": 0
+      }]
+  },
+  {
+    "idTest": 2,
+    "idSubTest": 1,
+    "id": 3,
+    "preguntaTexto": "Cuando vas de compras por alimentos...¿Vas con una lista definida de qué comprar o en el momento agarras lo que veas conveniente y necesario?",
+    "respuestas": [{
+      "respuestaTexto": "Voy con una lista de lo que debo comprar",
+      "valor": 0
+    },
+    {
+    "respuestaTexto": "Voy sin lista viendo que comprar",
+    "valor": 1
+    }]
+  },
+  {
+    "idTest": 2,
+    "idSubTest": 1,
+    "id": 4,
+    "preguntaTexto": "Cuando vas a comprar los alimentos...¿Te acompañan tus hijos o pareja?",
+    "respuestas": [{
+      "respuestaTexto": "Voy solo",
+      "valor": 0
+    },
+    {
+    "respuestaTexto": "Si, mis hijos y mi pareja",
+    "valor": 1
+    },
+    {
+      "respuestaTexto": "Solo mi pareja",
+      "valor": 0
+    },
+    {
+    "respuestaTexto": "Solo mis hijos",
+    "valor": 1
+    }]
+  },
+  {
+    "idTest": 2,
+    "idSubTest": 1,
+    "id": 5,
+    "preguntaTexto": "Cuando vas de compras por alimentos...¿Sueles ir ya que tu hayas comido o antes de comer?",
+    "respuestas": [{
+      "respuestaTexto": "Ya comido, sin hambre alguna",
+      "valor": 0
+    },
+    {
+    "respuestaTexto": "Sin comer, con hambre",
+    "valor": 1
+    }]
+  },
+  {
+    "idTest": 2,
+    "idSubTest": 1,
+    "id": 6,
+    "preguntaTexto": "¿Sueles aprovechar las ofertas de los supermercados (por ejemplo; los martes en Walmart)?",
+    "respuestas": [{
+      "respuestaTexto": "Si",
+      "valor": 0
+    },
+    {
+    "respuestaTexto": "Aveces",
+    "valor": 0
+    },
+    {
+    "respuestaTexto": "No",
+    "valor": 1
+    }]
+  },
+  {
+    "idTest": 2,
+    "idSubTest": 1,
+    "id": 7,
+    "preguntaTexto": "¿Sueles comprar agua embotellada o te llevas agua en un recipiente desde tu casa cuando sales?",
+    "respuestas": [{
+      "respuestaTexto": "Me llevo mi recipiente de agua",
+      "valor": 0
+    },
+    {
+    "respuestaTexto": "Compro agua embotellada",
+    "valor": 1
+    }]
+  },
+  {
+    "idTest": 2,
+    "idSubTest": 1,
+    "id": 8,
+    "preguntaTexto": "¿Los alimentos que compraas solo son para tí o es para tu familia también?",
+    "respuestas": [{
+      "respuestaTexto": "Solo para mi (no tengo familia)",
+      "valor": 0
+    },
+    {
+    "respuestaTexto": "Para mi pareja y yo (no tengo hijos)",
+    "valor": 0
+    },
+    {
+      "respuestaTexto": "Para mi familia y yo",
+      "valor": 1
+      }]
+  },
+
+
+  {
+  "idTest": 3,
+  "idSubTest": 1,
+  "id": 1,
+  "preguntaTexto": "¿Compras algun producto para tratar alguna enfermedad estetica (piel seca, pasta de dientes especial, etc.)?",
+  "respuestas": [{
+    "respuestaTexto": "Si",
+    "valor": 1
+  },
+  {
+  "respuestaTexto": "No",
+  "valor": 0
+  }]
+},
+{
+  "idTest": 3,
+  "idSubTest": 1,
+  "id": 2,
+  "preguntaTexto": "¿Asistes con algun medico de cuidado personal (dermatólogo, odontólogo, etc.) ocasionalmente?",
+  "respuestas": [{
+    "respuestaTexto": "Si",
+    "valor": 1
+  },
+  {
+  "respuestaTexto": "No",
+  "valor": 0
+  }]
+},
+{
+  "idTest": 3,
+  "idSubTest": 1,
+  "id": 3,
+  "preguntaTexto": "¿Cuanto sueles gastar en desodorante al mes?",
+  "respuestas": [{
+    "respuestaTexto": "No uso desodorante",
+    "valor": 0
+  },
+  {
+  "respuestaTexto": "Menos o igual a 60 pesos",
+  "valor": 0
+  },
+  {
+    "respuestaTexto": "Más de 60 pesos",
+    "valor": 1
+    }]
+},
+{
+  "idTest": 3,
+  "idSubTest": 1,
+  "id": 4,
+  "preguntaTexto": "¿Cuantas personas viven en donde mismo que tu (que utilicen la misma pasta, jabón, etc)?",
+  "respuestas": [{
+    "respuestaTexto": "Solo yo",
+    "valor": 0
+  },
+  {
+  "respuestaTexto": "Yo y alguien más",
+  "valor": 0
+  },
+  {
+    "respuestaTexto": "3 o más (contandome)",
+    "valor": 1
+    }]
+},
+{
+  "idTest": 3,
+  "idSubTest": 1,
+  "id": 5,
+  "preguntaTexto": "Cuando viajas... ¿Sueles llevarte  tus productos de cuidado personal o cuando llegas a tu destino los compras?",
+  "respuestas": [{
+    "respuestaTexto": "No viajo",
+    "valor": 0
+  },
+  {
+  "respuestaTexto": "Me llevo los productos que puedo",
+  "valor": 0
+  },
+  {
+    "respuestaTexto": "Compro los productos en mi lugar de destino",
+    "valor": 1
+    }]
+},
+
+{
+  "idTest": 3,
+  "idSubTest": 2,
+  "id": 1,
+  "preguntaTexto": "¿Sueles gastar dinero debido a alguna enfermedad crónica (diabetes, cancer, etc.)?",
+  "respuestas": [{
+    "respuestaTexto": "Si",
+    "valor": 1
+  },
+  {
+  "respuestaTexto": "No",
+  "valor": 0
+  }]
+},
+{
+  "idTest": 3,
+  "idSubTest": 2,
+  "id": 2,
+  "preguntaTexto": "¿Cuentas con algun kit básico de primeros auxilios o medicamentos en casa?",
+  "respuestas": [{
+    "respuestaTexto": "Si",
+    "valor": 0
+  },
+  {
+  "respuestaTexto": "No",
+  "valor": 1
+  }]
+},
+{
+  "idTest": 3,
+  "idSubTest": 2,
+  "id": 3,
+  "preguntaTexto": "¿Sueles comprar medicamentos de marca libre (farmacias similares)?",
+  "respuestas": [{
+    "respuestaTexto": "Si",
+    "valor": 0
+  },
+  {
+  "respuestaTexto": "No",
+  "valor": 1
+  }]
+},
+
+{
+  "idTest": 3,
+  "idSubTest": 3,
+  "id": 1,
+  "preguntaTexto": "¿Sueles comprar ropa de marca de arriba de $600 por prenda?",
+  "respuestas": [{
+    "respuestaTexto": "Si",
+    "valor": 1
+  },
+  {
+  "respuestaTexto": "Aveces",
+  "valor": 0
+  },
+  {
+    "respuestaTexto": "No",
+    "valor": 0
+    }]
+},
+{
+  "idTest": 3,
+  "idSubTest": 3,
+  "id": 2,
+  "preguntaTexto": "¿Sueles usar toda la ropa de tu closet?",
+  "respuestas": [{
+    "respuestaTexto": "Si",
+    "valor": 0
+  },
+  {
+  "respuestaTexto": "No toda",
+  "valor": 1
+  }]
+},
+{
+  "idTest": 3,
+  "idSubTest": 3,
+  "id": 3,
+  "preguntaTexto": "¿Que porcentaje de la ropa de tu closet la adquiriste en oferta?",
+  "respuestas": [{
+    "respuestaTexto": "Menos del 40%",
+    "valor": 1
+  },
+  {
+  "respuestaTexto": "Más del 40%",
+  "valor": 0
+  }]
+},
+
     {
       "idTest": 5,
       "idSubTest": 1,

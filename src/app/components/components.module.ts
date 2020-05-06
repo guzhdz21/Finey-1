@@ -7,6 +7,12 @@ import { HeaderModalComponent } from './header-modal/header-modal.component';
 import { RouterModule } from '@angular/router';
 import { InternetComponent } from './internet/internet.component';
 import { TransporteComponent } from './transporte/transporte.component';
+import { CuidadoComponent } from './cuidado/cuidado.component';
+import { ViviendaComponent } from './vivienda/vivienda.component';
+import { AlimentosComponent } from './alimentos/alimentos.component';
+import { ElectronicosComponent } from './electronicos/electronicos.component';
+import { EducacionComponent } from './educacion/educacion.component';
+import { OcioComponent } from './ocio/ocio.component';
 
 @NgModule({
   declarations: [
@@ -14,14 +20,26 @@ import { TransporteComponent } from './transporte/transporte.component';
     MenuComponent,
     HeaderModalComponent,
     InternetComponent, 
-    TransporteComponent
+    TransporteComponent,
+    CuidadoComponent,
+    ViviendaComponent,
+    AlimentosComponent,
+    ElectronicosComponent,
+    EducacionComponent,
+    OcioComponent
   ],
   exports: [
     HeaderComponent,
     MenuComponent,
     HeaderModalComponent,
     InternetComponent,
-    TransporteComponent
+    TransporteComponent,
+    CuidadoComponent,
+    ViviendaComponent,
+    AlimentosComponent,
+    ElectronicosComponent,
+    EducacionComponent,
+    OcioComponent
   ],
   imports: [
     CommonModule,

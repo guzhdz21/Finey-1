@@ -4,8 +4,14 @@
 
   <form #formulario="ngForm">
 
+    <app-vivienda *ngIf="this.id == 1"></app-vivienda>
+    <app-alimentos *ngIf="this.id == 2"></app-alimentos>
+    <app-cuidado *ngIf="this.id == 3"></app-cuidado>
     <app-transporte *ngIf="this.id == 4"></app-transporte>
     <app-internet *ngIf="this.id == 5"></app-internet>  
+    <app-electronicos *ngIf="this.id == 6"></app-electronicos>
+    <app-educacion *ngIf="this.id == 7"></app-educacion>
+    <app-ocio *ngIf="this.id == 8"></app-ocio>
 
   </form>
 

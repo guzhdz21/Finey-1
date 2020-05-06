@@ -1,5 +1,36 @@
 [
   {
+    "idTest": 1,
+    "id": 1,
+    "texto": "Vivienda"
+  },
+
+
+  {
+    "idTest": 2,
+    "id": 1,
+    "texto": "Alimentos"
+  },
+
+
+  {
+    "idTest": 3,
+    "id": 1,
+    "texto": "Limpieza"
+  },
+  {
+    "idTest": 3,
+    "id": 2,
+    "texto": "Salud"
+  },
+  {
+    "idTest": 3,
+    "id": 3,
+    "texto": "Ropa"
+  },
+
+
+  {
       "idTest": 5,
       "id": 1,
       "texto": "Internet"
