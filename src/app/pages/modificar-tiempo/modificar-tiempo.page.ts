@@ -128,7 +128,7 @@ export class ModificarTiempoPage implements OnInit {
       if(this.planMenor.aportacionMensual >= ahorrar) {
 
         //Determinar si el ussuario desea pausar un plan 
-       return await this.opcionesPrioridad(margenMax, margenMin, gasto);
+       return await this.opcionesPrioridad(margenMax, margenMin);
         //Un plan es aceptado y se le notifica al usuario
       } else {
         this.planMayor.aportacionMensual = ahorrar - this.planMenor.aportacionMensual;
@@ -142,7 +142,7 @@ export class ModificarTiempoPage implements OnInit {
       if(this.planMenor.aportacionMensual >= ahorrar) {
 
         //Determinar que desea hacer el ususario con el plan prioritario
-       return await this.opcionesPrioridad(margenMax, margenMin, gasto);
+       return await this.opcionesPrioridad(margenMax, margenMin);
 
         //Plan es valido y se le da opcion al ussuario si desea modificarlo o crearlo 
       } else {
@@ -201,7 +201,7 @@ export class ModificarTiempoPage implements OnInit {
     if (gasto  >= margenMax) {
 
       if(this.planMenor.aportacionMensual >= (ahorrar/2)) {
-        return await this.opcionesPrioridadDos(margenMax, margenMin, gasto);
+        return await this.opcionesPrioridadDos(margenMax, margenMin);
       } else {
         this.confirmarCreacionMasDosPlanes(ahorrar);
         return true;
@@ -210,7 +210,7 @@ export class ModificarTiempoPage implements OnInit {
     } else if ( ( gasto < margenMax ) && (gasto >= margenMin ) ) {
 
       if(this.planMenor.aportacionMensual >= (ahorrar)/2) {
-        return await this.opcionesPrioridadDos(margenMax, margenMin, gasto);
+        return await this.opcionesPrioridadDos(margenMax, margenMin);
       } else {
         this.confirmarCreacionMasDosPlanes(ahorrar);
         return true;
@@ -248,16 +248,16 @@ export class ModificarTiempoPage implements OnInit {
     return;
   }
 
-  async opcionesPrioridad(margenMax: number, margenMin: number, gasto: number) {
-      if(await this.intentarPrioritario(margenMax, margenMin, gasto)) {
+  async opcionesPrioridad(margenMax: number, margenMin: number) {
+      if(await this.intentarPrioritario(margenMax, margenMin)) {
         return true;
       } else {
         return false;
       }
   }
 
-  async opcionesPrioridadDos(margenMax: number, margenMin: number, gasto: number) {
-    if(await this.intentarPrioritario(margenMax, margenMin, gasto)) {
+  async opcionesPrioridadDos(margenMax: number, margenMin: number) {
+    if(await this.intentarPrioritario(margenMax, margenMin)) {
       this.planesaux = [];
       this.planes.forEach(element => {
         this.planesaux.push(element);
@@ -275,9 +275,10 @@ export class ModificarTiempoPage implements OnInit {
     }
   }
 
-  async intentarPrioritario(margenMax: number, margenMin: number, gasto: number) {
+  async intentarPrioritario(margenMax: number, margenMin: number) {
 
     var ahorrar = 0;
+    var gasto;
     if(this.planes.length == 2) {
       this.planMenor.aportacionMensual = (this.planMenor.cantidadTotal - this.planMenor.cantidadAcumulada)/this.planMenor.tiempoRestante;
       this.planMayor.aportacionMensual = (this.planMayor.cantidadTotal - this.planMayor.cantidadAcumulada)/this.planMayor.tiempoRestante;
@@ -286,7 +287,6 @@ export class ModificarTiempoPage implements OnInit {
       return await this.validarGasto(margenMax,margenMin, gasto);
     }
       
-    console.log('Prioridad');
     var ahorrar2 = 0;
     this.planMenor.aportacionMensual = (this.planMenor.cantidadTotal - this.planMenor.cantidadAcumulada)/this.planMenor.tiempoRestante;
     this.planesPrioritarios.push(this.planMenor);
@@ -326,7 +326,7 @@ export class ModificarTiempoPage implements OnInit {
     
     else if(this.planes.length == 2) {
       if(this.planMenor.aportacionMensual >= (ahorrar2)) {
-        return this.intentarPrioritario(margenMax,margenMin, gasto);
+        return this.intentarPrioritario(margenMax,margenMin);
       }
       this.planMayor.aportacionMensual = ahorrar2 - this.planMenor.aportacionMensual;
       ahorrar += ahorrar2;
@@ -336,7 +336,7 @@ export class ModificarTiempoPage implements OnInit {
     
     else {
       if(this.planMenor.aportacionMensual>= (ahorrar2/2)) {
-        return this.intentarPrioritario(margenMax, margenMin, gasto);
+        return this.intentarPrioritario(margenMax, margenMin);
       }
       var iguales = true;
       this.planes.forEach(element => {
@@ -385,6 +385,19 @@ export class ModificarTiempoPage implements OnInit {
       }
     });
     if(aux) {
+      if(this.planes.length = 2) {
+        if(await this.intentarPrioritario(margenMax, margenMin)) {
+          var aux = false;
+          await this.planes.forEach(element => {
+            if(element.aportacionMensual <= ochoPorciento) {
+              aux = true;
+            }
+          });
+          if(!aux) {
+            return aux;
+          }
+        }
+      }
       if(this.planMenor.aportacionMensual >= this.datosService.usuarioCarga.ingresoCantidad - margenMin - ochoPorciento) {
         await this.accionesService.presentAlertPlan([{text: 'Modificar', handler: (blah) => {}}], 
         'Plan demasiado pequeño', 'Se ha detectado que alguno(s) planes recibiran poco dinero, ' + 
@@ -411,27 +424,37 @@ export class ModificarTiempoPage implements OnInit {
   }
 
   async actualizarUsuario() {
+    await this.datosService.cargarDatos();
     this.datosService.usuarioCarga.fondoPlanes = 0;
     this.datosService.planesCargados.forEach(element => {
       if(element.pausado != true) {
         this.datosService.usuarioCarga.fondoPlanes += element.aportacionMensual; 
       }
     });
+    this.datosService.usuarioCarga.fondoPlanes = Math.round(this.datosService.usuarioCarga.fondoPlanes*100)/100;
     var gastos = 0;
     var margenMin = 0;
+    var margenMax = 0;
     this.datosService.usuarioCarga.gastos.forEach(element => {
       if(element.cantidad != 0) {
         gastos += element.cantidad;
         margenMin += element.margenMin;
+        margenMax += element.margenMax;
       }
     });
     this.datosService.usuarioCarga.fondoAhorro = this.datosService.usuarioCarga.ingresoCantidad - this.datosService.usuarioCarga.fondoPlanes -gastos;
     if(this.datosService.usuarioCarga.fondoAhorro < 0) {
       this.datosService.usuarioCarga.fondoAhorro = this.datosService.usuarioCarga.ingresoCantidad - this.datosService.usuarioCarga.fondoPlanes - margenMin;
-      await this.accionesService.presentAlertGenerica('Gastos Minimos', 'Ahora estas en un sistema de gastos minimos, '+ 
-      'por lo tanto tus gastos seran tomados en cuenta como menores, pero recuerda que el ahorro sera menor debido que '+ 
-      'los planes se estan llevando casi todo');
     }
+
+    if(this.datosService.usuarioCarga.ingresoCantidad - this.datosService.usuarioCarga.fondoPlanes < margenMax 
+      && this.datosService.usuarioCarga.ingresoCantidad - this.datosService.usuarioCarga.fondoPlanes >= margenMin) {
+        this.accionesService.presentAlertGenerica('Gastos Minimos', 'Ahora estas en un sistema de gastos minimos, '+ 
+        'esto quiere decir que se tomara en cuenta tus gastos ne margen minimo para hacer los calculos de tus ahorros,' +
+        'pero recuerda que el ahorro sera menor debido que '+ 
+        'los planes se estan llevando casi todo');
+    }
+
     this.datosService.usuarioCarga.fondoAhorro -= this.diferenciaFondo;
     this.datosService.usuarioCarga.fondoAhorro = Math.round(this.datosService.usuarioCarga.fondoAhorro*100)/100;
     await this.datosService.guardarUsuarioInfo(this.datosService.usuarioCarga);

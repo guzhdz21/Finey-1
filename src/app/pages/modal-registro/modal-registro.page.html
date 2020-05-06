@@ -104,6 +104,25 @@
   </ion-input>
   </ion-item>
 
+  <ion-item lines="none">
+
+    <ion-buttons slot="start">
+      <ion-button slots="icon-only" (click)="botonInfo('Hora en que se desplegara la notificacion diaria')">
+        <ion-icon name="information-circle"></ion-icon>
+      </ion-button>
+    </ion-buttons>
+
+    <ion-label class="margen_derecha_18 ion-text-wrap">Hora notificacion diaria</ion-label>
+    <ion-datetime displayFormat="HH:mm" 
+                  doneText="Guardar" 
+                  cancelText="Cancelar"
+                  placeholder="20:00"
+                  name="notificacionTiempo"
+                  min="20:00"
+                  max="23:00"
+                  (ionChange)="notificacionT($event)"></ion-datetime>
+  </ion-item>
+
   <ion-item color="primary"> 
     <ion-label><h1 class="texto_centrado_blanco">Gastos</h1></ion-label>
   </ion-item>
@@ -133,7 +152,7 @@
       <ion-button expand="block"
                   color="success"
                   (click)="registrar()"
-                  [disabled]="formulario.invalid || ingreso || sexo || requerido">Registrarme</ion-button>
+                  [disabled]="formulario.invalid || ingreso || sexo || requerido || notificacion">Registrarme</ion-button>
 
 </form>
 

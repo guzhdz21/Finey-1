@@ -49,9 +49,11 @@ collapseCard: boolean = false;
 backButtonSub: Subscription;
 
     markDisabled = (date: Date) => {
-        var hola = new Date();
-        var current = new Date(new Date().getTime() - 86400000);
-        return date < current;
+      var dia = new Date().getDate();
+      var mes = new Date().getMonth();
+      var año = new Date().getFullYear();
+      var current = new Date(new Date(año, mes, dia, 0, 0, 0, 0));
+      return date < current;
     };
 
 //Declaracion del calendario

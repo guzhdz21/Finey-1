@@ -20,7 +20,7 @@ export class PlanPausarPagePage implements OnInit {
       this.margenMin = Number(res.margenMin);
       this.planesOriginales = JSON.parse(res.planesOriginales);
       this.diferenciaFondo = Number(res.diferenciaFondo);
-      this.planesPausados = JSON.parse(res.planesOPausados);
+      this.planesPausados = JSON.parse(res.planesPausados);
     });
   }
 
@@ -42,7 +42,8 @@ export class PlanPausarPagePage implements OnInit {
       margenMax: this.margenMax,
       margenMin: this.margenMin,
       planesOriginales: this.planesOriginales,
-      diferenciaFondo: this.diferenciaFondo
+      diferenciaFondo: this.diferenciaFondo,
+      planesPausados: this.planesPausados
     }
     });
     await modal.present();

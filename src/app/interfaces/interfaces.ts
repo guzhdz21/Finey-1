@@ -110,3 +110,8 @@ export interface GastoMayor {
     cantidadOriginal: number;
     cantidadNueva: number; 
 }
+
+export interface FechaMensual {
+    dia: number;
+    mes: number;
+}

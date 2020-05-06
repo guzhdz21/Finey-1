@@ -169,6 +169,18 @@
     },
     {
         "titulo": "Extra2",
-        "mensaje": "Si relaizaste un pago a la deuda que ingresaste en este rubro ingresa cuanto"
+        "mensaje": "Si realizaste un pago a la deuda que ingresaste en este rubro ingresa cuanto"
+    },
+    {
+        "titulo": "Hora en que se desplegara la notificacion diaria",
+        "mensaje": "Selecciona una hora entre las 20:00 y las 23:00 horas para que diariamente se te presente una notificacion para avisarte que debes registrar tus gastos diarios"
+    },
+    {
+        "titulo": "¿Necesario o por gusto?",
+        "mensaje": "Si el gasto extra que hiciste fue debido a que ralmente necesitabas tener o pagar en lo que gastaste selecciona 'Necesario', si no es el caso y gastaste de mas debido a que te diste un pequeño gusto selecciona 'Por gusto'"
+    }, 
+    {
+        "titulo": "¿Costo mas o se agrego un gasto extra?",
+        "mensaje": "Si el gasto extra que hiciste fue debido a que la cantida del gasto subio (el precio del producto o servicio) selecciona 'Costo mas', si no es el caso y gastaste de mas debido a que compraste o agregaste algo extra a lo que normalmente gastas selecciona 'Gasto extra'"
     }
 ]

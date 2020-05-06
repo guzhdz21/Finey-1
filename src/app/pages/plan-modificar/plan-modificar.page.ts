@@ -1078,14 +1078,19 @@ export class PlanModificarPage implements OnInit {
   }*/
 
   async actualizarUsuario() {
+    await this.datosService.cargarDatos();
+    this.usuarioCargado = this.datosService.usuarioCarga;
     this.usuarioCargado.fondoPlanes = 0;
     this.datosService.planesCargados.forEach(element => {
       if(element.pausado != true) {
         this.usuarioCargado.fondoPlanes += element.aportacionMensual; 
       }
     });
+    this.usuarioCargado.fondoPlanes = Math.round(this.usuarioCargado.fondoPlanes*100)/100;
+
     var gastos = 0;
     var margenMin = 0;
+    var margenMax = 0;
     this.datosService.usuarioCarga.gastos.forEach(element => {
       if(element.cantidad != 0) {
         gastos += element.cantidad;
@@ -1097,6 +1102,14 @@ export class PlanModificarPage implements OnInit {
     if(this.usuarioCargado.fondoAhorro < 0) {
       this.usuarioCargado.fondoAhorro = this.usuarioCargado.ingresoCantidad - this.usuarioCargado.fondoPlanes - margenMin;
     }
+
+    if(this.usuarioCargado.ingresoCantidad - this.usuarioCargado.fondoPlanes < margenMax 
+      && this.usuarioCargado.ingresoCantidad - this.usuarioCargado.fondoPlanes >= margenMin) {
+      this.accionesService.presentAlertGenerica('Gastos Minimos', 'Ahora estas en un sistema de gastos minimos, '+ 
+      'por lo tanto tus gastos seran tomados en cuenta como menores, pero recuerda que el ahorro sera menor debido que '+ 
+      'los planes se estan llevando casi todo');
+    }
+
     this.usuarioCargado.fondoAhorro -= this.diferenciaFondo;
     this.usuarioCargado.fondoAhorro = Math.round(this.usuarioCargado.fondoAhorro*100)/100;
     await this.datosService.guardarUsuarioInfo(this.usuarioCargado);

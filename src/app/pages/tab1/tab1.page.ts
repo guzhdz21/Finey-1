@@ -129,20 +129,21 @@ export class Tab1Page implements OnInit {
       }
     });
     this.doughnutChartData = this.datos;
+    
 
-    var año = this.datosService.fechaMes.getFullYear();
-    var mes = this.datosService.fechaMes.getMonth() + 1;
-    var dia = this.datosService.fechaMes.getDate();
-    var fechaProxima = new Date(año, mes, dia);
-    if(new Date() >= fechaProxima) {
+    
+    if(await new Date().getMonth() != this.datosService.fechaMes.mes 
+    && await new Date().getDate() == this.datosService.fechaMes.dia) {
       await this.nuevoMes();
     }
     
-    if(new Date().getHours() > 10 && new Date().getHours() < 24) {
-      if(this.datosService.fechaDiaria == null || this.datosService.fechaDiaria.getDate() != new Date().getDate()) {
+    if(await new Date().getHours() > 10 && await new Date().getHours() < 24) {
+      if(this.datosService.fechaDiaria != null && this.datosService.fechaDiaria != await new Date().getDate()) {
         await this.abrirGastosDiarios();
       }
     }
+    
+    await this.datosService.presentToast("llegue");
   }
 
 
@@ -291,9 +292,18 @@ export class Tab1Page implements OnInit {
         if ( gasto.cantidad != 0 ) {
           gastosCantidad += gasto.cantidad;
         } 
-
       }
       this.cantidadGastos = gastosCantidad;
+    if(this.colores.length < 5) {
+      this.datosService.getColores().subscribe(val => {
+        val.colores.forEach(element => {
+          this.colores.push(element.toString());
+        });
+      });
+      this.chartColors = [{
+        backgroundColor: [ ] = this.colores
+      }];
+    }  
   }
 
   ionViewDidLoad () {

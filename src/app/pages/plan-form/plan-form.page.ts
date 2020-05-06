@@ -71,6 +71,8 @@ export class PlanFormPage implements OnInit {
   //Variable que nos indica si el usuario escogio la opcion de modificar cuando se encontro que un plan recibia muy poco
   modificarOcho: boolean;
 
+  prioridadMinimo: boolean;
+
   diferenciaFondo: number = this.datosService.diferencia;
 
   //Variable que se usa para el regreso o boton back nativo del celular
@@ -121,6 +123,7 @@ export class PlanFormPage implements OnInit {
       } 
     });
     
+    console.log(margenMax);
     //Obtner la aportacion mensual de nuevo plan y verificar si es valido
     this.planNuevo.aportacionMensual = (this.planNuevo.cantidadTotal - this.planNuevo.cantidadAcumulada) / this.planNuevo.tiempoTotal;
     if(this.planNuevo.aportacionMensual <= 0) {
@@ -149,7 +152,7 @@ export class PlanFormPage implements OnInit {
       }
 
       //Caso un plan
-      this.casoUnPlan(margenMax);
+      this.casoUnPlan(margenMax, margenMin);
       return;
     }
 
@@ -187,17 +190,17 @@ export class PlanFormPage implements OnInit {
     } else {
       await this.accionesService.presentAlertPlan([{text: 'Modificar', handler: (blah) => {}}], 
       'No puedes completar este plan en ese tiempo', 'Presiona Modificar y aumenta tu tiempo para ser apto de conseguirlo');
-      this.calcularEstimacion(margenMin);
+      this.calcularEstimacionPlanes(margenMin, true);
       return false;
     }
   }
 
   //Metodo que ejecuta todos lo necesario para validar e ingresar un plan
-  async casoUnPlan(margenMax: number) {
+  async casoUnPlan(margenMax: number, margenMin: number) {
     //Obtenemos el ochoporciento del fondo de ahorro del ussuario llamamos el metdo que lo valida
     var ochoPorciento = this.obtenerOchoPorciento(margenMax);
 
-    if(await this.siPlanNuevoMuyPequeño(ochoPorciento)) {
+    if(await this.siPlanNuevoMuyPequeño(ochoPorciento, margenMax, margenMin)) {
       //Retorna si no es valido
       return;
     }
@@ -209,18 +212,6 @@ export class PlanFormPage implements OnInit {
     this.actualizarUsuario();
     this.nav.navigateRoot('/tabs/tab2');
     return;
-  }
-
-  //Metodo que calcula la estimacion de meses para hacer valido un plan
-  async calcularEstimacion(margenMin: number) {
-    var estimacion = -1 * (this.planNuevo.cantidadTotal - this.planNuevo.cantidadAcumulada);
-    var estimacion = estimacion/(margenMin - this.usuarioCargado.ingresoCantidad + this.diferenciaFondo);
-    var aux = Math.round(estimacion);
-    if(aux < estimacion) {
-      estimacion = estimacion + 0.5;
-    }
-    await this.accionesService.presentAlertGenerica("ATENCION", "Te sugerimos que aumentes el tiempo de " + 
-    "tu plan minimo a " + Math.round(estimacion) + " meses para poder cumplirlo");
   }
 
   //Metodo que ejecuta todos lo necesario para validar e ingresar un plan cuando ya hay uno ingresado
@@ -255,7 +246,7 @@ export class PlanFormPage implements OnInit {
     if(this.creado) {
 
       //Verificamos si no reciben menos del ocho porciento
-      if(await this.ocho(margenMax)) {
+      if(await this.ocho(margenMax, margenMin)) {
 
         //Casos si si reciben menos
         //Caso en que el ussuario decidio pausar planes
@@ -364,7 +355,7 @@ export class PlanFormPage implements OnInit {
       await this.accionesService.presentAlertPlan([{text: 'Modificar', handler: (blah) => {}}], 
       'No puedes completar este plan en ese tiempo', 'Presiona Modificar y aumenta tu tiempo para ser apto de conseguirlo');
       this.creado = false;
-      this.calcularEstimacionDosPlanes(margenMin);
+      this.calcularEstimacionPlanes(margenMin, false);
       return;
     }
   }
@@ -373,6 +364,16 @@ export class PlanFormPage implements OnInit {
   async opcionesPrioridad(margenMax: number, margenMin: number) {
     //Vemos si es posible darle al prioritario lo necesario y que no afecte al ussuario
     if(await this.intentarPrioritario(margenMax, margenMin)) {
+      if(this.prioridadMinimo) {
+        await this.accionesService.presentAlertPlan([{text: 'Crear', handler: (blah) => {this.accionesService.alertaPlanCrear = true}},
+                                                  {text: 'Modificar', handler: (blah) => {this.accionesService.alertaPlanCrear = false}}], 
+                                                  'Plan que apenas es posible', 
+        'Puedes crear el plan y cumplirlo en el tiempo establecido MIENTRAS te mantengas en GASTOS MINIMOS en los gastos promedio (luz, agua, etc.) o puedes aumentar el tiempo en conseguirlo para que no estes tan presionado');
+        if(!this.accionesService.alertaPlanCrear) {
+          this.creado = false;
+          return;
+        }
+      } 
       this.prioridadDos = false;
       this.creado = true;
       return;
@@ -428,7 +429,7 @@ export class PlanFormPage implements OnInit {
     if(this.creado) {
 
       //Verificamos si no reciben menos del ocho porciento
-      if(await this.ocho(margenMax)) {
+      if(await this.ocho(margenMax, margenMin)) {
 
         //Casos si si reciben menos
         //Caso en que el ussuario decidio pausar planes
@@ -563,7 +564,7 @@ export class PlanFormPage implements OnInit {
       await this.accionesService.presentAlertPlan([{text: 'Modificar', handler: (blah) => {}}], 
       'No puedes completar este plan en ese tiempo', 'Presiona Modificar y aumenta tu tiempo para ser apto de conseguirlo');
       this.creado = false;
-      this.calcularEstimacionDosPlanes(margenMin);
+      this.calcularEstimacionPlanes(margenMin, false);
       return; 
     }
   }
@@ -573,7 +574,17 @@ export class PlanFormPage implements OnInit {
 
     //Vemos si es posible darle al prioritario lo necesario y que no afecte al ussuario
     if(await this.intentarPrioritario(margenMax, margenMin)) {
-      //Calculos finales en el caso de que si se pueda 
+      //Calculos finales en el caso de que si se pueda
+      if(this.prioridadMinimo) {
+        await this.accionesService.presentAlertPlan([{text: 'Crear', handler: (blah) => {this.accionesService.alertaPlanCrear = true}},
+                                                  {text: 'Modificar', handler: (blah) => {this.accionesService.alertaPlanCrear = false}}], 
+                                                  'Plan que apenas es posible', 
+        'Puedes crear el plan y cumplirlo en el tiempo establecido MIENTRAS te mantengas en GASTOS MINIMOS en los gastos promedio (luz, agua, etc.) o puedes aumentar el tiempo en conseguirlo para que no estes tan presionado');
+        if(!this.accionesService.alertaPlanCrear) {
+          this.creado = false;
+          return;
+        }
+      } 
       this.prioridadDos = false;
       this.planesaux = [];
       this.planes.forEach(element => {
@@ -711,13 +722,18 @@ export class PlanFormPage implements OnInit {
   }
 
   //Metodo que verifica si los planes reciben menos o el 8%
-  async ocho(margenMax: number) {
+  async ocho(margenMax: number, margenMin: number) {
     var ochoPorciento = this.obtenerOchoPorciento(margenMax);
-    if(await this.siPlanNuevoMuyPequeño(ochoPorciento)) {
+    if(await this.siPlanNuevoMuyPequeño(ochoPorciento, margenMax, margenMin)) {
       return true;
     } else {
       if(this.planes.length == 1) {
         if(this.planes[0].aportacionMensual <= ochoPorciento) {
+          if(await this.intentarPrioritario(margenMax, margenMin)) {
+            if(!(this.planes[0].aportacionMensual <= ochoPorciento)) {
+              return false
+            }
+          }
           await this.accionesService.presentAlertPlan([{text: 'Modificar', handler: (blah) => {this.pausa = false, this.modificarOcho = true}},
                                                         {text: 'Pausar', handler: (blah) => {this.pausa = true, this.modificarOcho = false}}], 
                                                       'Plan demasiado pequeño', 
@@ -750,19 +766,26 @@ export class PlanFormPage implements OnInit {
   }
 
   //Metodo que es llamado cuando el plan nuevo recibe menos o el 8%
-  async siPlanNuevoMuyPequeño(ochoPorciento: number) {
+  async siPlanNuevoMuyPequeño(ochoPorciento: number, margenMax: number, margenMin: number) {
     if(this.planNuevo.aportacionMensual <= ochoPorciento) {
+      if(this.datosService.planesExisten != false && this.planes.length == 1) {
+        if(await this.intentarPrioritario(margenMax, margenMin)) {
+          if(!(this.planNuevo.aportacionMensual <= ochoPorciento)) {
+            return false;
+          }
+        }
+      }
       await this.accionesService.presentAlertPlan([{text: 'Ok', handler: (blah) => {}}], 
-                                                  'Plan demasiado pequeño', 
-    'Reduce el tiempo para completarlo o aumenta la cantidad');
-    return true;
+                                                      'Plan demasiado pequeño', 
+              'Reduce el tiempo para completarlo o aumenta la cantidad');
+      return true;
     }
-    
     return false;
   }
 
   //Metodo que hace los procedimeinto necesarios para intentar satisfacer los planes prioritarios (analizalo arlex)
   async intentarPrioritario(margenMax: number, margenMin: number) {
+    this.prioridadMinimo = false;
     var ahorrar: number = 0;
     var gasto: number;
 
@@ -862,6 +885,7 @@ export class PlanFormPage implements OnInit {
       return true;
      }
      else if ( ( gasto < margenMax ) && (gasto >= margenMin ) ) {
+       this.prioridadMinimo = true;
       return true;
      }
      else {
@@ -916,16 +940,23 @@ export class PlanFormPage implements OnInit {
   }
 
   //Metodo que calcula ala estimacion de los meses para que dos o mas planes puedan ser cumplidos
-  async calcularEstimacionDosPlanes(margenMin: number) {
-    if(this.planes.length == 1 ) { 
+  async calcularEstimacionPlanes(margenMin: number, primero: boolean) {
+    if(this.datosService.planesExisten == false || this.planes.length < 1) {
+      var estimacion = (this.planNuevo.cantidadTotal - this.planNuevo.cantidadAcumulada);
+    }
+    else if(this.planes.length == 1 ) { 
       var estimacion = (this.planNuevo.cantidadTotal - this.planNuevo.cantidadAcumulada) + (this.planes[0].cantidadTotal - this.planes[0].cantidadAcumulada);
     } else {
       var estimacion = 0;
       this.planes.forEach(element => {
         estimacion += (element.cantidadTotal - element.cantidadAcumulada);
       });
+      if(primero) {
+        estimacion += this.planNuevo.cantidadTotal - this.planNuevo.cantidadAcumulada;
+      }
     }
     
+    console.log(estimacion);
     estimacion = -1 * estimacion;
     estimacion = estimacion/(margenMin - this.usuarioCargado.ingresoCantidad + this.diferenciaFondo);
     var aux = Math.round(estimacion);
@@ -933,34 +964,44 @@ export class PlanFormPage implements OnInit {
       estimacion = estimacion + 0.5;
     }
     await this.accionesService.presentAlertGenerica("ATENCION", "Te sugerimos que aumentes el tiempo de " + 
-    "tu plan minimo a " + Math.round(estimacion) + " meses para poder cumplirlo");
+    "tu plan minimo a " + Math.round(estimacion) + " meses para poder ingresarlo");
   }
   
   async actualizarUsuario() {
+    await this.datosService.cargarDatos();
+    this.usuarioCargado = this.datosService.usuarioCarga;
     this.usuarioCargado.fondoPlanes = 0;
     this.datosService.planesCargados.forEach(element => {
       if(element.pausado != true) {
         this.usuarioCargado.fondoPlanes += element.aportacionMensual; 
       }
     });
+    this.usuarioCargado.fondoPlanes = Math.round(this.usuarioCargado.fondoPlanes*100)/100;
     var gastos = 0;
     var margenMin = 0;
+    var margenMax = 0;
     this.datosService.usuarioCarga.gastos.forEach(element => {
       if(element.cantidad != 0) {
         gastos += element.cantidad;
         margenMin += element.margenMin;
+        margenMax += element.margenMax;
       }
     });
 
     this.usuarioCargado.fondoAhorro = this.usuarioCargado.ingresoCantidad - this.usuarioCargado.fondoPlanes - gastos;
     if(this.usuarioCargado.fondoAhorro < 0) {
       this.usuarioCargado.fondoAhorro = this.usuarioCargado.ingresoCantidad - this.usuarioCargado.fondoPlanes - margenMin;
-      await this.accionesService.presentAlertGenerica('Gastos Minimos', 'Ahora estas en un sistema de gastos minimos, '+ 
-      'por lo tanto tus gastos seran tomados en cuenta como menores, pero recuerda que el ahorro sera menor debido que '+ 
-      'los planes se estan llevando casi todo');
     }
     this.usuarioCargado.fondoAhorro -= this.diferenciaFondo;
     this.usuarioCargado.fondoAhorro = Math.round(this.usuarioCargado.fondoAhorro*100)/100;
+    
+    if(this.usuarioCargado.ingresoCantidad - this.usuarioCargado.fondoPlanes < margenMax 
+      && this.usuarioCargado.ingresoCantidad - this.usuarioCargado.fondoPlanes >= margenMin) {
+      this.accionesService.presentAlertGenerica('Gastos Minimos', 'Ahora estas en un sistema de gastos minimos, '+ 
+      'esto quiere decir que se tomara en cuenta tus gastos ne margen minimo para hacer los calculos de tus ahorros,' +
+      'pero recuerda que el ahorro sera menor debido que '+ 
+      'los planes se estan llevando casi todo');
+    }
     await this.datosService.guardarUsuarioInfo(this.usuarioCargado);
   }
 

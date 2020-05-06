@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
-import { Rubro, ColorArray, LabelArray, UsuarioLocal, Gasto, Plan, AlertaGeneral, Recordatorio, Test, SubTest, Pregunta, GastosMensuales } from '../interfaces/interfaces';
+import { Rubro, ColorArray, LabelArray, UsuarioLocal, Gasto, Plan, AlertaGeneral, Recordatorio, Test, SubTest, Pregunta, GastosMensuales, FechaMensual } from '../interfaces/interfaces';
 import { Storage } from '@ionic/storage';
 import { ToastController, Events, Platform } from '@ionic/angular';
 import { AlertController } from '@ionic/angular';
@@ -105,8 +105,9 @@ export class DatosService {
   planesExisten: boolean = false; // Variable para saber si hay planes existentes
   recordatoriosExisten: boolean = false; // Variable para saber si hay planes existentes
   idsExisten: boolean;
-  fechaDiaria: Date;
-  fechaMes: Date; 
+  fechaDiaria: number;
+  fechaMes: FechaMensual;
+  notificacion: Date;
   mes: number;
   diferencia: number;
 
@@ -204,7 +205,7 @@ export class DatosService {
       }
     }
 
-  guardarFechaDiaria(fechaDiaria: Date)
+  async guardarFechaDiaria(fechaDiaria: number)
   {
     this.fechaDiaria = fechaDiaria;
     this.storage.set('FechaDiaria', fechaDiaria);
@@ -220,8 +221,12 @@ export class DatosService {
     }
   }
 
-  guardarDiaDelMes(fecha: Date)
+  guardarDiaDelMes(dia: number, mes: number)
   {
+    var fecha: FechaMensual =  {
+      dia: dia,
+      mes: mes
+    }
     this.fechaMes = fecha;
     this.storage.set('FechaMes', fecha);
   }
@@ -232,8 +237,24 @@ export class DatosService {
     if(fecha) {
       this.fechaMes = fecha;
     } else {
-      this.fechaMes = new Date();
-      this.guardarDiaDelMes(this.fechaMes);
+      this.fechaMes = null;
+    }
+  }
+
+  guardarNotificacion(fecha: Date)
+  {
+    this.notificacion = fecha;
+    this.storage.set('Notificacion', fecha);
+  }
+
+  async cargarNotificacion()
+  {
+    const fecha = await this.storage.get('Notificacion');
+    if(fecha) {
+      this.notificacion = fecha;
+    } else {
+      this.notificacion = new Date();
+      this.guardarNotificacion(this.notificacion);
     }
   }
 
@@ -559,14 +580,19 @@ export class DatosService {
   }
 
   async mandarNotificacionDiaria() {
+    this.cargarNotificacion();
     var id = 0;
     this.idsRecordatorios = [];
     this.idsRecordatorios.push(id);
+    var mes = new Date().getMonth();
+    var año = new Date().getFullYear();
+    var dia = new Date().getDate() + 1;
     await this.localNotifications.schedule({
       id: 0,
       title: 'Gastos del Dia',
       text: 'Entra a la aplicacion para los gastos que realizaste en este dia',
-      trigger: { every: {hour: 15, minute: 53}},
+      trigger: { every: {hour: this.notificacion.getHours(), minute: this.notificacion.getMinutes()}, 
+      firstAt: new Date(año, mes, dia)},
       foreground: true,
       vibrate: true,
       icon: 'alarm',

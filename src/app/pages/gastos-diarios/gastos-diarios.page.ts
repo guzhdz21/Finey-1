@@ -86,7 +86,7 @@ export class GastosDiariosPage implements OnInit {
       }
     }
     await this.datosService.guardarGastosMensuales(this.gastosMensuales);
-    await this.datosService.guardarFechaDiaria(new Date());
+    await this.datosService.guardarFechaDiaria(new Date().getDate());
     this.modalCtrl.dismiss();
     this.nav.navigateRoot('/tabs/tab1');
   }

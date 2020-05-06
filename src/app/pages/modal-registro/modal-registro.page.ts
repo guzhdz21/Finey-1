@@ -6,6 +6,7 @@ import { Router } from '@angular/router';
 import { AccionesService } from '../../services/acciones.service';
 import { Subscription } from 'rxjs';
 import { LocalNotifications } from '@ionic-native/local-notifications/ngx';
+import { Time } from '@angular/common';
 
 @Component({
   selector: 'app-modal-registro',
@@ -22,7 +23,8 @@ export class ModalRegistroPage implements OnInit {
   //Variables para validar el ingreso de los datos
   ingreso: boolean = true;
   sexo: boolean = true;
-  requerido = true;
+  notificacion: boolean = true;
+  requerido: boolean = true;
 
   //Variable que nos ayuda a asegurarnos si el ususario no puede satisfacer sus necesidades basicas
   registrarseAdvertencia: boolean = this.datosService.registrarseAdvertencia;
@@ -39,6 +41,8 @@ export class ModalRegistroPage implements OnInit {
     fondoPlanes: null,
     fondoAhorro: null
   };
+
+  notificacionTiempo: Date;
 
   //Constructor con las inyecciones de servicios y controladores necesarias
   constructor( private modalCtrl: ModalController, 
@@ -200,6 +204,11 @@ sexoRadio(event)
     });
   }
 
+  notificacionT(event) {
+    this.notificacionTiempo = new Date(event.detail.value);
+    this.notificacion = false;
+  }
+
   //Metodo para asegurar que todos los datos sean ingresados
   verificarGastosNull() {
     this.usuario.gastos.forEach(element => {
@@ -211,17 +220,17 @@ sexoRadio(event)
   }
 
   async mandarNotificacion() {
+    await this.datosService.guardarNotificacion(this.notificacionTiempo);
     await this.datosService.mandarNotificacionDiaria();
   }
 
   async guardarFechaMes() {
     if(new Date().getDate() > 28) {
-      var mes = new Date().getMonth();
-      var año = new Date().getFullYear();
-      await this.datosService.guardarDiaDelMes(new Date(año, mes, 28));
+      await this.datosService.guardarDiaDelMes(28, new Date().getMonth());
     } else {
-      await this.datosService.guardarDiaDelMes(new Date());
+      await this.datosService.guardarDiaDelMes(new Date().getDate(), new Date().getMonth());
     }
+    await this.datosService.guardarFechaDiaria(new Date().getDate());
   }
 
   async guardarDiferencia() {
