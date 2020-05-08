@@ -66,5 +66,16 @@
       "idTest": 4,
       "id": 4,
       "texto": "Uber/taxi"
+    },
+
+    {
+      "idTest": 7,
+      "id": 1,
+      "texto": "Inicio Educacion"
+    },
+    {
+      "idTest": 7,
+      "id": 2,
+      "texto": "Educacion"
     }
 ]

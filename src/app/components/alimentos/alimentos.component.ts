@@ -92,7 +92,7 @@ else{
   var consejo3 = "";
 }
 
-if(this.respuestasContestadas[0][4] == 1){
+if(this.respuestasContestadas[0][4] == 1 || this.respuestasContestadas[0][4] == 2){
   var consejo4 = " • Te recomendamos hacer lo posible por no ir con tus hijos al supermercado, pues cuando los llevas los gastos se incrementan de una manera considerable <br><br>"
 }
 else{
