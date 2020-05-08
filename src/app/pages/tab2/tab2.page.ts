@@ -103,6 +103,8 @@ export class Tab2Page implements OnInit{
 
   diferenciaFondo: number = this.datosService.diferencia;
 
+  multiplan: boolean;
+
   //Variable que se usa para el regreso o boton back nativo del celular
   backButtonSub: Subscription;
 
@@ -190,10 +192,12 @@ export class Tab2Page implements OnInit{
   }
 
   async abrirModal(i: number) {
+    this.planesOriginales = JSON.parse(JSON.stringify(this.planes));
     const modal = await this.modalCtrl.create({
       component: PlanModificarPage,
       componentProps: {
-        index: i
+        index: i,
+        planesOriginales: this.planesOriginales
       }
     });
     await modal.present();
@@ -219,7 +223,6 @@ export class Tab2Page implements OnInit{
       this.planesOriginales = JSON.parse(JSON.stringify(this.planes));
       await this.datosService.borrarPlan(i);
       this.planesRetornados = JSON.parse(JSON.stringify(this.planes));
-      this.planes = [];
       this.datosService.planesExisten = false;
       this.borrado = true;
       this.planesPausados = [];
@@ -236,6 +239,7 @@ export class Tab2Page implements OnInit{
         this.datosService.presentToast("Plan borrado");
         return;
       }
+      this.planes = [];
       this.planesPausados.forEach(element => {
         this.planes.push(element);
       });
@@ -274,18 +278,19 @@ export class Tab2Page implements OnInit{
 
       //Caso dos planes
       if(this.planesRetornados.length == 2) { 
-        //console.log("Caso 2 planes: " + this.planNuevo.nombre);
+        this.multiplan = false;
         await this.casoDosPlanes(margenMax, margenMin);
         return;
       }
 
       //caso mas de dos planes
+      this.multiplan = true;
       this.casoMasDosPlanes(margenMax, margenMin);
       return;
     }
 
     //Caso un plan
-
+    this.multiplan = false;
     this.casoUnPlan();
     return;
   }
@@ -807,7 +812,7 @@ export class Tab2Page implements OnInit{
     var ahorrar: number = 0;
     var gasto: number;
 
-    if(this.planesRetornados.length == 2) {
+    if(!this.multiplan) {
       this.planMenor.aportacionMensual = (this.planMenor.cantidadTotal - this.planMenor.cantidadAcumulada)/this.planMenor.tiempoRestante;
       this.planMayor.aportacionMensual = (this.planMayor.cantidadTotal - this.planMayor.cantidadAcumulada)/this.planMayor.tiempoRestante;
       ahorrar = this.planMenor.aportacionMensual + this.planMayor.aportacionMensual;

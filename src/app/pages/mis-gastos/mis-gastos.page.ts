@@ -147,6 +147,7 @@ export class MisGastosPage implements OnInit {
       this.usuarioModificado.fondoAhorro = this.usuarioModificado.ingresoCantidad - margenMin - this.usuarioModificado.fondoPlanes;
     }
     this.usuarioModificado.fondoAhorro -= this.diferenciaAhorro;
+    this.datosService.usuarioCarga.fondoAhorro = Math.round(this.datosService.usuarioCarga.fondoAhorro*100)/100;
 
   this.datosService.guardarUsuarioInfo(this.usuarioModificado);
   this.event.publish('usuarioActualizado');

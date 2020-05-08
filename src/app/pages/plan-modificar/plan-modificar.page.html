@@ -1,4 +1,16 @@
-<app-header-modal titulo="Modifica el plan" ruta="/tabs/tab2"></app-header-modal>
+<ion-header no-border>
+  <ion-toolbar color="success">
+    
+    <ion-buttons slot="start">
+      <ion-button (click)="regresar()" slot="icon-only">
+        <ion-icon slot="start" name="arrow-round-back"></ion-icon>
+      </ion-button>
+    </ion-buttons>
+
+    <ion-title>Modificar Plan</ion-title>
+
+  </ion-toolbar>
+</ion-header>
 
 <ion-content>
 
@@ -7,7 +19,7 @@
     <ion-item>
 
         <ion-buttons slot="start">
-        <ion-button slots="icon-only" (click)="botonInfo2('Nombre del Plan')">
+        <ion-button slots="icon-only" (click)="botonInfo('Nombre del Plan')">
           <ion-icon name="information-circle"></ion-icon>
         </ion-button>
       </ion-buttons>
@@ -25,7 +37,7 @@
       <ion-item>
 
         <ion-buttons slot="start">
-        <ion-button slots="icon-only" (click)="botonInfo2('Costo')">
+        <ion-button slots="icon-only" (click)="botonInfo('Costo')">
           <ion-icon name="information-circle"></ion-icon>
         </ion-button>
       </ion-buttons>
@@ -43,7 +55,7 @@
       <ion-item>
 
         <ion-buttons slot="start">
-        <ion-button slots="icon-only" (click)="botonInfo2('Tiempo del Plan')">
+        <ion-button slots="icon-only" (click)="botonInfo('Tiempo del Plan')">
           <ion-icon name="information-circle"></ion-icon>
         </ion-button>
       </ion-buttons>
@@ -61,7 +73,7 @@
       <ion-item>
 
         <ion-buttons slot="start">
-        <ion-button slots="icon-only" (click)="botonInfo2('Descripcion')">
+        <ion-button slots="icon-only" (click)="botonInfo('Descripcion')">
           <ion-icon name="information-circle"></ion-icon>
         </ion-button>
       </ion-buttons>
@@ -78,7 +90,7 @@
       <ion-item>
 
         <ion-buttons slot="start">
-        <ion-button slots="icon-only" (click)="botonInfo2('Cantidad acumulada')">
+        <ion-button slots="icon-only" (click)="botonInfo('Cantidad acumulada')">
           <ion-icon name="information-circle"></ion-icon>
         </ion-button>
       </ion-buttons>

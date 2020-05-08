@@ -263,7 +263,7 @@ export class PlanFormPage implements OnInit {
           this.irAPlanModificar();
           return;
         }
-
+        this.planes = this.planesOriginales;
         return;
       }
 
@@ -275,6 +275,7 @@ export class PlanFormPage implements OnInit {
       this.nav.navigateRoot('/tabs/tab2');
       return;
     }
+    this.planes = this.planesOriginales;
     return;
   }
 
@@ -379,7 +380,11 @@ export class PlanFormPage implements OnInit {
       return;
     } else {
       //Si no es posible entonces se llama el metodo que le da opciones al ussuario
+      if(this.planesPrioritarios.length > 0) {
+        await this.prioridad(this.planesPrioritarios[0].nombre);
+      } else {
       await this.prioridad(this.planMenor.nombre);
+      }
       this.creado = false;
       return;
     }
@@ -601,9 +606,13 @@ export class PlanFormPage implements OnInit {
       return;
 
     } else {
-      //Vemos que opcion escoge el ussuario
-      await this.prioridad(this.planMenor.nombre);
-      this.creado = false;
+      //Vemos que opcion escoge el usuario
+      if(this.planesPrioritarios.length > 0) {
+        await this.prioridad(this.planesPrioritarios[0].nombre);
+      } else {
+        await this.prioridad(this.planMenor.nombre);
+        this.creado = false;
+      }
 
       if(this.prioridadDos) {
         //Vemos si el ussuario desea pausar o no
@@ -748,7 +757,6 @@ export class PlanFormPage implements OnInit {
       await this.planes.forEach(element => {
         if(element.aportacionMensual <= ochoPorciento) {
            aux = true;
-           console.log(element);
         }
       });
       if(aux) {
@@ -956,7 +964,6 @@ export class PlanFormPage implements OnInit {
       }
     }
     
-    console.log(estimacion);
     estimacion = -1 * estimacion;
     estimacion = estimacion/(margenMin - this.usuarioCargado.ingresoCantidad + this.diferenciaFondo);
     var aux = Math.round(estimacion);

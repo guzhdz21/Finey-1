@@ -26,6 +26,8 @@ export class ModificarTiempoPage implements OnInit {
 
   diferenciaFondo: number = this.datosService.diferencia;
 
+  multiplan: boolean;
+
   constructor(
               private modalCtrl: ModalController,
               private nav: NavController,
@@ -62,25 +64,47 @@ export class ModificarTiempoPage implements OnInit {
       } 
     });
     if(this.planes.length == 2) {
+      this.multiplan = false;
       if(await this.calculosDosPlanes(margenMax, margenMin)) {
         if(await this.ocho(margenMax, margenMin)) {
+          this.planes.forEach(element => {
+            this.planesPrioritarios.push(element);
+          });
+          this.planes = this.planesPrioritarios;
+          this.planesPrioritarios = [];
           return;
         }
         this.guardarCambios();
         return;
       } else {
+        this.planes.forEach(element => {
+          this.planesPrioritarios.push(element);
+        });
+        this.planes = this.planesPrioritarios;
+        this.planesPrioritarios = [];
         await this.accionesService.presentAlertPlan([{text: 'Modificar', handler: (blah) => {}}], 
         'No puedes completar los planes en ese tiempo', 'Presiona Modificar y aumenta los tiempos para ser apto de conseguirlos');
         return;
       }
     }
+    this.multiplan = true;
     if(await this.calculosMasDosPlanes(margenMax, margenMin)) {
       if(await this.ocho(margenMax, margenMin)) {
+        this.planes.forEach(element => {
+          this.planesPrioritarios.push(element);
+        });
+        this.planes = this.planesPrioritarios;
+        this.planesPrioritarios = [];
         return;
       }
       this.guardarCambios();
       return;
     } else {
+      this.planes.forEach(element => {
+        this.planesPrioritarios.push(element);
+      });
+      this.planes = this.planesPrioritarios;
+      this.planesPrioritarios = [];
       await this.accionesService.presentAlertPlan([{text: 'Modificar', handler: (blah) => {}}], 
       'No puedes completar los planes en ese tiempo', 'Presiona Modificar y aumenta los tiempos para ser apto de conseguirlos');
       return;
@@ -279,10 +303,10 @@ export class ModificarTiempoPage implements OnInit {
 
     var ahorrar = 0;
     var gasto;
-    if(this.planes.length == 2) {
+    if(!this.multiplan) {
       this.planMenor.aportacionMensual = (this.planMenor.cantidadTotal - this.planMenor.cantidadAcumulada)/this.planMenor.tiempoRestante;
       this.planMayor.aportacionMensual = (this.planMayor.cantidadTotal - this.planMayor.cantidadAcumulada)/this.planMayor.tiempoRestante;
-       ahorrar = this.planMenor.aportacionMensual + this.planMayor.aportacionMensual;
+      ahorrar = this.planMenor.aportacionMensual + this.planMayor.aportacionMensual;
       gasto = this.datosService.usuarioCarga.ingresoCantidad - ahorrar - this.diferenciaFondo;
       return await this.validarGasto(margenMax,margenMin, gasto);
     }
