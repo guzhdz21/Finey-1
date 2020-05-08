@@ -50,7 +50,7 @@
     },
     {
       "respuestaTexto": "Baja",
-      "valor": 0
+      "valor": 2
       }]
   },
   {
@@ -59,12 +59,8 @@
     "id": 4,
     "preguntaTexto": "¿Con cuanta gente compartes vivienda?",
     "respuestas": [{
-      "respuestaTexto": "Solo yo",
+      "respuestaTexto": "2 o menos (contandote)",
       "valor": 1
-    },
-    {
-    "respuestaTexto": "Yo y alguien más",
-    "valor": 1
     },
     {
       "respuestaTexto": "3 o más (contandote)",
@@ -81,13 +77,9 @@
       "valor": 0
     },
     {
-    "respuestaTexto": "2",
+    "respuestaTexto": "2 o más",
     "valor": 1
-    },
-    {
-      "respuestaTexto": "3 o más",
-      "valor": 1
-      }]
+    }]
   },
   {
     "idTest": 1,
@@ -122,7 +114,7 @@
     },
     {
     "respuestaTexto": "Karcher o algún otro aparato",
-    "valor": 0
+    "valor": 3
     },
     {
     "respuestaTexto": "Autolavado",
@@ -130,7 +122,7 @@
     },
     {
     "respuestaTexto": "No tengo automóvil ni motocicleta",
-    "valor": 0
+    "valor": 4
     }]
   },
   {
@@ -148,7 +140,7 @@
     },
     {
       "respuestaTexto": "Alguien más que vive conmigo la hace",
-      "valor": 0
+      "valor": 2
       }]
   },
   {
@@ -166,7 +158,7 @@
     },
     {
       "respuestaTexto": "Lavo a mano y sin secadora",
-      "valor": 0
+      "valor": 3
       },
       {
         "respuestaTexto": "Uso lavadora pero no secadora en casa",
@@ -174,7 +166,7 @@
         },
         {
           "respuestaTexto": "Alguien me hace el favor de hacer el proceso en sus casas (algún familiar, amigo, etc.)",
-          "valor": 0
+          "valor": 4
           }]
   },
 
@@ -208,7 +200,7 @@
     },
     {
       "respuestaTexto": "A veces lo del día, aveces tambien los posteriores",
-      "valor": 0
+      "valor": 2
       }]
   },
   {
@@ -240,11 +232,11 @@
     },
     {
       "respuestaTexto": "Solo mi pareja",
-      "valor": 0
+      "valor": 3
     },
     {
     "respuestaTexto": "Solo mis hijos",
-    "valor": 1
+    "valor": 2
     }]
   },
   {
@@ -272,7 +264,7 @@
     },
     {
     "respuestaTexto": "Aveces",
-    "valor": 0
+    "valor": 2
     },
     {
     "respuestaTexto": "No",
@@ -304,7 +296,7 @@
     },
     {
     "respuestaTexto": "Para mi pareja y yo (no tengo hijos)",
-    "valor": 0
+    "valor": 2
     },
     {
       "respuestaTexto": "Para mi familia y yo",
@@ -352,7 +344,7 @@
   },
   {
   "respuestaTexto": "Menos o igual a 60 pesos",
-  "valor": 0
+  "valor": 2
   },
   {
     "respuestaTexto": "Más de 60 pesos",
@@ -370,7 +362,7 @@
   },
   {
   "respuestaTexto": "Yo y alguien más",
-  "valor": 0
+  "valor": 2
   },
   {
     "respuestaTexto": "3 o más (contandome)",
@@ -388,7 +380,7 @@
   },
   {
   "respuestaTexto": "Me llevo los productos que puedo",
-  "valor": 0
+  "valor": 2
   },
   {
     "respuestaTexto": "Compro los productos en mi lugar de destino",
@@ -454,7 +446,7 @@
   },
   {
     "respuestaTexto": "No",
-    "valor": 0
+    "valor": 2
     }]
 },
 {
@@ -848,7 +840,7 @@
       },
       {
       "respuestaTexto": "No, no puedo tramitarlo, no soy estudiante ni de la 3ra edad",
-      "valor": 0
+      "valor": 2
       }]
     },
 
@@ -892,6 +884,146 @@
       },
       {
       "respuestaTexto": "No necesariamnete necesito llegar a una hora establecida cuando pido uber/taxi",
+      "valor": 1
+      }]
+    },
+
+
+
+    {
+      "idTest": 7,
+      "idSubTest": 1,
+      "id": 1,
+      "preguntaTexto": "¿Actualmente tú estás estudiando?",
+      "respuestas": [
+      {
+      "respuestaTexto": "Si",
+      "valor": 1
+      },
+      {
+      "respuestaTexto": "No",
+      "valor": 0
+      }]
+    },
+    {
+      "idTest": 7,
+      "idSubTest": 1,
+      "id": 2,
+      "preguntaTexto": "¿A cuantas personas les estás pagando por su educación? (Sin contarte a ti)",
+      "respuestas": [
+      {
+      "respuestaTexto": "A nadie",
+      "valor": 0
+      },
+      {
+      "respuestaTexto": "1",
+      "valor": 2
+      },
+      {
+      "respuestaTexto": "2 o más",
+      "valor": 1
+      }]
+    },
+
+    {
+      "idTest": 7,
+      "idSubTest": 2,
+      "id": 1,
+      "preguntaTexto": "¿Serías capaz de cambiar de institución educativa tu o a tus hijos (según sea el caso)?",
+      "respuestas": [
+      {
+      "respuestaTexto": "Si",
+      "valor": 1
+      },
+      {
+      "respuestaTexto": "No",
+      "valor": 0
+      }]
+    },
+    {
+      "idTest": 7,
+      "idSubTest": 2,
+      "id": 2,
+      "preguntaTexto": "¿Cuál fue la razón principal por la que te metiste o metiste a tu(s) hijo(s) a la actual institución donde estudias/estudian?",
+      "respuestas": [
+      {
+      "respuestaTexto": "Por el nivel educativo de esta",
+      "valor": 0
+      },
+      {
+      "respuestaTexto": "Por la cercanía a mi casa",
+      "valor": 1
+      },
+      {
+      "respuestaTexto": "Por influencia o recomendación de alguien",
+      "valor": 2
+      },
+      {
+      "respuestaTexto": "Por las instalaciones",
+      "valor": 3
+      },
+      {
+      "respuestaTexto": "Por el precio",
+      "valor": 4
+      }]
+    },
+    {
+      "idTest": 7,
+      "idSubTest": 2,
+      "id": 3,
+      "preguntaTexto": "¿Cuentas o cuentan tus hijos con algún programa de apoyo o beca en tu institución educativa?",
+      "respuestas": [
+      {
+      "respuestaTexto": "Si",
+      "valor": 0
+      },
+      {
+      "respuestaTexto": "No",
+      "valor": 1
+      }]
+    },
+    {
+      "idTest": 7,
+      "idSubTest": 2,
+      "id": 4,
+      "preguntaTexto": "¿Sueles gastar en libros educativos de solo texto?",
+      "respuestas": [
+      {
+      "respuestaTexto": "Si",
+      "valor": 1
+      },
+      {
+      "respuestaTexto": "No",
+      "valor": 0
+      }]
+    },
+    {
+      "idTest": 7,
+      "idSubTest": 2,
+      "id": 5,
+      "preguntaTexto": "¿Sueles adquirir cursos online?",
+      "respuestas": [
+      {
+      "respuestaTexto": "Si",
+      "valor": 1
+      },
+      {
+      "respuestaTexto": "No",
+      "valor": 0
+      }]
+    },
+    {
+      "idTest": 7,
+      "idSubTest": 2,
+      "id": 6,
+      "preguntaTexto": "¿Como sueles comprar los útiles escolares (plumas, colores, corrector, etc.)?",
+      "respuestas": [
+      {
+      "respuestaTexto": "En vacaciones en buena cantidad para el resto del semestre/año",
+      "valor": 0
+      },
+      {
+      "respuestaTexto": "Conforme vayan faltando o acabando los útiles durante el semestre o año",
       "valor": 1
       }]
     }
