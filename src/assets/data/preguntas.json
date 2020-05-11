@@ -889,6 +889,7 @@
     },
 
 
+<<<<<<< Updated upstream
 
     {
       "idTest": 7,
@@ -972,12 +973,108 @@
       "idSubTest": 2,
       "id": 3,
       "preguntaTexto": "¿Cuentas o cuentan tus hijos con algún programa de apoyo o beca en tu institución educativa?",
+=======
+    {
+      "idTest": 8,
+      "idSubTest": 1,
+      "id": 1,
+      "preguntaTexto": "¿Cuando acabas de leer un libro ¿Que haces con el?",
+      "respuestas": [
+      {
+      "respuestaTexto": "Lo guardo",
+      "valor": 1
+      },
+      {
+      "respuestaTexto": "Lo vendo",
+      "valor": 0
+      },
+      {
+        "respuestaTexto": "Lo presto",
+        "valor": 2
+        },
+        {
+        "respuestaTexto": "Lo intercambio por otro con alguien",
+        "valor": 3
+        }]
+    },
+    {
+      "idTest": 8,
+      "idSubTest": 1,
+      "id": 2,
+      "preguntaTexto": "¿Sueles comprar libros digitales?",
       "respuestas": [
       {
       "respuestaTexto": "Si",
       "valor": 0
       },
       {
+      "respuestaTexto": "No",
+      "valor": 1
+      }]
+    },
+    {
+      "idTest": 8,
+      "idSubTest": 1,
+      "id": 3,
+      "preguntaTexto": "¿Sueles comprar más libros usados o nuevos?",
+      "respuestas": [
+      {
+      "respuestaTexto": "Nuevos",
+      "valor": 1
+      },
+      {
+      "respuestaTexto": "Usados",
+      "valor": 0
+      }]
+    },
+
+    {
+      "idTest": 8,
+      "idSubTest": 2,
+      "id": 1,
+      "preguntaTexto": "¿Sueles aprovechar las ofertas de los cines? (Por ejemplo; 2x1 en taquilla o dulceria)",
+      "respuestas": [
+      {
+      "respuestaTexto": "Si",
+      "valor": 0
+      },
+      {
+      "respuestaTexto": "A veces",
+      "valor": 2
+      },
+      {
+        "respuestaTexto": "No",
+        "valor": 1
+        }]
+    },
+    {
+      "idTest": 8,
+      "idSubTest": 2,
+      "id": 2,
+      "preguntaTexto": "¿Cuantas veces al mes vas al cine?",
+      "respuestas": [
+      {
+      "respuestaTexto": "2 o menos veces",
+      "valor": 0
+      },
+      {
+      "respuestaTexto": "Más de 2 veces",
+      "valor": 1
+      }]
+    },
+    {
+      "idTest": 8,
+      "idSubTest": 2,
+      "id": 3,
+      "preguntaTexto": "¿Sueles contar con servicio de streaming de películas? (Netflix, Blim, etc.)",
+>>>>>>> Stashed changes
+      "respuestas": [
+      {
+      "respuestaTexto": "Si",
+      "valor": 0
+      },
+      {
+<<<<<<< Updated upstream
       "respuestaTexto": "No",
       "valor": 1
       }]
@@ -987,12 +1084,24 @@
       "idSubTest": 2,
       "id": 4,
       "preguntaTexto": "¿Sueles gastar en libros educativos de solo texto?",
+=======
+        "respuestaTexto": "No",
+        "valor": 1
+        }]
+    },
+    {
+      "idTest": 8,
+      "idSubTest": 2,
+      "id": 4,
+      "preguntaTexto": "¿Sueles comprar películas físicas en disco o en digital pero individualmente (comprar películas en Youtube, Playstore o Appstore)?",
+>>>>>>> Stashed changes
       "respuestas": [
       {
       "respuestaTexto": "Si",
       "valor": 1
       },
       {
+<<<<<<< Updated upstream
       "respuestaTexto": "No",
       "valor": 0
       }]
@@ -1002,12 +1111,63 @@
       "idSubTest": 2,
       "id": 5,
       "preguntaTexto": "¿Sueles adquirir cursos online?",
+=======
+        "respuestaTexto": "No",
+        "valor": 0
+        }]
+    },
+
+    {
+      "idTest": 8,
+      "idSubTest": 3,
+      "id": 1,
+      "preguntaTexto": "¿Cuando dejas de jugar un juego fisico (en disco) por que ya lo acabaste o ya te enfado, que sueles hacer con el?",
+      "respuestas": [
+      {
+      "respuestaTexto": "Lo vendo",
+      "valor": 0
+      },
+      {
+        "respuestaTexto": "Lo guardo",
+        "valor": 1
+        },
+        {
+          "respuestaTexto": "Lo intercambio con alguien",
+          "valor": 2
+          }]
+    },
+    {
+      "idTest": 8,
+      "idSubTest": 3,
+      "id": 2,
+      "preguntaTexto": "¿Cuando sueles comprar juegos?",
+      "respuestas": [
+      {
+      "respuestaTexto": "Apenas sale el juego",
+      "valor": 1
+      },
+      {
+        "respuestaTexto": "En temporada de ofertas",
+        "valor": 0
+        },
+        {
+          "respuestaTexto": "Cuando me da ganas de comprarlo aunque este sin oferta",
+          "valor": 2
+          }]
+    },
+    {
+      "idTest": 8,
+      "idSubTest": 3,
+      "id": 3,
+      "preguntaTexto": "¿Sueles hacer compras con dinero real dentro de los juegos (skins, mapas, armas, etc.)?",
+>>>>>>> Stashed changes
       "respuestas": [
       {
       "respuestaTexto": "Si",
       "valor": 1
       },
       {
+<<<<<<< Updated upstream
       "respuestaTexto": "No",
       "valor": 0
       }]
@@ -1026,5 +1186,149 @@
       "respuestaTexto": "Conforme vayan faltando o acabando los útiles durante el semestre o año",
       "valor": 1
       }]
+=======
+        "respuestaTexto": "Pocas",
+        "valor": 2
+        },
+        {
+          "respuestaTexto": "No",
+          "valor": 0
+          }]
+    },
+
+    {
+      "idTest": 8,
+      "idSubTest": 4,
+      "id": 1,
+      "preguntaTexto": "Cuando sales con tus amigos o pareja ¿Sueles llevar más efectivo del que piensas gastar o llevas una cifra aproximada de lo que piensas gastar?",
+      "respuestas": [
+      {
+      "respuestaTexto": "Llevo de más",
+      "valor": 1
+      },
+      {
+        "respuestaTexto": "Llevo una cifra aproximada",
+        "valor": 0
+        }]
+    },
+    {
+      "idTest": 8,
+      "idSubTest": 4,
+      "id": 2,
+      "preguntaTexto": "Cuando sales a comer con tus amigos ¿Cómo pagan la cuenta?",
+      "respuestas": [
+      {
+      "respuestaTexto": "Nos dividimos el total en partes iguales",
+      "valor": 1
+      },
+      {
+        "respuestaTexto": "Cada quien paga lo suyo",
+        "valor": 0
+        }]
+    },
+    {
+      "idTest": 8,
+      "idSubTest": 4,
+      "id": 3,
+      "preguntaTexto": "¿Cuantas veces sueles salir al antro con tus amigos al mes?",
+      "respuestas": [
+      {
+      "respuestaTexto": "Ni una",
+      "valor": 0
+      },
+      {
+        "respuestaTexto": "3 0 menos",
+        "valor": 2
+        },
+        {
+          "respuestaTexto": "Más de 3",
+          "valor": 1
+          }]
+    },
+
+    {
+      "idTest": 8,
+      "idSubTest": 5,
+      "id": 1,
+      "preguntaTexto": "¿Sueles salir de vacaciones en temporada baja, o alta?",
+      "respuestas": [
+      {
+      "respuestaTexto": "No salgo de vacaciones",
+      "valor": 0
+      },
+      {
+        "respuestaTexto": "Temporada alta",
+        "valor": 1
+        },
+        {
+          "respuestaTexto": "Temporada baja",
+          "valor": 2
+          }]
+    },
+    {
+      "idTest": 8,
+      "idSubTest": 5,
+      "id": 2,
+      "preguntaTexto": "Cuando vas de viaje ¿Sueles llevarte un presupuesto establecido o te llevas mucho dinero y vas gastando en lo que vas necesitando?",
+      "respuestas": [
+      {
+      "respuestaTexto": "Me llevo un dinero establecido",
+      "valor": 0
+      },
+      {
+        "respuestaTexto": "Me llevo mucho dinero sin haber establecido nada",
+        "valor": 1
+        }]
+    },
+    {
+      "idTest": 8,
+      "idSubTest": 5,
+      "id": 3,
+      "preguntaTexto": "En los viajes ¿Sueles comer fuera en tu destino o preparas comida desde el lugar en el que te hospedas?",
+      "respuestas": [
+      {
+      "respuestaTexto": "Como fuera",
+      "valor": 1
+      },
+      {
+        "respuestaTexto": "Suelo contratar el todo incluído",
+        "valor": 2
+        },
+        {
+          "respuestaTexto": "Preparo comida en el lugar donde me hospedo",
+          "valor": 0
+          }]
+    },
+
+    {
+      "idTest": 8,
+      "idSubTest": 6,
+      "id": 1,
+      "preguntaTexto": "¿Sueles aprovechar las promociones que ofrecen los museos o algunos eventos culturales en domingo?",
+      "respuestas": [
+      {
+      "respuestaTexto": "Si",
+      "valor": 0
+      },
+      {
+        "respuestaTexto": "No",
+        "valor": 1
+        }]
+    },
+    {
+      "idTest": 8,
+      "idSubTest": 6,
+      "id": 2,
+      "preguntaTexto": "Cuando asistes a eventos culturales o deportivos ¿Sueles adquirir consumibles dentro (bebidas, alimentos, etc.)?",
+      "respuestas": [
+      {
+      "respuestaTexto": "Si",
+      "valor": 1
+      },
+      {
+        "respuestaTexto": "No",
+        "valor": 0
+        }]
+>>>>>>> Stashed changes
     }
 ]

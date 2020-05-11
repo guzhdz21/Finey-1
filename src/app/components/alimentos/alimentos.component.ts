@@ -72,14 +72,14 @@ this.respuestasContestadas[idSubTest-1][idPregunta] = parseInt(event.detail.valu
 testFinalizado(){
 
 if(this.respuestasContestadas[0][1] == 1){
-  var consejo1 = " • Te recomendamos comer lo menos posible en la calle, puedes prepararte tu comida en tu casa y llevartela en un tupper sin problemas  <br><br>"
+  var consejo1 = " • Te recomendamos comer lo menos posible en la calle, puedes prepararte tu comida en tu casa y llevartela en un recipiente sin problemas  <br><br>"
 }
 else{
   var consejo1 = "";
 }
 
 if(this.respuestasContestadas[0][2] == 1){
-  var consejo2 = " • Te recomendamos cocinar tus alimentos un sólo día para toda la semana y congelar lo que es para los días posteriores (por ejemplo; cocinar todos los lunes la comida para toda la semana) <br><br>"
+  var consejo2 = " • Te recomendamos cocinar tus alimentos una o dos veces para toda la semana y congelar lo que es para los días posteriores (por ejemplo; cocinar todos los lunes la comida para toda la semana) <br><br>"
 }
 else{
   var consejo2 = "";
