@@ -15,7 +15,7 @@ export class OcioComponent implements OnInit {
 
   ngOnInit() {
     this.subTestsEncontrados = []; //Arreglo que guarda los subtests encontrados
-    this.respuestasContestadas = [[],[],[]];
+    this.respuestasContestadas = [[],[],[],[],[],[]];
     this.YaAbiertos = [];
     this.permisos = [];
     this.YaAbiertos[0] = false;
@@ -336,6 +336,53 @@ radioButtonChange(event, idPregunta, idSubTest){
     }
     this.accionesService.presentAlertGenerica("Consejos de Salidas con amigos/pareja", consejo10 + consejo11 + consejo12);
   }
+
+   //SUBTEST 5
+   if(this.permisos[4]){
+    if(this.respuestasContestadas[4][1] == 1){
+      var consejo13 = " • Te recomendamos tratar de hacer todo lo posible por viajar en temporada baja, si no puedes entonces trata de reducir gastos, como por ejemplo; en lugar de hospedarte en un hotel hazlo en un airbnb, o en lugar de viajar en avión hazlo en camión, cualquier tipo de “sacrificio” que no te cueste tanto realizar que te ahorre dinero <br><br>"
+    }
+    else{
+      var consejo13 = "";
+    }
+
+    if(this.respuestasContestadas[4][2] == 1){
+      var consejo14 = " • Te recomendamos que siempre planifiques tu presupuesto antes de tu viaje y te apegues a él lo más posible <br><br>"
+    }
+    else{
+      var consejo14 = "";
+    }
+
+    if(this.respuestasContestadas[4][3] == 1){
+      var consejo15 = " • Te recomendamos que de vez en cuando prepares comida desde el lugar donde te hospedas, puedes hacer unos sándwiches, hot cakes, o algo económico para desayunar y cenar, y ya puedes comer fuera sin problemas <br><br>"
+    }
+    else if(this.respuestasContestadas[4][3] == 2){
+      var consejo15 = " • Te recomendamos que siempre compares precios antes de elegir el todo incluido, y que valores si vale realmente la pena <br><br>"
+    }
+    else{
+      var consejo15 = "";
+    }
+    this.accionesService.presentAlertGenerica("Consejos de Viajes", consejo13 + consejo14 + consejo15);
+  }
+
+     //SUBTEST 6
+     if(this.permisos[5]){
+      if(this.respuestasContestadas[5][1] == 1){
+        var consejo16 = " • Te recomendamos siempre aprovechar los eventos culturales gratis o que tienen descuentos, por ejemplo; los domingos de vez en cuando hay varios eventos gratis <br><br>"
+      }
+      else{
+        var consejo16 = "";
+      }
+  
+      if(this.respuestasContestadas[5][2] == 1){
+        var consejo17 = " • Te recomendamos que trates de no gastar mucho en los consumibles, hay veces que la gente gasta más en consumibles que en el propio boleto del evento, puedes irte bien comido para no generar antojos dentro del evento y así evitar ese tipo de gastos <br><br>"
+      }
+      else{
+        var consejo17 = "";
+      }
+  
+      this.accionesService.presentAlertGenerica("Consejos de Eventos culturales/deportivos", consejo16 + consejo17);
+    }
     
   }
   

@@ -888,9 +888,6 @@
       }]
     },
 
-
-<<<<<<< Updated upstream
-
     {
       "idTest": 7,
       "idSubTest": 1,
@@ -973,7 +970,63 @@
       "idSubTest": 2,
       "id": 3,
       "preguntaTexto": "¿Cuentas o cuentan tus hijos con algún programa de apoyo o beca en tu institución educativa?",
-=======
+      "respuestas": [
+      {
+      "respuestaTexto": "Si",
+      "valor": 0
+      },
+      {
+      "respuestaTexto": "No",
+      "valor": 1
+      }]
+    },
+    {
+      "idTest": 7,
+      "idSubTest": 2,
+      "id": 4,
+      "preguntaTexto": "¿Sueles gastar en libros educativos de solo texto?",
+      "respuestas": [
+      {
+      "respuestaTexto": "Si",
+      "valor": 1
+      },
+      {
+      "respuestaTexto": "No",
+      "valor": 0
+      }]
+    },
+    {
+      "idTest": 7,
+      "idSubTest": 2,
+      "id": 5,
+      "preguntaTexto": "¿Sueles adquirir cursos online?",
+      "respuestas": [
+      {
+      "respuestaTexto": "Si",
+      "valor": 1
+      },
+      {
+      "respuestaTexto": "No",
+      "valor": 0
+      }]
+    },
+    {
+      "idTest": 7,
+      "idSubTest": 2,
+      "id": 6,
+      "preguntaTexto": "¿Como sueles comprar los útiles escolares (plumas, colores, corrector, etc.)?",
+      "respuestas": [
+      {
+      "respuestaTexto": "En vacaciones en buena cantidad para el resto del semestre/año",
+      "valor": 0
+      },
+      {
+      "respuestaTexto": "Conforme vayan faltando o acabando los útiles durante el semestre o año",
+      "valor": 1
+      }]
+    },
+
+
     {
       "idTest": 8,
       "idSubTest": 1,
@@ -1067,24 +1120,12 @@
       "idSubTest": 2,
       "id": 3,
       "preguntaTexto": "¿Sueles contar con servicio de streaming de películas? (Netflix, Blim, etc.)",
->>>>>>> Stashed changes
       "respuestas": [
       {
       "respuestaTexto": "Si",
       "valor": 0
       },
       {
-<<<<<<< Updated upstream
-      "respuestaTexto": "No",
-      "valor": 1
-      }]
-    },
-    {
-      "idTest": 7,
-      "idSubTest": 2,
-      "id": 4,
-      "preguntaTexto": "¿Sueles gastar en libros educativos de solo texto?",
-=======
         "respuestaTexto": "No",
         "valor": 1
         }]
@@ -1094,24 +1135,12 @@
       "idSubTest": 2,
       "id": 4,
       "preguntaTexto": "¿Sueles comprar películas físicas en disco o en digital pero individualmente (comprar películas en Youtube, Playstore o Appstore)?",
->>>>>>> Stashed changes
       "respuestas": [
       {
       "respuestaTexto": "Si",
       "valor": 1
       },
       {
-<<<<<<< Updated upstream
-      "respuestaTexto": "No",
-      "valor": 0
-      }]
-    },
-    {
-      "idTest": 7,
-      "idSubTest": 2,
-      "id": 5,
-      "preguntaTexto": "¿Sueles adquirir cursos online?",
-=======
         "respuestaTexto": "No",
         "valor": 0
         }]
@@ -1160,33 +1189,12 @@
       "idSubTest": 3,
       "id": 3,
       "preguntaTexto": "¿Sueles hacer compras con dinero real dentro de los juegos (skins, mapas, armas, etc.)?",
->>>>>>> Stashed changes
       "respuestas": [
       {
       "respuestaTexto": "Si",
       "valor": 1
       },
       {
-<<<<<<< Updated upstream
-      "respuestaTexto": "No",
-      "valor": 0
-      }]
-    },
-    {
-      "idTest": 7,
-      "idSubTest": 2,
-      "id": 6,
-      "preguntaTexto": "¿Como sueles comprar los útiles escolares (plumas, colores, corrector, etc.)?",
-      "respuestas": [
-      {
-      "respuestaTexto": "En vacaciones en buena cantidad para el resto del semestre/año",
-      "valor": 0
-      },
-      {
-      "respuestaTexto": "Conforme vayan faltando o acabando los útiles durante el semestre o año",
-      "valor": 1
-      }]
-=======
         "respuestaTexto": "Pocas",
         "valor": 2
         },
@@ -1329,6 +1337,5 @@
         "respuestaTexto": "No",
         "valor": 0
         }]
->>>>>>> Stashed changes
     }
 ]
