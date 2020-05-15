@@ -156,7 +156,6 @@ radioButtonChange(event, idPregunta, idSubTest){
   case 3:
     this.puntajeAlcanzar[idSubTest - 1] = 10;
     this.valoresRadio[idSubTest - 1][idPregunta - 1] = parseInt(event.detail.value);
-    console.log("putooo: " + this.valoresRadio[idSubTest - 1][idPregunta - 1]);
   break;
   }
 

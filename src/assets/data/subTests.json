@@ -69,6 +69,28 @@
     },
 
     {
+      "idTest": 6,
+      "id": 1,
+      "texto": "Celular"
+    },
+    {
+      "idTest": 6,
+      "id": 2,
+      "texto": "Computadora"
+    },
+    {
+      "idTest": 6,
+      "id": 3,
+      "texto": "Televisión"
+    },
+    {
+      "idTest": 6,
+      "id": 4,
+      "texto": "Audifonos"
+    },
+
+
+    {
       "idTest": 7,
       "id": 1,
       "texto": "Inicio Educacion"
@@ -77,5 +99,36 @@
       "idTest": 7,
       "id": 2,
       "texto": "Educacion"
-    }
+    },
+
+    {
+      "idTest": 8,
+      "id": 1,
+      "texto": "Libros"
+    },
+    {
+      "idTest": 8,
+      "id": 2,
+      "texto": "Peliculas"
+    },
+    {
+      "idTest": 8,
+      "id": 3,
+      "texto": "Videojuegos"
+    },
+    {
+      "idTest": 8,
+      "id": 4,
+      "texto": "Salidas con amigos/pareja"
+    },
+    {
+      "idTest": 8,
+      "id": 5,
+      "texto": "Viajar"
+    },
+    {
+      "idTest": 8,
+      "id": 6,
+      "texto": "Eventos culturales/deportivos"
+      }
 ]

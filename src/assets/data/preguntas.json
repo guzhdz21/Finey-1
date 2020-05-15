@@ -889,6 +889,451 @@
     },
 
 
+    {
+      "idTest": 6,
+      "idSubTest": 1,
+      "id": 1,
+      "preguntaTexto": "¿Qué tipo de celular tienes?",
+      "respuestas": [
+      {
+      "respuestaTexto": "Alta gama / última versión",
+      "valor": 60
+      },
+      {
+      "respuestaTexto": "De gama media / No muy sofisticado",
+      "valor": 40
+      },
+      {
+      "respuestaTexto": "De gama baja / Básico y simple",
+      "valor": 25
+      }]
+    },
+    {
+      "idTest": 6,
+      "idSubTest": 1,
+      "id": 2,
+      "preguntaTexto": "¿Cuánto tiempo usas el celular al dia?",
+      "respuestas": [
+      {
+      "respuestaTexto": "Menos de 1 hora",
+      "valor": 2
+      },
+      {
+      "respuestaTexto": "De 1 a 2 horas",
+      "valor": 4
+      },
+      {
+      "respuestaTexto": "De 3 a 4 horas",
+      "valor": 6
+      },
+      {
+      "respuestaTexto": "De 5 a 6 horas",
+      "valor": 8
+      },
+      {
+      "respuestaTexto": "Más de 6 horas",
+      "valor": 10
+      }]
+    },
+    {
+      "idTest": 6,
+      "idSubTest": 1,
+      "id": 3,
+      "preguntaTexto": "¿Para qué usas el celular? (Puedes escoger varias opciones)",
+      "respuestas": [
+      {
+      "respuestaTexto": "Comunicación",
+      "valor": 2
+      },
+      {
+      "respuestaTexto": "Redes sociales",
+      "valor": 4
+      },
+      {
+      "respuestaTexto": "Entretenimiento",
+      "valor": 6
+      },
+      {
+      "respuestaTexto": "Tomar fotos o videos",
+      "valor": 6
+      },
+      {
+      "respuestaTexto": "Para trabajo o escuela",
+      "valor": 8
+      },
+      {
+      "respuestaTexto": "Herramienta de la vida diaría",
+      "valor": 10
+      }]
+    },
+    {
+      "idTest": 6,
+      "idSubTest": 1,
+      "id": 4,
+      "preguntaTexto": "¿Usas todos los accesorios o aplicaciones que el celular te proporciona?",
+      "respuestas": [
+      {
+      "respuestaTexto": "Si",
+      "valor": 6
+      },
+      {
+      "respuestaTexto": "La mayoría",
+      "valor": 4
+      },
+      {
+      "respuestaTexto": "No",
+      "valor": 2
+      }]
+    },
+    {
+      "idTest": 6,
+      "idSubTest": 1,
+      "id": 5,
+      "preguntaTexto": "¿Sueles tomar fotos muy seguido o procuras que salgan bien?",
+      "respuestas": [
+      {
+      "respuestaTexto": "Si",
+      "valor": 15
+      },
+      {
+      "respuestaTexto": "No",
+      "valor": 5
+      }]
+    },
+    {
+      "idTest": 6,
+      "idSubTest": 1,
+      "id": 6,
+      "preguntaTexto": "¿Sueles tomar fotos muy seguido o procuras que salgan bien?",
+      "respuestas": [
+      {
+      "respuestaTexto": "20% o menos",
+      "valor": 2
+      },
+      {
+      "respuestaTexto": "20% - 50%",
+      "valor": 4
+      },
+      {
+        "respuestaTexto": "50% - 80%",
+        "valor": 6
+        },
+        {
+        "respuestaTexto": "80% o más",
+        "valor": 8
+        }]
+    },
+    {
+      "idTest": 6,
+      "idSubTest": 1,
+      "id": 7,
+      "preguntaTexto": "¿Cuanto te dura la pila del celular?",
+      "respuestas": [
+      {
+      "respuestaTexto": "3 horas o menos",
+      "valor": 10
+      },
+      {
+      "respuestaTexto": "De 3 a 4 horas",
+      "valor": 8
+      },
+      {
+        "respuestaTexto": "De 5 a 6 horas",
+        "valor": 6
+        },
+        {
+        "respuestaTexto": "De 8 a 9 horas",
+        "valor": 4
+        },
+        {
+          "respuestaTexto": "La mayor parte del día",
+          "valor": 2
+          }]
+    },
+    {
+      "idTest": 6,
+      "idSubTest": 1,
+      "id": 8,
+      "preguntaTexto": "¿Estás atento al celular o sueles tenerlo a tu lado muy seguido?",
+      "respuestas": [
+      {
+      "respuestaTexto": "Si",
+      "valor": 6
+      },
+      {
+      "respuestaTexto": "No",
+      "valor": 2
+      }]
+    },
+
+    {
+      "idTest": 6,
+      "idSubTest": 2,
+      "id": 1,
+      "preguntaTexto": "¿Que tipo de computadora/laptop tienes?",
+      "respuestas": [
+      {
+      "respuestaTexto": "Computadora/Laptop Gamer (de gama alta, veloz, y poderosa)",
+      "valor": 46
+      },
+      {
+      "respuestaTexto": "Computadora/Laptop Profesional (Sofisticada, veloz, con funciones especiales)",
+      "valor": 36
+      },
+      {
+        "respuestaTexto": "Computadora/Laptop Gama media (Poco sofisticada, medianamente veloz y funcional)",
+        "valor": 22
+        },
+        {
+        "respuestaTexto": "Computadora/Laptop Basica (Gama baja, velocidad aceptable o mala, nada sofisticada)",
+        "valor": 12
+        }]
+    },
+    {
+      "idTest": 6,
+      "idSubTest": 2,
+      "id": 2,
+      "preguntaTexto": "¿Cuanto tiempo usas la computadora/laptop al día?",
+      "respuestas": [
+      {
+      "respuestaTexto": "Menos de 1 hora",
+      "valor": 2
+      },
+      {
+      "respuestaTexto": "De 1 a 2 horas",
+      "valor": 4
+      },
+      {
+        "respuestaTexto": "De 3 a 4 horas",
+        "valor": 6
+        },
+        {
+        "respuestaTexto": "De 5 a 6 horas",
+        "valor": 8
+        },
+        {
+        "respuestaTexto": "Más de 6 horas",
+        "valor": 10
+        }]
+    },
+    {
+      "idTest": 6,
+      "idSubTest": 2,
+      "id": 3,
+      "preguntaTexto": "¿Para que usas mas la computadora/laptop? (Puedes seleccionar varias)",
+      "respuestas": [
+      {
+      "respuestaTexto": "Buscar información",
+      "valor": 2
+      },
+      {
+      "respuestaTexto": "Word/Excel/Power Point",
+      "valor": 2
+      },
+      {
+        "respuestaTexto": "Comunicación",
+        "valor": 4
+        },
+        {
+        "respuestaTexto": "Escuela",
+        "valor": 4
+        },
+        {
+        "respuestaTexto": "Entretenimiento",
+        "valor": 6
+        },
+        {
+          "respuestaTexto": "Trabajo constante en computadora",
+          "valor": 6
+          },
+          {
+            "respuestaTexto": "Programación",
+            "valor": 8
+            },
+            {
+            "respuestaTexto": "Juegos",
+            "valor": 8
+            },
+            {
+            "respuestaTexto": "Streaming",
+            "valor": 10
+            }]
+    },
+    {
+      "idTest": 6,
+      "idSubTest": 2,
+      "id": 4,
+      "preguntaTexto": "¿Cuánto te dura la pila de la laptop?",
+      "respuestas": [
+      {
+      "respuestaTexto": "3 horas o menos",
+      "valor": 8
+      },
+      {
+      "respuestaTexto": "De 3 - 4 horas",
+      "valor": 6
+      },
+      {
+        "respuestaTexto": "De 5 - 6 horas",
+        "valor": 4
+        },
+        {
+        "respuestaTexto": "De 8 - 9 horas",
+        "valor": 2
+        },
+        {
+        "respuestaTexto": "La mayor parte del día",
+        "valor": 2
+        },
+        {
+          "respuestaTexto": "No tengo laptop, tengo computadora de escritorio",
+          "valor": 0
+          }]
+    },
+    {
+      "idTest": 6,
+      "idSubTest": 2,
+      "id": 5,
+      "preguntaTexto": "¿Cuánto tiempo tienes prendida tu computadora de escritorio?",
+      "respuestas": [
+      {
+      "respuestaTexto": "3 horas o menos",
+      "valor": 2
+      },
+      {
+      "respuestaTexto": "De 3 - 4 horas",
+      "valor": 2
+      },
+      {
+        "respuestaTexto": "De 5 - 6 horas",
+        "valor": 4
+        },
+        {
+        "respuestaTexto": "De 8 - 9 horas",
+        "valor": 6
+        },
+        {
+        "respuestaTexto": "La mayor parte del día",
+        "valor": 8
+        },
+        {
+          "respuestaTexto": "No tengo laptop, tengo computadora de escritorio",
+          "valor": 0
+          }]
+    },
+    {
+      "idTest": 6,
+      "idSubTest": 2,
+      "id": 6,
+      "preguntaTexto": "¿Cuántas aplicaciones/ventanas/procesos tienes activos al mismo tiempo?",
+      "respuestas": [
+      {
+      "respuestaTexto": "De 1 - 3",
+      "valor": 2
+      },
+      {
+      "respuestaTexto": "De 4 - 6",
+      "valor": 4
+      },
+      {
+        "respuestaTexto": "De 7 - 9",
+        "valor": 6
+        },
+        {
+        "respuestaTexto": "Más de 9",
+        "valor": 8
+        }]
+    },
+
+    {
+      "idTest": 6,
+      "idSubTest": 3,
+      "id": 1,
+      "preguntaTexto": "¿Qué tipo de televisión tienes? ",
+      "respuestas": [
+      {
+      "respuestaTexto": "LED con smart TV (con aplicaciones como Youtube, Netflix)",
+      "valor": 1
+      },
+      {
+      "respuestaTexto": "LCD con smart TV (con aplicaciones como Youtube, Netflix)",
+      "valor": 2
+      },
+      {
+        "respuestaTexto": "LED sin smart TV",
+        "valor": 0
+        },
+        {
+        "respuestaTexto": "LCD sin smart TV",
+        "valor": 3
+        }]
+    },
+    {
+      "idTest": 6,
+      "idSubTest": 3,
+      "id": 2,
+      "preguntaTexto": "¿Cuanto tiempo al día usas tu televisión?",
+      "respuestas": [
+      {
+      "respuestaTexto": "Menos de 1 hora",
+      "valor": 1
+      },
+      {
+      "respuestaTexto": "Más de 1 hora",
+      "valor": 0
+      }]
+    },
+
+    {
+      "idTest": 6,
+      "idSubTest": 4,
+      "id": 1,
+      "preguntaTexto": "¿Por qué sueles cambiar de audífonos normalmente?",
+      "respuestas": [
+      {
+      "respuestaTexto": "Por que me deja de funcionar el cable",
+      "valor": 1
+      },
+      {
+      "respuestaTexto": "Por comprar unos mejores",
+      "valor": 2
+      },
+      {
+      "respuestaTexto": "Por otra razón",
+      "valor": 0
+      }]
+    },
+    {
+      "idTest": 6,
+      "idSubTest": 4,
+      "id": 2,
+      "preguntaTexto": "¿Tus audífonos son tipo casco (grandes) o son de los chicos (los de iphone)?",
+      "respuestas": [
+      {
+      "respuestaTexto": "Cascos",
+      "valor": 1
+      },
+      {
+      "respuestaTexto": "De los chicos",
+      "valor": 0
+      }]
+    },
+    {
+      "idTest": 6,
+      "idSubTest": 4,
+      "id": 3,
+      "preguntaTexto": "¿Donde usas tus audífonos la mayoría del tiempo?",
+      "respuestas": [
+      {
+      "respuestaTexto": "En mi casa o en la de alguien más",
+      "valor": 1
+      },
+      {
+      "respuestaTexto": "En la calle, camión o carro",
+      "valor": 0
+      }]
+    },
+
 
     {
       "idTest": 7,
@@ -1026,5 +1471,318 @@
       "respuestaTexto": "Conforme vayan faltando o acabando los útiles durante el semestre o año",
       "valor": 1
       }]
+    },
+
+
+    {
+      "idTest": 8,
+      "idSubTest": 1,
+      "id": 1,
+      "preguntaTexto": "¿Cuando acabas de leer un libro ¿Que haces con el?",
+      "respuestas": [
+      {
+      "respuestaTexto": "Lo guardo",
+      "valor": 1
+      },
+      {
+      "respuestaTexto": "Lo vendo",
+      "valor": 0
+      },
+      {
+        "respuestaTexto": "Lo presto",
+        "valor": 2
+        },
+        {
+        "respuestaTexto": "Lo intercambio por otro con alguien",
+        "valor": 3
+        }]
+    },
+    {
+      "idTest": 8,
+      "idSubTest": 1,
+      "id": 2,
+      "preguntaTexto": "¿Sueles comprar libros digitales?",
+      "respuestas": [
+      {
+      "respuestaTexto": "Si",
+      "valor": 0
+      },
+      {
+      "respuestaTexto": "No",
+      "valor": 1
+      }]
+    },
+    {
+      "idTest": 8,
+      "idSubTest": 1,
+      "id": 3,
+      "preguntaTexto": "¿Sueles comprar más libros usados o nuevos?",
+      "respuestas": [
+      {
+      "respuestaTexto": "Nuevos",
+      "valor": 1
+      },
+      {
+      "respuestaTexto": "Usados",
+      "valor": 0
+      }]
+    },
+
+    {
+      "idTest": 8,
+      "idSubTest": 2,
+      "id": 1,
+      "preguntaTexto": "¿Sueles aprovechar las ofertas de los cines? (Por ejemplo; 2x1 en taquilla o dulceria)",
+      "respuestas": [
+      {
+      "respuestaTexto": "Si",
+      "valor": 0
+      },
+      {
+      "respuestaTexto": "A veces",
+      "valor": 2
+      },
+      {
+        "respuestaTexto": "No",
+        "valor": 1
+        }]
+    },
+    {
+      "idTest": 8,
+      "idSubTest": 2,
+      "id": 2,
+      "preguntaTexto": "¿Cuantas veces al mes vas al cine?",
+      "respuestas": [
+      {
+      "respuestaTexto": "2 o menos veces",
+      "valor": 0
+      },
+      {
+      "respuestaTexto": "Más de 2 veces",
+      "valor": 1
+      }]
+    },
+    {
+      "idTest": 8,
+      "idSubTest": 2,
+      "id": 3,
+      "preguntaTexto": "¿Sueles contar con servicio de streaming de películas? (Netflix, Blim, etc.)",
+      "respuestas": [
+      {
+      "respuestaTexto": "Si",
+      "valor": 0
+      },
+      {
+        "respuestaTexto": "No",
+        "valor": 1
+        }]
+    },
+    {
+      "idTest": 8,
+      "idSubTest": 2,
+      "id": 4,
+      "preguntaTexto": "¿Sueles comprar películas físicas en disco o en digital pero individualmente (comprar películas en Youtube, Playstore o Appstore)?",
+      "respuestas": [
+      {
+      "respuestaTexto": "Si",
+      "valor": 1
+      },
+      {
+        "respuestaTexto": "No",
+        "valor": 0
+        }]
+    },
+
+    {
+      "idTest": 8,
+      "idSubTest": 3,
+      "id": 1,
+      "preguntaTexto": "¿Cuando dejas de jugar un juego fisico (en disco) por que ya lo acabaste o ya te enfado, que sueles hacer con el?",
+      "respuestas": [
+      {
+      "respuestaTexto": "Lo vendo",
+      "valor": 0
+      },
+      {
+        "respuestaTexto": "Lo guardo",
+        "valor": 1
+        },
+        {
+          "respuestaTexto": "Lo intercambio con alguien",
+          "valor": 2
+          }]
+    },
+    {
+      "idTest": 8,
+      "idSubTest": 3,
+      "id": 2,
+      "preguntaTexto": "¿Cuando sueles comprar juegos?",
+      "respuestas": [
+      {
+      "respuestaTexto": "Apenas sale el juego",
+      "valor": 1
+      },
+      {
+        "respuestaTexto": "En temporada de ofertas",
+        "valor": 0
+        },
+        {
+          "respuestaTexto": "Cuando me da ganas de comprarlo aunque este sin oferta",
+          "valor": 2
+          }]
+    },
+    {
+      "idTest": 8,
+      "idSubTest": 3,
+      "id": 3,
+      "preguntaTexto": "¿Sueles hacer compras con dinero real dentro de los juegos (skins, mapas, armas, etc.)?",
+      "respuestas": [
+      {
+      "respuestaTexto": "Si",
+      "valor": 1
+      },
+      {
+        "respuestaTexto": "Pocas",
+        "valor": 2
+        },
+        {
+          "respuestaTexto": "No",
+          "valor": 0
+          }]
+    },
+
+    {
+      "idTest": 8,
+      "idSubTest": 4,
+      "id": 1,
+      "preguntaTexto": "Cuando sales con tus amigos o pareja ¿Sueles llevar más efectivo del que piensas gastar o llevas una cifra aproximada de lo que piensas gastar?",
+      "respuestas": [
+      {
+      "respuestaTexto": "Llevo de más",
+      "valor": 1
+      },
+      {
+        "respuestaTexto": "Llevo una cifra aproximada",
+        "valor": 0
+        }]
+    },
+    {
+      "idTest": 8,
+      "idSubTest": 4,
+      "id": 2,
+      "preguntaTexto": "Cuando sales a comer con tus amigos ¿Cómo pagan la cuenta?",
+      "respuestas": [
+      {
+      "respuestaTexto": "Nos dividimos el total en partes iguales",
+      "valor": 1
+      },
+      {
+        "respuestaTexto": "Cada quien paga lo suyo",
+        "valor": 0
+        }]
+    },
+    {
+      "idTest": 8,
+      "idSubTest": 4,
+      "id": 3,
+      "preguntaTexto": "¿Cuantas veces sueles salir al antro con tus amigos al mes?",
+      "respuestas": [
+      {
+      "respuestaTexto": "Ni una",
+      "valor": 0
+      },
+      {
+        "respuestaTexto": "3 0 menos",
+        "valor": 2
+        },
+        {
+          "respuestaTexto": "Más de 3",
+          "valor": 1
+          }]
+    },
+
+    {
+      "idTest": 8,
+      "idSubTest": 5,
+      "id": 1,
+      "preguntaTexto": "¿Sueles salir de vacaciones en temporada baja, o alta?",
+      "respuestas": [
+      {
+      "respuestaTexto": "No salgo de vacaciones",
+      "valor": 0
+      },
+      {
+        "respuestaTexto": "Temporada alta",
+        "valor": 1
+        },
+        {
+          "respuestaTexto": "Temporada baja",
+          "valor": 2
+          }]
+    },
+    {
+      "idTest": 8,
+      "idSubTest": 5,
+      "id": 2,
+      "preguntaTexto": "Cuando vas de viaje ¿Sueles llevarte un presupuesto establecido o te llevas mucho dinero y vas gastando en lo que vas necesitando?",
+      "respuestas": [
+      {
+      "respuestaTexto": "Me llevo un dinero establecido",
+      "valor": 0
+      },
+      {
+        "respuestaTexto": "Me llevo mucho dinero sin haber establecido nada",
+        "valor": 1
+        }]
+    },
+    {
+      "idTest": 8,
+      "idSubTest": 5,
+      "id": 3,
+      "preguntaTexto": "En los viajes ¿Sueles comer fuera en tu destino o preparas comida desde el lugar en el que te hospedas?",
+      "respuestas": [
+      {
+      "respuestaTexto": "Como fuera",
+      "valor": 1
+      },
+      {
+        "respuestaTexto": "Suelo contratar el todo incluído",
+        "valor": 2
+        },
+        {
+          "respuestaTexto": "Preparo comida en el lugar donde me hospedo",
+          "valor": 0
+          }]
+    },
+
+    {
+      "idTest": 8,
+      "idSubTest": 6,
+      "id": 1,
+      "preguntaTexto": "¿Sueles aprovechar las promociones que ofrecen los museos o algunos eventos culturales en domingo?",
+      "respuestas": [
+      {
+      "respuestaTexto": "Si",
+      "valor": 0
+      },
+      {
+        "respuestaTexto": "No",
+        "valor": 1
+        }]
+    },
+    {
+      "idTest": 8,
+      "idSubTest": 6,
+      "id": 2,
+      "preguntaTexto": "Cuando asistes a eventos culturales o deportivos ¿Sueles adquirir consumibles dentro (bebidas, alimentos, etc.)?",
+      "respuestas": [
+      {
+      "respuestaTexto": "Si",
+      "valor": 1
+      },
+      {
+        "respuestaTexto": "No",
+        "valor": 0
+        }]
     }
 ]

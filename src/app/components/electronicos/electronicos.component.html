@@ -1,3 +1,162 @@
-<p>
-  electronicos works!
-</p>
+<ion-item lines="none">  
+  <ion-label class="margen_derecha_18 ion-text-wrap">Selecciona qué electrónicos tienes:</ion-label>
+  </ion-item>
+
+    <ion-list class="margen_izquierda_60">
+
+            <ion-item>
+              <ion-checkbox color="dark" (ionChange)="checkBoxInicial($event, 0)"></ion-checkbox>
+              <ion-label class="margen_izquierda_20 ion-text-wrap">Celular</ion-label>
+            </ion-item>
+            <ion-item>
+              <ion-checkbox color="dark" (ionChange)="checkBoxInicial($event, 1)"></ion-checkbox>
+              <ion-label class="margen_izquierda_20 ion-text-wrap">Computadora</ion-label>
+            </ion-item>
+            <ion-item>
+              <ion-checkbox color="dark" (ionChange)="checkBoxInicial($event, 2)"></ion-checkbox>
+              <ion-label class="margen_izquierda_20 ion-text-wrap">Televisión</ion-label>
+            </ion-item>
+            <ion-item>
+              <ion-checkbox color="dark" (ionChange)="checkBoxInicial($event, 3)"></ion-checkbox>
+              <ion-label class="margen_izquierda_20 ion-text-wrap">Audifonos</ion-label>
+            </ion-item>
+            </ion-list>
+
+            <div *ngIf="permisos[0] == true">
+              <ion-item color="primary"> 
+                <ion-label><h1 class="texto_centrado_blanco">Celular</h1></ion-label>
+              </ion-item>
+          
+              <ion-list>
+                <ion-item *ngFor="let pregunta of subTestsEncontrados[0].preguntas">
+                  <div>
+                  <ion-item lines="none">  
+                    <ion-label class="margen_derecha_18 ion-text-wrap">{{pregunta.preguntaTexto}}</ion-label>
+                  </ion-item>
+          
+                  <ion-item *ngIf="pregunta.id == 3">
+                    <ion-list class="margen_izquierda_60">
+                      <ion-item lines="none" *ngFor="let respuesta of pregunta.respuestas">
+                        <ion-checkbox color="dark" value="{{respuesta.valor}}" (ionChange)="checkBoxChange($event, pregunta.id, 1)"></ion-checkbox>
+                        <ion-label class="margen_izquierda_20 ion-text-wrap">{{respuesta.respuestaTexto}}</ion-label>
+                      </ion-item>
+                    </ion-list>
+                  </ion-item>
+
+                  <ion-item *ngIf="pregunta.id != 3">
+                    <ion-list class="margen_izquierda_60">
+                      <ion-radio-group required (ionChange)="radioButtonChange($event, pregunta.id, 1)">
+                        <ion-item lines="none" *ngFor="let respuesta of pregunta.respuestas">
+                          <ion-radio color="dark" value="{{respuesta.valor}}"></ion-radio>
+                          <ion-label class="margen_izquierda_20 ion-text-wrap">{{respuesta.respuestaTexto}}</ion-label>
+                        </ion-item>
+                      </ion-radio-group>
+                    </ion-list>
+                  </ion-item>
+                </div>
+          
+                </ion-item>
+              </ion-list>
+          
+            </div>
+
+            <div *ngIf="permisos[1] == true">
+              <ion-item color="primary"> 
+                <ion-label><h1 class="texto_centrado_blanco">Computadora</h1></ion-label>
+              </ion-item>
+          
+              <ion-list>
+                <ion-item *ngFor="let pregunta of subTestsEncontrados[1].preguntas">
+                  <div>
+                  <ion-item lines="none">  
+                    <ion-label class="margen_derecha_18 ion-text-wrap">{{pregunta.preguntaTexto}}</ion-label>
+                  </ion-item>
+
+                  <ion-item *ngIf="pregunta.id == 3">
+                    <ion-list class="margen_izquierda_60">
+                      <ion-item lines="none" *ngFor="let respuesta of pregunta.respuestas">
+                        <ion-checkbox color="dark" value="{{respuesta.valor}}" (ionChange)="checkBoxChange($event, pregunta.id, 2)"></ion-checkbox>
+                        <ion-label class="margen_izquierda_20 ion-text-wrap">{{respuesta.respuestaTexto}}</ion-label>
+                      </ion-item>
+                    </ion-list>
+                  </ion-item>
+          
+                  <ion-item *ngIf="pregunta.id != 3">
+                    <ion-list class="margen_izquierda_60">
+                      <ion-radio-group required (ionChange)="radioButtonChange($event, pregunta.id, 2)">
+                        <ion-item lines="none" *ngFor="let respuesta of pregunta.respuestas">
+                          <ion-radio color="dark" value="{{respuesta.valor}}"></ion-radio>
+                          <ion-label class="margen_izquierda_20 ion-text-wrap">{{respuesta.respuestaTexto}}</ion-label>
+                        </ion-item>
+                      </ion-radio-group>
+                    </ion-list>
+                  </ion-item>
+                </div>
+          
+                </ion-item>
+              </ion-list>
+          
+            </div>
+
+            <div *ngIf="permisos[2] == true">
+              <ion-item color="primary"> 
+                <ion-label><h1 class="texto_centrado_blanco">Televisión</h1></ion-label>
+              </ion-item>
+          
+              <ion-list>
+                <ion-item *ngFor="let pregunta of subTestsEncontrados[2].preguntas">
+                  <div>
+                  <ion-item lines="none">  
+                    <ion-label class="margen_derecha_18 ion-text-wrap">{{pregunta.preguntaTexto}}</ion-label>
+                  </ion-item>
+          
+                  <ion-item>
+                    <ion-list class="margen_izquierda_60">
+                      <ion-radio-group required (ionChange)="radioButtonChange2($event, pregunta.id, 3)">
+                        <ion-item lines="none" *ngFor="let respuesta of pregunta.respuestas">
+                          <ion-radio color="dark" value="{{respuesta.valor}}"></ion-radio>
+                          <ion-label class="margen_izquierda_20 ion-text-wrap">{{respuesta.respuestaTexto}}</ion-label>
+                        </ion-item>
+                      </ion-radio-group>
+                    </ion-list>
+                  </ion-item>
+                </div>
+          
+                </ion-item>
+              </ion-list>
+          
+            </div>
+
+            <div *ngIf="permisos[3] == true">
+              <ion-item color="primary"> 
+                <ion-label><h1 class="texto_centrado_blanco">Audifonos</h1></ion-label>
+              </ion-item>
+          
+              <ion-list>
+                <ion-item *ngFor="let pregunta of subTestsEncontrados[3].preguntas">
+                  <div>
+                  <ion-item lines="none">  
+                    <ion-label class="margen_derecha_18 ion-text-wrap">{{pregunta.preguntaTexto}}</ion-label>
+                  </ion-item>
+
+                  <ion-item>
+                    <ion-list class="margen_izquierda_60">
+                      <ion-radio-group required (ionChange)="radioButtonChange2($event, pregunta.id, 4)">
+                        <ion-item lines="none" *ngFor="let respuesta of pregunta.respuestas">
+                          <ion-radio color="dark" value="{{respuesta.valor}}"></ion-radio>
+                          <ion-label class="margen_izquierda_20 ion-text-wrap">{{respuesta.respuestaTexto}}</ion-label>
+                        </ion-item>
+                      </ion-radio-group>
+                    </ion-list>
+                  </ion-item>
+                </div>
+          
+                </ion-item>
+              </ion-list>
+          
+            </div>
+
+            <ion-button 
+              expand="block" 
+              color="success" 
+              (click)="testFinalizado()">Terminar Test</ion-button>
