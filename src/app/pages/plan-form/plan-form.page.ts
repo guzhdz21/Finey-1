@@ -78,6 +78,8 @@ export class PlanFormPage implements OnInit {
   //Variable que se usa para el regreso o boton back nativo del celular
   backButtonSub: Subscription;
 
+  gastosUsuario: number;
+
   constructor( private datosService: DatosService,
                 private nav: NavController,
                 private modalCtrl: ModalController,
@@ -116,14 +118,15 @@ export class PlanFormPage implements OnInit {
     }
 
     //Obtner margenes maximos y minimos
+    this.gastosUsuario = 0;
     this.usuarioCargado.gastos.forEach(element => {
       if( element.cantidad != 0 ) {
         margenMax += element.margenMax;
         margenMin += element.margenMin;
+        this.gastosUsuario += element.cantidad;
       } 
     });
     
-    console.log(margenMax);
     //Obtner la aportacion mensual de nuevo plan y verificar si es valido
     this.planNuevo.aportacionMensual = (this.planNuevo.cantidadTotal - this.planNuevo.cantidadAcumulada) / this.planNuevo.tiempoTotal;
     if(this.planNuevo.aportacionMensual <= 0) {
@@ -170,7 +173,7 @@ export class PlanFormPage implements OnInit {
   //Metodo que valida el caso de ingreso de plan e imprime una alerta segun el caso
   async alertasUnPlan( margenMax: number, margenMin: number, gasto: number, unPlan: boolean) {
     //Caso que es posible en el margen maximo (no se imprime alerta ya que esa se imprime ya que ingresa el plan)
-    if (gasto >= margenMax) {
+    if (gasto >= margenMax || gasto >= this.gastosUsuario) {
       return true;
     //Caso que es posible en margen minimo (se imprime sol si es un plan la alerta ya que para mas se imprime despues)
     } else if ( ( gasto < margenMax ) && (gasto >= margenMin ) ) {
@@ -317,7 +320,7 @@ export class PlanFormPage implements OnInit {
   //Metodo que valida dos planes y procede segun el caso
   async validarDosplanes(ahorrar: number, gasto: number, margenMax: number, margenMin: number){
     //Caso en que son posibles en margen maximo
-    if (gasto  >= margenMax) {
+    if (gasto  >= margenMax || gasto >= this.gastosUsuario) {
 
       //Verificamso si hay prioritario
       if(this.planMenor.aportacionMensual >= ahorrar) {
@@ -530,7 +533,7 @@ export class PlanFormPage implements OnInit {
     //Obtenemos la paortacion mensual del plan menor
     this.planMenor.aportacionMensual = (this.planMenor.cantidadTotal - this.planMenor.cantidadAcumulada)/this.planMenor.tiempoRestante;
     //Caso en que son posibles en margen maximo
-    if (gasto  >= margenMax) {
+    if (gasto  >= margenMax || gasto >= this.gastosUsuario) {
 
       //Verificamso si hay prioritario
       if(this.planMenor.aportacionMensual >= (ahorrar/2)) {
@@ -889,7 +892,7 @@ export class PlanFormPage implements OnInit {
 
   //Metodo que valida el gasto que se hace cuando se intenta satisfacer los planes prioriatrios
   validarGasto(margenMax: number, margenMin: number, gasto: number) {
-    if (  gasto  >= margenMax ) {
+    if (  gasto  >= margenMax || gasto >= this.gastosUsuario) {
       return true;
      }
      else if ( ( gasto < margenMax ) && (gasto >= margenMin ) ) {
@@ -1002,12 +1005,16 @@ export class PlanFormPage implements OnInit {
     this.usuarioCargado.fondoAhorro -= this.diferenciaFondo;
     this.usuarioCargado.fondoAhorro = Math.round(this.usuarioCargado.fondoAhorro*100)/100;
     
-    if(this.usuarioCargado.ingresoCantidad - this.usuarioCargado.fondoPlanes < margenMax 
+    if(this.usuarioCargado.ingresoCantidad - this.usuarioCargado.fondoPlanes < margenMax &&
+      this.usuarioCargado.ingresoCantidad - this.usuarioCargado.fondoPlanes < this.gastosUsuario
       && this.usuarioCargado.ingresoCantidad - this.usuarioCargado.fondoPlanes >= margenMin) {
       this.accionesService.presentAlertGenerica('Gastos Minimos', 'Ahora estas en un sistema de gastos minimos, '+ 
-      'esto quiere decir que se tomara en cuenta tus gastos ne margen minimo para hacer los calculos de tus ahorros,' +
-      'pero recuerda que el ahorro sera menor debido que '+ 
-      'los planes se estan llevando casi todo');
+      'esto quiere decir que se tomara en cuenta tus gastos en margen minimo (el pequeño margen de desviacion' + 
+      ' en cada uno de tus gastos que provoca que gastes menos sobre todo en tus gastos promedio) para hacer los' + 
+      'calculos de tus ahorros ya que al gastar menos ahorraras mas ,' +
+      'pero recuerda que el porcentaje de ese ahorro que no es para los planes sera menor debido que '+ 
+      'los planes se estan llevando casi todo, por lo tanto procura mantenerte dentro de se margen y' + 
+      ' asi poder cumplir todos tus planes');
     }
     await this.datosService.guardarUsuarioInfo(this.usuarioCargado);
   }

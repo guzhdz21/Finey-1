@@ -28,6 +28,8 @@ export class ModificarTiempoPage implements OnInit {
 
   multiplan: boolean;
 
+  gastosUsuario: number;
+
   constructor(
               private modalCtrl: ModalController,
               private nav: NavController,
@@ -57,10 +59,12 @@ export class ModificarTiempoPage implements OnInit {
     this.planesPrioritarios = [];
     var margenMax = 0;
     var margenMin = 0;
+    this.gastosUsuario = 0;
     this.datosService.usuarioCarga.gastos.forEach(element => {
       if( element.cantidad != 0 ) {
         margenMax += element.margenMax;
         margenMin += element.margenMin;
+        this.gastosUsuario += element.cantidad;
       } 
     });
     if(this.planes.length == 2) {
@@ -147,7 +151,7 @@ export class ModificarTiempoPage implements OnInit {
   }
 
   async validarDosplanes(ahorrar: number, gasto: number, margenMax: number, margenMin: number){
-    if (gasto  >= margenMax) {
+    if (gasto  >= margenMax || gasto  >= this.gastosUsuario) {
       //Verificar si el plan menor es prioritario
       if(this.planMenor.aportacionMensual >= ahorrar) {
 
@@ -222,7 +226,7 @@ export class ModificarTiempoPage implements OnInit {
   async validarMasDosPlanes(ahorrar: number, gasto: number, margenMax: number, margenMin: number) {
     this.planMenor.aportacionMensual = (this.planMenor.cantidadTotal - this.planMenor.cantidadAcumulada)/this.planMenor.tiempoRestante;
     
-    if (gasto  >= margenMax) {
+    if (gasto  >= margenMax || gasto  >= this.gastosUsuario) {
 
       if(this.planMenor.aportacionMensual >= (ahorrar/2)) {
         return await this.opcionesPrioridadDos(margenMax, margenMin);
@@ -391,7 +395,7 @@ export class ModificarTiempoPage implements OnInit {
   }
   
   validarGasto(margenMax: number, margenMin: number, gasto: number) {
-    if (  gasto  >= margenMax ) {
+    if (  gasto  >= margenMax || gasto  >= this.gastosUsuario) {
       return true;
     } else if ( ( gasto < margenMax ) && (gasto >= margenMin ) ) {
       return true;
@@ -472,11 +476,15 @@ export class ModificarTiempoPage implements OnInit {
     }
 
     if(this.datosService.usuarioCarga.ingresoCantidad - this.datosService.usuarioCarga.fondoPlanes < margenMax 
+      && this.datosService.usuarioCarga.ingresoCantidad - this.datosService.usuarioCarga.fondoPlanes < this.gastosUsuario 
       && this.datosService.usuarioCarga.ingresoCantidad - this.datosService.usuarioCarga.fondoPlanes >= margenMin) {
         this.accionesService.presentAlertGenerica('Gastos Minimos', 'Ahora estas en un sistema de gastos minimos, '+ 
-        'esto quiere decir que se tomara en cuenta tus gastos ne margen minimo para hacer los calculos de tus ahorros,' +
-        'pero recuerda que el ahorro sera menor debido que '+ 
-        'los planes se estan llevando casi todo');
+      'esto quiere decir que se tomara en cuenta tus gastos en margen minimo (el pequeño margen de desviacion' + 
+      ' en cada uno de tus gastos que provoca que gastes menos sobre todo en tus gastos promedio) para hacer los' + 
+      'calculos de tus ahorros ya que al gastar menos ahorraras mas ,' +
+      'pero recuerda que el porcentaje de ese ahorro que no es para los planes sera menor debido que '+ 
+      'los planes se estan llevando casi todo, por lo tanto procura mantenerte dentro de se margen y' + 
+      ' asi poder cumplir todos tus planes');
     }
 
     this.datosService.usuarioCarga.fondoAhorro -= this.diferenciaFondo;

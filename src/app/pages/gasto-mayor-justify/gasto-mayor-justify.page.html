@@ -1,4 +1,16 @@
-<app-header-modal [titulo]="gasto.nombre" ruta="/tabs/tab1"></app-header-modal>
+<ion-header no-border>
+  <ion-toolbar color="success">
+    
+    <ion-buttons slot="start">
+      <ion-button (click)="regresar()" slot="icon-only">
+        <ion-icon slot="start" name="arrow-round-back"></ion-icon>
+      </ion-button>
+    </ion-buttons>
+
+    <ion-title>{{gasto.nombre}}</ion-title>
+
+  </ion-toolbar>
+</ion-header>
 
   <ion-content>
 

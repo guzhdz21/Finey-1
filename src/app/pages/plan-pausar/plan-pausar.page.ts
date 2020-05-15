@@ -36,6 +36,8 @@ export class PlanPausarPage implements OnInit {
 
   planesPrioritariosI: Plan[] = [];
 
+  gastosUsuario: number;
+
   constructor(private datosService: DatosService,
               private nav: NavController,
               private modalCtrl: ModalController,
@@ -56,6 +58,10 @@ export class PlanPausarPage implements OnInit {
   }
 
   async registrarCambios() {
+    this.gastosUsuario = 0;
+    this.datosService.usuarioCarga.gastos.forEach(element => {
+      this.gastosUsuario += element.cantidad;
+    });
     this.planesAux = [];
     this.planesIniciales = [];
     this.planesIniciales = JSON.parse(JSON.stringify(this.planes));
@@ -139,7 +145,7 @@ export class PlanPausarPage implements OnInit {
   }
 
   validarGasto(margenMax: number, margenMin: number, gasto: number) {
-    if (  gasto  >= margenMax ) {
+    if (  gasto  >= margenMax || gasto  >= this.gastosUsuario) {
       return true;
      }
      else if ( ( gasto < margenMax ) && (gasto >= margenMin ) ) {
@@ -406,11 +412,15 @@ export class PlanPausarPage implements OnInit {
     }
 
     if(this.datosService.usuarioCarga.ingresoCantidad - this.datosService.usuarioCarga.fondoPlanes < margenMax 
+      && this.datosService.usuarioCarga.ingresoCantidad - this.datosService.usuarioCarga.fondoPlanes < this.gastosUsuario
       && this.datosService.usuarioCarga.ingresoCantidad - this.datosService.usuarioCarga.fondoPlanes >= margenMin) {
         this.accionesService.presentAlertGenerica('Gastos Minimos', 'Ahora estas en un sistema de gastos minimos, '+ 
-        'esto quiere decir que se tomara en cuenta tus gastos ne margen minimo para hacer los calculos de tus ahorros,' +
-        'pero recuerda que el ahorro sera menor debido que '+ 
-        'los planes se estan llevando casi todo');
+      'esto quiere decir que se tomara en cuenta tus gastos en margen minimo (el pequeño margen de desviacion' + 
+      ' en cada uno de tus gastos que provoca que gastes menos sobre todo en tus gastos promedio) para hacer los' + 
+      'calculos de tus ahorros ya que al gastar menos ahorraras mas ,' +
+      'pero recuerda que el porcentaje de ese ahorro que no es para los planes sera menor debido que '+ 
+      'los planes se estan llevando casi todo, por lo tanto procura mantenerte dentro de se margen y' + 
+      ' asi poder cumplir todos tus planes');
     }
     this.datosService.usuarioCarga.fondoAhorro -= this.diferenciaFondo;
     this.datosService.usuarioCarga.fondoAhorro = Math.round(this.datosService.usuarioCarga.fondoAhorro*100)/100;

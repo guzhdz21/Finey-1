@@ -88,4 +88,16 @@ export class AccionesService {
     alert.present();
     await alert.onDidDismiss();
   }
+
+  async presentAlertOpciones( botones: any[], header: string, message: string) {
+      
+    const alert = await this.alertCtrl.create({
+      header: header,
+      message: message,
+      buttons: [] = botones,
+      mode: "ios"
+    });
+    alert.present();
+    await alert.onDidDismiss();
+  }
 }

@@ -108,6 +108,9 @@ export class Tab2Page implements OnInit{
   //Variable que se usa para el regreso o boton back nativo del celular
   backButtonSub: Subscription;
 
+  gastosUsuario: number;
+
+
   //Variables del chart
   public doughnutChartLabels: Label[] = ['Progreso %', 'Restante %'];
   public doughnutChartType: ChartType = 'doughnut';
@@ -139,8 +142,8 @@ export class Tab2Page implements OnInit{
       else {
         this.planesExiste = true;
       }
-      this.planesDis = [];
       this.planes = JSON.parse(JSON.stringify(this.datosService.planesCargados));
+      this.planesDis = [];
       this.datosService.planesCargados.forEach(element => {
         this.planesDis.push({
           doughnutChartData: [
@@ -160,8 +163,8 @@ export class Tab2Page implements OnInit{
         this.planes = [];
         return;
       }
-      this.planesDis = [];
       this.planes = JSON.parse(JSON.stringify(this.datosService.planesCargados));
+      this.planesDis = [];
       this.datosService.planesCargados.forEach(element => {
         this.planesDis.push({
           doughnutChartData: [
@@ -267,10 +270,12 @@ export class Tab2Page implements OnInit{
     }
 
     //Obtner margenes maximos y minimos
+    this.gastosUsuario = 0;
     this.usuarioCargado.gastos.forEach(element => {
       if( element.cantidad != 0 ) {
         margenMax += element.margenMax;
         margenMin += element.margenMin;
+        this.gastosUsuario += element.cantidad;
       } 
     });
     
@@ -412,7 +417,7 @@ export class Tab2Page implements OnInit{
   //Metodo que valida dos planes y procede segun el caso
   async validarDosplanes(ahorrar: number, gasto: number, margenMax: number, margenMin: number){
     //Caso en que son posibles en margen maximo
-    if (gasto >= margenMax) {
+    if (gasto >= margenMax || gasto >= this.gastosUsuario) {
 
       //Verificamso si hay prioritario
       if(this.planMenor.aportacionMensual >= ahorrar) {
@@ -596,7 +601,7 @@ export class Tab2Page implements OnInit{
     //Obtenemos la paortacion mensual del plan menor
     this.planMenor.aportacionMensual = (this.planMenor.cantidadTotal - this.planMenor.cantidadAcumulada)/this.planMenor.tiempoRestante;
     //Caso en que son posibles en margen maximo
-    if (gasto  >= margenMax) {
+    if (gasto  >= margenMax || gasto >= this.gastosUsuario) {
 
       //Verificamso si hay prioritario
       if(this.planMenor.aportacionMensual >= (ahorrar/2)) {
@@ -904,7 +909,7 @@ export class Tab2Page implements OnInit{
 
   //Metodo que valida el gasto que se hace cuando se intenta satisfacer los planes prioriatrios
   validarGasto(margenMax: number, margenMin: number, gasto: number) {
-    if (  gasto  >= margenMax ) {
+    if (  gasto  >= margenMax || this.gastosUsuario ) {
       return true;
      }
      else if ( ( gasto < margenMax ) && (gasto >= margenMin ) ) {
