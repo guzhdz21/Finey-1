@@ -69,6 +69,28 @@
     },
 
     {
+      "idTest": 6,
+      "id": 1,
+      "texto": "Celular"
+    },
+    {
+      "idTest": 6,
+      "id": 2,
+      "texto": "Computadora"
+    },
+    {
+      "idTest": 6,
+      "id": 3,
+      "texto": "Televisión"
+    },
+    {
+      "idTest": 6,
+      "id": 4,
+      "texto": "Audifonos"
+    },
+
+
+    {
       "idTest": 7,
       "id": 1,
       "texto": "Inicio Educacion"

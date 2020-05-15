@@ -16,8 +16,8 @@ export class OcioComponent implements OnInit {
   ngOnInit() {
     this.subTestsEncontrados = []; //Arreglo que guarda los subtests encontrados
     this.respuestasContestadas = [[],[],[],[],[],[]];
-    this.YaAbiertos = [];
     this.permisos = [];
+    this.YaAbiertos = [];
     this.YaAbiertos[0] = false;
     this.YaAbiertos[1] = false;
     this.YaAbiertos[2] = false;
