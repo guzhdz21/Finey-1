@@ -253,6 +253,51 @@ export class Tab2Page implements OnInit{
     }
   }
 
+    //Funcion para pausar planes
+    async pausarPlan(i) {
+
+      var p;
+      await this.accionesService.presentAlertPlan([{text: 'Cancelar', handler: (blah) => {p = false}},
+                                                {text: 'Pausar', handler: (blah) => {p = true}}], 
+                                                '¿Estas seguro de que quieres pausar este plan?', 
+                                                'El progreso y la aportacion de este plan quedara detenido hasta que se reanude el plan');
+    
+    if(p == true) {
+      this.planesOriginales = JSON.parse(JSON.stringify(this.planes));
+      var planes: Plan[] = [];
+      this.planesDis[i].plan.pausado = true;
+      this.planesDis[i].plan.aportacionMensual = 0;
+      this.planesDis.forEach(element => {
+        planes.push(element.plan);
+      });
+      this.datosService.actualizarPlanes(planes);
+
+      this.planesRetornados = JSON.parse(JSON.stringify(this.planes));
+      this.datosService.planesExisten = false;
+      this.planesPausados = [];
+      this.planesRetornados.forEach(element => {
+        if(element.pausado == true) {
+          this.planesPausados.push(element);
+      }
+      });
+      this.planesRetornados = this.planesRetornados.filter(plan => plan.pausado != true);
+
+      if(this.planesRetornados.length != 0) {
+        await this.calcularYRegistrar();
+        this.datosService.planesExisten = true;
+        this.datosService.presentToast("Plan pausado");
+        return;
+      }
+      this.planes = [];
+      this.planesPausados.forEach(element => {
+        this.planes.push(element);
+      });
+      await this.datosService.actualizarPlanes(this.planes);
+      await this.actualizarUsuario();
+      this.datosService.presentToast("Plan pausado");
+    }
+    }
+
   //Metodo que manda llamar los metodos para calcular los datos para agregar un plan nuevo y lo guarda en el Storage si es que es valido
   async calcularYRegistrar() {
 
@@ -1040,16 +1085,6 @@ export class Tab2Page implements OnInit{
         planesPausados: JSON.stringify(this.planesPausados)
       }
     });
-  }
-
-  //Funcion para pausar planes
-  pausarPlan(i) {
-    var planes: Plan[] = [];
-    this.planesDis[i].plan.pausado = true;
-    this.planesDis.forEach(element => {
-      planes.push(element.plan);
-    });
-    this.datosService.actualizarPlanes(planes);
   }
 
   //Funcion para renaudar planes
