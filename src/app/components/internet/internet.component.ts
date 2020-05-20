@@ -18,7 +18,7 @@ export class InternetComponent implements OnInit {
 
   ngOnInit() {
     this.subTestsEncontrados = []; //Arreglo que guarda los subtests encontrados
-    this.puntajeAlcanzar = []; //Arreglo que guarda los valores d epuntaje a alcanzar 
+    this.puntajeAlcanzar = []; //Arreglo que guarda los valores de puntaje a alcanzar 
     this.puntajeActual = [];
     this.permisos = [];
     this.valoresRadio = [[],[],[]];
@@ -37,8 +37,13 @@ export class InternetComponent implements OnInit {
     this.radioRequired[1][4] = true;
     this.radioRequired[2][1] = true;
     this.radioRequired[2][2] = true;
+    this.terminados = [];
+    this.terminados[1] = false;
+    this.terminados[2] = false;
+    this.terminados[3] = false;
   }
 
+  terminados: boolean[];
   radioRequired : boolean[][];
   subTestsEncontrados: SubTest[];
   puntajeAlcanzar: number[];
@@ -232,6 +237,7 @@ checkBoxChange(event, idPregunta, idSubTest){
 testCable(){
   //SUBTEST2
 if(this.permisos[1]){
+  this.terminados[2] = true;
   this.puntajeActual[1] = this.valoresRadio[1][1] + this.valoresRadio[1][2] + this.valoresRadio[1][3]; //LO DEL CHECK + LO DEL RADIO BUTTON, ES 3 PUES 1 ES LA DE ALCANZAR, 2 EL CHECK
   console.log("Valor a alcanzar:" + this.puntajeAlcanzar[1]);
   console.log("Valor actual:" + this.puntajeActual[1]);
@@ -264,6 +270,7 @@ if(this.permisos[1]){
 testTelefonia(){
     //SUBTEST3
 if(this.permisos[2]){
+  this.terminados[3] = true;
   this.puntajeActual[2] = this.valoresRadio[2][0] + this.valoresRadio[2][1]; //LO DEL CHECK + LO DEL RADIO BUTTON, ES 3 PUES 1 ES LA DE ALCANZAR, 2 EL CHECK
   console.log("Valor a alcanzar:" + this.puntajeAlcanzar[2]);
   console.log("Valor actual:" + this.puntajeActual[2]);
@@ -283,6 +290,7 @@ if(this.permisos[2]){
 testInternet(){
   //SUBTEST1
 if(this.permisos[0]){
+  this.terminados[1] = true;
   this.puntajeActual[0] += this.valoresRadio[0][2]; //LO DEL CHECK + LO DEL RADIO BUTTON, ES 3 PUES 1 ES LA DE ALCANZAR, 2 EL CHECK
   if(this.puntajeActual[0] <= this.puntajeAlcanzar[0]){
       this.accionesService.presentAlertConsejo("Consejo de Internet" , "Tu plan de internet es muy grande para el tiempo y uso " +

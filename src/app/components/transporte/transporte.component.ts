@@ -46,8 +46,14 @@ export class TransporteComponent implements OnInit {
     this.radioRequired[3][1] = true;
     this.radioRequired[3][2] = true;
     this.radioRequired[3][3] = true;
+    this.terminados = [];
+    this.terminados[1] = false;
+    this.terminados[2] = false;
+    this.terminados[3] = false;
+    this.terminados[4] = false;
   }
 
+  terminados: boolean[];
   radioRequired : boolean[][];
   subTestsEncontrados: SubTest[];
   puntajeAlcanzar: number[];
@@ -338,7 +344,7 @@ comprobarSiRegresa(idSubtest: number){
 testAuto(){
     //SUBTEST2
 if(this.permisos[1]){
-
+this.terminados[2] = true;
   var aconsejalo = false;
 
   if(this.puntajeActual[2] <= this.puntajeAlcanzar[2]){
@@ -378,7 +384,7 @@ if(this.permisos[1]){
 testPublico(){
 //SUBTEST3
 if(this.permisos[2]){
-
+  this.terminados[3] = true;
   var aconsejalo2 = false;
 
   if(this.cuantasVeces == 1 && this.distancia == 1){
@@ -414,7 +420,7 @@ if(this.permisos[2]){
 testMoto(){
   //SUBTEST1
 if(this.permisos[0]){
-  
+  this.terminados[1] = true;
   if(this.puntajeActual[0] <= 10){
       this.accionesService.presentAlertConsejo("Consejo de Motocicleta" , "Se ha determinado que practicamente no usas tu motocicleta" +
       ", por lo que te sugerimos comprarte una bici o viajar en camión, si no es opcion esto para ti, entonces lleva tu moto" +
@@ -435,6 +441,7 @@ if(this.permisos[0]){
 testUbertaxi(){
   //SUBTEST 4//
 if(this.permisos[3]){
+  this.terminados[4] = true;
   var aconsejalo3;
 
   if(this.vecesUber == 1){

@@ -52,8 +52,14 @@ export class ElectronicosComponent implements OnInit {
     this.radioRequired[3][1] = true;
     this.radioRequired[3][2] = true;
     this.radioRequired[3][3] = true;
+    this.terminados = [];
+    this.terminados[1] = false;
+    this.terminados[2] = false;
+    this.terminados[3] = false;
+    this.terminados[4] = false;
   }
 
+  terminados: boolean[];
   radioRequired : boolean[][];
   subTestsEncontrados: SubTest[];
   puntajeAlcanzar: number[];
@@ -300,7 +306,7 @@ radioButtonChange(event, idPregunta, idSubTest){
 testComputadora(){
   //SUBTEST 2
 if(this.permisos[1] == true){
- 
+ this.terminados[2] = true;
   this.puntajeActual[1] = this.puntajeActual[1] + this.valoresRadio[1][1] + this.valoresRadio[1][3] + this.valoresRadio[1][4] + this.valoresRadio[1][5];
 
   console.log("Puntaje actual:" + this.puntajeActual[1])
@@ -366,6 +372,7 @@ this.puntajeActual[1] = 0;
 testTelevision(){
       //SUBTEST 3
       if(this.permisos[2] == true){
+        this.terminados[3] = true;
         var justificado1 = true;
 
         if((this.respuestasContestadas[2][1] == 1 || this.respuestasContestadas[2][1] == 2) && this.respuestasContestadas[2][2] == 1){
@@ -390,6 +397,7 @@ testTelevision(){
 testAudifonos(){
       //SUBTEST 4
       if(this.permisos[3] == true){
+        this.terminados[4] = true;
         var justificado2 = true;
         if(this.respuestasContestadas[3][1] == 1 ){
           var consejo4 = " • Te recomendamos que compres unos audifonos bluetooth no muy caros, para que de esta manera te duren más y no dejen de funcionar por el cable en poco tiempo (no tendrá cable por ser bluetooth)<br><br>"
@@ -430,7 +438,7 @@ testAudifonos(){
     testCelular(){
   
     if(this.permisos[0] == true){
- 
+      this.terminados[1] = true;
       this.puntajeActual[0] = this.puntajeActual[0] + this.valoresRadio[0][1] + this.valoresRadio[0][3] + this.valoresRadio[0][4] + this.valoresRadio[0][5] + this.valoresRadio[0][6] + this.valoresRadio[0][7];
 
       console.log("Puntaje actual:" + this.puntajeActual[0])
