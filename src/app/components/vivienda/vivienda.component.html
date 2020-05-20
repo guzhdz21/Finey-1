@@ -1,3 +1,6 @@
+
+<form>
+
 <ion-item color="primary"> 
   <ion-label><h1 class="texto_centrado_blanco">Vivienda</h1></ion-label>
 </ion-item>
@@ -27,4 +30,7 @@
 <ion-button 
 expand="block" 
 color="success" 
-(click)="testFinalizado()">Terminar Test</ion-button>
+(click)="testFinalizado()"
+[disabled]=" radioRequired[1] || radioRequired[2] || radioRequired[3] || radioRequired[4] || radioRequired[5] || radioRequired[6] || radioRequired[7] || radioRequired[8] || radioRequired[9]">Terminar Test</ion-button>
+
+</form>
