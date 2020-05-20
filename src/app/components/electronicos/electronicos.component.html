@@ -56,6 +56,13 @@
                 </div>
           
                 </ion-item>
+
+                <ion-button 
+                expand="block" 
+                color="success" 
+                (click)="testCelular()"
+                [disabled]="radioRequired[0][1] || radioRequired[0][2] || radioRequired[0][4] || radioRequired[0][5] || radioRequired[0][6] || radioRequired[0][7] || radioRequired[0][8] ">Obtener consejo de Celular</ion-button>
+                                
               </ion-list>
           
             </div>
@@ -94,6 +101,13 @@
                 </div>
           
                 </ion-item>
+
+                <ion-button 
+                expand="block" 
+                color="success" 
+                (click)="testComputadora()"
+                [disabled]="radioRequired[1][1] || radioRequired[1][2] || radioRequired[1][4] || radioRequired[1][5] || radioRequired[1][6]">Obtener consejo de Computadora</ion-button>
+                           
               </ion-list>
           
             </div>
@@ -123,6 +137,13 @@
                 </div>
           
                 </ion-item>
+
+                <ion-button 
+                expand="block" 
+                color="success" 
+                (click)="testTelevision()"
+                [disabled]="radioRequired[2][1] || radioRequired[2][2]">Obtener consejo de Televisión</ion-button>
+                          
               </ion-list>
           
             </div>
@@ -152,11 +173,12 @@
                 </div>
           
                 </ion-item>
+
+                <ion-button 
+                expand="block" 
+                color="success" 
+                (click)="testAudifonos()"
+                [disabled]="radioRequired[3][1] || radioRequired[3][2] || radioRequired[3][3]">Obtener consejo de Audifonos</ion-button>
               </ion-list>
           
             </div>
-
-            <ion-button 
-              expand="block" 
-              color="success" 
-              (click)="testFinalizado()">Terminar Test</ion-button>

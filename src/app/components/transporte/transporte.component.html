@@ -50,7 +50,7 @@
             
                   <ion-item *ngIf="pregunta.id != 2">
                     <ion-list class="margen_izquierda_60">
-                      <ion-radio-group required>
+                      <ion-radio-group required (ionChange)="radioButtonChange($event, pregunta.id, 1)">
                         <ion-item lines="none" *ngFor="let respuesta of pregunta.respuestas">
                           <ion-radio color="dark" value="{{respuesta.valor}}"></ion-radio>
                           <ion-label class="margen_izquierda_20 ion-text-wrap">{{respuesta.respuestaTexto}}</ion-label>
@@ -61,6 +61,12 @@
                 </div>
             
                 </ion-item>
+
+                <ion-button 
+expand="block" 
+color="success" 
+(click)="testMoto()"
+[disabled]=" radioRequired[0][1]">Obtener consejo de motocicleta</ion-button>
               </ion-list>
             
             </div>
@@ -101,6 +107,13 @@
                 </div>
             
                 </ion-item>
+                
+                <ion-button 
+expand="block" 
+color="success" 
+(click)="testAuto()"
+[disabled]="radioRequired[1][1] || radioRequired[1][3] || radioRequired[1][4]">Obtener consejo de Automóvil particular</ion-button>
+                
               </ion-list>
             
             </div>
@@ -132,6 +145,13 @@
       </div>
 
       </ion-item>
+
+      <ion-button 
+expand="block" 
+color="success" 
+(click)="testPublico()"
+[disabled]="radioRequired[2][1] || radioRequired[2][2] || radioRequired[2][3]">Obtener consejo de Transporte público</ion-button>
+                
     </ion-list>
 
   </div>
@@ -163,12 +183,15 @@
                   </div>
             
                   </ion-item>
+
+                  <ion-button 
+expand="block" 
+color="success" 
+(click)="testUbertaxi()"
+[disabled]="radioRequired[3][1] || radioRequired[3][2] || radioRequired[3][3]">Obtener consejo de Uber/taxi</ion-button>
+                
                 </ion-list>
             
               </div>
 
-              <ion-button 
-              expand="block" 
-              color="success" 
-              (click)="testFinalizado()">Terminar Test</ion-button>
-</div>
+

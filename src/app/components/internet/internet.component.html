@@ -107,6 +107,13 @@
     </div>
 
     </ion-item>
+
+    <ion-button 
+      expand="block" 
+      color="success" 
+      (click)="testInternet()"
+      [disabled]="radioRequired[0][1] || radioRequired[0][3]">Obtener consejo de Internet</ion-button>
+
   </ion-list>
 
 </div>
@@ -138,6 +145,13 @@
       </div>
 
       </ion-item>
+
+      <ion-button 
+      expand="block" 
+      color="success" 
+      (click)="testCable()"
+      [disabled]="radioRequired[1][1] || radioRequired[1][2] || radioRequired[1][3] || radioRequired[1][4]">Obtener consejo de Cable</ion-button>
+
     </ion-list>
 
   </div>
@@ -170,11 +184,14 @@
 
     </ion-item>
 
+    <ion-button 
+    expand="block" 
+    color="success" 
+    (click)="testTelefonia()"
+    [disabled]="radioRequired[2][1] || radioRequired[2][2]">Obtener consejo de Telefonía</ion-button>
+
     </ion-list>
 
   </div>
 
-  <ion-button 
-  expand="block" 
-  color="success" 
-  (click)="testFinalizado()">Terminar Test</ion-button>
+                  

@@ -2,6 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { SubTest } from 'src/app/interfaces/interfaces';
 import { DatosService } from 'src/app/services/datos.service';
 import { AccionesService } from 'src/app/services/acciones.service';
+import { NavController, ModalController } from '@ionic/angular';
 
 @Component({
   selector: 'app-transporte',
@@ -11,7 +12,9 @@ import { AccionesService } from 'src/app/services/acciones.service';
 export class TransporteComponent implements OnInit {
 
   constructor( public datosService: DatosService,
-               public accionesService: AccionesService ) { }
+               public accionesService: AccionesService,
+               private nav: NavController,
+               private modalCtrl: ModalController) { }
 
   ngOnInit() {
     this.subTestsEncontrados = []; //Arreglo que guarda los subtests encontrados
@@ -32,8 +35,20 @@ export class TransporteComponent implements OnInit {
     this.YaAbiertos[1] = false;
     this.YaAbiertos[2] = false;
     this.YaAbiertos[3] = false;
+    this.radioRequired = [[],[],[],[],[]];
+    this.radioRequired[0][1] = true;
+    this.radioRequired[1][1] = true;
+    this.radioRequired[1][3] = true;
+    this.radioRequired[1][4] = true;
+    this.radioRequired[2][1] = true;
+    this.radioRequired[2][2] = true;
+    this.radioRequired[2][3] = true;
+    this.radioRequired[3][1] = true;
+    this.radioRequired[3][2] = true;
+    this.radioRequired[3][3] = true;
   }
 
+  radioRequired : boolean[][];
   subTestsEncontrados: SubTest[];
   puntajeAlcanzar: number[];
   puntajeActual: number[];
@@ -46,6 +61,14 @@ export class TransporteComponent implements OnInit {
   vecesUber: number = 0;
   horasPico: number = 0;
   sinPrisa: number = 0;
+  gas1: number = 0;
+  gas2: number = 0;
+  subTestsAbiertos: number = 0;
+  subTestsAconsejados: number = 0;
+  sub1: boolean = false;
+  sub2: boolean = false;
+  sub3: boolean = false;
+  sub4: boolean = false;
 
   subTestEncontrado1: SubTest = {
     idTest: null,
@@ -133,8 +156,21 @@ return subTestEncontrado;
 
 radioButtonChange(event, idPregunta, idSubTest){
 
-  //SUBTEST1
+  this.radioRequired[idSubTest-1][idPregunta] = false;
+
   switch(idSubTest){
+
+  case 0:
+    if(idPregunta == 2){
+      this.gas1 = parseInt(event.detail.value);;
+    }
+  break;
+
+  case 1:
+    if(idPregunta == 2){
+      this.gas2 = parseInt(event.detail.value);;
+    }
+  break;
 
   case 2:
     if(idPregunta == 3){
@@ -208,11 +244,13 @@ async checkBoxInicial(event, idSub){
         this.subTestsEncontrados[0] = await this.obtenerSubTest(1, this.subTestEncontrado1);
           this.YaAbiertos[0]=true;
           this.permisos[0] = true;
+          this.subTestsAbiertos++;
        }
        else{
         console.log("false");
         this.permisos[0] = false;
         this.YaAbiertos[0] = false;
+        this.subTestsAbiertos--;
        }
       break;
 
@@ -221,10 +259,12 @@ async checkBoxInicial(event, idSub){
           this.subTestsEncontrados[1] = await this.obtenerSubTest(2, this.subTestEncontrado2);
           this.permisos[1] = true;
           this.YaAbiertos[1]=true;
+          this.subTestsAbiertos++;
         }
         else{
           this.permisos[1] = false;
           this.YaAbiertos[1] = false;
+          this.subTestsAbiertos--;
         }
       break;
 
@@ -233,10 +273,12 @@ async checkBoxInicial(event, idSub){
           this.subTestsEncontrados[2] = await this.obtenerSubTest(3, this.subTestEncontrado3);
           this.permisos[2] = true;
           this.YaAbiertos[2]=true;
+          this.subTestsAbiertos++;
           }
           else{
             this.permisos[2] = false;
             this.YaAbiertos[2] = false;
+            this.subTestsAbiertos--;
           }
       break;
 
@@ -245,35 +287,56 @@ async checkBoxInicial(event, idSub){
           this.subTestsEncontrados[3] = await this.obtenerSubTest(4, this.subTestEncontrado4);
           this.permisos[3] = true;
           this.YaAbiertos[3]=true;
+          this.subTestsAbiertos++;
           }
           else{
             this.permisos[3] = false;
             this.YaAbiertos[3] = false;
+            this.subTestsAbiertos--;
           }
       break;
     }
 }
 
-testFinalizado(){
-  //SUBTEST1
-if(this.permisos[0]){
-  
-  if(this.puntajeActual[0] <= 10){
-      this.accionesService.presentAlertConsejo("Consejo de Motocicleta" , "Se ha determinado que practicamente no usas tu motocicleta" +
-      ", por lo que te sugerimos comprarte una bici o viajar en camión, si no es opcion esto para ti, entonces lleva tu moto" +
-      " al mecanico, pues está gastando demasiada gasolina", false);
+comprobarSiRegresa(idSubtest: number){
+  switch(idSubtest){
+    case 1:
+      if(this.sub1 == false){
+        this.sub1 = true;
+        this.subTestsAconsejados++;
+      }
+    break;
+
+    case 2:
+      if(this.sub2 == false){
+        this.sub2 = true;
+        this.subTestsAconsejados++;
+      }
+    break;
+
+    case 3:
+      if(this.sub3 == false){
+        this.sub3 = true;
+        this.subTestsAconsejados++;
+      }
+    break;
+
+    case 4:
+      if(this.sub4 == false){
+        this.sub4 = true;
+        this.subTestsAconsejados++;
+      }
+    break;
   }
-  else if(this.puntajeActual[0] <= 20 && this.puntajeActual[0] >= 11){
-    this.accionesService.presentAlertConsejo("Consejo de Motocicleta" , "Te aconsejamos comprarte una motocicleta que no gaste tanta" + 
-    " gasolina, o que la que tienes actualmente la lleves con un mecanico para que revise por que gasta tanta gasolina", false);
-  }
-  else{ //SI SU GASTO SI ESTÁ JUSTIFICADO
-    this.accionesService.presentAlertGenerica("Gasto de Motocicleta justificado", "Aunque tu gasto este arriba de la media nacional" +
-    ", está justificado, pues si lo aprovechas bien o simplemente lo necesitas tal y como es debido a tus respuestas");
+
+  if(this.subTestsAbiertos == this.subTestsAconsejados){
+    this.modalCtrl.dismiss();
+    this.nav.navigateRoot('/tabs/tab3');
   }
 }
 
-  //SUBTEST2
+testAuto(){
+    //SUBTEST2
 if(this.permisos[1]){
 
   var aconsejalo = false;
@@ -291,7 +354,7 @@ if(this.permisos[1]){
     " o vehiculo que gaste menos gasolina, o simplemente en esas salidas ocasionales que tienes, tomar el transporte público <br><br>";
     aconsejalo = true;
   }
-  else if(this.puntajeActual[1] <= 20 && this.puntajeActual[1] >= 11){
+  else if(this.puntajeActual[1] <= 20 && this.puntajeActual[1] >= 11 && (this.gas2 == 1 || this.gas2 == 2)){
         var consejo = " • Se ha determinado que tu vehiculo está gastando más gasolina de la necesaria para las actividades que realizas" + 
         " por lo que te aconsejamos llevarlo al mecanico a que lo revise o te compres un vehiculo que gaste menos gasolina <br><br>";
     aconsejalo=true;
@@ -300,16 +363,20 @@ if(this.permisos[1]){
     var consejo = "";
   }
 
-  if(aconsejalo){
+  if(aconsejalo == true){
     this.accionesService.presentAlertConsejo("Consejo de Vehículo propio" , consejo + consejo2 , false);
   }
   else{ //SI SU GASTO SI ESTÁ JUSTIFICADO
     this.accionesService.presentAlertGenerica("Gasto de Vehiculo propio justificado", "Aunque tu gasto este arriba de la media nacional" +
     ", está justificado, pues si lo aprovechas bien o simplemente lo necesitas tal y como es debido a tus respuestas");
   }
+  this.comprobarSiRegresa(2);
 }
 
-  //SUBTEST3
+}
+
+testPublico(){
+//SUBTEST3
 if(this.permisos[2]){
 
   var aconsejalo2 = false;
@@ -338,9 +405,35 @@ if(this.permisos[2]){
     this.accionesService.presentAlertGenerica("Gasto de Transporte público justificado", "Aunque tu gasto este arriba de la media nacional" +
     ", está justificado, pues si lo aprovechas bien o simplemente lo necesitas tal y como es debido a tus respuestas <br><br>");
   }
+
+  this.comprobarSiRegresa(3);
 }
 
-//SUBTEST 4//
+}
+
+testMoto(){
+  //SUBTEST1
+if(this.permisos[0]){
+  
+  if(this.puntajeActual[0] <= 10){
+      this.accionesService.presentAlertConsejo("Consejo de Motocicleta" , "Se ha determinado que practicamente no usas tu motocicleta" +
+      ", por lo que te sugerimos comprarte una bici o viajar en camión, si no es opcion esto para ti, entonces lleva tu moto" +
+      " al mecanico, pues está gastando demasiada gasolina", false);
+    }
+  else if(this.puntajeActual[0] <= 20 && this.puntajeActual[0] >= 11 && (this.gas1 == 1 || this.gas1 == 2)){
+    this.accionesService.presentAlertConsejo("Consejo de Motocicleta" , "Te aconsejamos comprarte una motocicleta que no gaste tanta" + 
+    " gasolina, o que la que tienes actualmente la lleves con un mecanico para que revise por que gasta tanta gasolina", false);
+    }
+  else{ //SI SU GASTO SI ESTÁ JUSTIFICADO
+    this.accionesService.presentAlertGenerica("Gasto de Motocicleta justificado", "Aunque tu gasto este arriba de la media nacional" +
+    ", está justificado, pues si lo aprovechas bien o simplemente lo necesitas tal y como es debido a tus respuestas");
+  }
+  this.comprobarSiRegresa(1);
+}
+}
+
+testUbertaxi(){
+  //SUBTEST 4//
 if(this.permisos[3]){
   var aconsejalo3;
 
@@ -379,8 +472,9 @@ if(this.permisos[3]){
     this.accionesService.presentAlertGenerica("Gasto de Uber/taxi justificado", "Aunque tu gasto este arriba de la media nacional" +
     ", está justificado, pues si lo aprovechas bien o simplemente lo necesitas tal y como es debido a tus respuestas");
   }
-}
 
+  this.comprobarSiRegresa(4);
+}
 }
 
 }

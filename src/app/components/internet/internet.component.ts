@@ -2,6 +2,7 @@ import { Component, OnInit, Input } from '@angular/core';
 import { Test, SubTest, Pregunta, Respuesta } from 'src/app/interfaces/interfaces';
 import { DatosService } from 'src/app/services/datos.service';
 import { AccionesService } from '../../services/acciones.service';
+import { NavController, ModalController } from '@ionic/angular';
 
 @Component({
   selector: 'app-internet',
@@ -11,7 +12,9 @@ import { AccionesService } from '../../services/acciones.service';
 export class InternetComponent implements OnInit {
 
   constructor(public datosService: DatosService,
-              public accionesService: AccionesService ) { }
+              public accionesService: AccionesService,
+              private nav: NavController,
+              private modalCtrl: ModalController) { }
 
   ngOnInit() {
     this.subTestsEncontrados = []; //Arreglo que guarda los subtests encontrados
@@ -25,13 +28,28 @@ export class InternetComponent implements OnInit {
     this.puntajeActual[0] = 0; 
     this.puntajeActual[1] = 0; 
     this.puntajeActual[2] = 0; 
+    this.radioRequired = [[],[],[],[],[]];
+    this.radioRequired[0][1] = true;
+    this.radioRequired[0][3] = true;
+    this.radioRequired[1][1] = true;
+    this.radioRequired[1][2] = true;
+    this.radioRequired[1][3] = true;
+    this.radioRequired[1][4] = true;
+    this.radioRequired[2][1] = true;
+    this.radioRequired[2][2] = true;
   }
 
+  radioRequired : boolean[][];
   subTestsEncontrados: SubTest[];
   puntajeAlcanzar: number[];
   puntajeActual: number[];
   permisos: boolean[];
   valoresRadio: number[][];
+  subTestsAbiertos: number = 0;
+  subTestsAconsejados: number = 0;
+  sub1: boolean = false;
+  sub2: boolean = false;
+  sub3: boolean = false;
 
   subTestEncontrado1: SubTest = {
     idTest: null,
@@ -100,13 +118,45 @@ export class InternetComponent implements OnInit {
 return subTestEncontrado;
 }
 
+comprobarSiRegresa(idSubtest: number){
+  switch(idSubtest){
+    case 1:
+      if(this.sub1 == false){
+        this.sub1 = true;
+        this.subTestsAconsejados++;
+      }
+    break;
+
+    case 2:
+      if(this.sub2 == false){
+        this.sub2 = true;
+        this.subTestsAconsejados++;
+      }
+    break;
+
+    case 3:
+      if(this.sub3 == false){
+        this.sub3 = true;
+        this.subTestsAconsejados++;
+      }
+    break;
+  }
+
+  if(this.subTestsAbiertos == this.subTestsAconsejados){
+    this.modalCtrl.dismiss();
+    this.nav.navigateRoot('/tabs/tab3');
+  }
+}
+
 async subTest1(event){
   if(event.detail.value == 'si'){
     this.subTestsEncontrados[0] = await this.obtenerSubTest(1, this.subTestEncontrado1);
     this.permisos[0] = true;
+    this.subTestsAbiertos++;
   }
   else{
     this.permisos[0] = false;
+    this.subTestsAbiertos--;
   }
 }
 
@@ -114,9 +164,11 @@ async subTest2(event){
   if(event.detail.value == 'si'){
     this.subTestsEncontrados[1] = await this.obtenerSubTest(2, this.subTestEncontrado2);
     this.permisos[1] = true;
+    this.subTestsAbiertos++;
   }
   else{
     this.permisos[1] = false;
+    this.subTestsAbiertos--;
   }
 }
 
@@ -124,15 +176,18 @@ async subTest3(event){
   if(event.detail.value == 'si'){
     this.subTestsEncontrados[2] = await this.obtenerSubTest(3, this.subTestEncontrado3);
     this.permisos[2] = true;
+    this.subTestsAbiertos++;
   }
   else{
     this.permisos[2] = false;
+    this.subTestsAbiertos--;
   }
 }
 
 radioButtonChange(event, idPregunta, idSubTest){
 
-  //SUBTEST1
+  this.radioRequired[idSubTest-1][idPregunta] = false;
+
   switch(idSubTest){
     
   case 1:
@@ -174,20 +229,7 @@ checkBoxChange(event, idPregunta, idSubTest){
   }
 }
 
-testFinalizado(){
-  //SUBTEST1
-if(this.permisos[0]){
-  this.puntajeActual[0] += this.valoresRadio[0][2]; //LO DEL CHECK + LO DEL RADIO BUTTON, ES 3 PUES 1 ES LA DE ALCANZAR, 2 EL CHECK
-  if(this.puntajeActual[0] <= this.puntajeAlcanzar[0]){
-      this.accionesService.presentAlertConsejo("Consejo de Internet" , "Tu plan de internet es muy grande para el tiempo y uso " +
-      "que le das, te aconsejamos contratar un plan mas pequeño o cambiarte de compañia para gastar lo necesario", false);
-  }
-  else{ //SI SU GASTO SI ESTÁ JUSTIFICADO
-    this.accionesService.presentAlertGenerica("Gasto de Internet justificado", "Aunque tu gasto este arriba de la media nacional" +
-    ", está justificado, pues si lo aprovechas bien o simplemente lo necesitas tal y como es debido a tus respuestas");
-  }
-}
-
+testCable(){
   //SUBTEST2
 if(this.permisos[1]){
   this.puntajeActual[1] = this.valoresRadio[1][1] + this.valoresRadio[1][2] + this.valoresRadio[1][3]; //LO DEL CHECK + LO DEL RADIO BUTTON, ES 3 PUES 1 ES LA DE ALCANZAR, 2 EL CHECK
@@ -215,9 +257,12 @@ if(this.permisos[1]){
     this.accionesService.presentAlertGenerica("Gasto de Cable justificado", "Aunque tu gasto este arriba de la media nacional" +
     ", está justificado, pues si lo aprovechas bien o simplemente lo necesitas tal y como es debido a tus respuestas");
   }
+  this.comprobarSiRegresa(2);
+}
 }
 
-  //SUBTEST3
+testTelefonia(){
+    //SUBTEST3
 if(this.permisos[2]){
   this.puntajeActual[2] = this.valoresRadio[2][0] + this.valoresRadio[2][1]; //LO DEL CHECK + LO DEL RADIO BUTTON, ES 3 PUES 1 ES LA DE ALCANZAR, 2 EL CHECK
   console.log("Valor a alcanzar:" + this.puntajeAlcanzar[2]);
@@ -231,6 +276,23 @@ if(this.permisos[2]){
     this.accionesService.presentAlertGenerica("Gasto de Telefonía justificado", "Aunque tu gasto este arriba de la media nacional" +
     ", está justificado, pues si lo aprovechas bien o simplemente lo necesitas tal y como es debido a tus respuestas");
   }
+  this.comprobarSiRegresa(3);
+}
+}
+
+testInternet(){
+  //SUBTEST1
+if(this.permisos[0]){
+  this.puntajeActual[0] += this.valoresRadio[0][2]; //LO DEL CHECK + LO DEL RADIO BUTTON, ES 3 PUES 1 ES LA DE ALCANZAR, 2 EL CHECK
+  if(this.puntajeActual[0] <= this.puntajeAlcanzar[0]){
+      this.accionesService.presentAlertConsejo("Consejo de Internet" , "Tu plan de internet es muy grande para el tiempo y uso " +
+      "que le das, te aconsejamos contratar un plan mas pequeño o cambiarte de compañia para gastar lo necesario", false);
+  }
+  else{ //SI SU GASTO SI ESTÁ JUSTIFICADO
+    this.accionesService.presentAlertGenerica("Gasto de Internet justificado", "Aunque tu gasto este arriba de la media nacional" +
+    ", está justificado, pues si lo aprovechas bien o simplemente lo necesitas tal y como es debido a tus respuestas");
+  }
+  this.comprobarSiRegresa(1);
 }
 
 }

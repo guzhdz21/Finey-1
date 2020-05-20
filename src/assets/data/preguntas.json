@@ -565,7 +565,7 @@
       }]
     },
     {
-      "idTest": 1,
+      "idTest": 5,
       "idSubTest": 2,
       "id": 2,
       "preguntaTexto": "¿Sueles contratar a menudo los servicios de peliculas, series, etc. que te ofrece tu compañia de cable?",
@@ -673,19 +673,19 @@
       "preguntaTexto": "¿Con cuanto rendimiento de combustible cuenta tu motocicleta?",
       "respuestas": [{
         "respuestaTexto": "Menos de 15km/Lt",
-        "valor": 40
+        "valor": 1
       },
       {
       "respuestaTexto": "Entre 16km/Lt y 25km/Lt",
-      "valor": 20
+      "valor": 2
       },
       {
       "respuestaTexto": "Entre 26km/Lt y 35km/Lt",
-      "valor": 20
+      "valor": 3
       },
       {
       "respuestaTexto": "Más de 36km/Lt",
-      "valor": 10
+      "valor": 4
       }]
     }, 
     {
@@ -723,19 +723,19 @@
       "preguntaTexto": "¿Con cuanto rendimiento de combustible cuenta tu automovil?",
       "respuestas": [{
         "respuestaTexto": "Menos de 10km/Lt",
-        "valor": 40
+        "valor": 1
       },
       {
       "respuestaTexto": "Entre 11km/Lt y 20km/Lt",
-      "valor": 20
+      "valor": 2
       },
       {
       "respuestaTexto": "Entre 21km/Lt y 29km/Lt",
-      "valor": 20
+      "valor": 3
       },
       {
       "respuestaTexto": "Más de 30km/Lt",
-      "valor": 10
+      "valor": 4
       }]
     },
     {
@@ -1004,7 +1004,7 @@
       "idTest": 6,
       "idSubTest": 1,
       "id": 6,
-      "preguntaTexto": "¿Sueles tomar fotos muy seguido o procuras que salgan bien?",
+      "preguntaTexto": "¿Cuanto porcentaje de memoria del celular usas?",
       "respuestas": [
       {
       "respuestaTexto": "20% o menos",
