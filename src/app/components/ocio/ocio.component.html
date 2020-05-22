@@ -3,7 +3,7 @@
 <div>
 
   <ion-item lines="none">  
-    <ion-label class="margen_derecha_18 ion-text-wrap">El gasto en ocio es uno de los más complicados de controlar. A nadie le gusta reducir el dinero que gasta en cosas que le aportan felicidad, por lo que te pediremos que trates de seguir lo más que puedas aunque no en su totalidad los consejos que al terminar el test te daremos.</ion-label>
+    <ion-label class="margen_derecha_18 ion-text-wrap">El gasto en ocio es uno de los más complicados de controlar. A nadie le gusta reducir el dinero que gasta en cosas que le aportan felicidad, por lo que te pediremos que trates de seguir lo más que puedas aunque no obligatoriamente en su totalidad los consejos que al terminar el test te daremos.</ion-label>
     </ion-item>
 
   <ion-item lines="none">  
@@ -69,7 +69,7 @@
               expand="block" 
               color="success" 
               (click)="testLibros()"
-              [disabled]="radioRequired[0][1] || radioRequired[0][2] || radioRequired[0][3]">Obtener consejo de Libros</ion-button>
+              [disabled]="radioRequired[0][1] || radioRequired[0][2] || radioRequired[0][3] || terminados[1]">Obtener consejo de Libros</ion-button>
                               
             </div>
 
@@ -104,7 +104,7 @@
               expand="block" 
               color="success" 
               (click)="testPeliculas()"
-              [disabled]="radioRequired[1][1] || radioRequired[1][2] || radioRequired[1][3] || radioRequired[1][4]">Obtener consejo de Películas</ion-button>
+              [disabled]="radioRequired[1][1] || radioRequired[1][2] || radioRequired[1][3] || radioRequired[1][4] || terminados[2]">Obtener consejo de Películas</ion-button>
                       
             </div>
 
@@ -139,7 +139,7 @@
               expand="block" 
               color="success" 
               (click)="testVideojuegos()"
-              [disabled]="radioRequired[2][1] || radioRequired[2][2] || radioRequired[2][3]">Obtener consejo de Videojuegos</ion-button>
+              [disabled]="radioRequired[2][1] || radioRequired[2][2] || radioRequired[2][3] || terminados[3]">Obtener consejo de Videojuegos</ion-button>
 
             </div>
 
@@ -175,7 +175,7 @@
               color="success" 
               (click)="testAmigosPareja()"
               class="ion-text-wrap"
-              [disabled]="radioRequired[3][1] || radioRequired[3][2] || radioRequired[3][3]">Obtener consejo de salidas con amigos/pareja</ion-button>
+              [disabled]="radioRequired[3][1] || radioRequired[3][2] || radioRequired[3][3] || terminados[4]">Obtener consejo de salidas con amigos/pareja</ion-button>
                       
             </div>
 
@@ -210,7 +210,7 @@
               expand="block" 
               color="success" 
               (click)="testViajes()"
-              [disabled]="radioRequired[4][1] || radioRequired[4][2] || radioRequired[4][3]">Obtener consejo de Viajes</ion-button>
+              [disabled]="radioRequired[4][1] || radioRequired[4][2] || radioRequired[4][3] || terminados[5]">Obtener consejo de Viajes</ion-button>
                       
             </div>
 
@@ -246,6 +246,6 @@
               color="success" 
               (click)="testEventos()"
               class="ion-text-wrap"
-              [disabled]="radioRequired[5][1] || radioRequired[5][2]">Obtener consejo de Eventos culturales/deportivos</ion-button>
+              [disabled]="radioRequired[5][1] || radioRequired[5][2] || terminados[6]">Obtener consejo de Eventos culturales/deportivos</ion-button>
                       
             </div>

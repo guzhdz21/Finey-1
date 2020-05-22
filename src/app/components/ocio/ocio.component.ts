@@ -52,8 +52,16 @@ export class OcioComponent implements OnInit {
     this.radioRequired[4][3] = true;
     this.radioRequired[5][1] = true;
     this.radioRequired[5][2] = true;
+    this.terminados = [];
+    this.terminados[1] = false;
+    this.terminados[2] = false;
+    this.terminados[3] = false;
+    this.terminados[4] = false;
+    this.terminados[5] = false;
+    this.terminados[6] = false;
   }
 
+  terminados: boolean[];
   subTestsEncontrados: SubTest[];
   respuestasContestadas: number[][];
   permisos: boolean[];
@@ -280,6 +288,7 @@ radioButtonChange(event, idPregunta, idSubTest){
     //SUBTEST 1
     var justificado1 = true;
     if(this.permisos[0] == true){
+      this.terminados[1] = true;
     if(this.respuestasContestadas[0][1] == 1 || this.respuestasContestadas[0][1] == 2){
       var consejo1 = " • Te recomendamos que trates de intercambiar libros con tus amigos o que los vendas a algún conocido, tienda o por internet <br><br>"
       justificado1 = false;
@@ -370,6 +379,7 @@ radioButtonChange(event, idPregunta, idSubTest){
     //SUBTEST 2
   var justificado2 = true;
   if(this.permisos[1] == true){
+    this.terminados[2] = true;
     if(this.respuestasContestadas[1][1] == 1 || this.respuestasContestadas[1][1] == 2){
       var consejo4 = " • Te recomendamos que siempre trates de ir al cine cuando haya promociones u ofertas, por ejemplo; a veces los miércoles los cines se ponen en 2x1 en taquilla <br><br>"
       justificado2 = false;
@@ -409,6 +419,7 @@ radioButtonChange(event, idPregunta, idSubTest){
      //SUBTEST 3
   var justificado3 = true;
   if(this.permisos[2] == true){
+    this.terminados[3] = true;
     if(this.respuestasContestadas[2][1] == 1){
       var consejo7 = " • Te recomendamos que trates de vender los juegos que ya no uses o que los intercambies con alguien, pero no guardarlos, pues es dinero perdido <br><br>"
       justificado3 = false;
@@ -448,6 +459,7 @@ radioButtonChange(event, idPregunta, idSubTest){
     //SUBTEST 4
   var justificado4 = true;
   if(this.permisos[3]){
+    this.terminados[4] = true;
     if(this.respuestasContestadas[3][1] == 1){
       var consejo10 = " • Te recomendamos que siempre que vayas a salir con sus amigos o pareja, tengas en mente una cifra a gastar fija, y tratar de apegarse a ella <br><br>"
       justificado4 = false;
@@ -487,6 +499,7 @@ radioButtonChange(event, idPregunta, idSubTest){
     //SUBTEST 5
    var justificado5 = true;
    if(this.permisos[4]){
+    this.terminados[5] = true;
     if(this.respuestasContestadas[4][1] == 1){
       var consejo13 = " • Te recomendamos tratar de hacer todo lo posible por viajar en temporada baja, si no puedes entonces trata de reducir gastos, como por ejemplo; en lugar de hospedarte en un hotel hazlo en un airbnb, o en lugar de viajar en avión hazlo en camión, cualquier tipo de “sacrificio” que no te cueste tanto realizar que te ahorre dinero <br><br>"
       justificado5 = false;
@@ -531,6 +544,7 @@ radioButtonChange(event, idPregunta, idSubTest){
      //SUBTEST 6
      var justificado6 = true;
      if(this.permisos[5]){
+      this.terminados[6] = true;
       if(this.respuestasContestadas[5][1] == 1){
         var consejo16 = " • Te recomendamos siempre aprovechar los eventos culturales gratis o que tienen descuentos, por ejemplo; los domingos de vez en cuando hay varios eventos gratis <br><br>"
         justificado6 = false;

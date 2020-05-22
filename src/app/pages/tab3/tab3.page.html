@@ -2,14 +2,26 @@
 
 <ion-content>
 
-    <ion-item color="primary"> 
+<div *ngIf="testsExisten == false" class="noHay">
+  <ion-item color="primary" class="alineado">
+    <ion-label ion-text-wrap><h1 class="grande">No hay tests que contestar</h1></ion-label>
+  </ion-item>
+  <ion-card class = "card">
+    <ion-label ion-text-wrap><h1 class="mediana">Cuando un test está disponible para que lo contestes, significa que gastaste de más en ese rubro, y el test te aconsejará como dejar de gastar "de más"</h1></ion-label>
+    <ion-label ion-text-wrap><h1 class="mediana2">Cuando no tienes tests que contestar, significa que no te has sobrepasado en ningún gasto</h1></ion-label>
+  </ion-card>
+</div>
+
+    <ion-item color="primary" *ngIf="testsExisten == true"> 
         <ion-label><h1 class="texto_centrado_blanco">Tests disponibles</h1></ion-label>
       </ion-item>
 
     <ion-list>
-        <ion-item *ngFor="let test of tests | async" (click)="abrirTest(test.id)">
+        <div *ngFor="let test of tests | async">
+        <ion-item *ngIf="mostrarTest[test.id]" (click)="abrirTest(test.id)">
             <ion-icon slot="start" name="document"></ion-icon>
             <ion-label>{{test.texto}}</ion-label>
         </ion-item>
+    </div>
     </ion-list>
 </ion-content>
