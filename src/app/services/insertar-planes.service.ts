@@ -67,7 +67,6 @@ export class InsertarPlanesService {
      //Metodo que manda llamar los metodos para calcular los datos para agregar un plan nuevo y lo guarda en el Storage si es que es valido
     async calcularYRegistrar(planN: Plan) {
 
-    console.log("desde el service");
     await this.datosService.cargarDatosPlan();
     this.planes = this.datosService.planesCargados;
     await this.datosService.cargarDiferencia();
@@ -86,7 +85,6 @@ export class InsertarPlanesService {
         }
       });
       this.planes = this.planes.filter(plan => plan.pausado != true);
-      console.log(this.planes);
   
       //Valores iniciales
       var unPlan = false;
@@ -477,7 +475,7 @@ export class InsertarPlanesService {
       if (gasto  >= margenMax || gasto >= this.gastosUsuario) {
   
         //Verificamso si hay prioritario
-        var acumulacion = this.planMenor.aportacionMensual * this.planes.length -1;
+        var acumulacion = this.planMenor.aportacionMensual * (this.planes.length -1);
         if(acumulacion >= (ahorrar)) {
           await this.opcionesPrioridadDos(margenMax, margenMin);
           //Llamamos al metodo que hace los procesos de prioridad
@@ -491,7 +489,7 @@ export class InsertarPlanesService {
       } else if ( ( gasto < margenMax ) && (gasto >= margenMin ) ) {
   
         //Verificamso si hay prioritario
-        var acumulacion = this.planMenor.aportacionMensual * this.planes.length -1;
+        var acumulacion = this.planMenor.aportacionMensual * (this.planes.length -1);
         if(acumulacion >= (ahorrar)) {
           await this.opcionesPrioridadDos(margenMax, margenMin);
   
@@ -730,7 +728,7 @@ export class InsertarPlanesService {
       } 
       
       else {
-        var acumulacion = this.planMenor.aportacionMensual * this.planes.length -1;
+        var acumulacion = this.planMenor.aportacionMensual * (this.planes.length -1);
         if(acumulacion >= (ahorrar)) {
           return this.intentarPrioritario(margenMax,margenMin);
         }

@@ -286,10 +286,12 @@ export class Tab1Page implements OnInit {
             totalAhorro -= plan.aportacionMensual;
             if(totalAhorro >= 0) {
               plan.cantidadAcumulada += plan.aportacionMensual;
+              plan.cantidadAcumulada = Math.round(plan.cantidadAcumulada*100)/100;
             } else {
               //Aqui iria el aumento de tiempo
               totalAhorro += plan.aportacionMensual;
               plan.cantidadAcumulada += totalAhorro;
+              plan.cantidadAcumulada = Math.round(plan.cantidadAcumulada*100)/100;
               totalAhorro = 0;
               plan.tiempoRestante += 1;
               plan.tiempoTotal += 1;
@@ -402,15 +404,15 @@ export class Tab1Page implements OnInit {
           }
           ahorro /= planMayor.tiempoRestante;
           planMenor.aportacionMensual = (planMenor.cantidadTotal - planMenor.cantidadAcumulada)/planMenor.tiempoRestante;
-          var acumulacion = planMenor.aportacionMensual * this.planes.length -1;
+          var acumulacion = planMenor.aportacionMensual * (this.planes.length -1);
           if(acumulacion >= ahorro) {
             planesPrioritarios.push(planMenor);
             this.planes = this.planes.filter(p => p != planMenor);
             prioritario = true;
           } else {
+            ahorro -= planMenor.aportacionMensual;
             for(var plan of this.planes) {
-              ahorro -= planMenor.aportacionMensual;
-              if(plan != planMenor && plan!= planMayor) {
+              if(plan != planMenor && plan != planMayor) {
                 plan.aportacionMensual = planMenor.aportacionMensual;
                 ahorro -= planMenor.aportacionMensual;
               }

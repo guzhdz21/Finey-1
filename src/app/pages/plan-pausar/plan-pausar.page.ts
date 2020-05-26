@@ -178,7 +178,7 @@ export class PlanPausarPage implements OnInit {
           }
           ahorrar += (element.cantidadTotal - element.cantidadAcumulada);
         });
-        var acumulacion = this.planMenor.aportacionMensual * this.planesAux.length -1;
+        var acumulacion = this.planMenor.aportacionMensual * (this.planesAux.length -1);
         this.planMenor.aportacionMensual = (this.planMenor.cantidadTotal - this.planMenor.cantidadAcumulada)/this.planMenor.tiempoRestante
         if(this.planesAux.length > 1) {
           if(this.planesAux.length == 2 && this.planMenor.aportacionMensual >= ahorrar) {
@@ -273,7 +273,7 @@ export class PlanPausarPage implements OnInit {
     } 
     
     else {
-      var acumulacion = this.planMenor.aportacionMensual * this.planesAux.length -1;
+      var acumulacion = this.planMenor.aportacionMensual * (this.planesAux.length -1);
       if(acumulacion>= ahorrar2) {
         return this.intentarPrioritario(margenMax,margenMin);
       }
