@@ -38,6 +38,7 @@ export class PlanFormPage implements OnInit {
   //Variable para guardar la infromacion de las alertas
   alertas: AlertaGeneral[] = [];
   invalido: boolean;
+  invalido2: boolean;
 
   //Variable que se usa para el regreso o boton back nativo del celular
   backButtonSub: Subscription;
@@ -57,10 +58,9 @@ export class PlanFormPage implements OnInit {
     });
 
     this.invalido = true;
-
-    this.invalido = true;
-
+    this.invalido2 = true;
     this.alertado = [];
+
     this.alertado[1] = false;
     this.alertado[2] = false;
     this.alertado[3] = false;
@@ -102,7 +102,7 @@ export class PlanFormPage implements OnInit {
   tiempoPlan(event, index) {
 
     if(this.planNuevo.tiempoTotal > 0 && this.planNuevo.tiempoTotal < 97){
-      this.invalido = false;
+      this.invalido2 = false;
     }
     else{
 
@@ -111,7 +111,7 @@ export class PlanFormPage implements OnInit {
       }
         this.alertado[index] = true;
 
-      this.invalido = true;
+      this.invalido2 = true;
     }
 
     if(this.tiempo.value.toString().includes('.')) {
