@@ -48,6 +48,7 @@
                 placeholder="500000"
                 [(ngModel)]="planes[indexAux].cantidadTotal"
                  name="costoPlan"
+                 (ionChange)="comprobar($event, planes[indexAux].cantidadTotal, 1)"
                 required>
       </ion-input>
       </ion-item>
@@ -66,6 +67,7 @@
                 placeholder="12"
                 [(ngModel)]="planes[indexAux].tiempoTotal"
                 name="tiempoPlan"
+                (ionChange)="comprobarTiempo($event, planes[indexAux].tiempoTotal, 2)"
                 required>
       </ion-input>
       </ion-item>
@@ -84,6 +86,7 @@
                 placeholder="12"
                 [(ngModel)]="planes[indexAux].tiempoRestante"
                 name="tiempoRestante"
+                (ionChange)="comprobar($event, planes[indexAux].tiempoRestante, 3)"
                 required>
       </ion-input>
       </ion-item>
@@ -119,6 +122,7 @@
                 placeholder="1000"
                 [(ngModel)]="planes[indexAux].cantidadAcumulada"
                 name="cantidadAcumulada"
+                (ionChange)="comprobar($event, planes[indexAux].cantidadAcumulada, 4)"
                 required>
       </ion-input>
       </ion-item>
@@ -126,7 +130,7 @@
     <ion-button expand="block"
                 color="success"
                 (click)="modificarPlanes.calcularYModificar(this.planesOriginales, this.indexAux, this.planes)"
-                [disabled]="formulario.invalid">Modificar plan</ion-button>
+                [disabled]="formulario.invalid || invalido">Modificar plan</ion-button>
 
   </form>            
 

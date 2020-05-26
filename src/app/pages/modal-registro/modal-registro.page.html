@@ -89,6 +89,7 @@
     </ion-list>
   </ion-item> 
 
+<div *ngIf="usuario.tipoIngreso != 'Variable'">
   <ion-item>
     <ion-buttons slot="start">
     <ion-button slots="icon-only" (click)="botonInfo('Ingreso mensual')">
@@ -99,10 +100,12 @@
   <ion-input type="number"
             placeholder="Ej. 15000"
             required 
+            (ionChange)="comprobar($event, usuario.ingresoCantidad, 1)"
             [(ngModel)]="usuario.ingresoCantidad"
             name="ingreso">
   </ion-input>
   </ion-item>
+</div>
 
   <ion-item lines="none">
 
@@ -144,7 +147,7 @@
             [(ngModel)]="usuario.gastos[i].cantidad"
             [name]="etiqueta"
             required
-            (ionChange)="verificarGastosNull()">
+            (ionChange)="comprobar($event, usuario.gastos[i].cantidad, 2)">
   </ion-input>
   
 </ion-item>
@@ -152,7 +155,7 @@
       <ion-button expand="block"
                   color="success"
                   (click)="registrar()"
-                  [disabled]="formulario.invalid || ingreso || sexo || requerido || notificacion">Registrarme</ion-button>
+                  [disabled]="formulario.invalid || ingreso || sexo || requerido || notificacion || invalido">Registrarme</ion-button>
 
 </form>
 

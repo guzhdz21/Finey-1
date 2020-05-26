@@ -25,12 +25,16 @@ export class MisGastosPage implements OnInit {
   //Variable que nos ayuda a asegurarnos si el ususario no puede satisfacer sus necesidades basicas
   registrarseAdvertencia: boolean = this.datosService.registrarseAdvertencia;
 
+  alertado: boolean[];
+
   //Variable para guardar los datos del ususario
   usuarioModificado: UsuarioLocal = this.datosService.usuarioCarga;
 
   diferenciaAhorro: number = this.datosService.diferencia;
 
   backButtonSub: Subscription;
+
+  invalido: boolean;
 
   //Constructor con todas las inyecciones y controladores necesarios
   constructor(private modalCtrl: ModalController,
@@ -41,6 +45,13 @@ export class MisGastosPage implements OnInit {
               private plt: Platform) { }
 
   ngOnInit() {
+
+    this.alertado = [];
+    this.alertado[1] = false;
+    this.alertado[2] = false;
+    
+    this.invalido = true;
+
     //Llamada a metodo que carga los datos del usuario
     this.datosService.cargarDatos();
 
@@ -71,6 +82,22 @@ export class MisGastosPage implements OnInit {
   {
    this.usuarioModificado.tipoIngreso = event.detail.value;
   }
+
+  comprobar(event, cantidad, index){
+
+    if(cantidad < 0){
+      this.invalido = true;
+
+    if(this.alertado[index] == false){
+      this.accionesService.presentAlertGenerica("Cantidad inválida", "No puedes insertar una cantidad negativa");
+    }
+      this.alertado[index] = true;
+    }
+    else{
+      this.invalido = false;
+    }
+
+}
 
   //Metodo para regresar al pulsar el boton back
   regresar() {
