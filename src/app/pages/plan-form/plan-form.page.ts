@@ -34,6 +34,7 @@ export class PlanFormPage implements OnInit {
 
   //Variable para guardar la infromacion de las alertas
   alertas: AlertaGeneral[] = [];
+  invalido: boolean;
 
   //Variable que se usa para el regreso o boton back nativo del celular
   backButtonSub: Subscription;
@@ -51,6 +52,8 @@ export class PlanFormPage implements OnInit {
     this.datosService.getAlertasJson().subscribe(val => {
       this.alertas = val;
     });
+
+    this.invalido = true;
    }
 
   //Metodo que omite el ingreso de un plan al inciar la app por primera vez
@@ -71,6 +74,15 @@ export class PlanFormPage implements OnInit {
 
   //Metodo que valdia el tiempo que ingresa el ususario
   tiempoPlan(event) {
+
+    if(this.planNuevo.tiempoTotal != 0 && this.planNuevo.tiempoTotal < 97){
+      this.invalido = false;
+    }
+    else{
+      this.accionesService.presentAlertGenerica("Tiempo no válido", "El tiempo de un plan no puede ser menor a 1 mes, ni mayor a 96 meses");
+      this.invalido = true;
+    }
+
     if(this.tiempo.value.toString().includes('.')) {
       this.tiempo.value = this.tiempo.value.substr(0, this.tiempo.value.length - 1);
     }

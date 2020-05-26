@@ -32,6 +32,8 @@ export class MisGastosPage implements OnInit {
 
   backButtonSub: Subscription;
 
+  invalido: boolean;
+
   //Constructor con todas las inyecciones y controladores necesarios
   constructor(private modalCtrl: ModalController,
               private nav: NavController,
@@ -41,6 +43,9 @@ export class MisGastosPage implements OnInit {
               private plt: Platform) { }
 
   ngOnInit() {
+
+    this.invalido = true;
+
     //Llamada a metodo que carga los datos del usuario
     this.datosService.cargarDatos();
 
@@ -70,6 +75,29 @@ export class MisGastosPage implements OnInit {
   ingresoRadio_misgastos(event)
   {
    this.usuarioModificado.tipoIngreso = event.detail.value;
+  }
+
+  comprobar(event, cantidad, opcion){
+
+      if(opcion == 1){
+        if(cantidad < 0){
+          this.invalido = true;
+          this.accionesService.presentAlertGenerica("Cantidad de ingreso inválida", "No puedes insertar una cantidad de ingreso negativa");
+        }
+        else{
+          this.invalido = false;
+        }
+      }
+      else{
+        if(cantidad < 0){
+          this.invalido = true;
+          this.accionesService.presentAlertGenerica("Cantidad de gasto inválida", "No puedes insertar una cantidad de gasto negativa");
+        }
+        else{
+          this.invalido = false;
+        }
+      }
+
   }
 
   //Metodo para regresar al pulsar el boton back

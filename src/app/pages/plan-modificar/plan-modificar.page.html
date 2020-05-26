@@ -66,6 +66,7 @@
                 placeholder="12"
                 [(ngModel)]="planes[indexAux].tiempoTotal"
                 name="tiempoPlan"
+                (ionChange)="comprobarTiempo($event, planes[indexAux].tiempoTotal)"
                 required>
       </ion-input>
       </ion-item>
@@ -126,7 +127,7 @@
     <ion-button expand="block"
                 color="success"
                 (click)="modificarPlanes.calcularYModificar(this.planesOriginales, this.indexAux, this.planes)"
-                [disabled]="formulario.invalid">Modificar plan</ion-button>
+                [disabled]="formulario.invalid || invalido">Modificar plan</ion-button>
 
   </form>            
 

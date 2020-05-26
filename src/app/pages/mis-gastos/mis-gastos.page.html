@@ -41,6 +41,7 @@
       </ion-list>
     </ion-item> 
   
+  <div *ngIf="usuarioModificado.tipoIngreso != 'Variable'">
     <ion-item>
       <ion-buttons slot="start">
       <ion-button slots="icon-only" (click)="botonInfo('Ingreso mensual')">
@@ -48,12 +49,14 @@
       </ion-button>
     </ion-buttons>
     <ion-label>Ingreso mensual</ion-label>
-    <ion-input type="text"
+    <ion-input type="number"
               value={{usuarioModificado.ingresoCantidad}}
               required [(ngModel)]="usuarioModificado.ingresoCantidad"
+              (ionChange)="comprobar($event, usuarioModificado.ingresoCantidad, 1)"
               name="ingreso">
     </ion-input>
     </ion-item>
+  </div>
   
     <ion-item color="primary"> 
       <ion-label><h1 class="texto_centrado_blanco">Gastos</h1></ion-label>
@@ -74,6 +77,7 @@
     <ion-input type="number"
                value= {{usuarioModificado.gastos[i].cantidad}}
                required [(ngModel)]="usuarioModificado.gastos[i].cantidad"
+               (ionChange)="comprobar($event, usuarioModificado.gastos[i].cantidad, 2)"
                [name]="etiqueta">
     </ion-input>
   </ion-item>
@@ -82,7 +86,7 @@
         expand="block" 
         color="success" 
         (click)="modificar()"
-        [disabled]="formulario.invalid">Modificar datos</ion-button>
+        [disabled]="formulario.invalid || invalido">Modificar datos</ion-button>
 
   </form>
 

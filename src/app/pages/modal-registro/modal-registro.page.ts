@@ -25,6 +25,7 @@ export class ModalRegistroPage implements OnInit {
   sexo: boolean = true;
   notificacion: boolean = true;
   requerido: boolean = true;
+  invalido: boolean;
 
   //Variable que nos ayuda a asegurarnos si el ususario no puede satisfacer sus necesidades basicas
   registrarseAdvertencia: boolean = this.datosService.registrarseAdvertencia;
@@ -54,6 +55,9 @@ export class ModalRegistroPage implements OnInit {
                 private localNotifications: LocalNotifications) { }
 
 ngOnInit() {
+
+  this.invalido = true;
+
   //Llamado al metodo del servicio datos Service para obtener gastos iniciales de un archivo
   this.datosService.getGastosJson().subscribe (val => {
     this.usuario.gastos = val;
@@ -73,6 +77,31 @@ ngOnInit() {
   this.datosService.getRubros().subscribe (val => {
     this.rubros = val;
   });
+}
+
+comprobar(event, cantidad, opcion){
+
+  if(opcion == 1){
+    if(cantidad < 0){
+      this.invalido = true;
+      this.accionesService.presentAlertGenerica("Cantidad de ingreso inválida", "No puedes insertar una cantidad de ingreso negativa");
+    }
+    else{
+      this.invalido = false;
+    }
+  }
+  else{
+    if(cantidad < 0){
+      this.invalido = true;
+      this.accionesService.presentAlertGenerica("Cantidad de gasto inválida", "No puedes insertar una cantidad de gasto negativa");
+    }
+    else{
+      this.invalido = false;
+    }
+  }
+
+  this.verificarGastosNull();
+
 }
 
 //Metodo que ayuda a saber que el usuario si escogio uan opcion del tipo de ingreso
@@ -211,6 +240,7 @@ sexoRadio(event)
 
   //Metodo para asegurar que todos los datos sean ingresados
   verificarGastosNull() {
+
     this.usuario.gastos.forEach(element => {
       if(element.cantidad == null) {
         return;

@@ -19,6 +19,8 @@ export class PlanModificarPage implements OnInit {
   @Input() index: string;
   @Input() planesOriginales: Plan[];
 
+  invalido: boolean;
+
   @ViewChild('tiempo',{static: true}) tiempo: IonInput;
 
   //Variable que gaurdan datos para mostrar en el HTML
@@ -57,6 +59,7 @@ export class PlanModificarPage implements OnInit {
       this.planes = this.datosService.planesCargados;
       this.indexAux = Number(this.index);
     });
+    this.invalido = true;
   }
 
   //Metodo que muestra la informacion del elemento seleccionado con boton de informacion
@@ -82,8 +85,19 @@ export class PlanModificarPage implements OnInit {
     this.nav.navigateRoot('/tabs/tab1');
   }
 
+  comprobarTiempo(event, tiempo){
+    if(tiempo != 0 && tiempo < 97){
+      this.invalido = false;
+    }
+    else{
+      this.accionesService.presentAlertGenerica("Tiempo no válido", "El tiempo de un plan no puede ser menor a 1 mes, ni mayor a 96 meses");
+      this.invalido = true;
+    }
+  }
+
   //Metodo que valdia el tiempo que ingresa el ususario
   tiempoPlan(event) {
+
     if(this.tiempo.value.toString().includes('.')) {
       this.tiempo.value = this.tiempo.value.substr(0, this.tiempo.value.length - 1);
     }
