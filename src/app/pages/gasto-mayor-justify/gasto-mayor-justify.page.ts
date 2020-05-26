@@ -69,6 +69,7 @@ export class GastoMayorJustifyPage implements OnInit {
   async finalizar() {
     if(this.gusto != 'true') {
       if(this.extra == 'true') {
+        console.log('no tomarlo en cuenta');
         this.diferencia += (this.gasto.cantidadNueva - this.gasto.cantidadOriginal);
         await this.datosService.guardarDiferencia(this.diferencia);
         for(var gastoMen of this.gastosMensuales) {

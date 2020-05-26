@@ -265,6 +265,7 @@ export class Tab1Page implements OnInit {
     //Le restamos al ahorro los gastos del mes
     var totalAhorro = this.usuarioCargado.ingresoCantidad - gastosDelMes;
     console.log(totalAhorro);
+    console.log(this.diferenciaFondo);
     totalAhorro -= this.diferenciaFondo;
 
     //Agregamos lo extra ganado si asi lo desea el ussuario
@@ -275,32 +276,55 @@ export class Tab1Page implements OnInit {
     await this.datosService.presentToast(totalAhorro.toString());
     console.log(totalAhorro);
 
+    if(this.datosService.planesExisten == false) {
+      this.planes = [];
+    }
+
+    var planesAux = this.planes;
     //A cada uno de los planes le agregamos lo correspondiente
-    for(var plan of this.planes) {
-      if(plan.pausado != true) {
-        if(totalAhorro == 0) {
-          //Aumento de tiempo
-          plan.tiempoRestante += 1;
-          plan.tiempoTotal += 1;
-        } else {
-            totalAhorro -= plan.aportacionMensual;
-            if(totalAhorro >= 0) {
-              plan.cantidadAcumulada += plan.aportacionMensual;
-              plan.cantidadAcumulada = Math.round(plan.cantidadAcumulada*100)/100;
+    do {
+      if(planesAux.length != 0) {
+        var planM = planesAux[0];
+        for(var plan of planesAux) {
+          if(planM.tiempoRestante >= plan.tiempoRestante) {
+            if(planM.tiempoRestante == plan.tiempoRestante) { 
+              if((planM.cantidadTotal - planM.cantidadAcumulada) 
+                < (plan.cantidadTotal - plan.cantidadAcumulada)) { 
+                  planM = plan;
+                }
             } else {
-              //Aqui iria el aumento de tiempo
-              totalAhorro += plan.aportacionMensual;
-              plan.cantidadAcumulada += totalAhorro;
-              plan.cantidadAcumulada = Math.round(plan.cantidadAcumulada*100)/100;
-              totalAhorro = 0;
-              plan.tiempoRestante += 1;
-              plan.tiempoTotal += 1;
+              planM = plan;
             }
           }
-        plan.tiempoRestante -= 1;
+        }
+  
+        if(planM.pausado != true) {
+          if(totalAhorro == 0) {
+            //Aumento de tiempo
+            planM.tiempoRestante += 1;
+            planM.tiempoTotal += 1;
+          } else {
+              totalAhorro -= planM.aportacionMensual;
+              if(totalAhorro >= 0) {
+                planM.cantidadAcumulada += planM.aportacionMensual;
+                planM.cantidadAcumulada = Math.round(planM.cantidadAcumulada*100)/100;
+              } else {
+                //Aqui iria el aumento de tiempo
+                totalAhorro += planM.aportacionMensual;
+                planM.cantidadAcumulada += totalAhorro;
+                planM.cantidadAcumulada = Math.round(planM.cantidadAcumulada*100)/100;
+                totalAhorro = 0;
+                planM.tiempoRestante += 1;
+                planM.tiempoTotal += 1;
+              }
+            }
+          planM.tiempoRestante -= 1;
+        }
       }
-      
-    }
+
+      planesAux = planesAux.filter(p => p != planM);
+    } while(planesAux.length != 0);
+    
     console.log(totalAhorro);
 
     //Guardamos los planes terminados y pausados
@@ -409,6 +433,7 @@ export class Tab1Page implements OnInit {
           }
           ahorro /= planMayor.tiempoRestante;
           planMenor.aportacionMensual = (planMenor.cantidadTotal - planMenor.cantidadAcumulada)/planMenor.tiempoRestante;
+
           var acumulacion = planMenor.aportacionMensual * (this.planes.length -1);
           if(acumulacion >= ahorro) {
             planesPrioritarios.push(planMenor);
@@ -448,6 +473,7 @@ export class Tab1Page implements OnInit {
     //Notificar ususario
 
     await this.datosService.guardarDiferencia(0);
+    this.diferenciaFondo = this.datosService.diferencia;
 
     if(this.mes == 1) {
       this.mes++;
