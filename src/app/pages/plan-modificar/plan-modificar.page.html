@@ -73,6 +73,24 @@
       <ion-item>
 
         <ion-buttons slot="start">
+        <ion-button slots="icon-only" (click)="botonInfo('Tiempo del Restante')">
+          <ion-icon name="information-circle"></ion-icon>
+        </ion-button>
+      </ion-buttons>
+    
+      <ion-label>Tiempo de restante (meses)</ion-label>
+    
+      <ion-input type="number"
+                placeholder="12"
+                [(ngModel)]="planes[indexAux].tiempoRestante"
+                name="tiempoRestante"
+                required>
+      </ion-input>
+      </ion-item>
+
+      <ion-item>
+
+        <ion-buttons slot="start">
         <ion-button slots="icon-only" (click)="botonInfo('Descripcion')">
           <ion-icon name="information-circle"></ion-icon>
         </ion-button>
@@ -107,7 +125,7 @@
 
     <ion-button expand="block"
                 color="success"
-                (click)="calcularYModificar()"
+                (click)="modificarPlanes.calcularYModificar(this.planesOriginales, this.indexAux, this.planes)"
                 [disabled]="formulario.invalid">Modificar plan</ion-button>
 
   </form>            

@@ -70,14 +70,6 @@ export class ModificarTiempoPage implements OnInit {
     if(this.planes.length == 2) {
       this.multiplan = false;
       if(await this.calculosDosPlanes(margenMax, margenMin)) {
-        if(await this.ocho(margenMax, margenMin)) {
-          this.planes.forEach(element => {
-            this.planesPrioritarios.push(element);
-          });
-          this.planes = this.planesPrioritarios;
-          this.planesPrioritarios = [];
-          return;
-        }
         this.guardarCambios();
         return;
       } else {
@@ -93,14 +85,7 @@ export class ModificarTiempoPage implements OnInit {
     }
     this.multiplan = true;
     if(await this.calculosMasDosPlanes(margenMax, margenMin)) {
-      if(await this.ocho(margenMax, margenMin)) {
-        this.planes.forEach(element => {
-          this.planesPrioritarios.push(element);
-        });
-        this.planes = this.planesPrioritarios;
-        this.planesPrioritarios = [];
-        return;
-      }
+
       this.guardarCambios();
       return;
     } else {
@@ -402,53 +387,6 @@ export class ModificarTiempoPage implements OnInit {
     } else {
       return false;
     }
-  }
-
-  async ocho(margenMax: number, margenMin: number) {
-    var ochoPorciento = this.obtenerOchoPorciento(margenMax);
-    var aux = false;
-    await this.planes.forEach(element => {
-      if(element.aportacionMensual <= ochoPorciento) {
-          aux = true;
-      }
-    });
-    if(aux) {
-      if(this.planes.length = 2) {
-        if(await this.intentarPrioritario(margenMax, margenMin)) {
-          var aux = false;
-          await this.planes.forEach(element => {
-            if(element.aportacionMensual <= ochoPorciento) {
-              aux = true;
-            }
-          });
-          if(!aux) {
-            return aux;
-          }
-        }
-      }
-      if(this.planMenor.aportacionMensual >= this.datosService.usuarioCarga.ingresoCantidad - margenMin - ochoPorciento) {
-        await this.accionesService.presentAlertPlan([{text: 'Modificar', handler: (blah) => {}}], 
-        'Plan demasiado pequeño', 'Se ha detectado que alguno(s) planes recibiran poco dinero, ' + 
-        'te pedimos que aumentes el tiempo del plan con menor tiempo ya que se detecto que se lleva todo tu fondo de ahorro');
-        return aux;
-      } else if(this.planesPrioritarios.length != 0) {
-        if(this.planesPrioritarios[0].aportacionMensual >= this.datosService.usuarioCarga.ingresoCantidad - margenMin - ochoPorciento) {
-          await this.accionesService.presentAlertPlan([{text: 'Modificar', handler: (blah) => {}}], 
-        'Plan demasiado pequeño', 'Se ha detectado que alguno(s) planes recibiran poco dinero, ' + 
-        'te pedimos que aumentes el tiempo del plan con menor tiempo ya que se detecto que se lleva todo tu fondo de ahorro');
-        return aux;
-        }
-      }
-      await this.accionesService.presentAlertPlan([{text: 'Modificar', handler: (blah) => {}}], 
-          'Plan demasiado pequeño', 'Se ha detectado que alguno(s) planes recibiran poco dinero, ' + 
-          'te pedimos que aumentes el tiempo de los planes que puedas');
-      return aux;
-    }
-   return aux;
-  }
-
-  obtenerOchoPorciento(margenMax: number) {
-    return (this.datosService.usuarioCarga.ingresoCantidad - margenMax - this.diferenciaFondo)*0.08;
   }
 
   async actualizarUsuario() {

@@ -73,35 +73,11 @@ export class PlanPausarPage implements OnInit {
 
       if(this.multiplan) {
         await this.acomodar();
-        if(this.planesAux.length != 0) {
-          var ochoPorciento = (this.datosService.usuarioCarga.ingresoCantidad - this.margenMax - this.diferenciaFondo)*0.08;
-          if(await this.ocho(ochoPorciento)) {
-            this.planes = [];
-            this.planesIniciales.forEach(element => {
-              this.planes.push(element);
-            });
-            this.planesPrioritarios = [];
-            this.planesPrioritariosI.forEach(element => {
-              this.planesPrioritarios.push(element);
-            });
-            return
-          }
-        }
         this.planes = this.planesFinales;
         this.procesoDeGuardado();
         return;
       } else {
         if(this.planes.length == 1) {
-          if(await !this.verificarTodosPausados()) {
-            var ochoPorciento = (this.datosService.usuarioCarga.ingresoCantidad - this.margenMax - this.diferenciaFondo)*0.08;
-            if(await this.ocho(ochoPorciento)) {
-              this.planes = [];
-              this.planesIniciales.forEach(element => {
-                this.planes.push(element);
-              });
-              return
-            }
-          }
           this.procesoDeGuardado();
           return;
         }
@@ -112,18 +88,7 @@ export class PlanPausarPage implements OnInit {
             aux = this.planes[0];
             this.planes[0] = this.planes[1];
             this.planes[1] = aux;
-          }
-          if(await !this.verificarTodosPausados()) {
-            var ochoPorciento = (this.datosService.usuarioCarga.ingresoCantidad - this.margenMax - this.diferenciaFondo)*0.08;
-            if(await this.ocho(ochoPorciento)) {
-              this.planes = [];
-              this.planesIniciales.forEach(element => {
-                this.planes.push(element);
-              });
-              return
-            }
-          }
-  
+          }  
           this.procesoDeGuardado();
           return;
         }
@@ -246,16 +211,6 @@ export class PlanPausarPage implements OnInit {
     return ahorrar;
   }
 
-  verificarTodosPausados() {
-    var pausados = true;
-    this.planes.forEach(element => {
-      if(!element.pausado) {
-          pausados = false;
-      }
-    });
-    return pausados;
-  }
-
   async procesoDeGuardado() {
     this.planes.forEach(element => {
       this.planesPrioritarios.push(element);
@@ -352,27 +307,6 @@ export class PlanPausarPage implements OnInit {
     this.planes.forEach(element => {
       this.planesFinales.push(element);
     });
-  }
-
-  ocho(ochoporciento: number) {
-    if(this.planes.length == 2) {
-      if(this.planes[0].aportacionMensual <= ochoporciento) {
-        this.accionesService.presentAlertPlan([{text: 'Ok', handler: (blah) => {}}], 
-          'Plan demasiado pequeño', 
-          'Hemos encontrado que el plan que no pausaste recibe muy poco dinero, por favor pausa el otro o los dos planes');
-          return true;
-      }
-      return false;
-    }
-    for(var plan of this.planesAux) {
-      if(plan.aportacionMensual <= ochoporciento) {
-        this.accionesService.presentAlertPlan([{text: 'Ok', handler: (blah) => {}}], 
-        'Planes demasiado pequeños', 
-        'Hemos encontrado que algun o algunos planes que no pausaste reciben muy poco dinero, por favor pausa mas o u otros planes');
-        return true;
-      }
-    }
-    return false
   }
 
   checarOchoDosPlanes() {
