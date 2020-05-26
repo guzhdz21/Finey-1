@@ -27,6 +27,11 @@ opciones: Opcion[] = [
     redirigirA: '/calendario-page'
   },
   {
+    icono: 'bug',
+    nombre: 'Gastos hormiga',
+    redirigirA: '/hormiga-page'
+  },
+  {
     icono: 'settings',
     nombre: 'Ajustes',
     redirigirA: '/ajustes-page'
