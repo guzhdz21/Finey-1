@@ -25,6 +25,8 @@ export class MisGastosPage implements OnInit {
   //Variable que nos ayuda a asegurarnos si el ususario no puede satisfacer sus necesidades basicas
   registrarseAdvertencia: boolean = this.datosService.registrarseAdvertencia;
 
+  alertado: boolean[];
+
   //Variable para guardar los datos del ususario
   usuarioModificado: UsuarioLocal = this.datosService.usuarioCarga;
 
@@ -44,6 +46,10 @@ export class MisGastosPage implements OnInit {
 
   ngOnInit() {
 
+    this.alertado = [];
+    this.alertado[1] = false;
+    this.alertado[2] = false;
+    
     this.invalido = true;
 
     //Llamada a metodo que carga los datos del usuario
@@ -77,28 +83,21 @@ export class MisGastosPage implements OnInit {
    this.usuarioModificado.tipoIngreso = event.detail.value;
   }
 
-  comprobar(event, cantidad, opcion){
+  comprobar(event, cantidad, index){
 
-      if(opcion == 1){
-        if(cantidad < 0){
-          this.invalido = true;
-          this.accionesService.presentAlertGenerica("Cantidad de ingreso inválida", "No puedes insertar una cantidad de ingreso negativa");
-        }
-        else{
-          this.invalido = false;
-        }
-      }
-      else{
-        if(cantidad < 0){
-          this.invalido = true;
-          this.accionesService.presentAlertGenerica("Cantidad de gasto inválida", "No puedes insertar una cantidad de gasto negativa");
-        }
-        else{
-          this.invalido = false;
-        }
-      }
+    if(cantidad < 0){
+      this.invalido = true;
 
-  }
+    if(this.alertado[index] == false){
+      this.accionesService.presentAlertGenerica("Cantidad inválida", "No puedes insertar una cantidad negativa");
+    }
+      this.alertado[index] = true;
+    }
+    else{
+      this.invalido = false;
+    }
+
+}
 
   //Metodo para regresar al pulsar el boton back
   regresar() {

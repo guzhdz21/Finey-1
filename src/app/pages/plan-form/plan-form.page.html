@@ -50,6 +50,7 @@
                 placeholder="500000"
                 [(ngModel)]="planNuevo.cantidadTotal"
                  name="costoPlan"
+                 (ionChange)="comprobar($event, planNuevo.cantidadTotal, 1)"
                 required>
       </ion-input>
       </ion-item>
@@ -69,7 +70,7 @@
                 [(ngModel)]="planNuevo.tiempoTotal"
                 name="tiempoPlan"
                 required
-                (ionChange)="tiempoPlan($event)"
+                (ionChange)="tiempoPlan($event, 2)"
                 #tiempo
                 >
       </ion-input>
@@ -106,6 +107,7 @@
                 placeholder="1000"
                 [(ngModel)]="planNuevo.cantidadAcumulada"
                 name="cantidadAcumulada"
+                (ionChange)="comprobar($event, planNuevo.cantidadAcumulada, 3)"
                 required>
       </ion-input>
       </ion-item>

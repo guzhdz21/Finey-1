@@ -26,6 +26,7 @@ export class ModalRegistroPage implements OnInit {
   notificacion: boolean = true;
   requerido: boolean = true;
   invalido: boolean;
+  alertado: boolean[];
 
   //Variable que nos ayuda a asegurarnos si el ususario no puede satisfacer sus necesidades basicas
   registrarseAdvertencia: boolean = this.datosService.registrarseAdvertencia;
@@ -56,6 +57,10 @@ export class ModalRegistroPage implements OnInit {
 
 ngOnInit() {
 
+  this.alertado = [];
+  this.alertado[1] = false;
+  this.alertado[2] = false;
+
   this.invalido = true;
 
   //Llamado al metodo del servicio datos Service para obtener gastos iniciales de un archivo
@@ -79,26 +84,19 @@ ngOnInit() {
   });
 }
 
-comprobar(event, cantidad, opcion){
+comprobar(event, cantidad, index){
 
-  if(opcion == 1){
     if(cantidad < 0){
       this.invalido = true;
-      this.accionesService.presentAlertGenerica("Cantidad de ingreso inválida", "No puedes insertar una cantidad de ingreso negativa");
+
+    if(this.alertado[index] == false){
+      this.accionesService.presentAlertGenerica("Cantidad inválida", "No puedes insertar una cantidad negativa");
+    }
+      this.alertado[index] = true;
     }
     else{
       this.invalido = false;
     }
-  }
-  else{
-    if(cantidad < 0){
-      this.invalido = true;
-      this.accionesService.presentAlertGenerica("Cantidad de gasto inválida", "No puedes insertar una cantidad de gasto negativa");
-    }
-    else{
-      this.invalido = false;
-    }
-  }
 
   this.verificarGastosNull();
 

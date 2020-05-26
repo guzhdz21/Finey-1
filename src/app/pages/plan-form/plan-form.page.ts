@@ -15,6 +15,9 @@ import { InsertarPlanesService } from '../../services/insertar-planes.service';
 })
 export class PlanFormPage implements OnInit {
 
+
+  alertado: boolean[];
+
   //Variable que viene del Modal registro y del tab2 y nos indica si es la primera vez que abre la app
   @Input() registro: string;
   //ViewChild que nos permite ver el valor del input tiempo
@@ -54,6 +57,13 @@ export class PlanFormPage implements OnInit {
     });
 
     this.invalido = true;
+
+    this.invalido = true;
+
+    this.alertado = [];
+    this.alertado[1] = false;
+    this.alertado[2] = false;
+    this.alertado[3] = false;
    }
 
   //Metodo que omite el ingreso de un plan al inciar la app por primera vez
@@ -72,15 +82,37 @@ export class PlanFormPage implements OnInit {
     });
   }
 
-  //Metodo que valdia el tiempo que ingresa el ususario
-  tiempoPlan(event) {
+  comprobar(event, cantidad, index){
 
-    if(this.planNuevo.tiempoTotal != 0 && this.planNuevo.tiempoTotal < 97){
+    if(cantidad < 0){
+      this.invalido = true;
+
+    if(this.alertado[index] == false){
+      this.accionesService.presentAlertGenerica("Cantidad inválida", "No puedes insertar una cantidad negativa");
+    }
+      this.alertado[index] = true;
+    }
+    else{
+      this.invalido = false;
+    }
+
+}
+
+  //Metodo que valdia el tiempo que ingresa el ususario
+  tiempoPlan(event, index) {
+
+    if(this.planNuevo.tiempoTotal >= 0 && this.planNuevo.tiempoTotal < 97){
       this.invalido = false;
     }
     else{
-      this.accionesService.presentAlertGenerica("Tiempo no válido", "El tiempo de un plan no puede ser menor a 1 mes, ni mayor a 96 meses");
+
+      if(this.alertado[index] == false){
+        this.accionesService.presentAlertGenerica("Tiempo no válido", "El tiempo de un plan no puede ser menor a 1 mes, ni mayor a 96 meses");
+      }
+        this.alertado[index] = true;
+
       this.invalido = true;
+
     }
 
     if(this.tiempo.value.toString().includes('.')) {
