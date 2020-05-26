@@ -379,7 +379,12 @@ export class Tab1Page implements OnInit {
           var ahorro = 0;
           var planMenor: Plan = this.planes[0];
           var planMayor: Plan =  this.planes[0];
+          var iguales = true;
+          var tiempo = this.planes[0].tiempoRestante;
           for(var plan of this.planes) {
+            if(plan.tiempoRestante != tiempo) {
+              iguales = false;
+            }
             if(planMenor.tiempoRestante >= plan.tiempoRestante) {
               if(planMenor.tiempoRestante == plan.tiempoRestante) { 
                 if((planMenor.cantidadTotal - planMenor.cantidadAcumulada) 
@@ -410,14 +415,20 @@ export class Tab1Page implements OnInit {
             this.planes = this.planes.filter(p => p != planMenor);
             prioritario = true;
           } else {
-            ahorro -= planMenor.aportacionMensual;
-            for(var plan of this.planes) {
-              if(plan != planMenor && plan != planMayor) {
-                plan.aportacionMensual = planMenor.aportacionMensual;
-                ahorro -= planMenor.aportacionMensual;
+            if(iguales) {
+              for(var plan of this.planes) {
+                plan.aportacionMensual = (plan.cantidadTotal - plan.cantidadAcumulada)/plan.tiempoRestante;
               }
+            } else {
+              ahorro -= planMenor.aportacionMensual;
+              for(var plan of this.planes) {
+                if(plan != planMenor && plan != planMayor) {
+                  plan.aportacionMensual = planMenor.aportacionMensual;
+                  ahorro -= planMenor.aportacionMensual;
+                }
+              }
+              planMayor.aportacionMensual = ahorro;
             }
-            planMayor.aportacionMensual = ahorro;
             prioritario = false;
           }
         } 
