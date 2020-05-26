@@ -101,7 +101,7 @@ export class PlanFormPage implements OnInit {
   //Metodo que valdia el tiempo que ingresa el ususario
   tiempoPlan(event, index) {
 
-    if(this.planNuevo.tiempoTotal >= 0 && this.planNuevo.tiempoTotal < 97){
+    if(this.planNuevo.tiempoTotal > 0 && this.planNuevo.tiempoTotal < 97){
       this.invalido = false;
     }
     else{
@@ -112,7 +112,6 @@ export class PlanFormPage implements OnInit {
         this.alertado[index] = true;
 
       this.invalido = true;
-
     }
 
     if(this.tiempo.value.toString().includes('.')) {
