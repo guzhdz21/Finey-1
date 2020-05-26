@@ -85,6 +85,14 @@ const routes: Routes = [
   {
     path: 'gasto-mayor-justify',
     loadChildren: () => import('./pages/gasto-mayor-justify/gasto-mayor-justify.module').then( m => m.GastoMayorJustifyPageModule)
+  },
+  {
+    path: 'hormiga',
+    loadChildren: () => import('./pages/hormiga/hormiga.module').then( m => m.HormigaPageModule)
+  },
+  {
+    path: 'hormiga-page',
+    loadChildren: () => import('./pages/hormiga-page/hormiga-page.module').then( m => m.HormigaPagePageModule)
   }
 
 ];
