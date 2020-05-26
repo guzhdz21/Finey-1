@@ -16,7 +16,7 @@ export class ModificarPlanesService {
               private nav: NavController,
               private router: Router) { }
 
-  planes: Plan[] =[];
+  planes: Plan[] = [];
 
   planesOriginales: Plan[] = [];
   //Variable auxiliar para que el el modal cargue algo ants de recibir los datos
@@ -75,6 +75,7 @@ export class ModificarPlanesService {
 
     this.planesOriginales = planesOriginales;
     this.planes = planes;
+    this.planesPrioritarios = [];
     this.indexAux = indexAux;
 
     this.planes[this.indexAux].aportacionMensual = (this.planes[this.indexAux].cantidadTotal - this.planes[this.indexAux].cantidadAcumulada) / this.planes[this.indexAux].tiempoRestante;
@@ -105,6 +106,7 @@ export class ModificarPlanesService {
     }
 
     this.planesRetornados = JSON.parse(JSON.stringify(this.planes));
+    this.planesPausados = [];
     this.planesRetornados.forEach(element => {
       if(element.pausado) {
         this.planesPausados.push(element)
@@ -522,7 +524,8 @@ export class ModificarPlanesService {
     if (gasto  >= margenMax || gasto  >= this.gastosUsuario) {
 
       //Verificamso si hay prioritario
-      if(this.planMenor.aportacionMensual >= (ahorrar/2)) {
+      var acumulacion = this.planMenor.aportacionMensual * this.planesRetornados.length -1;
+      if(acumulacion >= ahorrar) {
         await this.opcionesPrioridadDos(margenMax, margenMin);
         //Llamamos al metodo que hace los procesos de prioridad
       } else {
@@ -535,7 +538,8 @@ export class ModificarPlanesService {
     } else if ( ( gasto < margenMax ) && (gasto >= margenMin ) ) {
 
       //Verificamso si hay prioritario
-      if(this.planMenor.aportacionMensual >= (ahorrar)/2) {
+      var acumulacion = this.planMenor.aportacionMensual * this.planesRetornados.length -1;
+      if(acumulacion >= ahorrar) {
         await this.opcionesPrioridadDos(margenMax, margenMin);
 
       } else {
@@ -777,7 +781,8 @@ export class ModificarPlanesService {
     } 
     
     else {
-      if(this.planMenor.aportacionMensual>= (ahorrar2/2)) {
+      var acumulacion = this.planMenor.aportacionMensual * this.planesRetornados.length -1;
+      if(acumulacion>= (ahorrar2)) {
         return this.intentarPrioritario(margenMax,margenMin);
       }
 

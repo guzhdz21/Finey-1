@@ -213,7 +213,8 @@ export class ModificarTiempoPage implements OnInit {
     
     if (gasto  >= margenMax || gasto  >= this.gastosUsuario) {
 
-      if(this.planMenor.aportacionMensual >= (ahorrar/2)) {
+      var acumulacion = this.planMenor.aportacionMensual * this.planes.length -1;
+      if(acumulacion >= ahorrar) {
         return await this.opcionesPrioridadDos(margenMax, margenMin);
       } else {
         this.confirmarCreacionMasDosPlanes(ahorrar);
@@ -222,7 +223,8 @@ export class ModificarTiempoPage implements OnInit {
            
     } else if ( ( gasto < margenMax ) && (gasto >= margenMin ) ) {
 
-      if(this.planMenor.aportacionMensual >= (ahorrar)/2) {
+      var acumulacion = this.planMenor.aportacionMensual * this.planes.length -1;
+      if(acumulacion >= ahorrar) {
         return await this.opcionesPrioridadDos(margenMax, margenMin);
       } else {
         this.confirmarCreacionMasDosPlanes(ahorrar);
@@ -348,7 +350,8 @@ export class ModificarTiempoPage implements OnInit {
     } 
     
     else {
-      if(this.planMenor.aportacionMensual>= (ahorrar2/2)) {
+      var acumulacion = this.planMenor.aportacionMensual * this.planes.length -1;
+      if(acumulacion >= ahorrar2) {
         return this.intentarPrioritario(margenMax, margenMin);
       }
       var iguales = true;

@@ -198,7 +198,6 @@ export class Tab1Page implements OnInit {
     this.gastosMensuales = this.datosService.gastosMensualesCargados;
     this.mes = this.datosService.mes;
 
-
     await this.abrirGastosDiarios();
 
     var gastosMayores: GastoMayor[] = [];
@@ -263,37 +262,46 @@ export class Tab1Page implements OnInit {
       }
     });
 
+    //Le restamos al ahorro los gastos del mes
     var totalAhorro = this.usuarioCargado.ingresoCantidad - gastosDelMes;
     console.log(totalAhorro);
     totalAhorro -= this.diferenciaFondo;
 
+    //Agregamos lo extra ganado si asi lo desea el ussuario
     if(!sumar) {
       totalAhorro -= dineroMas;
     }
+
     await this.datosService.presentToast(totalAhorro.toString());
     console.log(totalAhorro);
 
+    //A cada uno de los planes le agregamos lo correspondiente
     for(var plan of this.planes) {
-      if(totalAhorro == 0) {
-        //Aumento de tiempo
-      } else {
-        if(plan.pausado != true) {
-          totalAhorro -= plan.aportacionMensual;
-          if(totalAhorro > 0) {
-            plan.cantidadAcumulada += plan.aportacionMensual;
-          } else {
-            //Aqui iria el aumento de tiempo
-            totalAhorro += plan.aportacionMensual;
-            plan.cantidadAcumulada += totalAhorro;
-            totalAhorro = 0;
+      if(plan.pausado != true) {
+        if(totalAhorro == 0) {
+          //Aumento de tiempo
+          plan.tiempoRestante += 1;
+          plan.tiempoTotal += 1;
+        } else {
+            totalAhorro -= plan.aportacionMensual;
+            if(totalAhorro >= 0) {
+              plan.cantidadAcumulada += plan.aportacionMensual;
+            } else {
+              //Aqui iria el aumento de tiempo
+              totalAhorro += plan.aportacionMensual;
+              plan.cantidadAcumulada += totalAhorro;
+              totalAhorro = 0;
+              plan.tiempoRestante += 1;
+              plan.tiempoTotal += 1;
+            }
           }
-        }
+        plan.tiempoRestante -= 1;
       }
-      plan.tiempoRestante -= 1;
+      
     }
     console.log(totalAhorro);
 
-    //Guardamos los planes termiandos y pausados
+    //Guardamos los planes terminados y pausados
     var planesTerminados: Plan[] = [];
     var planesPausados: Plan[] = [];
     for(var plan of this.planes) {
@@ -319,49 +327,102 @@ export class Tab1Page implements OnInit {
     //Calculos nuevos
     var planesPrioritarios: Plan[] = [];
     var planesRestantes: number = this.planes.length;
-    if(planesRestantes != 0) {
-      if(planesRestantes == 1) {
-        this.planes[0].aportacionMensual = (this.planes[0].cantidadTotal - this.planes[0].cantidadAcumulada)/this.planes[0].tiempoRestante;
-      }
-      if(planesRestantes == 2) {
-        var ahorro = 0;
-        var planMenor: Plan = this.planes[0];
-        var planMayor: Plan =  this.planes[0];
-        for(var plan of this.planes) {
-          if(planMenor.tiempoRestante >= plan.tiempoRestante) {
-            if(planMenor.tiempoRestante == plan.tiempoRestante) { 
-              if((planMenor.cantidadTotal - planMenor.cantidadAcumulada) 
-                < (plan.cantidadTotal - plan.cantidadAcumulada)) { 
-                  planMenor = plan;
-                }
-            } else {
-              planMenor = plan;
-            }
-          }
-          if(planMayor.tiempoRestante <= plan.tiempoRestante) {
-            if(planMayor.tiempoRestante == plan.tiempoRestante) { 
-              if((planMayor.cantidadTotal - planMayor.cantidadAcumulada) 
-                > (plan.cantidadTotal - plan.cantidadAcumulada)) { 
-                  planMayor = plan;
-                }
-            } else {
-              planMayor = plan;
-            }
-          }
-          ahorro += (plan.cantidadTotal - plan.cantidadAcumulada);
+    var prioritario = false;
+    do {
+      if(planesRestantes != 0) {
+        if(planesRestantes == 1) {
+          prioritario = false;
+          this.planes[0].aportacionMensual = (this.planes[0].cantidadTotal - this.planes[0].cantidadAcumulada)/this.planes[0].tiempoRestante;
         }
-        ahorro /= planMayor.tiempoRestante;
-        planMenor.aportacionMensual = (planMenor.cantidadTotal - planMenor.cantidadAcumulada)/planMenor.tiempoRestante;
-        if(planMenor.aportacionMensual >= ahorro) {
-          planesPrioritarios.push(planMenor);
-          this.planes = this.planes.filter(p => p != planMenor);
-          planMenor = this.planes[0];
+        else if(planesRestantes == 2) {
+          prioritario = false;
+          var ahorro = 0;
+          var planMenor: Plan = this.planes[0];
+          var planMayor: Plan =  this.planes[0];
+          for(var plan of this.planes) {
+            if(planMenor.tiempoRestante >= plan.tiempoRestante) {
+              if(planMenor.tiempoRestante == plan.tiempoRestante) { 
+                if((planMenor.cantidadTotal - planMenor.cantidadAcumulada) 
+                  < (plan.cantidadTotal - plan.cantidadAcumulada)) { 
+                    planMenor = plan;
+                  }
+              } else {
+                planMenor = plan;
+              }
+            }
+            if(planMayor.tiempoRestante <= plan.tiempoRestante) {
+              if(planMayor.tiempoRestante == plan.tiempoRestante) { 
+                if((planMayor.cantidadTotal - planMayor.cantidadAcumulada) 
+                  > (plan.cantidadTotal - plan.cantidadAcumulada)) { 
+                    planMayor = plan;
+                  }
+              } else {
+                planMayor = plan;
+              }
+            }
+            ahorro += (plan.cantidadTotal - plan.cantidadAcumulada);
+          }
+          ahorro /= planMayor.tiempoRestante;
           planMenor.aportacionMensual = (planMenor.cantidadTotal - planMenor.cantidadAcumulada)/planMenor.tiempoRestante;
+          if(planMenor.aportacionMensual >= ahorro) {
+            planesPrioritarios.push(planMenor);
+            this.planes = this.planes.filter(p => p != planMenor);
+            planMenor = this.planes[0];
+            planMenor.aportacionMensual = (planMenor.cantidadTotal - planMenor.cantidadAcumulada)/planMenor.tiempoRestante;
+          }
+          ahorro -= planMenor.aportacionMensual;
+          planMayor.aportacionMensual = ahorro;
         }
-        ahorro -= planMenor.aportacionMensual;
-        planMayor.aportacionMensual = ahorro;
+        else {
+          var ahorro = 0;
+          var planMenor: Plan = this.planes[0];
+          var planMayor: Plan =  this.planes[0];
+          for(var plan of this.planes) {
+            if(planMenor.tiempoRestante >= plan.tiempoRestante) {
+              if(planMenor.tiempoRestante == plan.tiempoRestante) { 
+                if((planMenor.cantidadTotal - planMenor.cantidadAcumulada) 
+                  < (plan.cantidadTotal - plan.cantidadAcumulada)) { 
+                    planMenor = plan;
+                  }
+              } else {
+                planMenor = plan;
+              }
+            }
+            if(planMayor.tiempoRestante <= plan.tiempoRestante) {
+              if(planMayor.tiempoRestante == plan.tiempoRestante) { 
+                if((planMayor.cantidadTotal - planMayor.cantidadAcumulada) 
+                  > (plan.cantidadTotal - plan.cantidadAcumulada)) { 
+                    planMayor = plan;
+                  }
+              } else {
+                planMayor = plan;
+              }
+            }
+            ahorro += (plan.cantidadTotal - plan.cantidadAcumulada);
+          }
+          ahorro /= planMayor.tiempoRestante;
+          planMenor.aportacionMensual = (planMenor.cantidadTotal - planMenor.cantidadAcumulada)/planMenor.tiempoRestante;
+          var acumulacion = planMenor.aportacionMensual * this.planes.length -1;
+          if(acumulacion >= ahorro) {
+            planesPrioritarios.push(planMenor);
+            this.planes = this.planes.filter(p => p != planMenor);
+            prioritario = true;
+          } else {
+            for(var plan of this.planes) {
+              ahorro -= planMenor.aportacionMensual;
+              if(plan != planMenor && plan!= planMayor) {
+                plan.aportacionMensual = planMenor.aportacionMensual;
+                ahorro -= planMenor.aportacionMensual;
+              }
+            }
+            planMayor.aportacionMensual = ahorro;
+            prioritario = false;
+          }
+        } 
       }
-    }
+
+    } while (prioritario);
+    
 
     for(var plan of this.planes) {
       planesPrioritarios.push(plan);
@@ -371,7 +432,6 @@ export class Tab1Page implements OnInit {
     }
     this.datosService.actualizarPlanes(planesPrioritarios);
 
-    //recalcular al aportacion
     //Notificar ususario
 
     await this.datosService.guardarDiferencia(0);
@@ -381,8 +441,8 @@ export class Tab1Page implements OnInit {
       this.datosService.guardarMes(this.mes);
       return;
     }
-    
-    //Desvicaion no terminada
+  
+    //Desviacion
     var meses = this.gastosMensuales.length;
     this.usuarioCargado.gastos.forEach(gastos => {
       var promedio = 0;
@@ -416,6 +476,8 @@ export class Tab1Page implements OnInit {
       }
      
     });
+    this.mes++;
+    this.datosService.guardarMes(this.mes);
     await this.actualizarUsuario();
     await this.datosService.cargarDatos();
   }

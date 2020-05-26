@@ -367,7 +367,8 @@ export class QuitarPlanesService {
     if (gasto  >= margenMax || gasto >= this.gastosUsuario) {
 
       //Verificamso si hay prioritario
-      if(this.planMenor.aportacionMensual >= (ahorrar/2)) {
+      var acumulacion = this.planMenor.aportacionMensual * this.planesRetornados.length -1;
+      if(acumulacion >= ahorrar) {
         await this.opcionesPrioridadDos(margenMax, margenMin);
         //Llamamos al metodo que hace los procesos de prioridad
       } else {
@@ -380,7 +381,8 @@ export class QuitarPlanesService {
     } else if ( ( gasto < margenMax ) && (gasto >= margenMin ) ) {
 
       //Verificamso si hay prioritario
-      if(this.planMenor.aportacionMensual >= (ahorrar)/2) {
+      var acumulacion = this.planMenor.aportacionMensual * this.planesRetornados.length -1;
+      if(acumulacion >= ahorrar) {
         await this.opcionesPrioridadDos(margenMax, margenMin);
 
       } else {
@@ -579,7 +581,8 @@ export class QuitarPlanesService {
     } 
     
     else {
-      if(this.planMenor.aportacionMensual>= (ahorrar2/2)) {
+      var acumulacion = this.planMenor.aportacionMensual * this.planes.length -1;
+      if(acumulacion>= ahorrar2) {
         return this.intentarPrioritario(margenMax,margenMin);
       }
 

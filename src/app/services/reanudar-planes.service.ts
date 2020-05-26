@@ -67,6 +67,7 @@ export class ReanudarPlanesService {
     this.usuarioCargado = this.datosService.usuarioCarga;
     //Inicializacion de variables
     this.planesPrioritarios = [];
+    this.planesPausados = [];
     this.planesOriginales = JSON.parse(JSON.stringify(this.planes));
 
     this.planNuevo = this.planes[i];
@@ -406,7 +407,8 @@ export class ReanudarPlanesService {
     if (gasto  >= margenMax || gasto >= this.gastosUsuario) {
 
       //Verificamso si hay prioritario
-      if(this.planMenor.aportacionMensual >= (ahorrar/2)) {
+      var acumulacion = this.planMenor.aportacionMensual * this.planes.length -1;
+      if(acumulacion >= ahorrar) {
         await this.opcionesPrioridadDos(margenMax, margenMin);
         //Llamamos al metodo que hace los procesos de prioridad
       } else {
@@ -419,7 +421,8 @@ export class ReanudarPlanesService {
     } else if ( ( gasto < margenMax ) && (gasto >= margenMin ) ) {
 
       //Verificamso si hay prioritario
-      if(this.planMenor.aportacionMensual >= (ahorrar)/2) {
+      var acumulacion = this.planMenor.aportacionMensual * this.planes.length -1;
+      if(acumulacion >= ahorrar) {
         await this.opcionesPrioridadDos(margenMax, margenMin);
 
       } else {
@@ -640,7 +643,8 @@ export class ReanudarPlanesService {
     } 
     
     else {
-      if(this.planMenor.aportacionMensual>= (ahorrar2/2)) {
+      var acumulacion = this.planMenor.aportacionMensual * this.planes.length -1;
+      if(acumulacion >= ahorrar) {
         return this.intentarPrioritario(margenMax,margenMin);
       }
 
