@@ -1,6 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { DatosService } from '../../services/datos.service';
-import { AlertaGeneral, GastosMensuales, GastoMensual } from '../../interfaces/interfaces';
+import { AlertaGeneral, GastosMensuales, GastoMensual, UsuarioLocal } from '../../interfaces/interfaces';
 import { AccionesService } from '../../services/acciones.service';
 import { ModalController, NavController } from '@ionic/angular';
 
@@ -23,6 +23,15 @@ export class GastosDiariosPage implements OnInit {
     ]
   };
   
+  //Variable para guardar los datos del ususario
+  usuario: UsuarioLocal = this.datosService.usuarioCarga;
+
+  aporteDiario: number;
+  invalido: boolean;
+  invalido2: boolean;
+  alertado: boolean[];
+  muestraInput: boolean;
+
   gastosMensuales: GastosMensuales[] = this.datosService.gastosMensualesCargados;
   mes: number = this.datosService.mes;
 
@@ -32,6 +41,22 @@ export class GastosDiariosPage implements OnInit {
               private nav: NavController) { }
 
   async ngOnInit() {
+
+    if(this.usuario.tipoIngreso == 'Variable') {
+      this.invalido2 = true;
+    }
+    else{
+      this.invalido2 = false;
+    }
+
+    this.muestraInput = false;
+
+    this.alertado = [];
+    this.alertado[1] = false;
+    this.alertado[2] = false;
+
+    this.invalido = true;
+
     await this.datosService.cargarGastosMensuales();
     this.datosService.cargarMes();
 
@@ -61,13 +86,65 @@ export class GastosDiariosPage implements OnInit {
     for(let element of this.alertas) {
       if(titulo == element.titulo) {
         this.accionesService.presentAlertGenerica(element.titulo.substring(0, element.titulo.length-1), element.mensaje);
-        
         return;
       }
     }
   }
 
+  checkBoxInicial(event){
+    if(event.currentTarget.checked == true) {
+      this.muestraInput = true;
+      this.invalido2 = true;
+    }
+    else{
+      this.muestraInput = false;
+      this.invalido2 = false;
+    }
+  }
+
+  comprobar(event, cantidad, index){
+
+    if(index == 1){
+      if(cantidad <= 0){
+        this.invalido2 = true;
+  
+      if(this.alertado[index] == false){
+        if(cantidad != null){
+          this.accionesService.presentAlertGenerica("Cantidad inválida", "No puedes insertar una cantidad negativa o igual a 0");
+          this.alertado[index] = true;
+        }
+      }
+  
+      }
+      else{
+        this.invalido2 = false;
+      }
+    }
+
+    else{
+      if(cantidad < 0){
+        this.invalido = true;
+  
+      if(this.alertado[index] == false){
+        if(cantidad != null){
+          this.accionesService.presentAlertGenerica("Cantidad inválida", "No puedes insertar una cantidad negativa");
+          this.alertado[index] = true;
+        }
+      }
+    }
+    else{
+      this.invalido = false;
+    }
+  }
+}
+
   async ingresar() {
+
+    if(this.usuario.tipoIngreso == 'Variable') {
+      this.usuario.ingresoCantidad = this.aporteDiario * 30;
+      this.datosService.guardarUsuarioInfo(this.usuario);
+    }
+
     var nuevoMes = true;
     for(var mensual of this.gastosMensuales) {
       if(mensual.mes == this.gastos.mes) {

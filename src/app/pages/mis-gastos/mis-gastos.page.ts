@@ -37,6 +37,8 @@ export class MisGastosPage implements OnInit {
   invalido: boolean;
   invalido2: boolean;
 
+  aporteDiario: number;
+
   //Constructor con todas las inyecciones y controladores necesarios
   constructor(private modalCtrl: ModalController,
               private nav: NavController,
@@ -51,8 +53,13 @@ export class MisGastosPage implements OnInit {
     this.alertado[1] = false;
     this.alertado[2] = false;
     
+    console.log("Ingreso anterior" + this.usuarioModificado.ingresoCantidad)
+
     this.invalido = false;
     this.invalido2 = false;
+
+    this.aporteDiario = 0;
+    this.aporteDiario = (this.usuarioModificado.ingresoCantidad / 30);
 
     //Llamada a metodo que carga los datos del usuario
     this.datosService.cargarDatos();
@@ -130,9 +137,14 @@ export class MisGastosPage implements OnInit {
   //Metodo para modificar los datos del ususario con los ingresados
   async modificar()
   {
-    //Condicioanl que verifica si el ususario es variable
-    if(this.usuarioModificado.tipoIngreso != 'Variable') {
   
+        //Multiplicar X30 el ingreso de cada dia del usuario
+        console.log("Aporte diario antes" + this.aporteDiario)
+        if(this.usuarioModificado.tipoIngreso == 'Variable'){
+          this.usuarioModificado.ingresoCantidad = this.aporteDiario * 30; 
+          console.log("Ganancia mensual: " + this.usuarioModificado.ingresoCantidad)
+        }
+
       //Condicion que valida el ingreso de los gastos e ingreso
       if(this.validarIngreso()) {
           await this.datosService.presentAlertaIngreso();
@@ -150,17 +162,16 @@ export class MisGastosPage implements OnInit {
         this.nav.navigateRoot('/tabs/tab1');
         this.datosService.presentToast('Se han modificado tus gastos');
       }
-    }
-    else {
+
         this.modificarUsuario();
         this.nav.navigateRoot('/tabs/tab1');
         this.datosService.presentToast('Se han modificado tus datos');
-    }
   }
 
   //Metodo que calcula los datos necearios para modificar y lo guarda en storage
   modificarUsuario()
   {
+
     var i = 0;
     this.usuarioModificado.gastos.forEach(element => {
     element.tipo = this.rubros[i].tipo;

@@ -40,7 +40,25 @@
         </ion-radio-group>
       </ion-list>
     </ion-item> 
-  
+
+    <div *ngIf="usuarioModificado.tipoIngreso == 'Variable'">
+      <ion-item>
+        <ion-buttons slot="start">
+        <ion-button slots="icon-only" (click)="botonInfo('Ingreso mensual')">
+          <ion-icon name="information-circle"></ion-icon>
+        </ion-button>
+      </ion-buttons>
+      <ion-label>Ingreso diario</ion-label>
+      <ion-input type="number"
+                placeholder="Ej. 900"
+                required 
+                (ionChange)="comprobar($event, usuarioModificado.ingresoCantidad, 1)"
+                [(ngModel)]="aporteDiario"
+                name="ingreso">
+      </ion-input>
+      </ion-item>
+    </div>
+
   <div *ngIf="usuarioModificado.tipoIngreso != 'Variable'">
     <ion-item>
       <ion-buttons slot="start">

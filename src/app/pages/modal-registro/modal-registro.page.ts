@@ -193,6 +193,13 @@ sexoRadio(event)
 //Metodo que registra el Ususario en el Storage y hace las operaciones necesarias
   async registrarUsuario()
   {
+
+    //Multiplicar X30 el ingreso de cada dia del usuario
+    if(this.usuario.tipoIngreso == 'Variable'){
+      this.usuario.ingresoCantidad = this.usuario.ingresoCantidad * 30;
+      console.log("Ganancia mensual: " + this,this.usuario.ingresoCantidad)
+    }
+
     var i = 0;
     this.usuario.gastos.forEach(element => {
       element.nombre = this.rubros[i].texto;

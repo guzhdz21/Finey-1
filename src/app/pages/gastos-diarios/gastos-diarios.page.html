@@ -9,6 +9,35 @@
   <ion-content>
 
     <form #formulario="ngForm">
+    <div *ngIf="usuario.tipoIngreso == 'Variable'">
+      <ion-item color="primary"> 
+        <ion-label><h1 class="texto_centrado_blanco">Ingreso del dia de hoy</h1></ion-label>
+      </ion-item>
+
+      <ion-item>
+        <ion-checkbox color="dark" (ionChange)="checkBoxInicial($event)"></ion-checkbox>
+        <ion-label class="margen_izquierda_20 ion-text-wrap">Si trabaje hoy</ion-label>
+      </ion-item>
+
+
+      <div *ngIf="muestraInput == true">
+      <ion-item>
+        <ion-buttons slot="start">
+        <ion-button slots="icon-only" (click)="botonInfo('Ingreso mensual')">
+          <ion-icon name="information-circle"></ion-icon>
+        </ion-button>
+      </ion-buttons>
+      <ion-label>Ingreso diario</ion-label>
+      <ion-input type="number"
+                placeholder="Ej. 900"
+                required 
+                (ionChange)="comprobar($event, aporteDiario, 1)"
+                [(ngModel)]="aporteDiario"
+                name="ingreso">
+      </ion-input>
+      </ion-item>
+    </div>
+  </div>
   
     <ion-item color="primary"> 
       <ion-label><h1 class="texto_centrado_blanco">Gastos</h1></ion-label>
@@ -27,6 +56,7 @@
     </ion-buttons>
     <ion-label>{{etiqueta}}</ion-label>
     <ion-input type="number"
+              (ionChange)="comprobar($event, gastos.gastos[i].cantidad, 2)"
               placeholder="Ej. 300"
               required [(ngModel)]="gastos.gastos[i].cantidad"
               [name]="etiqueta">
@@ -36,8 +66,8 @@
         <ion-button 
         expand="block" 
         color="success"
-        (click)="ingresar()"
-        [disabled]="formulario.invalid">Guardar gastos</ion-button>
+        (click)="ingresar()" 
+        [disabled]="formulario.invalid || invalido || invalido2">Guardar gastos</ion-button>
 
   </form>
 
