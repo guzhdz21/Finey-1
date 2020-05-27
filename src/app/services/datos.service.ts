@@ -29,6 +29,7 @@ export class DatosService {
     this.cargarGastosMensuales();
     this.cargarDiaDelMes();
     this.cargarMes();
+    this.cargarPlanesTerminados();
     this.localNotifications.fireQueuedEvents();
 
     this.plt.ready().then(() => {
@@ -124,6 +125,8 @@ export class DatosService {
       pausado: false
     }
   ];
+
+  planesTerminados: Plan[] = [];
 
   gastosMensualesCargados: GastosMensuales[] = [
     {
@@ -390,6 +393,25 @@ export class DatosService {
     else {
       this.planesExisten = false;
     }
+  }
+
+  actualizarPlanesTerminados(plan: Plan[]) {
+    this.planesTerminados = [];
+    this.planesTerminados = plan;
+    this.storage.set('Planes Terminados', this.planesTerminados);
+    this.event.publish('planesTerminados');
+  }
+
+  // Metodo que carga los datos de un plan desde el storage
+  async cargarPlanesTerminados() {
+    const Planes = await this.storage.get('Planes Terminados');
+    if(Planes) {
+      this.planesTerminados = Planes;
+    }
+    else {
+      this.planesTerminados = [];
+    }
+    this.event.publish('planesTerminados');
   }
 
   // Metodo que borra un plan del storage

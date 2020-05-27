@@ -16,3 +16,7 @@
   color: lightgray;
   margin-top: 0%;
 }
+
+.my-custom-class {
+  color: var(--ion-color-success) !important;
+}

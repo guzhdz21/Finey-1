@@ -90,11 +90,12 @@ export class GastosDiariosPage implements OnInit {
         break;
       }
     }
+
     var gastosMayores: String = "";
     for(var gastoUsuario of this.datosService.usuarioCarga.gastos) {
       for(var gastoDiario of this.gastos.gastos) {
         if(gastoUsuario.nombre == gastoDiario.nombre) {
-          if(gastoUsuario.tipo == 'Promedio' &&  gastoUsuario.margenMax <= gastoDiario.cantidad && gastoUsuario.cantidad != 0){
+          if(gastoUsuario.tipo == 'Promedio' &&  gastoUsuario.margenMax < gastoDiario.cantidad && gastoUsuario.cantidad != 0){
             gastosMayores += gastoUsuario.nombre + ', ';
           } else if(gastoUsuario.tipo == 'Fijo' &&  gastoUsuario.margenMax < gastoDiario.cantidad) {
             gastosMayores += gastoUsuario.nombre + ', ';
@@ -104,8 +105,9 @@ export class GastosDiariosPage implements OnInit {
     }
 
     if(gastosMayores != "") {
-      //await this.accionesService.presentAlertGenerica('Cuidado','En los rubros: ' + 
-      //gastosMayores + 'estas igualando o sobrepasando el margen maximo, asi que te recomendamos limitarte un poco en tus gastos');
+      await this.accionesService.presentAlertGenerica('Cuidado','En los rubros: ' + 
+      gastosMayores + 'estas sobrepasando el margen maximo, asi que te recomendamos limitarte un poco en tus gastos, '
+      + 'ya que podrias llegar a tener perdidas y afectar el desempeño de tus planes');
     }
     await this.datosService.guardarGastosMensuales(this.gastosMensuales);
     await this.datosService.guardarFechaDiaria(new Date().getDate());

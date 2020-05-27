@@ -142,7 +142,7 @@ export class MisGastosPage implements OnInit {
     var i = 0;
     this.usuarioModificado.gastos.forEach(element => {
     element.tipo = this.rubros[i].tipo;
-    element.porcentaje = ((element.cantidad*100)/this.usuarioModificado.ingresoCantidad).toString();
+    element.porcentaje = (Math.round(((element.cantidad*100)/this.usuarioModificado.ingresoCantidad)*100)/100).toString();
     if (element.tipo === 'Promedio') {
       element.margenMax = element.cantidad+(element.cantidad*0.07);
       element.margenMin = element.cantidad-(element.cantidad*0.07);

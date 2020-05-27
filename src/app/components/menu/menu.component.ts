@@ -32,6 +32,11 @@ opciones: Opcion[] = [
     redirigirA: '/hormiga-page'
   },
   {
+    icono: 'checkbox',
+    nombre: 'Planes Terminados',
+    redirigirA: '/planes-terminados-page'
+  },
+  {
     icono: 'settings',
     nombre: 'Ajustes',
     redirigirA: '/ajustes-page'

@@ -14,8 +14,6 @@ export class GastosMayoresPage implements OnInit {
   @Input() gastosMayores: GastoMayor[];
 
   data: boolean;
-
-  fin: boolean = true;
   
   constructor(private modalCtrl: ModalController,
               private modalCtrl2: ModalController,
@@ -32,8 +30,8 @@ export class GastosMayoresPage implements OnInit {
         return;
       }
     }
-    this.accionesService.presentAlertGenerica('Felicidades','Has terminado de justificar todos los gastos, por favor pulsa "Finalizar"');
-    this.fin = false;
+    this.accionesService.presentAlertOpciones([{text: 'Ok', handler: (blah) => {this.modalCtrl.dismiss()}}],
+     'Terminaste', 'Bien has terminado de justificar todos los gastos');
   }
 
   async abrirJustificacion(gasto: GastoMayor) {
@@ -48,8 +46,5 @@ export class GastosMayoresPage implements OnInit {
     const {data}  = await modal.onDidDismiss();
     this.data = data.mayor;
   }
-
-  salir() {
-    this.modalCtrl.dismiss();
-  }
+  
 }

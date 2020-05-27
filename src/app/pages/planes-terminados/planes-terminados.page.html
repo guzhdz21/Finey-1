@@ -1,0 +1,37 @@
+<app-header-modal titulo="Planes Terminados" ruta="/tabs/tab1"></app-header-modal>
+
+<ion-content>
+  <ion-content>
+    <ion-item color="primary"> 
+      <ion-label><h1 class="texto_centrado_blanco">Planes Terminados</h1></ion-label>
+    </ion-item>
+  
+    <ion-item lines="none"> 
+      <ion-label class="texto_centrado ion-text-wrap"><p>Aqui tienes todos los planes que has completado hasta ahora
+      </ion-label>
+    </ion-item>
+
+    <ion-item lines="none" *ngIf="this.planes.length == 0">
+      <ion-label><h1 class="noHay">No hay planes terminados</h1></ion-label>
+    </ion-item>
+    
+    <ion-list *ngIf="this.planes.length !=0">
+      <ion-item *ngFor="let plan of planes; let i = index" lines="none">
+        <ion-card>
+          
+          <ion-card-title class="titulo">{{plan.nombre}}</ion-card-title>
+          
+          <ion-card-content>
+            <ion-item>
+              <ion-label class="centrar ion-text-wrap">
+                <p>Cantidad: {{plan.cantidadTotal}}</p>
+                <p>Meses: {{plan.tiempoTotal}}</p>
+                <p *ngIf="plan.descripcion != ''">Descripcion: {{plan.descripcion}}</p>
+              </ion-label>
+            </ion-item>
+          </ion-card-content>
+  
+        </ion-card>
+      </ion-item>
+    </ion-list>
+</ion-content>

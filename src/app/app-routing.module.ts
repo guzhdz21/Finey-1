@@ -93,7 +93,15 @@ const routes: Routes = [
   {
     path: 'hormiga-page',
     loadChildren: () => import('./pages/hormiga-page/hormiga-page.module').then( m => m.HormigaPagePageModule)
+  },  {
+    path: 'planes-terminados-page',
+    loadChildren: () => import('./pages/planes-terminados-page/planes-terminados-page.module').then( m => m.PlanesTerminadosPagePageModule)
+  },
+  {
+    path: 'planes-terminados',
+    loadChildren: () => import('./pages/planes-terminados/planes-terminados.module').then( m => m.PlanesTerminadosPageModule)
   }
+
 
 ];
 @NgModule({
