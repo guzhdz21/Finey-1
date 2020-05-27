@@ -39,6 +39,7 @@ export class PlanFormPage implements OnInit {
   alertas: AlertaGeneral[] = [];
   invalido: boolean;
   invalido2: boolean;
+  invalido3: boolean;
 
   //Variable que se usa para el regreso o boton back nativo del celular
   backButtonSub: Subscription;
@@ -59,6 +60,7 @@ export class PlanFormPage implements OnInit {
 
     this.invalido = true;
     this.invalido2 = true;
+    this.invalido3 = true;
     this.alertado = [];
 
     this.alertado[1] = false;
@@ -84,18 +86,38 @@ export class PlanFormPage implements OnInit {
 
   comprobar(event, cantidad, index){
 
-    if(cantidad < 0){
-      this.invalido = true;
-
-    if(this.alertado[index] == false){
-      this.accionesService.presentAlertGenerica("Cantidad inválida", "No puedes insertar una cantidad negativa");
+    if(index == 1){
+      if(cantidad <= 0){
+        this.invalido3 = true;
+  
+      if(this.alertado[index] == false){
+        if(cantidad != null){
+          this.accionesService.presentAlertGenerica("Cantidad inválida", "No puedes insertar una cantidad negativa");
+          this.alertado[index] = true;
+        }
+      }
+  
+      }
+      else{
+        this.invalido3 = false;
+      }
     }
-      this.alertado[index] = true;
+
+    else{
+      if(cantidad < 0){
+        this.invalido = true;
+  
+      if(this.alertado[index] == false){
+        if(cantidad != null){
+          this.accionesService.presentAlertGenerica("Cantidad inválida", "No puedes insertar una cantidad negativa");
+          this.alertado[index] = true;
+        }
+      }
     }
     else{
       this.invalido = false;
     }
-
+  }
 }
 
   //Metodo que valdia el tiempo que ingresa el ususario
@@ -107,7 +129,9 @@ export class PlanFormPage implements OnInit {
     else{
 
       if(this.alertado[index] == false){
-        this.accionesService.presentAlertGenerica("Tiempo no válido", "El tiempo de un plan no puede ser menor a 1 mes, ni mayor a 96 meses");
+        if(this.planNuevo.tiempoTotal != null){
+          this.accionesService.presentAlertGenerica("Tiempo no válido", "El tiempo de un plan no puede ser menor a 1 mes, ni mayor a 96 meses");
+        }
       }
         this.alertado[index] = true;
 
