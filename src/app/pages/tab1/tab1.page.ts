@@ -1,7 +1,7 @@
 import { Component, OnInit, Inject, LOCALE_ID } from '@angular/core';
 import { ChartType } from 'chart.js';
 import { SingleDataSet, Label, ThemeService } from 'ng2-charts';
-import { Rubro, UsuarioLocal, GastoMayor, Gasto, GastosMensuales, Plan } from '../../interfaces/interfaces';
+import { Rubro, UsuarioLocal, GastoMayor, Gasto, GastosMensuales, Plan, GastoMensual } from '../../interfaces/interfaces';
 import {Observable, Subscription} from 'rxjs';
 import { DatosService } from '../../services/datos.service';
 import { ModalController, NavController, Events, Platform, LoadingController } from '@ionic/angular';
@@ -11,6 +11,8 @@ import { AccionesService } from '../../services/acciones.service';
 import { ModalRegistroPage } from '../modal-registro/modal-registro.page';
 import { GastosDiariosPage } from '../gastos-diarios/gastos-diarios.page';
 import { GastosMayoresPage } from '../gastos-mayores/gastos-mayores.page';
+import { PlanFormPage } from '../plan-form/plan-form.page';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-tab1',
@@ -64,7 +66,8 @@ export class Tab1Page implements OnInit {
               @Inject(LOCALE_ID) private locale: string,
               private localNotifications: LocalNotifications, 
               private accionesService: AccionesService,
-              private loadingCtrl: LoadingController) {}
+              private loadingCtrl: LoadingController,
+              private router: Router) {}
 
   async ngOnInit() {
 
@@ -284,6 +287,16 @@ export class Tab1Page implements OnInit {
     await this.datosService.presentToast(totalAhorro.toString());
     console.log(totalAhorro);
 
+    this.accionesService.presentAlertAhorrado([{text: 'Ingresar',handler: (bla) => { 
+      if(parseInt(bla.ahorrado) < 0)  {
+          bla.ahorrado = totalAhorro;
+          this.datosService.presentToast('No se puede ingresar negativo');
+        } else {
+          console.log('No');
+        }
+      }
+    }], totalAhorro);
+
     //Notificar ususario
 
     await this.datosService.guardarDiferencia(0);
@@ -340,6 +353,12 @@ export class Tab1Page implements OnInit {
       }
      
     });
+
+    if(this.mes > 24) {
+      this.gastosMensuales.shift();
+      this.datosService.guardarGastosMensuales(this.gastosMensuales);
+    }
+
     this.mes++;
     this.datosService.guardarMes(this.mes);
     await this.actualizarUsuario();
@@ -565,13 +584,13 @@ export class Tab1Page implements OnInit {
     }
 
     if(aprendio) {
-      await this.accionesService.presentAlertGenerica('Gastos Reducidos','Felicidades has aprendido ahorrar en algunos rubros' 
+      await this.accionesService.presentAlertGenerica('Gastos Reducidos','Felicidades has aprendido ahorrar en algunos rubros ' 
     + 'por lo que se les ha disminuido el margen de gasto');
     }
     
     if(aumento) {
       await this.accionesService.presentAlertGenerica('Gastos Aumentados','Ten cuidado, debido a que gastaste ' 
-    + 'de mas, en algunos rubros aumento el margen de gasto');
+    + 'de mas o sobrepasaste el gasto normal, en algunos rubros aumento el margen de gasto');
     }
 
     this.datosService.actualizarPlanes(planesPrioritarios);
@@ -588,7 +607,18 @@ export class Tab1Page implements OnInit {
       await this.accionesService.presentAlertOpciones([{text: 'Ok', handler: (blah) => {}}],
       'Felicidades','Has logrado completar uno o varios planes, ' 
       + 'puedes ir a checarlos en la seccion Planes Terminados en el menú');
+
+      await this.accionesService.presentAlertOpciones([{text: 'Claro', handler: (blah) => {this.nav.navigateRoot('/plan-form-page'),
+      this.router.navigate(['/plan-form-page'],
+      {
+        queryParams: {
+          value: false
+        }
+      });}}, 
+      {text: 'Mas tarde', handler: (blah) => {}}],
+      '¿Qué sigue?','Ya que has completado uno o varios planes, ¿deseas agregar uno nuevo?');
     }
+
   }
 
   async presentLoading() {

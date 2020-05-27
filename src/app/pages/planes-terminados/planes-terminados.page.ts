@@ -13,13 +13,12 @@ export class PlanesTerminadosPage implements OnInit {
   constructor(private datosService: DatosService,
               private event: Events) { }
 
-  planes: Plan[] = []
+  planes: Plan[] = [];
 
   ngOnInit() {
     this.datosService.cargarPlanesTerminados();
     this.planes = this.datosService.planesTerminados;
-    this.datosService.cargarDatosPlan();
-    this.event.subscribe('Terminados', () => {
+    this.event.subscribe('planesTerminados', () => {
       this.planes = this.datosService.planesTerminados;
     });
   }

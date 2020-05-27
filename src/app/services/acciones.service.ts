@@ -89,6 +89,24 @@ export class AccionesService {
     await alert.onDidDismiss();
   }
 
+  async presentAlertAhorrado(botones: any[], ahorrar: number) {
+      
+    const alert = await this.alertCtrl.create({
+      header: '¿Cuanto ahorraste?',
+      message: 'Este mes deberias haber ahorrado: ' + ahorrar + ' pesos pero, ¿con cuanto cuentas fisicamente?',
+      inputs: [ {
+          name: 'ahorrado',
+          type: 'number',
+          value: ahorrar
+        }
+      ],
+      buttons: [] = botones,
+      mode: "ios"
+    });
+    alert.present();
+    await alert.onDidDismiss();
+  }
+
   async presentAlertOpciones( botones: any[], header: string, message: string) {
       
     const alert = await this.alertCtrl.create({
