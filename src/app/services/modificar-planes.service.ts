@@ -18,6 +18,11 @@ export class ModificarPlanesService {
 
   planes: Plan[] = [];
 
+  invalido: boolean = false;
+  invalido2: boolean = false;
+  invalido3: boolean = false;
+  invalido4: boolean = false;
+
   planesOriginales: Plan[] = [];
   //Variable auxiliar para que el el modal cargue algo ants de recibir los datos
   indexAux: number;
@@ -68,69 +73,105 @@ export class ModificarPlanesService {
   //Metodo para calcular los datos necesarios para un plan y guardarlo en el storage
   async calcularYModificar(planesOriginales: Plan[], indexAux: number, planes:Plan[]) {
 
-    await this.datosService.cargarDatos();
-    this.usuarioCargado = this.datosService.usuarioCarga;
-    await this.datosService.cargarDiferencia();
-    this.diferenciaFondo = this.datosService.diferencia;
-
-    this.planesOriginales = planesOriginales;
-    this.planes = planes;
-    this.planesPrioritarios = [];
-    this.indexAux = indexAux;
-
-    this.planes[this.indexAux].aportacionMensual = (this.planes[this.indexAux].cantidadTotal - this.planes[this.indexAux].cantidadAcumulada) / this.planes[this.indexAux].tiempoRestante;
-    if(this.planes[this.indexAux].aportacionMensual <= 0) {
-      await this.accionesService.presentAlertPlan([{text: 'Modificar', handler: (blah) => {}}], 
-                                                      'PLan Invalido', 
-        'No puedes ingresar una cantidad acumulada mayor o igual al costo del plan');
-        return;
-    }
-
-    if(this.planes[this.indexAux].tiempoRestante > this.planes[this.indexAux].tiempoTotal || this.planes[this.indexAux].tiempoRestante == 0) {
-      await this.accionesService.presentAlertPlan([{text: 'Modificar', handler: (blah) => {}}], 
-                                                      'PLan Invalido', 
-        'No puedes ingresar una un tiempo restante mayor al costo del plan o igual a cero');
-        return;
-    }
-
-    if(this.planes[this.indexAux].pausado) {
-      if(await this.validarPlanPausado()) {
-        await this.datosService.actualizarPlanes(this.planes);
-        await this.modalCtrl.dismiss();
-        this.actualizarUsuario();
-      this.nav.navigateRoot('/tabs/tab2');
-      return;
+    if(planes[indexAux].tiempoTotal <= 0){
+      this.accionesService.presentAlertGenerica("Tiempo total inválido", "No puedes ingresar un tiempo total menor a 1 mes ni mayor a 96 meses");
+      this.invalido = true;
       }
-      this.planes = JSON.parse(JSON.stringify(this.planesOriginales));
-      return;
-    }
+      else{
+        this.invalido = false;
+        }
 
-    this.planesRetornados = JSON.parse(JSON.stringify(this.planes));
-    this.planesPausados = [];
-    this.planesRetornados.forEach(element => {
-      if(element.pausado) {
-        this.planesPausados.push(element)
-      }
-    });
-    this.planesRetornados = this.planesRetornados.filter(plan => plan.pausado != true);
-    for(var plan of this.planesRetornados) {
-      if(plan.nombre == this.planes[this.indexAux].nombre &&
-        plan.aportacionMensual == this.planes[this.indexAux].aportacionMensual &&
-        plan.cantidadAcumulada == this.planes[this.indexAux].cantidadAcumulada &&
-        plan.cantidadTotal == this.planes[this.indexAux].cantidadTotal &&
-        plan.descripcion == this.planes[this.indexAux].descripcion &&
-        plan.tiempoRestante == this.planes[this.indexAux].tiempoRestante &&
-        plan.tiempoTotal == this.planes[this.indexAux].tiempoTotal) {
-        this.planModificado = plan;
-      }
-    }
+      if(planes[indexAux].cantidadTotal <= 0){
+        this.accionesService.presentAlertGenerica("Cantidad total inválida", "No puedes ingresar una cantidad negativa o igual a 0")
+        this.invalido2 = true;
+        }
+        else{
+          this.invalido2 = false;
+          }
 
-    if ( await this.validarPlanModificado() ) {
-      await this.calcularYRegistrar();
-    } else {
-      this.planes = JSON.parse(JSON.stringify(this.planesOriginales));
-    }
-    return;
+        if(planes[indexAux].tiempoRestante <= 0){
+          this.accionesService.presentAlertGenerica("Tiempo restante inválido", "No puedes ingresar un tiempo restante menor a 1 mes ni mayor a el tiempo total del plan");
+          this.invalido3 = true;
+          }
+          else{
+            this.invalido3 = false;
+            }
+
+          if(planes[indexAux].cantidadAcumulada < 0){
+            this.accionesService.presentAlertGenerica("Cantidad acumulada inválida", "No puedes ingresar una cantidad negativa");
+            this.invalido4 = true;
+            }
+            else{
+              this.invalido4 = false;
+              }
+
+            if(this.invalido == false && this.invalido2 == false && this.invalido3 == false && this.invalido4 == false){
+              console.log("Guardado")
+              await this.datosService.cargarDatos();
+              this.usuarioCargado = this.datosService.usuarioCarga;
+              await this.datosService.cargarDiferencia();
+              this.diferenciaFondo = this.datosService.diferencia;
+          
+              this.planesOriginales = planesOriginales;
+              this.planes = planes;
+              this.planesPrioritarios = [];
+              this.indexAux = indexAux;
+          
+              this.planes[this.indexAux].aportacionMensual = (this.planes[this.indexAux].cantidadTotal - this.planes[this.indexAux].cantidadAcumulada) / this.planes[this.indexAux].tiempoRestante;
+              if(this.planes[this.indexAux].aportacionMensual <= 0) {
+                await this.accionesService.presentAlertPlan([{text: 'Modificar', handler: (blah) => {}}], 
+                                                                'PLan Invalido', 
+                  'No puedes ingresar una cantidad acumulada mayor o igual al costo del plan');
+                  return;
+              }
+          
+              if(this.planes[this.indexAux].tiempoRestante > this.planes[this.indexAux].tiempoTotal || this.planes[this.indexAux].tiempoRestante == 0) {
+                await this.accionesService.presentAlertPlan([{text: 'Modificar', handler: (blah) => {}}], 
+                                                                'PLan Invalido', 
+                  'No puedes ingresar una un tiempo restante mayor al costo del plan o igual a cero');
+                  return;
+              }
+          
+              if(this.planes[this.indexAux].pausado) {
+                if(await this.validarPlanPausado()) {
+                  await this.datosService.actualizarPlanes(this.planes);
+                  await this.modalCtrl.dismiss();
+                  this.actualizarUsuario();
+                this.nav.navigateRoot('/tabs/tab2');
+                return;
+                }
+                this.planes = JSON.parse(JSON.stringify(this.planesOriginales));
+                return;
+              }
+          
+              this.planesRetornados = JSON.parse(JSON.stringify(this.planes));
+              this.planesPausados = [];
+              this.planesRetornados.forEach(element => {
+                if(element.pausado) {
+                  this.planesPausados.push(element)
+                }
+              });
+              this.planesRetornados = this.planesRetornados.filter(plan => plan.pausado != true);
+              for(var plan of this.planesRetornados) {
+                if(plan.nombre == this.planes[this.indexAux].nombre &&
+                  plan.aportacionMensual == this.planes[this.indexAux].aportacionMensual &&
+                  plan.cantidadAcumulada == this.planes[this.indexAux].cantidadAcumulada &&
+                  plan.cantidadTotal == this.planes[this.indexAux].cantidadTotal &&
+                  plan.descripcion == this.planes[this.indexAux].descripcion &&
+                  plan.tiempoRestante == this.planes[this.indexAux].tiempoRestante &&
+                  plan.tiempoTotal == this.planes[this.indexAux].tiempoTotal) {
+                  this.planModificado = plan;
+                }
+              }
+          
+              if ( await this.validarPlanModificado() ) {
+                await this.calcularYRegistrar();
+              } else {
+                this.planes = JSON.parse(JSON.stringify(this.planesOriginales));
+              }
+              return;
+              }
+
   }
 
   //Metodo para validar el ingreso del plan
