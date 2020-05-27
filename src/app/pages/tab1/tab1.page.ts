@@ -208,7 +208,7 @@ export class Tab1Page implements OnInit {
     await this.accionesService.presentAlertGenerica('Nuevo Mes','Ha pasado un mes por lo tanto ' 
     + 'haremos calculos y determinaremos en que rubros gastaste mas y en cuales menos para reajustar tus gastos ' 
     + 'y planes');
-    await this.presentLoading();
+    await this.presentLoading('Comparando gastos...');
 
     var gastosMayores: GastoMayor[] = [];
     var dineroMas: number = 0;
@@ -264,6 +264,8 @@ export class Tab1Page implements OnInit {
     await this.datosService.cargarGastosMensuales();
     this.gastosMensuales = this.datosService.gastosMensualesCargados;
 
+    await this.presentLoading('Calculando ahorro...');
+
     var gastosDelMes: number = 0;
     this.gastosMensuales.forEach(mensuales => {
       if(mensuales.mes == this.mes) {
@@ -275,8 +277,6 @@ export class Tab1Page implements OnInit {
 
     //Le restamos al ahorro los gastos del mes
     var totalAhorro = this.usuarioCargado.ingresoCantidad - gastosDelMes;
-    console.log(totalAhorro);
-    console.log(this.diferenciaFondo);
     totalAhorro -= this.diferenciaFondo;
 
     //Agregamos lo extra ganado si asi lo desea el ussuario
@@ -287,17 +287,32 @@ export class Tab1Page implements OnInit {
     await this.datosService.presentToast(totalAhorro.toString());
     console.log(totalAhorro);
 
-    this.accionesService.presentAlertAhorrado([{text: 'Ingresar',handler: (bla) => { 
-      if(parseInt(bla.ahorrado) < 0)  {
-          bla.ahorrado = totalAhorro;
-          this.datosService.presentToast('No se puede ingresar negativo');
-        } else {
-          console.log('No');
+    var cantidadValida = false;
+    var quincePorciento = false;
+    while (cantidadValida == false) {
+      await this.accionesService.presentAlertAhorrado([{text: 'Ingresar',handler: (bla) => { 
+        if(parseInt(bla.ahorrado) < 0)  {
+            bla.ahorrado = totalAhorro;
+            this.datosService.presentToast('No se puede ingresar negativo');
+          } else {
+            cantidadValida = true;
+            var quince = totalAhorro * 0.15;
+            quince = totalAhorro - quince;
+            if(parseInt(bla.ahorrado) <= quince) {
+              quincePorciento = true;
+            } 
+            totalAhorro = parseInt(bla.ahorrado);
+          }
         }
-      }
-    }], totalAhorro);
+      }], totalAhorro);
+    }
 
-    //Notificar ususario
+    if(quincePorciento) {
+      await this.accionesService.presentAlertGenerica('Precaucion','Hemos determinado que puedes tener ciertas ' 
+    + 'fugas de dinero, si deseas eliminarlas o darte cuenta cuales pueden ser, ve la seccion de "Gastos Hormiga" del menú');
+    }
+
+    console.log(totalAhorro);
 
     await this.datosService.guardarDiferencia(0);
     this.diferenciaFondo = this.datosService.diferencia;
@@ -305,14 +320,14 @@ export class Tab1Page implements OnInit {
     if(this.mes == 1) {
       this.mes++;
       this.datosService.guardarMes(this.mes);
-      return;
-    }
-  
-    //Desviacion
-    var aprendio = false;
-    var aumento = false;
-    var meses = this.gastosMensuales.length;
-    this.usuarioCargado.gastos.forEach(gastos => {
+    } else {
+
+      await this.presentLoading('Reajustando gastos...');
+      //Desviacion
+      var aprendio = false;
+      var aumento = false;
+      var meses = this.gastosMensuales.length;
+      this.usuarioCargado.gastos.forEach(gastos => {
       var promedio = 0;
       var datos = [];
       
@@ -352,19 +367,34 @@ export class Tab1Page implements OnInit {
         gastos.margenMin = gastos.cantidad;
       }
      
-    });
+      });
 
-    if(this.mes > 24) {
-      this.gastosMensuales.shift();
-      this.datosService.guardarGastosMensuales(this.gastosMensuales);
+      if(aprendio) {
+      await this.accionesService.presentAlertGenerica('Gastos Reducidos','Felicidades has aprendido ahorrar en algunos rubros ' 
+    + 'por lo que se les ha disminuido el margen de gasto');
     }
+    
+      if(aumento) {
+      await this.accionesService.presentAlertGenerica('Gastos Aumentados','Ten cuidado, debido a que gastaste ' 
+    + 'de mas o sobrepasaste el gasto normal, en algunos rubros aumento el margen de gasto');
+      }
 
-    this.mes++;
-    this.datosService.guardarMes(this.mes);
+      if(this.mes > 24) {
+        this.gastosMensuales.shift();
+        this.datosService.guardarGastosMensuales(this.gastosMensuales);
+      }
+
+      this.mes++;
+      this.datosService.guardarMes(this.mes);
+    }
     await this.actualizarUsuario();
 
     if(this.datosService.planesExisten == false) {
       this.planes = [];
+    }
+
+    if(this.planes.length != 0) {
+      await this.presentLoading('Recalculando planes...');
     }
 
     var planesAux = this.planes;
@@ -583,16 +613,6 @@ export class Tab1Page implements OnInit {
       planesPrioritarios.push(plan);
     }
 
-    if(aprendio) {
-      await this.accionesService.presentAlertGenerica('Gastos Reducidos','Felicidades has aprendido ahorrar en algunos rubros ' 
-    + 'por lo que se les ha disminuido el margen de gasto');
-    }
-    
-    if(aumento) {
-      await this.accionesService.presentAlertGenerica('Gastos Aumentados','Ten cuidado, debido a que gastaste ' 
-    + 'de mas o sobrepasaste el gasto normal, en algunos rubros aumento el margen de gasto');
-    }
-
     this.datosService.actualizarPlanes(planesPrioritarios);
     await this.actualizarUsuario();
     await this.datosService.cargarDatos();
@@ -621,11 +641,11 @@ export class Tab1Page implements OnInit {
 
   }
 
-  async presentLoading() {
+  async presentLoading(texto: string) {
     const loading = await this.loadingCtrl.create({
       cssClass: 'my-custom-class',
-      message: 'Calculando...',
-      duration: 2000
+      message: texto,
+      duration: 1500
     });
     loading.present();
     await loading.onDidDismiss();
