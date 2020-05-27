@@ -48,7 +48,6 @@
                 placeholder="500000"
                 [(ngModel)]="planes[indexAux].cantidadTotal"
                  name="costoPlan"
-                 (ionChange)="comprobar($event, planes[indexAux].cantidadTotal, 1)"
                 required>
       </ion-input>
       </ion-item>
@@ -67,7 +66,6 @@
                 placeholder="12"
                 [(ngModel)]="planes[indexAux].tiempoTotal"
                 name="tiempoPlan"
-                (ionChange)="comprobarTiempo($event, planes[indexAux].tiempoTotal, 2)"
                 required>
       </ion-input>
       </ion-item>
@@ -80,13 +78,12 @@
         </ion-button>
       </ion-buttons>
     
-      <ion-label>Tiempo de restante (meses)</ion-label>
+      <ion-label>Tiempo restante (meses)</ion-label>
     
       <ion-input type="number"
                 placeholder="12"
                 [(ngModel)]="planes[indexAux].tiempoRestante"
                 name="tiempoRestante"
-                (ionChange)="comprobar($event, planes[indexAux].tiempoRestante, 3)"
                 required>
       </ion-input>
       </ion-item>
@@ -104,6 +101,7 @@
       <ion-input type="text"
                 placeholder="Casa ubicada en Av. Valdepeñas"
                 [(ngModel)]="planes[indexAux].descripcion"
+                maxlength="70"
                 name="descripcionPlan">
       </ion-input>
       </ion-item>
@@ -122,7 +120,6 @@
                 placeholder="1000"
                 [(ngModel)]="planes[indexAux].cantidadAcumulada"
                 name="cantidadAcumulada"
-                (ionChange)="comprobar($event, planes[indexAux].cantidadAcumulada, 4)"
                 required>
       </ion-input>
       </ion-item>
