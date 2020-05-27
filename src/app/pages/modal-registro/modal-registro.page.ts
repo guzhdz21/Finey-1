@@ -26,6 +26,7 @@ export class ModalRegistroPage implements OnInit {
   notificacion: boolean = true;
   requerido: boolean = true;
   invalido: boolean;
+  invalido2: boolean;
   alertado: boolean[];
 
   //Variable que nos ayuda a asegurarnos si el ususario no puede satisfacer sus necesidades basicas
@@ -62,6 +63,7 @@ ngOnInit() {
   this.alertado[2] = false;
 
   this.invalido = true;
+  this.invalido2 = true;
 
   //Llamado al metodo del servicio datos Service para obtener gastos iniciales de un archivo
   this.datosService.getGastosJson().subscribe (val => {
@@ -86,17 +88,38 @@ ngOnInit() {
 
 comprobar(event, cantidad, index){
 
+  if(index == 1){
+    if(cantidad <= 0){
+      this.invalido2 = true;
+
+    if(this.alertado[index] == false){
+      if(cantidad != null){
+        this.accionesService.presentAlertGenerica("Cantidad inválida", "No puedes insertar una cantidad negativa o igual a 0");
+        this.alertado[index] = true;
+      }
+    }
+
+    }
+    else{
+      this.invalido2 = false;
+    }
+  }
+
+  else{
     if(cantidad < 0){
       this.invalido = true;
 
     if(this.alertado[index] == false){
-      this.accionesService.presentAlertGenerica("Cantidad inválida", "No puedes insertar una cantidad negativa");
+      if(cantidad != null){
+        this.accionesService.presentAlertGenerica("Cantidad inválida", "No puedes insertar una cantidad negativa");
+        this.alertado[index] = true;
+      }
     }
-      this.alertado[index] = true;
-    }
-    else{
-      this.invalido = false;
-    }
+  }
+  else{
+    this.invalido = false;
+  }
+}
 
   this.verificarGastosNull();
 
@@ -170,6 +193,13 @@ sexoRadio(event)
 //Metodo que registra el Ususario en el Storage y hace las operaciones necesarias
   async registrarUsuario()
   {
+
+    //Multiplicar X30 el ingreso de cada dia del usuario
+    if(this.usuario.tipoIngreso == 'Variable'){
+      this.usuario.ingresoCantidad = this.usuario.ingresoCantidad * 30;
+      console.log("Ganancia mensual: " + this,this.usuario.ingresoCantidad)
+    }
+
     var i = 0;
     this.usuario.gastos.forEach(element => {
       element.nombre = this.rubros[i].texto;

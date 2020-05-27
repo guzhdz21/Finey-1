@@ -20,6 +20,9 @@ export class PlanModificarPage implements OnInit {
   @Input() planesOriginales: Plan[];
 
   invalido: boolean;
+  invalido2: boolean;
+  invalido3: boolean;
+  invalido4: boolean;
 
   alertado: boolean[];
 
@@ -61,7 +64,10 @@ export class PlanModificarPage implements OnInit {
       this.planes = this.datosService.planesCargados;
       this.indexAux = Number(this.index);
     });
-    this.invalido = true;
+    this.invalido = false;
+    this.invalido2 = false;
+    this.invalido3 = false;
+    this.invalido4 = false;
 
     this.alertado = [];
     this.alertado[1] = false;
@@ -89,17 +95,61 @@ export class PlanModificarPage implements OnInit {
 
   comprobar(event, cantidad, index){
 
-    if(cantidad < 0){
-      this.invalido = true;
-
-    if(this.alertado[index] == false){
-      this.accionesService.presentAlertGenerica("Cantidad inválida", "No puedes insertar una cantidad negativa");
+    if(index == 1){
+      if(cantidad <= 0){
+        this.invalido3 = true;
+  
+      if(this.alertado[index] == false){
+        if(cantidad != null){
+          this.accionesService.presentAlertGenerica("Cantidad inválida", "No puedes insertar una cantidad negativa");
+          this.alertado[index] = true;
+        }
+      }
+  
+      }
+      else{
+        this.invalido3 = false;
+      }
     }
-      this.alertado[index] = true;
+
+    if(index == 3){
+      if(cantidad <= 0){
+        this.invalido4 = true;
+        
+      if(this.alertado[index] == false){
+        if(cantidad != null){
+          this.accionesService.presentAlertGenerica("Cantidad inválida", "No puedes insertar una cantidad negativa");
+          this.alertado[index] = true;
+        }
+      }
+  
+      }
+      else{
+        this.invalido4 = false;
+      }
+    }
+
+    else{
+      if(cantidad < 0){
+        this.invalido = true;
+  
+      if(this.alertado[index] == false){
+        if(cantidad != null){
+          this.accionesService.presentAlertGenerica("Cantidad inválida", "No puedes insertar una cantidad negativa");
+          this.alertado[index] = true;
+        }
+      }
     }
     else{
       this.invalido = false;
     }
+  }
+
+  console.log("invalido ", this.invalido);
+  console.log("invalido2 ", this.invalido2);
+  console.log("invalido3 ", this.invalido3);
+  console.log("invalido4 ", this.invalido4);
+
 }
 
   //Metodo que omite el ingreso de un plan al inciar la app por primera vez
@@ -109,19 +159,27 @@ export class PlanModificarPage implements OnInit {
   }
 
   comprobarTiempo(event, tiempo, index){
-    if(tiempo >= 0 && tiempo < 97){
-      this.invalido = false;
+    if(tiempo > 0 && tiempo < 97){
+      this.invalido2 = false;
     }
     else{
 
       if(this.alertado[index] == false){
-        this.accionesService.presentAlertGenerica("Tiempo no válido", "El tiempo de un plan no puede ser menor a 1 mes, ni mayor a 96 meses");
+        if(tiempo != null){
+          this.accionesService.presentAlertGenerica("Tiempo no válido", "El tiempo de un plan no puede ser menor a 1 mes, ni mayor a 96 meses");
+        }
       }
         this.alertado[index] = true;
 
-      this.invalido = true;
-
+      this.invalido2 = true;
     }
+
+    //this.tiempoPlan(event);
+
+    console.log("invalido ", this.invalido);
+    console.log("invalido2 ", this.invalido2);
+    console.log("invalido3 ", this.invalido3);
+    console.log("invalido4 ", this.invalido4);
   }
 
   //Metodo que valdia el tiempo que ingresa el ususario
