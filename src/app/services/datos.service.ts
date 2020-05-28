@@ -253,10 +253,10 @@ export class DatosService {
     this.storage.set('Notificacion', fecha);
   }
 
-  guardarIngresoExtra(ingresoExtra: number)
+  guardarIngresoExtra(ingreso: number)
   {
-    this.ingresoExtra = ingresoExtra;
-    this.storage.set('Ingreso extra', ingresoExtra);
+    this.ingresoExtra = ingreso;
+    this.storage.set('Ingreso extra', this.ingresoExtra);
   }
 
   async cargarIngresoExtra()

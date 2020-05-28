@@ -77,6 +77,7 @@ export class InsertarPlanesService {
     this.usuarioCargado = this.datosService.usuarioCarga;
     await this.datosService.cargarIngresoExtra();
     this.ingresoExtra = this.datosService.ingresoExtra;
+    console.log(this.ingresoExtra);
 
       //Inicializacion de variables
       this.planNuevo = planN;

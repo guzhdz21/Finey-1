@@ -161,11 +161,11 @@ export class Tab1Page implements OnInit {
 
   async anadirIngreso(){
     await this.accionesService.presentAlertIngresoExtra([{text: 'Añadir ingreso extra',handler: (bla) => { 
-      if(parseInt(bla) <= 0)  {
+      if(parseInt(bla.ingresoExtra) <= 0)  {
           this.datosService.presentToast('No se puede ingresar 0 ni numeros negativos');
         } else {
-          this.datosService.guardarIngresoExtra(bla);
-          this.ingresoExtra = bla;
+          this.datosService.guardarIngresoExtra(parseInt(bla.ingresoExtra));
+          this.ingresoExtra = parseInt(bla.ingresoExtra);
           this.datosService.presentToast('Ingreso extra añadido');
         }
       }
@@ -608,9 +608,10 @@ export class Tab1Page implements OnInit {
               prioritario = false;
             }
           }
-
+        }
+      } while (prioritario);
           for(var p of planesPrioritarios) {
-            ahorro += p.aportacionMensual;
+            ahorrar += p.aportacionMensual;
           }
           var g = this.usuarioCargado.ingresoCantidad - ahorrar;
           valido = this.validarGasto(g);
@@ -621,9 +622,8 @@ export class Tab1Page implements OnInit {
             var planQuitar = this.planes[this.planes.length-1];
             this.planes = this.planes.filter(p => p != planQuitar);
           }
-        }
   
-      } while (prioritario);
+      
     } while (valido == false);
     
 
@@ -634,8 +634,6 @@ export class Tab1Page implements OnInit {
     for(var plan of planesPausados) {
       planesPrioritarios.push(plan);
     }
-
-
 
     this.datosService.actualizarPlanes(planesPrioritarios);
     await this.actualizarUsuario();
