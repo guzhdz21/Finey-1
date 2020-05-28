@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, ɵflushModuleScopingQueueAsMuchAsPossible } from '@angular/core';
 import { DatosService } from '../../services/datos.service';
 import { AlertaGeneral, GastosMensuales, GastoMensual, UsuarioLocal, Plan } from '../../interfaces/interfaces';
 import { AccionesService } from '../../services/acciones.service';
@@ -156,6 +156,7 @@ export class GastosDiariosPage implements OnInit {
         nuevoMes = false
       }
     }
+
     if(nuevoMes) {
       this.gastosMensuales.push(this.gastos);
     } else {
@@ -173,13 +174,20 @@ export class GastosDiariosPage implements OnInit {
       }
     }
 
+    var gastosEsteMes: GastosMensuales = null;
+    for(mensual of this.gastosMensuales) {
+      if(mensual.mes == this.mes) {
+        gastosEsteMes = mensual;
+      }
+    }
+
     var gastosMayores: String = "";
     for(var gastoUsuario of this.datosService.usuarioCarga.gastos) {
-      for(var gastoDiario of this.gastos.gastos) {
-        if(gastoUsuario.nombre == gastoDiario.nombre) {
-          if(gastoUsuario.tipo == 'Promedio' &&  gastoUsuario.margenMax < gastoDiario.cantidad && gastoUsuario.cantidad != 0){
+      for(var gastoMensual of gastosEsteMes.gastos) {
+        if(gastoUsuario.nombre == gastoMensual.nombre) {
+          if(gastoUsuario.tipo == 'Promedio' &&  gastoUsuario.margenMax < gastoMensual.cantidad && gastoUsuario.cantidad != 0){
             gastosMayores += gastoUsuario.nombre + ', ';
-          } else if(gastoUsuario.tipo == 'Fijo' &&  gastoUsuario.margenMax < gastoDiario.cantidad) {
+          } else if(gastoUsuario.tipo == 'Fijo' &&  gastoUsuario.margenMax < gastoMensual.cantidad) {
             gastosMayores += gastoUsuario.nombre + ', ';
           }
         }
