@@ -96,13 +96,12 @@
 
                 </ion-fab>
 
-
                   <ion-list>
 
                     <ion-item lines="none"></ion-item>
                     <ion-item lines="none"></ion-item>
-
-                    <ion-button expand="block" color="success" class = "botonAlto ion-text-wrap" (click) = "TransferirDinero()">Añadirle dinero a este plan, quitandole a otro</ion-button>
+                    
+                    <ion-button expand="large" color="success" class ="botonAlto ion-text-wrap" (click)="transferir(plan.plan)"><ion-icon name = "git-compare"></ion-icon></ion-button>
 
                     <ion-item>
                         <ion-label color="tertiary">Porcentaje de avance</ion-label>

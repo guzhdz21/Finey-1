@@ -5,7 +5,7 @@ import { PlanDisplay, Plan, AlertaGeneral, UsuarioLocal } from '../../interfaces
 import { NavController, Events, Platform, IonInput, ModalController } from '@ionic/angular';
 import { DatosService } from '../../services/datos.service';
 import { AccionesService } from '../../services/acciones.service';
-import { Router } from '@angular/router';
+import { Router, NavigationExtras } from '@angular/router';
 import { Subscription } from 'rxjs';
 import { PlanModificarPage } from '../plan-modificar/plan-modificar.page';
 import { ReanudarPlanesService } from '../../services/reanudar-planes.service';
@@ -155,6 +155,23 @@ export class Tab2Page implements OnInit{
 
       await this.abrirModal(i);
     }
+  }
+
+  async transferir(plan: Plan){
+
+    let planD = {
+        nombre: plan.nombre,
+        cantidadTotal: plan.cantidadTotal,
+        tiempoTotal: plan.tiempoTotal,
+        cantidadAcumulada: plan.cantidadAcumulada,
+        tiempoRestante: plan.tiempoRestante,
+        descripcion: plan.descripcion,
+        aportacionMensual: plan.aportacionMensual,
+        pausado: plan.pausado
+      }
+
+    this.datosService.planASumar = planD;
+    this.nav.navigateRoot('/selecciona-plan-page');
   }
 
   async abrirModal(i: number) {

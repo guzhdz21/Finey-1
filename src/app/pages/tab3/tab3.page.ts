@@ -16,7 +16,7 @@ export class Tab3Page {
   backButtonSub: Subscription;
   mostrarTest: boolean[];
 
-  //Variable para guardar los datos del ususario
+  //Variable para guardar los datos del usuario
   usuario: UsuarioLocal = this.datosService.usuarioCarga;
   contador: number = 1;
   valorPromedio: number[];
