@@ -728,7 +728,14 @@ export class Tab1Page implements OnInit {
     }); 
   }
   
-  ionViewDidEnter() {
+  async ionViewDidEnter() {
+
+    await this.datosService.cargarBloqueoModulos();
+    if(this.datosService.bloquearModulos == true){
+      this.nav.navigateRoot('/tabs/tab3');
+      this.accionesService.presentAlertGenerica("No puedes ingresar a dicho modulo", "No se te permite el acceso a este modulo debido a que tus gastos son mayores que tus ingresos, cuando te repongas cambia tus gastos e ingresos en la seccion 'Mis gastos'");
+    }
+
     this.backButtonSub = this.plt.backButton.subscribeWithPriority( 10000, () => {
       navigator["app"].exitApp();
     });

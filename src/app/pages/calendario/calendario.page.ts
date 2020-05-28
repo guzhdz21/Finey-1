@@ -47,6 +47,7 @@ viewTitle = ''; //Es la etiqueta que te indica el nombre del mes
 eventSource=[];
 collapseCard: boolean = false;
 backButtonSub: Subscription;
+rutaSeguir: string = "/tabs/tab1";
 
     markDisabled = (date: Date) => {
       var dia = new Date().getDate();
@@ -199,11 +200,22 @@ async registrarNuevoRecordatorio() {
   }
 
   //Metodo que te regresa a la pantalla tab1 en este caso
-  ionViewDidEnter() {
-    this.backButtonSub = this.plt.backButton.subscribeWithPriority( 10000, () => {
-      this.modalCtrl.dismiss();
-      this.nav.navigateRoot('/tabs/tab1');
-    });
+  async ionViewDidEnter() {
+
+    await this.datosService.cargarBloqueoModulos();
+    if(this.datosService.bloquearModulos == true){
+      this.rutaSeguir = "/tabs/tab3";
+      this.backButtonSub = this.plt.backButton.subscribeWithPriority( 10000, () => {
+        this.modalCtrl.dismiss();
+        this.nav.navigateRoot('/tabs/tab3');
+      });
+    }
+    else{
+      this.backButtonSub = this.plt.backButton.subscribeWithPriority( 10000, () => {
+        this.modalCtrl.dismiss();
+        this.nav.navigateRoot('/tabs/tab1');
+      });
+    }
   }
 
 }
