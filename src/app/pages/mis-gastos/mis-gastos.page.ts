@@ -161,7 +161,15 @@ export class MisGastosPage implements OnInit {
       else {
         this.datosService.guardarBloqueoModulos(false); ////////LE DOY PERMISO PARA LOS MODULOS///////
         this.modificarUsuario();
-        this.nav.navigateRoot('/tabs/tab1');
+        
+        await this.datosService.cargarBloqueoModulos();
+        if(this.datosService.bloquearModulos == true){
+          this.nav.navigateRoot('/tabs/tab3');
+        }
+        else{
+          this.nav.navigateRoot('/tabs/tab1');
+        }
+
         this.datosService.presentToast('Se han modificado tus gastos');
       }
 
@@ -179,7 +187,7 @@ export class MisGastosPage implements OnInit {
   }
 
   //Metodo que calcula los datos necearios para modificar y lo guarda en storage
-  modificarUsuario()
+  async modificarUsuario()
   {
 
     var i = 0;
@@ -222,7 +230,15 @@ export class MisGastosPage implements OnInit {
   this.datosService.guardarUsuarioInfo(this.usuarioModificado);
   this.event.publish('usuarioActualizado');
   this.modalCtrl.dismiss();
-  this.nav.navigateRoot('/tabs/tab1');
+
+  await this.datosService.cargarBloqueoModulos();
+  if(this.datosService.bloquearModulos == true){
+    this.nav.navigateRoot('/tabs/tab3');
+  }
+  else{
+    this.nav.navigateRoot('/tabs/tab1');
+  }
+
   this.datosService.presentToast('Cambios modificados');
   }
 
