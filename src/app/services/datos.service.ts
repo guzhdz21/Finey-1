@@ -111,6 +111,7 @@ export class DatosService {
   notificacion: Date;
   mes: number;
   diferencia: number;
+  ingresoExtra: number;
 
   // Variable de tipo plan que adquiere los valores del storage
   planesCargados: Plan[] = [
@@ -248,6 +249,12 @@ export class DatosService {
   {
     this.notificacion = fecha;
     this.storage.set('Notificacion', fecha);
+  }
+
+  guardarIngresoExtra(ingresoExtra: number)
+  {
+    this.ingresoExtra = ingresoExtra;
+    this.storage.set('Ingreso extra', ingresoExtra);
   }
 
   async cargarNotificacion()

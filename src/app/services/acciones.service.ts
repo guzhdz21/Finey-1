@@ -107,6 +107,24 @@ export class AccionesService {
     await alert.onDidDismiss();
   }
 
+  async presentAlertIngresoExtra(botones: any[]) {
+      
+    const alert = await this.alertCtrl.create({
+      header: 'Ingreso extra',
+      message: 'Inserta la cantidad del ingreso extra que deseas añadir a tu fondo de ahorro',
+      inputs: [ {
+          name: 'ingresoExtra',
+          type: 'number',
+          value: null
+        }
+      ],
+      buttons: [] = botones,
+      mode: "ios"
+    });
+    alert.present();
+    await alert.onDidDismiss();
+  }
+
   async presentAlertOpciones( botones: any[], header: string, message: string) {
       
     const alert = await this.alertCtrl.create({
