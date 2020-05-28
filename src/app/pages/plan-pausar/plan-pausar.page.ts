@@ -20,6 +20,8 @@ export class PlanPausarPage implements OnInit {
 
   planes: Plan[] = this.datosService.planesCargados;
 
+  ingresoExtra: number = this.datosService.ingresoExtra;
+
   planesAux: Plan[] = [];
 
   planesFinales: Plan[];
@@ -45,6 +47,8 @@ export class PlanPausarPage implements OnInit {
 
   async ngOnInit() {
     await this.datosService.cargarDatos();
+    await this.datosService.cargarIngresoExtra();
+    this.ingresoExtra = this.datosService.ingresoExtra;
   }
   
   accionPausar(i) {
@@ -68,7 +72,7 @@ export class PlanPausarPage implements OnInit {
     this.planesPrioritariosI = JSON.parse(JSON.stringify(this.planesPrioritarios));
 
     var ahorrar = await this.determinarAhorro();
-    var gasto = this.datosService.usuarioCarga.ingresoCantidad - ahorrar - this.diferenciaFondo;
+    var gasto = this.datosService.usuarioCarga.ingresoCantidad + this.ingresoExtra - ahorrar - this.diferenciaFondo;
     if(await this.validarGasto(this.margenMax, this.margenMin, gasto)) {
 
       if(this.multiplan) {
@@ -312,7 +316,7 @@ export class PlanPausarPage implements OnInit {
   }
 
   checarOchoDosPlanes() {
-    var ochoPorciento = (this.datosService.usuarioCarga.ingresoCantidad - this.margenMax - this.diferenciaFondo)*0.08;
+    var ochoPorciento = (this.datosService.usuarioCarga.ingresoCantidad + this.ingresoExtra - this.margenMax - this.diferenciaFondo)*0.08;
     for(var plan of this.planesAux) {
       if(plan.aportacionMensual <= ochoPorciento) {
         return true;
@@ -342,14 +346,14 @@ export class PlanPausarPage implements OnInit {
       }
     });
 
-    this.datosService.usuarioCarga.fondoAhorro = this.datosService.usuarioCarga.ingresoCantidad - this.datosService.usuarioCarga.fondoPlanes -gastos;
+    this.datosService.usuarioCarga.fondoAhorro = this.datosService.usuarioCarga.ingresoCantidad + this.ingresoExtra - this.datosService.usuarioCarga.fondoPlanes -gastos;
     if(this.datosService.usuarioCarga.fondoAhorro < 0) {
-      this.datosService.usuarioCarga.fondoAhorro = this.datosService.usuarioCarga.ingresoCantidad - this.datosService.usuarioCarga.fondoPlanes - margenMin;
+      this.datosService.usuarioCarga.fondoAhorro = this.datosService.usuarioCarga.ingresoCantidad + this.ingresoExtra - this.datosService.usuarioCarga.fondoPlanes - margenMin;
     }
 
-    if(this.datosService.usuarioCarga.ingresoCantidad - this.datosService.usuarioCarga.fondoPlanes < margenMax 
-      && this.datosService.usuarioCarga.ingresoCantidad - this.datosService.usuarioCarga.fondoPlanes < this.gastosUsuario
-      && this.datosService.usuarioCarga.ingresoCantidad - this.datosService.usuarioCarga.fondoPlanes >= margenMin) {
+    if(this.datosService.usuarioCarga.ingresoCantidad + this.ingresoExtra - this.datosService.usuarioCarga.fondoPlanes < margenMax 
+      && this.datosService.usuarioCarga.ingresoCantidad + this.ingresoExtra - this.datosService.usuarioCarga.fondoPlanes < this.gastosUsuario
+      && this.datosService.usuarioCarga.ingresoCantidad + this.ingresoExtra - this.datosService.usuarioCarga.fondoPlanes >= margenMin) {
         this.accionesService.presentAlertGenerica('Gastos Minimos', 'Ahora estas en un sistema de gastos minimos, '+ 
       'esto quiere decir que se tomara en cuenta tus gastos en margen minimo (el pequeño margen de desviacion' + 
       ' en cada uno de tus gastos que provoca que gastes menos sobre todo en tus gastos promedio) para hacer los' + 

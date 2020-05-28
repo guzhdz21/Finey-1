@@ -32,8 +32,8 @@
           <p></p>
           <p></p>
     <ion-button expand="block" color="tertiary">Gastos Planes: {{this.datosService.usuarioCarga.fondoPlanes}}</ion-button>
-    <ion-button expand="block" color="primary">ahorro: {{this.datosService.usuarioCarga.fondoAhorro}}</ion-button>
-<div class="centrado">
+    <ion-button expand="block" color="primary">Ahorro: {{this.datosService.usuarioCarga.fondoAhorro}}</ion-button>
+<div class="centrado" *ngIf="this.ingresoExtra == 0">
     <ion-button expand="medium" color="success" class="centrado" (click)="anadirIngreso()">Añadir un ingreso extra</ion-button>
 </div>
 </ion-card>

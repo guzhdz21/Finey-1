@@ -11,7 +11,6 @@ import { AccionesService } from '../../services/acciones.service';
 import { ModalRegistroPage } from '../modal-registro/modal-registro.page';
 import { GastosDiariosPage } from '../gastos-diarios/gastos-diarios.page';
 import { GastosMayoresPage } from '../gastos-mayores/gastos-mayores.page';
-import { PlanFormPage } from '../plan-form/plan-form.page';
 import { Router } from '@angular/router';
 
 @Component({
@@ -47,7 +46,9 @@ export class Tab1Page implements OnInit {
 
   diferenciaFondo: number = this.datosService.diferencia;
 
-  planes: Plan[] = []; 
+  planes: Plan[] = [];
+
+  ingresoExtra: number = this.datosService.ingresoExtra;
   
   //Variables de asignacion al Chart
   public doughnutChartLabels: Label[] = ['Vivienda'];
@@ -100,6 +101,7 @@ export class Tab1Page implements OnInit {
     await  this.datosService.cargarFechaDiaria();
     await this.datosService.cargarDiaDelMes();
     await this.datosService.cargarDiferencia();
+    await this.datosService.cargarIngresoExtra();
     this.localNotifications.fireQueuedEvents();
     //Condicional para abrir el registro de la app
     if(this.datosService.primera === true) {
@@ -153,7 +155,8 @@ export class Tab1Page implements OnInit {
         await this.abrirGastosDiarios();
       }
     }
-    
+
+    this.ingresoExtra = this.datosService.ingresoExtra;
   }
 
   async anadirIngreso(){
@@ -162,6 +165,7 @@ export class Tab1Page implements OnInit {
           this.datosService.presentToast('No se puede ingresar 0 ni numeros negativos');
         } else {
           this.datosService.guardarIngresoExtra(bla);
+          this.ingresoExtra = bla;
           this.datosService.presentToast('Ingreso extra añadido');
         }
       }
@@ -289,7 +293,7 @@ export class Tab1Page implements OnInit {
     });
 
     //Le restamos al ahorro los gastos del mes
-    var totalAhorro = this.usuarioCargado.ingresoCantidad - gastosDelMes;
+    var totalAhorro = this.usuarioCargado.ingresoCantidad + this.ingresoExtra - gastosDelMes;
     totalAhorro -= this.diferenciaFondo;
 
     //Agregamos lo extra ganado si asi lo desea el ussuario
@@ -329,6 +333,8 @@ export class Tab1Page implements OnInit {
 
     await this.datosService.guardarDiferencia(0);
     this.diferenciaFondo = this.datosService.diferencia;
+    await this.datosService.guardarIngresoExtra(0);
+    this.ingresoExtra = this.datosService.ingresoExtra;
 
     if(this.mes == 1) {
       this.mes++;

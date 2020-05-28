@@ -30,6 +30,7 @@ export class DatosService {
     this.cargarDiaDelMes();
     this.cargarMes();
     this.cargarPlanesTerminados();
+    this.cargarIngresoExtra();
     this.localNotifications.fireQueuedEvents();
 
     this.plt.ready().then(() => {
@@ -256,6 +257,17 @@ export class DatosService {
   {
     this.ingresoExtra = ingresoExtra;
     this.storage.set('Ingreso extra', ingresoExtra);
+  }
+
+  async cargarIngresoExtra()
+  {
+    const ingresoExtra = await this.storage.get('Ingreso extra');
+    if(ingresoExtra) {
+      this.ingresoExtra = ingresoExtra;
+    } else {
+      this.ingresoExtra = 0;
+      this.guardarIngresoExtra(this.ingresoExtra);
+    } 
   }
 
   guardarBloqueoModulos(bloqueado: boolean)

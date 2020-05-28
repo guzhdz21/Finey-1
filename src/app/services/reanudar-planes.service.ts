@@ -21,6 +21,8 @@ export class ReanudarPlanesService {
   //Variable que guarda la informacion del usuario
   usuarioCargado: UsuarioLocal = this.datosService.usuarioCarga;
 
+  ingresoExtra: number = this.datosService.ingresoExtra;
+
   //Variable que guarda los datos de los planes registrados y luego se usa para manipularlos
   planes: Plan[] = JSON.parse(JSON.stringify(this.datosService.planesCargados));
 
@@ -65,6 +67,9 @@ export class ReanudarPlanesService {
     this.diferenciaFondo = this.datosService.diferencia;
     await this.datosService.cargarDatos();
     this.usuarioCargado = this.datosService.usuarioCarga;
+    await this.datosService.cargarIngresoExtra();
+    this.ingresoExtra = this.datosService.ingresoExtra;
+
     //Inicializacion de variables
     this.planesPrioritarios = [];
     this.planesPausados = [];
@@ -206,7 +211,7 @@ export class ReanudarPlanesService {
     //Obtenemos cuanto debe ahorrar y aportacion mensual del menor
     ahorrar += (this.planMenor.cantidadTotal - this.planMenor.cantidadAcumulada) + (this.planMayor.cantidadTotal - this.planMayor.cantidadAcumulada);
     ahorrar /= this.planMayor.tiempoRestante;
-    gasto = this.usuarioCargado.ingresoCantidad - ahorrar - this.diferenciaFondo;
+    gasto = this.usuarioCargado.ingresoCantidad + this.ingresoExtra - ahorrar - this.diferenciaFondo;
 
     this.planMenor.aportacionMensual = (this.planMenor.cantidadTotal - this.planMenor.cantidadAcumulada)/this.planMenor.tiempoRestante;
     
@@ -393,7 +398,7 @@ export class ReanudarPlanesService {
     
     //Calculamos cuanto debe ahorrar el susuario, agregamos nuevo plan y vemos si es valido
     ahorrar /= this.planMayor.tiempoRestante;
-    gasto = this.usuarioCargado.ingresoCantidad - ahorrar - this.diferenciaFondo;
+    gasto = this.usuarioCargado.ingresoCantidad + this.ingresoExtra - ahorrar - this.diferenciaFondo;
     this.planes.push(this.planNuevo);
     await this.validarMasDosPlanes(ahorrar, gasto, margenMax, margenMin);
   }
@@ -553,7 +558,7 @@ export class ReanudarPlanesService {
       ahorro += element.aportacionMensual;
     });
 
-    ahorro = this.usuarioCargado.ingresoCantidad - ahorro;
+    ahorro = this.usuarioCargado.ingresoCantidad + this.ingresoExtra - ahorro;
     var gasto = margenMin;
     ahorro = ahorro - gasto;
     ahorro /= this.planes.length;
@@ -590,7 +595,7 @@ export class ReanudarPlanesService {
       this.planMenor.aportacionMensual = (this.planMenor.cantidadTotal - this.planMenor.cantidadAcumulada)/this.planMenor.tiempoRestante;
       this.planMayor.aportacionMensual = (this.planMayor.cantidadTotal - this.planMayor.cantidadAcumulada)/this.planMayor.tiempoRestante;
       ahorrar = this.planMenor.aportacionMensual + this.planMayor.aportacionMensual;
-      gasto = this.usuarioCargado.ingresoCantidad - ahorrar;
+      gasto = this.usuarioCargado.ingresoCantidad + this.ingresoExtra - ahorrar;
       return await this.validarGasto(margenMax, margenMin, gasto);
     }
 
@@ -601,7 +606,7 @@ export class ReanudarPlanesService {
       ahorrar += element.aportacionMensual;
     });
 
-    gasto = this.usuarioCargado.ingresoCantidad - ahorrar - this.diferenciaFondo;
+    gasto = this.usuarioCargado.ingresoCantidad + this.ingresoExtra - ahorrar - this.diferenciaFondo;
     if(!await this.validarGasto(margenMax,margenMin, gasto)) {
       this.planesPrioritarios = this.planesPrioritarios.filter(plan => plan != this.planMenor);
       return false;
@@ -627,7 +632,7 @@ export class ReanudarPlanesService {
     this.planMenor.aportacionMensual = (this.planMenor.cantidadTotal - this.planMenor.cantidadAcumulada)/this.planMenor.tiempoRestante;
     if(this.planes.length == 1) {
       ahorrar += ahorrar2;
-      gasto = this.usuarioCargado.ingresoCantidad - ahorrar - this.diferenciaFondo;
+      gasto = this.usuarioCargado.ingresoCantidad + this.ingresoExtra - ahorrar - this.diferenciaFondo;
       return this.validarGasto(margenMax,margenMin, gasto);
     } 
     
@@ -638,7 +643,7 @@ export class ReanudarPlanesService {
 
       this.planMayor.aportacionMensual = ahorrar2 - this.planMenor.aportacionMensual;
       ahorrar += ahorrar2;
-      gasto = this.usuarioCargado.ingresoCantidad - ahorrar - this.diferenciaFondo;
+      gasto = this.usuarioCargado.ingresoCantidad + this.ingresoExtra - ahorrar - this.diferenciaFondo;
       return this.validarGasto(margenMax,margenMin, gasto);
     } 
     
@@ -659,7 +664,7 @@ export class ReanudarPlanesService {
           element.aportacionMensual = (element.cantidadTotal - element.cantidadAcumulada)/element.tiempoRestante;
         });
         ahorrar += ahorrar2;
-        gasto = this.usuarioCargado.ingresoCantidad - ahorrar - this.diferenciaFondo;
+        gasto = this.usuarioCargado.ingresoCantidad + this.ingresoExtra - ahorrar - this.diferenciaFondo;
         return this.validarGasto(margenMax,margenMin, gasto);
       }
 
@@ -672,7 +677,7 @@ export class ReanudarPlanesService {
       });
       this.planMayor.aportacionMensual = sobrante;
       ahorrar += ahorrar2;
-      gasto = this.usuarioCargado.ingresoCantidad - ahorrar - this.diferenciaFondo;
+      gasto = this.usuarioCargado.ingresoCantidad + this.ingresoExtra - ahorrar - this.diferenciaFondo;
       return this.validarGasto(margenMax,margenMin, gasto);
     }
   }
@@ -756,16 +761,16 @@ export class ReanudarPlanesService {
       }
     });
 
-    this.usuarioCargado.fondoAhorro = this.usuarioCargado.ingresoCantidad - this.usuarioCargado.fondoPlanes - gastos;
+    this.usuarioCargado.fondoAhorro = this.usuarioCargado.ingresoCantidad + this.ingresoExtra - this.usuarioCargado.fondoPlanes - gastos;
     if(this.usuarioCargado.fondoAhorro < 0) {
-      this.usuarioCargado.fondoAhorro = this.usuarioCargado.ingresoCantidad - this.usuarioCargado.fondoPlanes - margenMin;
+      this.usuarioCargado.fondoAhorro = this.usuarioCargado.ingresoCantidad + this.ingresoExtra - this.usuarioCargado.fondoPlanes - margenMin;
     }
     this.usuarioCargado.fondoAhorro -= this.diferenciaFondo;
     this.usuarioCargado.fondoAhorro = Math.round(this.usuarioCargado.fondoAhorro*100)/100;
     
-    if(this.usuarioCargado.ingresoCantidad - this.usuarioCargado.fondoPlanes < margenMax &&
-      this.usuarioCargado.ingresoCantidad - this.usuarioCargado.fondoPlanes < this.gastosUsuario
-      && this.usuarioCargado.ingresoCantidad - this.usuarioCargado.fondoPlanes >= margenMin) {
+    if(this.usuarioCargado.ingresoCantidad + this.ingresoExtra - this.usuarioCargado.fondoPlanes < margenMax &&
+      this.usuarioCargado.ingresoCantidad + this.ingresoExtra - this.usuarioCargado.fondoPlanes < this.gastosUsuario
+      && this.usuarioCargado.ingresoCantidad + this.ingresoExtra - this.usuarioCargado.fondoPlanes >= margenMin) {
       this.accionesService.presentAlertGenerica('Gastos Minimos', 'Ahora estas en un sistema de gastos minimos, '+ 
       'esto quiere decir que se tomara en cuenta tus gastos en margen minimo (el pequeño margen de desviacion' + 
       ' en cada uno de tus gastos que provoca que gastes menos sobre todo en tus gastos promedio) para hacer los' + 
