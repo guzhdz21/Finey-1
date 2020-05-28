@@ -112,6 +112,7 @@ export class DatosService {
   mes: number;
   diferencia: number;
   ingresoExtra: number;
+  bloquearModulos: boolean = false;
 
   // Variable de tipo plan que adquiere los valores del storage
   planesCargados: Plan[] = [
@@ -257,6 +258,18 @@ export class DatosService {
     this.storage.set('Ingreso extra', ingresoExtra);
   }
 
+  guardarBloqueoModulos(bloqueado: boolean)
+  {
+    this.bloquearModulos = bloqueado;
+    this.storage.set('Bloqueo modulos', bloqueado);
+  }
+
+  async cargarBloqueoModulos()
+  {
+    const bloqueo = await this.storage.get('Bloqueo modulos');
+    this.bloquearModulos = bloqueo;
+  }
+
   async cargarNotificacion()
   {
     const fecha = await this.storage.get('Notificacion');
@@ -343,7 +356,7 @@ export class DatosService {
       
     const alert = await this.alertCtrl.create({
       header: 'Advertencia',
-      message: 'Tus gastos son mayores que tus ingresos, si deseas continuar presiona Ok, si quieres modificar algun dato presiona Configurar.',
+      message: 'Tus gastos son mayores que tus ingresos, si deseas continuar presiona Ok, si quieres modificar algun dato presiona Configurar. NOTA: Si seleccionas Ok, se te bloqueran varias secciones de la app',
       buttons: [
         {
           text: 'Ok',

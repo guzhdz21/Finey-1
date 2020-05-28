@@ -18,6 +18,8 @@ export class ModalAvatarPage implements OnInit {
   //Variable donde se guardan los datos cargados de la informacion de las alertas
   alertas: AlertaGeneral[] = [];
 
+  rutaSeguir: string = "/tabs/tab1";
+
   //Variable para guardar los datos cargados del ususario
   usuarioCargado: UsuarioLocal = this.datosService.usuarioCarga;
 
@@ -51,11 +53,18 @@ export class ModalAvatarPage implements OnInit {
   }
 
   //Metodo que modifica la informacion del usuario y lo guarda en el storage
-  modificar() {
+  async modificar() {
     this.datosService.guardarUsuarioInfo(this.usuarioCargado);
     this.event.publish('avatarActualizado');
     this.modalCtrl.dismiss();
-    this.nav.navigateRoot('/tabs/tab1');
+
+    await this.datosService.cargarBloqueoModulos();
+    if(this.datosService.bloquearModulos == true){
+      this.nav.navigateRoot('/tabs/tab3');
+    }
+    else{
+      this.nav.navigateRoot('/tabs/tab1');
+    }
     this.datosService.presentToast('Cambios modificados');
   }
 
@@ -69,10 +78,22 @@ export class ModalAvatarPage implements OnInit {
     });
   }
 
-  ionViewDidEnter() {
-    this.backButtonSub = this.plt.backButton.subscribeWithPriority( 10000, () => {
-      this.modalCtrl.dismiss();
-      this.nav.navigateRoot('/tabs/tab1');
-    });
+  //Metodo que te regresa a la pantalla tab1 en este caso
+  async ionViewDidEnter() {
+
+    await this.datosService.cargarBloqueoModulos();
+    if(this.datosService.bloquearModulos == true){
+      this.rutaSeguir = "/tabs/tab3";
+      this.backButtonSub = this.plt.backButton.subscribeWithPriority( 10000, () => {
+        this.modalCtrl.dismiss();
+        this.nav.navigateRoot('/tabs/tab3');
+      });
+    }
+    else{
+      this.backButtonSub = this.plt.backButton.subscribeWithPriority( 10000, () => {
+        this.modalCtrl.dismiss();
+        this.nav.navigateRoot('/tabs/tab1');
+      });
+    }
   }
 }

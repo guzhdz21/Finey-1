@@ -27,6 +27,7 @@ export class AjustesPage implements OnInit {
  notificacionTiempo: Date;
  fechaAntigua: any;
  invalido: boolean;
+ rutaSeguir: string = "/tabs/tab1";
 
   constructor(private datosService: DatosService,
     private modalCtrl: ModalController,
@@ -96,11 +97,23 @@ export class AjustesPage implements OnInit {
      });
    }
  
-   ionViewDidEnter() {
-     this.backButtonSub = this.plt.backButton.subscribeWithPriority( 10000, () => {
-       this.modalCtrl.dismiss();
-       this.nav.navigateRoot('/tabs/tab1');
-     });
-   }
+  //Metodo que te regresa a la pantalla tab1 en este caso
+  async ionViewDidEnter() {
+
+    await this.datosService.cargarBloqueoModulos();
+    if(this.datosService.bloquearModulos == true){
+      this.rutaSeguir = "/tabs/tab3";
+      this.backButtonSub = this.plt.backButton.subscribeWithPriority( 10000, () => {
+        this.modalCtrl.dismiss();
+        this.nav.navigateRoot('/tabs/tab3');
+      });
+    }
+    else{
+      this.backButtonSub = this.plt.backButton.subscribeWithPriority( 10000, () => {
+        this.modalCtrl.dismiss();
+        this.nav.navigateRoot('/tabs/tab1');
+      });
+    }
+  }
 
 }

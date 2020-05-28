@@ -1,7 +1,8 @@
 import { Component, OnInit } from '@angular/core';
 import { DatosService } from 'src/app/services/datos.service';
 import { AccionesService } from 'src/app/services/acciones.service';
-import { ModalController, NavController } from '@ionic/angular';
+import { ModalController, NavController, Platform } from '@ionic/angular';
+import { Subscription } from 'rxjs';
 
 @Component({
   selector: 'app-hormiga',
@@ -13,7 +14,8 @@ export class HormigaPage implements OnInit {
   constructor(public datosService: DatosService,
               public accionesService: AccionesService,
               private nav: NavController,
-              private modalCtrl: ModalController) { }
+              private modalCtrl: ModalController,
+              private plt: Platform) { }
 
   ngOnInit() {
     this.consejos = [];
@@ -51,6 +53,8 @@ export class HormigaPage implements OnInit {
   consejos: string[];
   aconsejados: boolean[];
   seleccionados: number;
+  rutaSeguir: string = "/tabs/tab1";
+  backButtonSub: Subscription;
 
   async mostrarConsejos(){
     await this.accionesService.presentAlertGenerica("Consejos de gastos hormiga", this.consejos[0] + this.consejos[1] + this.consejos[2] + this.consejos[3] + this.consejos[4] + this.consejos[5] + this.consejos[6] + this.consejos[7] + this.consejos[8] + this.consejos[9] + this.consejos[10] + this.consejos[11] + this.consejos[12] + this.consejos[13] + this.consejos[14] + this.consejos[15]);
@@ -212,6 +216,24 @@ export class HormigaPage implements OnInit {
           this.seleccionados--;
         }
       break;
+    }
+  }
+
+  async ionViewDidEnter() {
+
+    await this.datosService.cargarBloqueoModulos();
+    if(this.datosService.bloquearModulos == true){
+      this.rutaSeguir = "/tabs/tab3";
+      this.backButtonSub = this.plt.backButton.subscribeWithPriority( 10000, () => {
+        this.modalCtrl.dismiss();
+        this.nav.navigateRoot('/tabs/tab3');
+      });
+    }
+    else{
+      this.backButtonSub = this.plt.backButton.subscribeWithPriority( 10000, () => {
+        this.modalCtrl.dismiss();
+        this.nav.navigateRoot('/tabs/tab1');
+      });
     }
   }
 

@@ -28,6 +28,7 @@ export class ModalRegistroPage implements OnInit {
   invalido: boolean;
   invalido2: boolean;
   alertado: boolean[];
+  aporteDiario: number;
 
   //Variable que nos ayuda a asegurarnos si el ususario no puede satisfacer sus necesidades basicas
   registrarseAdvertencia: boolean = this.datosService.registrarseAdvertencia;
@@ -57,6 +58,8 @@ export class ModalRegistroPage implements OnInit {
                 private localNotifications: LocalNotifications) { }
 
 ngOnInit() {
+
+  this.aporteDiario = 0;
 
   this.alertado = [];
   this.alertado[1] = false;
@@ -142,8 +145,11 @@ sexoRadio(event)
 //metodo apara determinar como sera insertado el registro
  async registrar()
 {
-  //Verificar si el ususario es Fijo o Variable
-  if(this.usuario.tipoIngreso != 'Variable') {
+ //Multiplicar X30 el ingreso de cada dia del usuario VARIABLE
+ if(this.usuario.tipoIngreso == 'Variable'){
+  this.usuario.ingresoCantidad = this.usuario.ingresoCantidad * 30;
+  console.log("Ganancia mensual: " + this,this.usuario.ingresoCantidad)
+}
 
     //Verificar si el usuario no ingreso gastos  mayores al ingreso si no se registra el ususario
     if(this.validarIngreso()) {
@@ -152,6 +158,7 @@ sexoRadio(event)
 
     //Verificar si el usuario no puede satisfacer sus necesidades basicas y se insertan sus datos  
     if(this.registrarseAdvertencia) {
+      this.datosService.guardarBloqueoModulos(true); ////////BLOQUEAR MODULOS///////
         this.registrarUsuario();
         await this.mandarNotificacion();
         await this.guardarDiferencia();
@@ -160,6 +167,7 @@ sexoRadio(event)
       }
     }
     else {
+      this.datosService.guardarBloqueoModulos(false); ////////LE DOY PERMISO PARA LOS MODULOS///////
       this.registrarUsuario();
       this.nav.navigateRoot('/plan-form-page');
       this.router.navigate(['/plan-form-page'],
@@ -173,32 +181,11 @@ sexoRadio(event)
       await this.guardarFechaMes();
       this.datosService.presentToast('Registro exitoso');
     }
-  }
-  else {
-    this.registrarUsuario();
-    this.nav.navigateRoot('/plan-form-page');
-    this.router.navigate(['/plan-form-page'],
-    {
-      queryParams: {
-         value: true
-        }
-    });
-    await this.mandarNotificacion();
-    await this.guardarFechaMes();
-    await this.guardarDiferencia();
-    this.datosService.presentToast('Registro exitoso');
-  }
 }
 
 //Metodo que registra el Ususario en el Storage y hace las operaciones necesarias
   async registrarUsuario()
   {
-
-    //Multiplicar X30 el ingreso de cada dia del usuario
-    if(this.usuario.tipoIngreso == 'Variable'){
-      this.usuario.ingresoCantidad = this.usuario.ingresoCantidad * 30;
-      console.log("Ganancia mensual: " + this,this.usuario.ingresoCantidad)
-    }
 
     var i = 0;
     this.usuario.gastos.forEach(element => {

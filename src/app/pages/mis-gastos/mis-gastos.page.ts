@@ -37,6 +37,8 @@ export class MisGastosPage implements OnInit {
   invalido: boolean;
   invalido2: boolean;
 
+  rutaSeguir: string = "/tabs/tab1";
+
   aporteDiario: number;
 
   //Constructor con todas las inyecciones y controladores necesarios
@@ -52,8 +54,6 @@ export class MisGastosPage implements OnInit {
     this.alertado = [];
     this.alertado[1] = false;
     this.alertado[2] = false;
-    
-    console.log("Ingreso anterior" + this.usuarioModificado.ingresoCantidad)
 
     this.invalido = false;
     this.invalido2 = false;
@@ -131,7 +131,7 @@ export class MisGastosPage implements OnInit {
   //Metodo para regresar al pulsar el boton back
   regresar() {
     this.modalCtrl.dismiss();
-    this.nav.navigateRoot('/tabs/tab1');
+    this.nav.navigateRoot('/tabs/tab3');
   }
 
   //Metodo para modificar los datos del ususario con los ingresados
@@ -152,20 +152,30 @@ export class MisGastosPage implements OnInit {
 
           //Condicional que verifica si un usuario no puede satisfacer sus necesidades y lo redirige
         if(this.registrarseAdvertencia) {
+          this.datosService.guardarBloqueoModulos(true); ////////BLOQUEAR MODULOS///////
           console.log(this.registrarseAdvertencia);
           this.modificarUsuario();
           this.nav.navigateRoot('/tabs/tab3');
         }
       }
       else {
+        this.datosService.guardarBloqueoModulos(false); ////////LE DOY PERMISO PARA LOS MODULOS///////
         this.modificarUsuario();
         this.nav.navigateRoot('/tabs/tab1');
         this.datosService.presentToast('Se han modificado tus gastos');
       }
 
-        this.modificarUsuario();
+      this.modificarUsuario();
+
+      await this.datosService.cargarBloqueoModulos();
+      if(this.datosService.bloquearModulos == true){
+        this.nav.navigateRoot('/tabs/tab3');
+      }
+      else{
         this.nav.navigateRoot('/tabs/tab1');
-        this.datosService.presentToast('Se han modificado tus datos');
+      }
+        
+      this.datosService.presentToast('Se han modificado tus datos');
   }
 
   //Metodo que calcula los datos necearios para modificar y lo guarda en storage
@@ -244,10 +254,22 @@ export class MisGastosPage implements OnInit {
     });
   }
 
-  ionViewDidEnter() {
-    this.backButtonSub = this.plt.backButton.subscribeWithPriority( 10000, () => {
-      this.modalCtrl.dismiss();
-      this.nav.navigateRoot('/tabs/tab1');
-    });
+  async ionViewDidEnter() {
+
+    await this.datosService.cargarBloqueoModulos();
+    if(this.datosService.bloquearModulos == true){
+      this.rutaSeguir = "/tabs/tab3";
+      this.backButtonSub = this.plt.backButton.subscribeWithPriority( 10000, () => {
+        this.modalCtrl.dismiss();
+        this.nav.navigateRoot('/tabs/tab3');
+      });
+    }
+    else{
+      this.backButtonSub = this.plt.backButton.subscribeWithPriority( 10000, () => {
+        this.modalCtrl.dismiss();
+        this.nav.navigateRoot('/tabs/tab1');
+      });
+    }
+
   }
 }
