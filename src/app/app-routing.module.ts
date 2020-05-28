@@ -100,6 +100,14 @@ const routes: Routes = [
   {
     path: 'planes-terminados',
     loadChildren: () => import('./pages/planes-terminados/planes-terminados.module').then( m => m.PlanesTerminadosPageModule)
+  },
+  {
+    path: 'selecciona-plan',
+    loadChildren: () => import('./pages/selecciona-plan/selecciona-plan.module').then( m => m.SeleccionaPlanPageModule)
+  },
+  {
+    path: 'selecciona-plan-page',
+    loadChildren: () => import('./pages/selecciona-plan-page/selecciona-plan-page.module').then( m => m.SeleccionaPlanPagePageModule)
   }
 
 
