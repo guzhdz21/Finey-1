@@ -31,6 +31,8 @@ export class Tab1Page implements OnInit {
   cantidadGastos: number = 0;
   saldo: number;
 
+  ingresoProximo: number = 0;
+
   //Variables de descicion
   gastosCero: boolean = true;
 
@@ -154,6 +156,17 @@ export class Tab1Page implements OnInit {
     
   }
 
+  async anadirIngreso(){
+    await this.accionesService.presentAlertIngresoExtra([{text: 'Añadir ingreso extra',handler: (bla) => { 
+      if(parseInt(bla) <= 0)  {
+          this.datosService.presentToast('No se puede ingresar 0 ni numeros negativos');
+        } else {
+          this.datosService.guardarIngresoExtra(bla);
+          this.datosService.presentToast('Ingreso extra añadido');
+        }
+      }
+    }]);
+  }
 
   async abrirDescripcionGasto(seleccion: string, diseño: string) {
 
