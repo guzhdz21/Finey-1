@@ -1,7 +1,7 @@
 import { Component, OnInit, ViewChild } from '@angular/core';
 import { ModalController, NavController, IonRadioGroup, Events, Platform } from '@ionic/angular';
 import { DatosService } from '../../services/datos.service';
-import { UsuarioLocal, Rubro, AlertaGeneral } from '../../interfaces/interfaces';
+import { UsuarioLocal, Rubro, AlertaGeneral, Plan } from '../../interfaces/interfaces';
 import { AccionesService } from '../../services/acciones.service';
 import { Subscription } from 'rxjs';
 
@@ -22,6 +22,8 @@ export class MisGastosPage implements OnInit {
   //Variable que guarda la informacion de las alertas
   alertas: AlertaGeneral[] = [];
 
+  planes = this.datosService.planesCargados;
+
   //Variable que nos ayuda a asegurarnos si el ususario no puede satisfacer sus necesidades basicas
   registrarseAdvertencia: boolean = this.datosService.registrarseAdvertencia;
 
@@ -29,6 +31,8 @@ export class MisGastosPage implements OnInit {
 
   //Variable para guardar los datos del ususario
   usuarioModificado: UsuarioLocal = this.datosService.usuarioCarga;
+
+  usuarioCargado: UsuarioLocal = this.datosService.usuarioCarga;
 
   diferenciaAhorro: number = this.datosService.diferencia;
 
@@ -76,6 +80,9 @@ export class MisGastosPage implements OnInit {
     
     //Llamada al metodo que carga los datos
     this.datosService.cargarDatos();
+
+    this.datosService.cargarDatosPlan();
+    this.planes = this.datosService.planesCargados;
 
     //Asignacion del tipo de ingreso a la variable
     this.tipoIngreso.value = this.usuarioModificado.tipoIngreso;
@@ -163,27 +170,10 @@ export class MisGastosPage implements OnInit {
         this.modificarUsuario();
         
         await this.datosService.cargarBloqueoModulos();
-        if(this.datosService.bloquearModulos == true){
-          this.nav.navigateRoot('/tabs/tab3');
-        }
-        else{
-          this.nav.navigateRoot('/tabs/tab1');
-        }
+        this.nav.navigateRoot('/tabs/tab1');
 
         this.datosService.presentToast('Se han modificado tus gastos');
       }
-
-      this.modificarUsuario();
-
-      await this.datosService.cargarBloqueoModulos();
-      if(this.datosService.bloquearModulos == true){
-        this.nav.navigateRoot('/tabs/tab3');
-      }
-      else{
-        this.nav.navigateRoot('/tabs/tab1');
-      }
-        
-      this.datosService.presentToast('Se han modificado tus datos');
   }
 
   //Metodo que calcula los datos necearios para modificar y lo guarda en storage
@@ -213,6 +203,170 @@ export class MisGastosPage implements OnInit {
         margenMin += element.margenMin;
       }
     });
+
+    if(this.datosService.planesExisten == false) {
+      this.planes = [];
+    }
+    //A cada uno de los planes le agregamos lo correspondiente
+
+    //Guardamos los planes terminados y pausados
+    var planesPausados: Plan[] = [];
+    for(var plan of this.planes) {
+      if(plan.pausado) {
+        planesPausados.push(plan);
+      }
+    }
+
+    this.planes = this.planes.filter(p => p.pausado != true);
+
+    //Calculos nuevos
+    var planesPrioritarios: Plan[] = [];
+    var planesRestantes: number = this.planes.length;
+    var prioritario = false;
+    var valido;
+    do{
+      do {
+        var ahorrar = 0;
+        if(planesRestantes != 0) {
+
+          if(planesRestantes == 1) {
+            prioritario = false;
+            this.planes[0].aportacionMensual = (this.planes[0].cantidadTotal - this.planes[0].cantidadAcumulada)/this.planes[0].tiempoRestante;
+            ahorrar += this.planes[0].aportacionMensual;
+          }
+
+          else if(planesRestantes == 2) {
+            prioritario = false;
+            var ahorro = 0;
+            var planMenor: Plan = this.planes[0];
+            var planMayor: Plan =  this.planes[0];
+            for(var plan of this.planes) {
+              if(planMenor.tiempoRestante >= plan.tiempoRestante) {
+                if(planMenor.tiempoRestante == plan.tiempoRestante) { 
+                  if((planMenor.cantidadTotal - planMenor.cantidadAcumulada) 
+                    < (plan.cantidadTotal - plan.cantidadAcumulada)) { 
+                      planMenor = plan;
+                    }
+                } else {
+                  planMenor = plan;
+                }
+              }
+              if(planMayor.tiempoRestante <= plan.tiempoRestante) {
+                if(planMayor.tiempoRestante == plan.tiempoRestante) { 
+                  if((planMayor.cantidadTotal - planMayor.cantidadAcumulada) 
+                    > (plan.cantidadTotal - plan.cantidadAcumulada)) { 
+                      planMayor = plan;
+                    }
+                } else {
+                  planMayor = plan;
+                }
+              }
+              ahorro += (plan.cantidadTotal - plan.cantidadAcumulada);
+            }
+            ahorro /= planMayor.tiempoRestante;
+
+            ahorrar = ahorro;
+
+            planMenor.aportacionMensual = (planMenor.cantidadTotal - planMenor.cantidadAcumulada)/planMenor.tiempoRestante;
+            
+            if(planMenor.aportacionMensual >= ahorro) {
+              planesPrioritarios.push(planMenor);
+              this.planes = this.planes.filter(p => p != planMenor);
+              planMenor = this.planes[0];
+              planMenor.aportacionMensual = (planMenor.cantidadTotal - planMenor.cantidadAcumulada)/planMenor.tiempoRestante;
+            }
+
+            ahorro -= planMenor.aportacionMensual;
+            planMayor.aportacionMensual = ahorro;
+          }
+
+          else {
+            var ahorro = 0;
+            var planMenor: Plan = this.planes[0];
+            var planMayor: Plan =  this.planes[0];
+            var iguales = true;
+            var tiempo = this.planes[0].tiempoRestante;
+            for(var plan of this.planes) {
+              if(plan.tiempoRestante != tiempo) {
+                iguales = false;
+              }
+              if(planMenor.tiempoRestante >= plan.tiempoRestante) {
+                if(planMenor.tiempoRestante == plan.tiempoRestante) { 
+                  if((planMenor.cantidadTotal - planMenor.cantidadAcumulada) 
+                    < (plan.cantidadTotal - plan.cantidadAcumulada)) { 
+                      planMenor = plan;
+                    }
+                } else {
+                  planMenor = plan;
+                }
+              }
+              if(planMayor.tiempoRestante <= plan.tiempoRestante) {
+                if(planMayor.tiempoRestante == plan.tiempoRestante) { 
+                  if((planMayor.cantidadTotal - planMayor.cantidadAcumulada) 
+                    > (plan.cantidadTotal - plan.cantidadAcumulada)) { 
+                      planMayor = plan;
+                    }
+                } else {
+                  planMayor = plan;
+                }
+              }
+              ahorro += (plan.cantidadTotal - plan.cantidadAcumulada);
+            }
+            ahorro /= planMayor.tiempoRestante;
+            ahorrar = ahorro;
+            planMenor.aportacionMensual = (planMenor.cantidadTotal - planMenor.cantidadAcumulada)/planMenor.tiempoRestante;
+  
+            var acumulacion = planMenor.aportacionMensual * (this.planes.length -1);
+            if(acumulacion >= ahorro) {
+              planesPrioritarios.push(planMenor);
+              this.planes = this.planes.filter(p => p != planMenor);
+              prioritario = true;
+            } else {
+
+              if(iguales) {
+                for(var plan of this.planes) {
+                  plan.aportacionMensual = (plan.cantidadTotal - plan.cantidadAcumulada)/plan.tiempoRestante;
+                }
+              } else {
+                ahorro -= planMenor.aportacionMensual;
+                for(var plan of this.planes) {
+                  if(plan != planMenor && plan != planMayor) {
+                    plan.aportacionMensual = planMenor.aportacionMensual;
+                    ahorro -= planMenor.aportacionMensual;
+                  }
+                }
+                planMayor.aportacionMensual = ahorro;
+              }
+              prioritario = false;
+            }
+          }
+        }
+      } while (prioritario);
+
+          for(var p of planesPrioritarios) {
+            ahorrar += p.aportacionMensual;
+          }
+          var g = this.usuarioModificado.ingresoCantidad - ahorrar;
+          valido = this.validarGasto(g);
+          if(valido == false) {
+            this.planes[this.planes.length-1].pausado = true;
+            this.planes[this.planes.length-1].aportacionMensual = 0;
+            planesPausados.push(this.planes[this.planes.length-1]);
+            var planQuitar = this.planes[this.planes.length-1];
+            this.planes = this.planes.filter(p => p != planQuitar);
+          }
+    } while (valido == false);
+    
+
+    for(var plan of this.planes) {
+      planesPrioritarios.push(plan);
+    }
+
+    for(var plan of planesPausados) {
+      planesPrioritarios.push(plan);
+    }
+    console.log(planesPrioritarios);
+    this.datosService.actualizarPlanes(planesPrioritarios);
 
     this.usuarioModificado.fondoPlanes = 0;
     this.datosService.planesCargados.forEach(element => {
@@ -258,6 +412,30 @@ export class MisGastosPage implements OnInit {
     else {
       return false;
     }
+  }
+
+  validarGasto(gasto: number) {
+
+    var gastosUsuario = 0;
+    var margenMax = 0;
+    var margenMin = 0;
+    for(var gastos of this.usuarioModificado.gastos) {
+      if(gastos.cantidad != 0) {
+        gastosUsuario += gastos.cantidad;
+        margenMax += gastos.margenMax;
+        margenMin += gastos.margenMin;
+      }
+    }
+
+    if (  gasto  >= margenMax || gasto >= gastosUsuario) {
+      return true;
+     }
+     else if ( ( gasto < margenMax ) && (gasto >= margenMin ) ) {
+      return true;
+     }
+     else {
+      return false;
+     }
   }
   
   //Metodo para el boton de informacion
