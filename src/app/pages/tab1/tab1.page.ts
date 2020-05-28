@@ -635,7 +635,9 @@ export class Tab1Page implements OnInit {
       planesPrioritarios.push(plan);
     }
 
-    this.datosService.actualizarPlanes(planesPrioritarios);
+    await this.datosService.actualizarPlanes(planesPrioritarios);
+    this.ingresoExtra = 0;
+    await this.datosService.guardarIngresoExtra(this.ingresoExtra);
     await this.actualizarUsuario();
     await this.datosService.cargarDatos();
 
@@ -803,8 +805,8 @@ export class Tab1Page implements OnInit {
       }
   }
 
-  validarGasto(gasto: number) {
-    this.datosService.cargarDatos();
+  async validarGasto(gasto: number) {
+    await this.datosService.cargarDatos();
     this.usuarioCargado = this.datosService.usuarioCarga;
 
     var gastosUsuario = 0;

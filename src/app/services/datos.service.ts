@@ -129,6 +129,17 @@ export class DatosService {
     }
   ];
 
+  planASumar: Plan = {
+    nombre: '',
+    cantidadTotal: null,
+    tiempoTotal: null,
+    cantidadAcumulada: null,
+    tiempoRestante: null,
+    descripcion: '',
+    aportacionMensual: null,
+    pausado: false
+  };
+
   planesTerminados: Plan[] = [];
 
   gastosMensualesCargados: GastosMensuales[] = [

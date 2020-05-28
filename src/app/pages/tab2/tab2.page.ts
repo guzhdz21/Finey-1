@@ -230,13 +230,12 @@ export class Tab2Page implements OnInit{
   }
 
     //Funcion para pausar planes
-  async pausarPlan(i) {
-
+  async pausarPlan(i: number) {
       var p;
       await this.accionesService.presentAlertPlan([{text: 'Cancelar', handler: (blah) => {p = false}},
-                                                {text: 'Pausar', handler: (blah) => {p = true}}], 
-                                                '¿Estas seguro de que quieres pausar este plan?', 
-                                                'El progreso y la aportacion de este plan quedara detenido hasta que se reanude el plan');
+      {text: 'Pausar', handler: (blah) => {p = true}}], 
+      '¿Estas seguro de que quieres pausar este plan?', 
+      'El progreso y la aportacion de este plan quedara detenido hasta que se reanude el plan');
     
     if(p == true) {
       this.planesOriginales = JSON.parse(JSON.stringify(this.planes));

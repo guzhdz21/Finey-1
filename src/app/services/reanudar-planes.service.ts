@@ -258,7 +258,6 @@ export class ReanudarPlanesService {
 
       //Caso en que no son posibles
     } else {
-      console.log(gasto);
       await this.accionesService.presentAlertPlan([{text: 'Cancelar', handler: (blah) => {}}], 
       'No puedes completar este plan en ese tiempo', 'Presiona cancelar y completa o pausa otros planes para ser apto de conseguirlo');
       this.creado = false;
@@ -447,8 +446,8 @@ export class ReanudarPlanesService {
 
       //Caso e que no son posibles
     } else {
-      await this.accionesService.presentAlertPlan([{text: 'Modificar', handler: (blah) => {}}], 
-      'No puedes completar este plan en ese tiempo', 'Presiona Modificar y aumenta tu tiempo para ser apto de conseguirlo');
+      await this.accionesService.presentAlertPlan([{text: 'Cancelar', handler: (blah) => {}}], 
+      'No puedes completar este plan en ese tiempo', 'Presiona cancelar y completa o pausa otros planes para ser apto de conseguirlo');
       this.creado = false;
       return; 
     }
@@ -740,11 +739,9 @@ export class ReanudarPlanesService {
   }
   
   async actualizarUsuario() {
-    console.log("llegue");
     this.usuarioCargado.fondoPlanes = 0;
     await this.datosService.cargarDatosPlan();
     this.datosService.planesCargados.forEach(element => {
-      console.log(element.pausado);
       if(element.pausado != true) {
         this.usuarioCargado.fondoPlanes += element.aportacionMensual; 
       }

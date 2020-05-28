@@ -99,9 +99,13 @@
                   <ion-list>
 
                     <ion-item lines="none"></ion-item>
-                    <ion-item lines="none"></ion-item>
-                    
-                    <ion-button expand="large" color="success" class ="botonAlto ion-text-wrap" (click)="transferir(plan.plan)"><ion-icon name = "git-compare"></ion-icon></ion-button>
+
+                    <ion-button color="success"
+                                class="botont" 
+                                (click)="transferir(plan.plan)"
+                                slot="end">
+                            <ion-icon slot="icon-only" name="git-compare"></ion-icon>
+                    </ion-button>
 
                     <ion-item>
                         <ion-label color="tertiary">Porcentaje de avance</ion-label>

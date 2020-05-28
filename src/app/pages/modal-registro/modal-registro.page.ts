@@ -148,7 +148,7 @@ sexoRadio(event)
  //Multiplicar X30 el ingreso de cada dia del usuario VARIABLE
  if(this.usuario.tipoIngreso == 'Variable'){
   this.usuario.ingresoCantidad = this.usuario.ingresoCantidad * 30;
-  console.log("Ganancia mensual: " + this,this.usuario.ingresoCantidad)
+  console.log("Ganancia mensual: " + this.usuario.ingresoCantidad)
 }
 
     //Verificar si el usuario no ingreso gastos  mayores al ingreso si no se registra el ususario
