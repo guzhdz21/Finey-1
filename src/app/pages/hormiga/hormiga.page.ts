@@ -59,7 +59,14 @@ export class HormigaPage implements OnInit {
   async mostrarConsejos(){
     await this.accionesService.presentAlertGenerica("Consejos de gastos hormiga", this.consejos[0] + this.consejos[1] + this.consejos[2] + this.consejos[3] + this.consejos[4] + this.consejos[5] + this.consejos[6] + this.consejos[7] + this.consejos[8] + this.consejos[9] + this.consejos[10] + this.consejos[11] + this.consejos[12] + this.consejos[13] + this.consejos[14] + this.consejos[15]);
     this.modalCtrl.dismiss();
-    this.nav.navigateRoot('/tabs/tab1');
+
+    await this.datosService.cargarBloqueoModulos();
+      if(this.datosService.bloquearModulos == true){
+        this.nav.navigateRoot('/tabs/tab3');
+      }
+      else{
+        this.nav.navigateRoot('/tabs/tab1');
+      }
   }
 
   async checkBoxInicial(event, id){

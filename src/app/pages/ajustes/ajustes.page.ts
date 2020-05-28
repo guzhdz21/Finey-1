@@ -82,7 +82,15 @@ export class AjustesPage implements OnInit {
       this.datosService.guardarUsuarioInfo(this.usuarioCargado);
       this.event.publish('avatarActualizado');
       this.modalCtrl.dismiss();
-      this.nav.navigateRoot('/tabs/tab1');
+
+      await this.datosService.cargarBloqueoModulos();
+      if(this.datosService.bloquearModulos == true){
+        this.nav.navigateRoot('/tabs/tab3');
+      }
+      else{
+        this.nav.navigateRoot('/tabs/tab1');
+      }
+
       this.datosService.presentToast('Cambios modificados');
     }
    }
