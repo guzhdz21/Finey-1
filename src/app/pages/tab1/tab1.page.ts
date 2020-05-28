@@ -424,11 +424,13 @@ export class Tab1Page implements OnInit {
               if(totalAhorro >= 0) {
                 planM.cantidadAcumulada += planM.aportacionMensual;
                 planM.cantidadAcumulada = Math.round(planM.cantidadAcumulada*100)/100;
+                this.notificaciones(planM);
               } else {
                 //Aqui iria el aumento de tiempo
                 totalAhorro += planM.aportacionMensual;
                 planM.cantidadAcumulada += totalAhorro;
                 planM.cantidadAcumulada = Math.round(planM.cantidadAcumulada*100)/100;
+                this.notificaciones(planM);
                 totalAhorro = 0;
                 planM.tiempoRestante += 1;
                 planM.tiempoTotal += 1;
@@ -609,9 +611,12 @@ export class Tab1Page implements OnInit {
     for(var plan of this.planes) {
       planesPrioritarios.push(plan);
     }
+
     for(var plan of planesPausados) {
       planesPrioritarios.push(plan);
     }
+
+
 
     this.datosService.actualizarPlanes(planesPrioritarios);
     await this.actualizarUsuario();
@@ -624,6 +629,12 @@ export class Tab1Page implements OnInit {
         planesT.unshift(element);
       });
       await this.datosService.actualizarPlanesTerminados(planesT);
+
+      if(planesPausados.length != 0) {
+        await this.accionesService.presentAlertGenerica('Planes pausados','Recuerda que todavia cuentas con planes ' 
+        + 'pausados, siempre puedes reanudarlos en al seccion "Planes"');
+      }
+
       await this.accionesService.presentAlertOpciones([{text: 'Ok', handler: (blah) => {}}],
       'Felicidades','Has logrado completar uno o varios planes, ' 
       + 'puedes ir a checarlos en la seccion Planes Terminados en el menú');
@@ -735,6 +746,37 @@ export class Tab1Page implements OnInit {
     this.usuarioCargado.fondoAhorro -= this.diferenciaFondo;
     this.usuarioCargado.fondoAhorro = Math.round(this.usuarioCargado.fondoAhorro*100)/100;
     await this.datosService.guardarUsuarioInfo(this.usuarioCargado);
+  }
+
+  async mandarNotificacion(titulo: string, mensaje: string) {
+    await this.localNotifications.schedule({
+      title: titulo,
+      text: mensaje,
+      foreground: true,
+      vibrate: true,
+      icon: 'alarm',
+    });
+  }
+
+  async notificaciones(plan: Plan) {
+    var porcentaje = (plan.cantidadAcumulada*100)/plan.cantidadTotal;
+      porcentaje = Math.round(porcentaje*100)/100;
+      if(porcentaje < 100 && porcentaje >= 90) {
+        this.mandarNotificacion('¡Ya casi esta¡', 'Estas cerca de completar el plan ' + plan.nombre +
+        ', ya estas al ' + porcentaje);
+      } else if(porcentaje < 85 && porcentaje >= 80) {
+        this.mandarNotificacion('Gran avance', 'Has avanzado bien en el plan ' + plan.nombre +
+        ', ya estas al ' + porcentaje);
+      } else if(porcentaje < 55 && porcentaje >= 50) {
+        this.mandarNotificacion('Y falta menos de la mitad', 'Has avanzado en el plan ' + plan.nombre +
+        ', ya estas al ' + porcentaje);
+      } else if(porcentaje < 42 && porcentaje >= 40) {
+        this.mandarNotificacion('Bien hecho', 'Has avanzado en el plan ' + plan.nombre +
+        ', ya estas al ' + porcentaje);
+      } else if(porcentaje < 25 && porcentaje >= 20) {
+        this.mandarNotificacion('Primeros pasos', 'Has avanzado en el plan ' + plan.nombre +
+        ', ya estas al ' + porcentaje);
+      }
   }
 
   validarGasto(gasto: number) {
