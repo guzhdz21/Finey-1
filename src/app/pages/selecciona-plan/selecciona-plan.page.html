@@ -1,4 +1,4 @@
-<app-header-modal titulo="Planes Terminados" ruta={{rutaSeguir}}></app-header-modal>
+<app-header-modal titulo="Transferir dinero" ruta={{rutaSeguir}}></app-header-modal>
 
 <ion-content>
   <ion-content>
@@ -18,7 +18,7 @@
     <ion-list *ngIf="this.planes.length !=0">
       <ion-item *ngFor="let plan of planes; let i = index" lines="none">
 
-        <ion-card (click)="planSeleccionado(plan)">
+        <ion-card *ngIf="plan.nombre != planSumar.nombre || plan.cantidadTotal != planSumar.cantidadTotal  || plan.tiempoTotal != planSumar.tiempoTotal  || plan.tiempoRestante != planSumar.tiempoRestante  || plan.aportacionMensual != planSumar.aportacionMensual || plan.cantidadAcumulada != planSumar.cantidadAcumulada || plan.descripcion!= planSumar.descripcion || plan.pausado != planSumar.pausado" (click)="planSeleccionado(plan)">
           
           <ion-card-title class="titulo">{{plan.nombre}}</ion-card-title>
           

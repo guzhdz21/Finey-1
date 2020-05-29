@@ -4,6 +4,7 @@ import { Plan } from '../../interfaces/interfaces';
 import { Events, NavController, Platform, ModalController } from '@ionic/angular';
 import { Subscription } from 'rxjs';
 import { NavigationExtras } from '@angular/router';
+import { AccionesService } from '../../services/acciones.service';
 
 @Component({
   selector: 'app-selecciona-plan',
@@ -16,23 +17,37 @@ export class SeleccionaPlanPage implements OnInit {
             private event: Events,
             private nav: NavController,
             private plt: Platform,
-            private modalCtrl: ModalController) { }
+            private modalCtrl: ModalController,
+            private accionesService: AccionesService) { }
 
             planes: Plan[] = [];
             rutaSeguir: string = "/tabs/tab1";
             backButtonSub: Subscription;
 
+            planSumar: Plan = {
+              nombre: '',
+              cantidadTotal: null,
+              tiempoTotal: null,
+              cantidadAcumulada: null,
+              tiempoRestante: null,
+              descripcion: '',
+              aportacionMensual: null,
+              pausado: false
+            };
+
             ngOnInit() {
-              this.datosService.cargarPlanesTerminados();
+              this.datosService.cargarDatosPlan();
               this.planes = this.datosService.planesCargados;
               this.event.subscribe('planesCargados', () => {
                 this.planes = this.datosService.planesCargados;
               });
+
+              this.planSumar = this.datosService.planASumar;
             }
 
-            async planSeleccionado(plan: Plan){
-              console.log("Plan a sumar: " + this.datosService.planASumar.nombre)
-              console.log("Plan a restar: " + plan.nombre)
+            //Metodo que hace la transferencia de dinero
+            async planSeleccionado(planRestar: Plan){
+              //this.accionesService.presentAlertOpciones();
             }
             
           
