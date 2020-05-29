@@ -153,7 +153,10 @@ sexoRadio(event)
 
     //Verificar si el usuario no ingreso gastos  mayores al ingreso si no se registra el ususario
     if(this.validarIngreso()) {
-      await this.datosService.presentAlertaIngreso();
+      await this.accionesService.presentAlertOpciones([{text: 'Ok', handler: (blah) => {this.registrarseAdvertencia = true;}},
+      {text: 'Configurar', handler: (blah) => {this.registrarseAdvertencia = true;}}],
+      'Advertencia', 'Tus gastos son mayores que tus ingresos, si deseas continuar presiona Ok, si quieres modificar ' 
+      + 'algun dato presiona Configurar. NOTA: Si seleccionas Ok, se te bloqueran varias secciones de la app');
       this.registrarseAdvertencia = this.datosService.registrarseAdvertencia;
 
     //Verificar si el usuario no puede satisfacer sus necesidades basicas y se insertan sus datos  
