@@ -3,7 +3,7 @@
     "idTest": 1,
     "idSubTest": 1,
     "id": 1,
-    "preguntaTexto": "¿En que situación se encuentra tu vivienda?",
+    "preguntaTexto": "¿En qué situación se encuentra tú vivienda?",
     "respuestas": [{
       "respuestaTexto": "La estoy rentando",
       "valor": 1
@@ -25,7 +25,7 @@
     "idTest": 1,
     "idSubTest": 1,
     "id": 2,
-    "preguntaTexto": "Aproximadamente... ¿Cuantas horas permaneces en casa al día (sin contar las horas que duermes en ella)?",
+    "preguntaTexto": "Aproximadamente... ¿Cuantás horas permaneces en casa al día (sin contar las horas que duermes en ella)?",
     "respuestas": [{
       "respuestaTexto": "Menos de 3 horas",
       "valor": 1
@@ -39,7 +39,7 @@
     "idTest": 1,
     "idSubTest": 1,
     "id": 3,
-    "preguntaTexto": "¿Como consideras la plusvalía del lugar en el que vives?",
+    "preguntaTexto": "¿Cómo consideras la plusvalía del lugar en el que vives?",
     "respuestas": [{
       "respuestaTexto": "Alta",
       "valor": 1
@@ -57,13 +57,13 @@
     "idTest": 1,
     "idSubTest": 1,
     "id": 4,
-    "preguntaTexto": "¿Con cuanta gente compartes vivienda?",
+    "preguntaTexto": "¿Con cuantá gente compartes vivienda?",
     "respuestas": [{
-      "respuestaTexto": "2 o menos (contandote)",
+      "respuestaTexto": "2 o menos (contándote)",
       "valor": 1
     },
     {
-      "respuestaTexto": "3 o más (contandote)",
+      "respuestaTexto": "3 o más (contándote)",
       "valor": 0
       }]
   },
@@ -71,7 +71,7 @@
     "idTest": 1,
     "idSubTest": 1,
     "id": 5,
-    "preguntaTexto": "¿De cuántos pisos es tu vivienda?",
+    "preguntaTexto": "¿De cuántos pisos es tú vivienda?",
     "respuestas": [{
       "respuestaTexto": "1",
       "valor": 0
@@ -129,7 +129,7 @@
     "idTest": 1,
     "idSubTest": 1,
     "id": 8,
-    "preguntaTexto": "La limpieza de la vivienda... ¿Quien la hace?",
+    "preguntaTexto": "La limpieza de la vivienda... ¿Quién la hace?",
     "respuestas": [{
       "respuestaTexto": "Yo la hago",
       "valor": 0
@@ -147,7 +147,7 @@
     "idTest": 1,
     "idSubTest": 1,
     "id": 9,
-    "preguntaTexto": "¿Cual proceso de lavado de ropa sueles utilizar?",
+    "preguntaTexto": "¿Cuál proceso de lavado de ropa sueles utilizar?",
     "respuestas": [{
       "respuestaTexto": "La mando a la lavandería",
       "valor": 1
@@ -207,7 +207,7 @@
     "idTest": 2,
     "idSubTest": 1,
     "id": 3,
-    "preguntaTexto": "Cuando vas de compras por alimentos...¿Vas con una lista definida de qué comprar o en el momento agarras lo que veas conveniente y necesario?",
+    "preguntaTexto": "Cuando vas de compras por alimentos...¿Vas con una lista definida de qué comprar o en el momento te llevas lo que veas conveniente y necesario?",
     "respuestas": [{
       "respuestaTexto": "Voy con una lista de lo que debo comprar",
       "valor": 0
@@ -289,7 +289,7 @@
     "idTest": 2,
     "idSubTest": 1,
     "id": 8,
-    "preguntaTexto": "¿Los alimentos que compraas solo son para tí o es para tu familia también?",
+    "preguntaTexto": "¿Los alimentos que compras solo son para tí o es para tu familia también?",
     "respuestas": [{
       "respuestaTexto": "Solo para mi (no tengo familia)",
       "valor": 0
@@ -309,7 +309,7 @@
   "idTest": 3,
   "idSubTest": 1,
   "id": 1,
-  "preguntaTexto": "¿Compras algun producto para tratar alguna enfermedad estetica (piel seca, pasta de dientes especial, etc.)?",
+  "preguntaTexto": "¿Compras algun producto para tratar alguna enfermedad estética (piel seca, pasta de dientes especial, etc.)?",
   "respuestas": [{
     "respuestaTexto": "Si",
     "valor": 1
@@ -323,7 +323,7 @@
   "idTest": 3,
   "idSubTest": 1,
   "id": 2,
-  "preguntaTexto": "¿Asistes con algun medico de cuidado personal (dermatólogo, odontólogo, etc.) ocasionalmente?",
+  "preguntaTexto": "¿Asistes con algún médico de cuidado personal (dermatólogo, odontólogo, etc.) ocasionalmente?",
   "respuestas": [{
     "respuestaTexto": "Si",
     "valor": 1
@@ -355,7 +355,7 @@
   "idTest": 3,
   "idSubTest": 1,
   "id": 4,
-  "preguntaTexto": "¿Cuantas personas viven en donde mismo que tu (que utilicen la misma pasta, jabón, etc)?",
+  "preguntaTexto": "¿Cuantás personas viven en donde mismo que tú (que utilicen la misma pasta, jabón, etc)?",
   "respuestas": [{
     "respuestaTexto": "Solo yo",
     "valor": 0
@@ -406,7 +406,7 @@
   "idTest": 3,
   "idSubTest": 2,
   "id": 2,
-  "preguntaTexto": "¿Cuentas con algun kit básico de primeros auxilios o medicamentos en casa?",
+  "preguntaTexto": "¿Cuantás con algún kit básico de primeros auxilios o medicamentos en casa?",
   "respuestas": [{
     "respuestaTexto": "Si",
     "valor": 0
@@ -435,7 +435,7 @@
   "idTest": 3,
   "idSubTest": 3,
   "id": 1,
-  "preguntaTexto": "¿Sueles comprar ropa de marca de arriba de $600 por prenda?",
+  "preguntaTexto": "¿Sueles comprar ropa de marca de arriba de $600 pesos por prenda?",
   "respuestas": [{
     "respuestaTexto": "Si",
     "valor": 1
@@ -453,7 +453,7 @@
   "idTest": 3,
   "idSubTest": 3,
   "id": 2,
-  "preguntaTexto": "¿Sueles usar toda la ropa de tu closet?",
+  "preguntaTexto": "¿Sueles usar toda la ropa de tu clóset?",
   "respuestas": [{
     "respuestaTexto": "Si",
     "valor": 0
@@ -467,7 +467,7 @@
   "idTest": 3,
   "idSubTest": 3,
   "id": 3,
-  "preguntaTexto": "¿Que porcentaje de la ropa de tu closet la adquiriste en oferta?",
+  "preguntaTexto": "¿Que porcentaje de la ropa de tu clóset la adquiriste en oferta?",
   "respuestas": [{
     "respuestaTexto": "Menos del 40%",
     "valor": 1
@@ -482,7 +482,7 @@
       "idTest": 5,
       "idSubTest": 1,
       "id": 1,
-      "preguntaTexto": "¿Con cuantos megas de velocidad cuentas actualmente?",
+      "preguntaTexto": "¿Con cuántos megas de velocidad cuentás actualmente?",
       "respuestas": [{
         "respuestaTexto": "20 o menos",
         "valor": 10
@@ -504,13 +504,13 @@
       "idTest": 5,
       "idSubTest": 1,
       "id": 2,
-      "preguntaTexto": "¿Para que utilizas el internet principalmente? (Puedes escoger varias)",
+      "preguntaTexto": "¿Para qué utilizas el internet principalmente? (Puedes escoger varias)",
       "respuestas": [{
         "respuestaTexto": "Redes sociales",
         "valor": 5
       },
       {
-      "respuestaTexto": "Descargar/subir videos",
+      "respuestaTexto": "Descargar/subir vídeos",
       "valor": 10
       },
       {
@@ -522,7 +522,7 @@
       "valor": 20
       },
       {
-      "respuestaTexto": "Streaming de videos",
+      "respuestaTexto": "Streaming de vídeos",
       "valor": 25
       }]
     },
@@ -530,7 +530,7 @@
       "idTest": 5,
       "idSubTest": 1,
       "id": 3,
-      "preguntaTexto": "¿Cuantas horas al dia se usa internet en tu hogar? (Escoge 1)",
+      "preguntaTexto": "¿Cuántas horas al dñia se usa internet en tu hogar? (Escoge 1)",
       "respuestas": [{
         "respuestaTexto": "Menos de 1 hora",
         "valor": 6
@@ -554,7 +554,7 @@
       "idTest": 5,
       "idSubTest": 2,
       "id": 1,
-      "preguntaTexto": "¿Con que plan de canales cuentas actualmente?",
+      "preguntaTexto": "¿Con qué plan de canales cuentas actualmente?",
       "respuestas": [{
         "respuestaTexto": "Básico",
         "valor": 25
@@ -568,7 +568,7 @@
       "idTest": 5,
       "idSubTest": 2,
       "id": 2,
-      "preguntaTexto": "¿Sueles contratar a menudo los servicios de peliculas, series, etc. que te ofrece tu compañia de cable?",
+      "preguntaTexto": "¿Sueles contratar a menudo los servicios de peliculas, series, etc. que te ofrece tu compañía de cable?",
       "respuestas": [{
         "respuestaTexto": "Si",
         "valor": 20
@@ -582,7 +582,7 @@
       "idTest": 5,
       "idSubTest": 2,
       "id": 3,
-      "preguntaTexto": "¿Cuanto tiempo se usa el servicio de cable al dia en tu hogar aproximadamente?",
+      "preguntaTexto": "¿Cuánto tiempo se usa el servicio de cable al día en tu hogar aproximadamente?",
       "respuestas": [{
         "respuestaTexto": "Menos de 1 hora",
         "valor": 6
@@ -604,7 +604,7 @@
       "idTest": 5,
       "idSubTest": 2,
       "id": 4,
-      "preguntaTexto": "Cuando ves televisión, ¿Cuantos canales sueles ver?",
+      "preguntaTexto": "Cuando ves televisión, ¿Cuántos canales sueles ver?",
       "respuestas": [{
         "respuestaTexto": "De 1 a 3",
         "valor": 5
@@ -632,7 +632,7 @@
       "idTest": 5,
       "idSubTest": 3,
       "id": 1,
-      "preguntaTexto": "¿Cuanto tiempo se usa el telefono al dia en tu hogar?",
+      "preguntaTexto": "¿Cuánto tiempo se usa el telefono al dia en tu hogar?",
       "respuestas": [{
         "respuestaTexto": "No se usa",
         "valor": 5
@@ -650,7 +650,7 @@
       "idTest": 5,
       "idSubTest": 3,
       "id": 2,
-      "preguntaTexto": "¿Te suelen marcar al telefono fijo muy a menudo?",
+      "preguntaTexto": "¿Te suelen marcar al teléfono fijo a menudo?",
       "respuestas": [{
         "respuestaTexto": "Si",
         "valor": 15
@@ -670,7 +670,7 @@
       "idTest": 4,
       "idSubTest": 1,
       "id": 1,
-      "preguntaTexto": "¿Con cuanto rendimiento de combustible cuenta tu motocicleta?",
+      "preguntaTexto": "¿Con cuánto rendimiento de combustible cuenta tú motocicleta?",
       "respuestas": [{
         "respuestaTexto": "Menos de 15km/Lt",
         "valor": 1
@@ -720,7 +720,7 @@
       "idTest": 4,
       "idSubTest": 2,
       "id": 1,
-      "preguntaTexto": "¿Con cuanto rendimiento de combustible cuenta tu automovil?",
+      "preguntaTexto": "¿Con cuanto rendimiento de combustible cuenta tu automóvil?",
       "respuestas": [{
         "respuestaTexto": "Menos de 10km/Lt",
         "valor": 1
@@ -742,7 +742,7 @@
       "idTest": 4,
       "idSubTest": 2,
       "id": 2,
-      "preguntaTexto": "¿A donde sueles ir en tu automovil? (Puedes escoger varias)",
+      "preguntaTexto": "¿A donde sueles ir en tu automóvil? (Puedes escoger varias)",
       "respuestas": [{
         "respuestaTexto": "Trabajo/escuela",
         "valor": 10
@@ -782,17 +782,17 @@
       "idTest": 4,
       "idSubTest": 2,
       "id": 4,
-      "preguntaTexto": "¿Cuantas personas se transportan contigo en tu vehiculo la mayor parte del tiempo?",
+      "preguntaTexto": "¿Cuántas personas se transportan contígo en tu vehículo la mayor parte del tiempo?",
       "respuestas": [{
         "respuestaTexto": "Solo yo",
         "valor": 21
       },
       {
-      "respuestaTexto": "Menos de 5 pero más de 2 contandome",
+      "respuestaTexto": "Menos de 5 pero más de 2 contándome",
       "valor": 30
       },
       {
-      "respuestaTexto": "Más de 5 contandome",
+      "respuestaTexto": "Más de 5 contándome",
       "valor": 41
       }]
     }, 
@@ -815,7 +815,7 @@
       "idTest": 4,
       "idSubTest": 3,
       "id": 2,
-      "preguntaTexto": "A cuanta distancia está su destino cuando usa el transporte público habitualmente?",
+      "preguntaTexto": "¿A cuánta distancia está su destino cuando usa el transporte público habitualmente?",
       "respuestas": [{
         "respuestaTexto": "Menos de 2 km",
         "valor": 1
@@ -829,7 +829,7 @@
       "idTest": 4,
       "idSubTest": 3,
       "id": 3,
-      "preguntaTexto": "¿Cuenta con bienevales o apoyos de transporte por parte del gobierno?",
+      "preguntaTexto": "¿Cuentas con bienevales o apoyos de transporte por parte del gobierno?",
       "respuestas": [{
         "respuestaTexto": "Si, yo los tramité",
         "valor": 0
@@ -862,7 +862,7 @@
       "idTest": 4,
       "idSubTest": 4,
       "id": 2,
-      "preguntaTexto": "¿A que hora solicita el uber/taxi normalmente?",
+      "preguntaTexto": "¿A qué hora solicita el uber/taxi normalmente?",
       "respuestas": [{
         "respuestaTexto": "Horas pico (8 AM, 9 AM, 2 PM, 3 PM, 6 PM, 7 PM )",
         "valor": 1
@@ -954,7 +954,7 @@
       "valor": 6
       },
       {
-      "respuestaTexto": "Tomar fotos o videos",
+      "respuestaTexto": "Tomar fotos o vídeos",
       "valor": 6
       },
       {
@@ -1004,7 +1004,7 @@
       "idTest": 6,
       "idSubTest": 1,
       "id": 6,
-      "preguntaTexto": "¿Cuanto porcentaje de memoria del celular usas?",
+      "preguntaTexto": "¿Cuánto porcentaje de memoria del celular usas?",
       "respuestas": [
       {
       "respuestaTexto": "20% o menos",
@@ -1027,7 +1027,7 @@
       "idTest": 6,
       "idSubTest": 1,
       "id": 7,
-      "preguntaTexto": "¿Cuanto te dura la pila del celular?",
+      "preguntaTexto": "¿Cuánto te dura la pila del celular?",
       "respuestas": [
       {
       "respuestaTexto": "3 horas o menos",
@@ -1093,7 +1093,7 @@
       "idTest": 6,
       "idSubTest": 2,
       "id": 2,
-      "preguntaTexto": "¿Cuanto tiempo usas la computadora/laptop al día?",
+      "preguntaTexto": "¿Cuánto tiempo usas la computadora/laptop al día?",
       "respuestas": [
       {
       "respuestaTexto": "Menos de 1 hora",
@@ -1120,7 +1120,7 @@
       "idTest": 6,
       "idSubTest": 2,
       "id": 3,
-      "preguntaTexto": "¿Para que usas mas la computadora/laptop? (Puedes seleccionar varias)",
+      "preguntaTexto": "¿Para que usas más la computadora/laptop? (Puedes seleccionar varias)",
       "respuestas": [
       {
       "respuestaTexto": "Buscar información",
@@ -1272,7 +1272,7 @@
       "idTest": 6,
       "idSubTest": 3,
       "id": 2,
-      "preguntaTexto": "¿Cuanto tiempo al día usas tu televisión?",
+      "preguntaTexto": "¿Cuánto tiempo al día usas tu televisión?",
       "respuestas": [
       {
       "respuestaTexto": "Menos de 1 hora",
@@ -1322,7 +1322,7 @@
       "idTest": 6,
       "idSubTest": 4,
       "id": 3,
-      "preguntaTexto": "¿Donde usas tus audífonos la mayoría del tiempo?",
+      "preguntaTexto": "¿Dónde usas tus audífonos la mayoría del tiempo?",
       "respuestas": [
       {
       "respuestaTexto": "En mi casa o en la de alguien más",
@@ -1354,7 +1354,7 @@
       "idTest": 7,
       "idSubTest": 1,
       "id": 2,
-      "preguntaTexto": "¿A cuantas personas les estás pagando por su educación? (Sin contarte a ti)",
+      "preguntaTexto": "¿A cuántas personas les estás pagando por su educación? (Sin contarte a ti)",
       "respuestas": [
       {
       "respuestaTexto": "A nadie",
@@ -1374,7 +1374,7 @@
       "idTest": 7,
       "idSubTest": 2,
       "id": 1,
-      "preguntaTexto": "¿Serías capaz de cambiar de institución educativa tu o a tus hijos (según sea el caso)?",
+      "preguntaTexto": "¿Serías capaz de cambiar de institución educativa tú o a tus hijos (según sea el caso)?",
       "respuestas": [
       {
       "respuestaTexto": "Si",
@@ -1461,7 +1461,7 @@
       "idTest": 7,
       "idSubTest": 2,
       "id": 6,
-      "preguntaTexto": "¿Como sueles comprar los útiles escolares (plumas, colores, corrector, etc.)?",
+      "preguntaTexto": "¿Cómo sueles comprar los útiles escolares (plumas, colores, corrector, etc.)?",
       "respuestas": [
       {
       "respuestaTexto": "En vacaciones en buena cantidad para el resto del semestre/año",
@@ -1478,7 +1478,7 @@
       "idTest": 8,
       "idSubTest": 1,
       "id": 1,
-      "preguntaTexto": "¿Cuando acabas de leer un libro ¿Que haces con el?",
+      "preguntaTexto": "¿Cúando acabas de leer un libro ¿Que haces con el?",
       "respuestas": [
       {
       "respuestaTexto": "Lo guardo",
@@ -1532,7 +1532,7 @@
       "idTest": 8,
       "idSubTest": 2,
       "id": 1,
-      "preguntaTexto": "¿Sueles aprovechar las ofertas de los cines? (Por ejemplo; 2x1 en taquilla o dulceria)",
+      "preguntaTexto": "¿Sueles aprovechar las ofertas de los cines? (Por ejemplo; 2x1 en taquilla o dulcería)",
       "respuestas": [
       {
       "respuestaTexto": "Si",
@@ -1551,7 +1551,7 @@
       "idTest": 8,
       "idSubTest": 2,
       "id": 2,
-      "preguntaTexto": "¿Cuantas veces al mes vas al cine?",
+      "preguntaTexto": "¿Cuántas veces al mes vas al cine?",
       "respuestas": [
       {
       "respuestaTexto": "2 o menos veces",
@@ -1597,7 +1597,7 @@
       "idTest": 8,
       "idSubTest": 3,
       "id": 1,
-      "preguntaTexto": "¿Cuando dejas de jugar un juego fisico (en disco) por que ya lo acabaste o ya te enfado, que sueles hacer con el?",
+      "preguntaTexto": "¿Cuándo dejas de jugar un juego fisico (en disco) por que ya lo acabaste o ya te enfadó, que sueles hacer con el?",
       "respuestas": [
       {
       "respuestaTexto": "Lo vendo",
@@ -1685,7 +1685,7 @@
       "idTest": 8,
       "idSubTest": 4,
       "id": 3,
-      "preguntaTexto": "¿Cuantas veces sueles salir al antro con tus amigos al mes?",
+      "preguntaTexto": "¿Cuántas veces sueles salir al antro con tus amigos al mes?",
       "respuestas": [
       {
       "respuestaTexto": "Ni una",

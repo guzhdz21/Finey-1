@@ -5,79 +5,79 @@
     },
     {
         "titulo": "Sexo",
-        "mensaje": "Selecciona tu sexo, según la opcion que selecciones se verá reflejada una imagen del sexo en tu avatar"
+        "mensaje": "Selecciona tu sexo, según la opción que selecciones se verá reflejada una imagen del sexo en tú avatar"
     },
     {
         "titulo": "Tipo de Ingreso",
         "mensaje": "Selecciona tu tipo de ingreso, según si recibes un sueldo fijo (un empleado de fabrica) o un sueldo que varia según los dias (conductor de uber)"
     },
     {
-        "titulo": "Ingreso mensual",
-        "mensaje": "Ingresa la cantidad mensual de ingresos que recibes Ej. $12000"
+        "titulo": "Ingreso",
+        "mensaje": "Inserta la cantidad de ingresos que recibes Ej. $12000"
     },
     {
         "titulo": "Vivienda",
-        "mensaje": "Ingresa el gasto mensual que realizas en tu vivienda, ya sea que pages renta o mantenimiento (Jardinero, Reparaciones, etc.)"
+        "mensaje": "Ingresa el gasto mensual que realizas en tú vivienda, ya sea que pages renta o mantenimiento (Jardinero, Reparaciones, etc.)"
     },
     {
         "titulo": "Agua",
-        "mensaje": "Ingresa el gasto mensual que realizas en agua (recibo del agua), este gasto debe ser un promedio de cuanto gastas al mes"
+        "mensaje": "Ingresa el gasto mensual que realizas en agua (recibo del agua), este gasto debe ser un promedio de cuánto gastas al mes"
     },
     {
         "titulo": "Luz",
-        "mensaje": "Ingresa el gasto mensual que realizas en luz (recibo de luz), este gasto debe ser un promedio de cuanto gastas al mes"
+        "mensaje": "Ingresa el gasto mensual que realizas en luz (recibo de luz), este gasto debe ser un promedio de cuánto gastas al mes"
     },
     {
         "titulo": "Gas",
-        "mensaje": "Ingresa el gasto mensual que realizas en gas (recibo de gas), este gasto debe ser un promedio de cuanto gastas al mes"
+        "mensaje": "Ingresa el gasto mensual que realizas en gas (recibo de gas), este gasto debe ser un promedio de cuánto gastas al mes"
     },
     {
         "titulo": "Comida",
-        "mensaje": "Ingresa el gasto mensual que realizas en comida (supermercado, carniceria, comida de la semana que cubra la canasta básica, etc.), este gasto debe ser un promedio de cuanto gastas al mes"
+        "mensaje": "Ingresa el gasto mensual que realizas en comida (supermercado, carnicería, comida de la semana que cubra la canasta básica, etc.), este gasto debe ser un promedio de cuánto gastas al mes"
     },
     {
         "titulo": "Ropa",
-        "mensaje": "Ingresa el gasto mensual que realizas en ropa (zapatos, playeras, pantalón/falda, etc.), este gasto debe ser un promedio de cuanto gastas al mes"
+        "mensaje": "Ingresa el gasto mensual que realizas en ropa (zapatos, playeras, pantalón/falda, etc.), este gasto debe ser un promedio de cuánto gastas al mes"
     },
     {
         "titulo": "Mobiliario",
-        "mensaje": "Ingresa el gasto mensual que realizas en Mobiliario (mesas, sillas, camas, etc. Ya sea reparación o cambio), este gasto debe ser un promedio de cuanto gastas al mes"
+        "mensaje": "Ingresa el gasto mensual que realizas en Mobiliario (mesas, sillas, camas, etc. Ya sea reparación o cambio), este gasto debe ser un promedio de cuánto gastas al mes"
     },
     {
         "titulo": "Limpieza",
-        "mensaje": "Ingresa el gasto mensual que realizas en limpieza (jabón, shampoo, maquillaje, desodorante, etc.), este gasto debe ser un promedio de cuanto gastas al mes"
+        "mensaje": "Ingresa el gasto mensual que realizas en limpieza (jabón, shampoo, maquillaje, desodorante, etc.), este gasto debe ser un promedio de cuánto gastas al mes"
     },
     {
         "titulo": "Transporte",
-        "mensaje": "Ingresa el gasto mensual que realizas en transporte (gasolina, camión, metro, etc.), este gasto debe ser un promedio de cuanto gastas al mes"
+        "mensaje": "Ingresa el gasto mensual que realizas en transporte (gasolina, camión, metro, etc.), este gasto debe ser un promedio de cuánto gastas al mes"
     },
     {
         "titulo": "Seguro",
         "mensaje": "Ingresa el gasto mensual que realizas en seguro de vida"
     },
     {
-        "titulo": "Internet/Cable/Telefonia",
+        "titulo": "Internet/Cable/Telefonía",
         "mensaje": "Ingresa el pago mensual que realizas en tu plan actual, ya sea que solo tengas uno o los tres servicios"
     },
     {
-        "titulo": "Electrodomesticos",
-        "mensaje": "Ingresa el gasto mensual que realizas en electodomesticos (licuadora, lampara, refrigerador, etc. Ya sea reparación o cambio), este gasto debe ser un promedio de cuanto gastas al mes"
+        "titulo": "Electrodomésticos",
+        "mensaje": "Ingresa el gasto mensual que realizas en electodomésticos (licuadora, lámpara, refrigerador, etc. Ya sea reparación o cambio), este gasto debe ser un promedio de cuánto gastas al mes"
     },
     {
-        "titulo": "Electronicos",
-        "mensaje": "Ingresa el gasto mensual que realizas en electrónicos (celular, computadora, etc. ya sea reparacion o cambio), este gasto debe ser un promedio de cuanto gastas al mes"
+        "titulo": "Electrónicos",
+        "mensaje": "Ingresa el gasto mensual que realizas en electrónicos (celular, computadora, etc. ya sea reparacion o cambio), este gasto debe ser un promedio de cuánto gastas al mes"
     },
     {
-        "titulo": "Educacion",
+        "titulo": "Educación",
         "mensaje": "Ingresa el gasto mensual que realizas en educación (colegiatura, libros, cursos, etc.)"
     },
     {
         "titulo": "Ocio",
-        "mensaje": "Ingresa el gasto mensual que realizas en ocio (entretenimiento, juegos, libros, bebidas, cine, gym, etc.), este gasto debe ser un promedio de cuanto gastas al mes"
+        "mensaje": "Ingresa el gasto mensual que realizas en ocio (entretenimiento, juegos, libros, bebidas, cine, gym, etc.), este gasto debe ser un promedio de cuánto gastas al mes"
     },
     {
         "titulo": "Salud",
-        "mensaje": "Ingresa el gasto mensual que realizas en salud (medicinas, hospital, etc), este gasto debe ser un promedio de cuanto gastas al mes"
+        "mensaje": "Ingresa el gasto mensual que realizas en salud (medicinas, hospital, etc), este gasto debe ser un promedio de cuánto gastas al mes"
     },
     {
         "titulo": "Extra",
@@ -89,14 +89,14 @@
     },
     {
         "titulo": "Costo",
-        "mensaje": "Ingresa la cantidad de dinero necesario para poder comprar o pagar tu meta y así, completar tu plan"
+        "mensaje": "Ingresa la cantidad de dinero necesario para poder comprar o pagar tu meta y así, completar tú plan"
     },
     {
         "titulo": "Tiempo del Plan",
-        "mensaje": "Ingresa el tiempo (en meses) en el que quieras completar tu plan"
+        "mensaje": "Ingresa el tiempo (en meses) en el que quieras completar tú plan"
     },
     {
-        "titulo": "Descripcion",
+        "titulo": "Descripción",
         "mensaje": "Puedes ingresar alguna descripción con información extra que quieras guardar en el plan"
     },
     {
@@ -149,11 +149,11 @@
     },
     {
         "titulo": "Electrodomesticos2",
-        "mensaje": "Ingresa el gasto que realizaste en electodomesticos (licuadora, lampara, refrigerador, etc. Ya sea reparación o cambio)"
+        "mensaje": "Ingresa el gasto que realizaste en electodomésticos (licuadora, lámpara, refrigerador, etc. Ya sea reparación o cambio)"
     },
     {
         "titulo": "Electronicos2",
-        "mensaje": "Ingresa el gasto que realizaste en electrónicos (celular, computadora, etc. ya sea reparacion o cambio)"
+        "mensaje": "Ingresa el gasto que realizaste en electrónicos (celular, computadora, etc. ya sea reparación o cambio)"
     },
     {
         "titulo": "Educacion2",
@@ -169,18 +169,34 @@
     },
     {
         "titulo": "Extra2",
-        "mensaje": "Si realizaste un pago a la deuda que ingresaste en este rubro ingresa cuanto"
+        "mensaje": "Si realizaste un pago a la deuda que ingresaste en este rubro ingresa cuánto"
     },
     {
-        "titulo": "Hora en que se desplegara la notificacion diaria",
-        "mensaje": "Selecciona una hora entre las 20:00 y las 23:00 horas para que diariamente se te presente una notificacion para avisarte que debes registrar tus gastos diarios"
+        "titulo": "Hora en que se desplegará la notificación diaria",
+        "mensaje": "Selecciona una hora entre las 20:00 y las 23:00 horas para que diariamente se te presente una notificación para avisarte que debes registrar tus gastos diarios"
     },
     {
         "titulo": "¿Necesario o por gusto?",
-        "mensaje": "Si el gasto extra que hiciste fue debido a que ralmente necesitabas tener o pagar en lo que gastaste selecciona 'Necesario', si no es el caso y gastaste de mas debido a que te diste un pequeño gusto selecciona 'Por gusto'"
+        "mensaje": "Si el gasto extra que hiciste fue debido a que realmente necesitabas tener o pagar en lo que gastaste selecciona 'Necesario', si no es el caso y gastaste de más debido a que te diste un pequeño gusto selecciona 'Por gusto'"
     }, 
     {
         "titulo": "¿Costo mas o se agrego un gasto extra?",
-        "mensaje": "Si el gasto extra que hiciste fue debido a que la cantida del gasto subio (el precio del producto o servicio) selecciona 'Costo mas', si no es el caso y gastaste de mas debido a que compraste o agregaste algo extra a lo que normalmente gastas selecciona 'Gasto extra'"
+        "mensaje": "Si el gasto extra que hiciste fue debido a que la cantidad del gasto subió (el precio del producto o servicio) selecciona 'Costo más', si no es el caso y gastaste de más debido a que compraste o agregaste algo extra a lo que normalmente gastas selecciona 'Gasto extra'"
+    },
+    {
+        "titulo": "Tiempo restante",
+        "mensaje": "Inserta el tiempo restante deseado para cumplir un plan"
+    },
+    {
+        "titulo": "Tab1",
+        "mensaje": "En esta sección se muestra la cantidad de ingresos, los gastos de forma visual de modo que puedes apreciar como están repartidos según sea su cantidad, y el dinero 'libre' o fondo de ahorro con el que cuentas"
+    },
+    {
+        "titulo": "Tab2",
+        "mensaje": "En esta sección se muestran los planes activos y pausados, sus caracteristicas y avances. Si no hay planes, esta sección te da la oportunidad de crear planes"
+    },
+    {
+        "titulo": "Tab3",
+        "mensaje": "En esta sección se muestran los tests disponibles a contestar, dichos tests al terminarlos te darán consejos personalizados para ahorrar dinero"
     }
 ]

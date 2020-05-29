@@ -92,7 +92,7 @@
 <div *ngIf="usuario.tipoIngreso != 'Variable'">
   <ion-item>
     <ion-buttons slot="start">
-    <ion-button slots="icon-only" (click)="botonInfo('Ingreso mensual')">
+    <ion-button slots="icon-only" (click)="botonInfo('Ingreso')">
       <ion-icon name="information-circle"></ion-icon>
     </ion-button>
   </ion-buttons>
@@ -110,7 +110,7 @@
 <div *ngIf="usuario.tipoIngreso == 'Variable'">
   <ion-item>
     <ion-buttons slot="start">
-    <ion-button slots="icon-only" (click)="botonInfo('Ingreso mensual')">
+    <ion-button slots="icon-only" (click)="botonInfo('Ingreso')">
       <ion-icon name="information-circle"></ion-icon>
     </ion-button>
   </ion-buttons>
@@ -128,7 +128,7 @@
   <ion-item lines="none">
 
     <ion-buttons slot="start">
-      <ion-button slots="icon-only" (click)="botonInfo('Hora en que se desplegara la notificacion diaria')">
+      <ion-button slots="icon-only" (click)="botonInfo('Hora en que se desplegará la notificación diaria')">
         <ion-icon name="information-circle"></ion-icon>
       </ion-button>
     </ion-buttons>

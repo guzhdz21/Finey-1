@@ -62,6 +62,10 @@ export class PlanModificarPage implements OnInit {
 
   ngOnInit() {
 
+    this.datosService.getAlertasJson().subscribe(val => {
+      this.alertas = val;
+    });
+
     //Metodo que carga datos de los planes y apuntamos al elegido
     this.datosService.cargarDatosPlan();
     this.event.subscribe('planesCargados', () => {
