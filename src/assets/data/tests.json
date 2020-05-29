@@ -22,17 +22,17 @@
       {
         "id": 5,
         "nombre": "wifi",
-        "texto": "Internet/Cable/Telefonia"
+        "texto": "Internet/Cable/Telefonía"
       },
       {
         "id": 6,
         "nombre": "battery-charging",
-        "texto": "Electronicos"
+        "texto": "Electrónicos"
       },
       {
         "id": 7,
         "nombre": "book",
-        "texto": "Educacion"
+        "texto": "Educación"
       },
       {
         "id": 8,
