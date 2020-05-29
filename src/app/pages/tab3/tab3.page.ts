@@ -63,76 +63,95 @@ export class Tab3Page {
 
   mostrarTestsCorrespondientes(){
 
+    this.datosService.cargarDatos();
+    this.usuario = this.datosService.usuarioCarga;
+
     //Vivienda
     this.valorPromedio[1] = this.usuario.gastos[0].cantidad + this.usuario.gastos[1].cantidad + this.usuario.gastos[2].cantidad + this.usuario.gastos[3].cantidad;
-    console.log("Vivienda: " + this.valorPromedio[1]);
 
     //Alimentos
     this.valorPromedio[2] = this.usuario.gastos[4].cantidad ;
-    console.log("Alimentos: " + this.valorPromedio[2]);
 
     //Cuidado personal
     this.valorPromedio[3] = this.usuario.gastos[5].cantidad + this.usuario.gastos[7].cantidad  + this.usuario.gastos[15].cantidad ;
-    console.log("Cuidado personal: " + this.valorPromedio[3]);
 
     //Transporte
     this.valorPromedio[4] = this.usuario.gastos[8].cantidad;
-    console.log("Transporte: " + this.valorPromedio[4]);
 
     //Internet/cable/telefonía
     this.valorPromedio[5] = this.usuario.gastos[10].cantidad;
-    console.log("Internet: " + this.valorPromedio[5]);
 
     //Electronicos
     this.valorPromedio[6] = this.usuario.gastos[12].cantidad;
-    console.log("Electronicos: " + this.valorPromedio[6]);
 
     //Educación
     this.valorPromedio[7] = this.usuario.gastos[13].cantidad;
-    console.log("Educacion: " + this.valorPromedio[7]);
 
     //Ocio
     this.valorPromedio[8] = this.usuario.gastos[14].cantidad;
-    console.log("Ocio: " + this.valorPromedio[8]);
 
     if(this.valorPromedio[1] >= 5215){ //Vivienda
       this.mostrarTest[1] = true;
       this.testsExisten = true;
+    } else {
+      this.mostrarTest[1] = false;
     }
 
     if(this.valorPromedio[2] >= 3500){ //Alimentos
       this.mostrarTest[2] = true;
       this.testsExisten = true;
+    } else {
+      this.mostrarTest[2] = false;
     }
 
     if(this.valorPromedio[3] >= 1300){ //Cuidado personal
       this.mostrarTest[3] = true;
       this.testsExisten = true;
+    } else {
+      this.mostrarTest[3] = false;
     }
 
     if(this.valorPromedio[4] >= 1300){ //Transporte
       this.mostrarTest[4] = true;
       this.testsExisten = true;
+    } else {
+      this.mostrarTest[4] = false;
     }
 
     if(this.valorPromedio[5] >= 885){ //Internet/cable/television
       this.mostrarTest[5] = true;
       this.testsExisten = true;
+    } else {
+      this.mostrarTest[5] = false;
     }
 
     if(this.valorPromedio[6] >= 800){ //Electronicos
       this.mostrarTest[6] = true;
       this.testsExisten = true;
+    } else {
+      this.mostrarTest[6] = false;
     }
 
     if(this.valorPromedio[7] >= 1500){ //Educacion
       this.mostrarTest[7] = true;
       this.testsExisten = true;
     }
+    else {
+      this.mostrarTest[7] = false;
+    }
 
     if(this.valorPromedio[8] >= 800){ //Ocio
       this.mostrarTest[8] = true;
       this.testsExisten = true;
+    } else {
+      this.mostrarTest[8] = false;
+    }
+
+    this.testsExisten = false;
+    for(var mostrar of this.mostrarTest) {
+      if(mostrar) {
+        this.testsExisten = true;
+      }
     }
   }
 
@@ -140,6 +159,7 @@ export class Tab3Page {
     this.backButtonSub = this.plt.backButton.subscribeWithPriority( 10000, () => {
       this.nav.navigateRoot('/tabs/tab1');
     });
+    this.mostrarTestsCorrespondientes();
   }
 
   async abrirTest(idSeleccionado: number){
@@ -149,7 +169,7 @@ export class Tab3Page {
         idParametro: idSeleccionado
       }
   };
-  await this.nav.navigateForward(['test-page'], navigationExtras);
+    await this.nav.navigateForward(['test-page'], navigationExtras);
   }
 
   botonInfo(titulo: string) {
