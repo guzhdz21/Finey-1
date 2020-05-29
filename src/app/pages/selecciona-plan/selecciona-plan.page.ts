@@ -23,6 +23,7 @@ export class SeleccionaPlanPage implements OnInit {
             planes: Plan[] = [];
             rutaSeguir: string = "/tabs/tab1";
             backButtonSub: Subscription;
+            cantidadTransferir: number;
 
             planSumar: Plan = {
               nombre: '',
@@ -47,7 +48,28 @@ export class SeleccionaPlanPage implements OnInit {
 
             //Metodo que hace la transferencia de dinero
             async planSeleccionado(planRestar: Plan){
-              this.accionesService.presentAlertTransferencia();
+              await this.accionesService.presentAlertTransferencia();
+
+              if(this.accionesService.tipoTransferencia == true){ //Si es cierta cantidad el TIPO DE TRANSFERENCIA
+
+                await this.accionesService.presentAlertIngresoExtra([{text: 'Ingresa la cantidad de dinero que quieres transferir',handler: (bla) => { 
+                  if(parseInt(bla.ingresoExtra) <= 0)  {
+                      this.datosService.presentToast('No se puede ingresar 0 ni numeros negativos');
+                    } else {
+                      this.cantidadTransferir = parseInt(bla.ingresoExtra);
+                    }
+                  }
+                }]);
+
+                console.log("Cantidad a transferir: " + this.cantidadTransferir);
+
+              }
+              else{ //Si es la opcion de TODO
+
+              }
+
+              this.datosService.presentToast('Transferencia realizada cone exito');
+
             }
             
             
