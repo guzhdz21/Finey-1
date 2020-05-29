@@ -47,7 +47,7 @@ export class SeleccionaPlanPage implements OnInit {
             }
 
             //Metodo que hace la transferencia de dinero
-            async planSeleccionado(planRestar: Plan){
+            async planSeleccionado(planRestar: Plan) {
               await this.accionesService.presentAlertTransferencia();
 
               if(this.accionesService.tipoTransferencia == true){ //Si es cierta cantidad el TIPO DE TRANSFERENCIA

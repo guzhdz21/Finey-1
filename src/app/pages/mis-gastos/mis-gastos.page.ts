@@ -154,7 +154,10 @@ export class MisGastosPage implements OnInit {
 
       //Condicion que valida el ingreso de los gastos e ingreso
       if(this.validarIngreso()) {
-          await this.datosService.presentAlertaIngreso();
+        await this.accionesService.presentAlertOpciones([{text: 'Ok', handler: (blah) => {this.registrarseAdvertencia = true;}},
+        {text: 'Configurar', handler: (blah) => {this.registrarseAdvertencia = true;}}],
+        'Advertencia', 'Tus gastos son mayores que tus ingresos, si deseas continuar presiona Ok, si quieres modificar ' 
+        + 'algun dato presiona Configurar. NOTA: Si seleccionas Ok, se te bloqueran varias secciones de la app');
           this.registrarseAdvertencia = this.datosService.registrarseAdvertencia;
 
           //Condicional que verifica si un usuario no puede satisfacer sus necesidades y lo redirige
