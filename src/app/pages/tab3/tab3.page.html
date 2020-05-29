@@ -4,7 +4,14 @@
 
 <div *ngIf="testsExisten == false" class="noHay">
   <ion-item color="primary" class="alineado">
-    <ion-label ion-text-wrap><h1 class="grande">No hay tests que contestar</h1></ion-label>
+
+    <ion-buttons slot="start">
+      <ion-button slots="icon-only" (click)="botonInfo('Analizar gastos')">
+        <ion-icon name="information-circle"></ion-icon>
+      </ion-button>
+    </ion-buttons>
+
+    <ion-label ion-text-wrap><h1 class="grande margen">No hay tests que contestar</h1></ion-label>
   </ion-item>
   <ion-card class = "card">
     <ion-label ion-text-wrap><h1 class="mediana">Cuando un test está disponible para que lo contestes, significa que gastaste de más en ese rubro, y el test te aconsejará como dejar de gastar "de más"</h1></ion-label>
