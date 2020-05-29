@@ -185,6 +185,7 @@ export class AccionesService {
           }
         }
     ],
+    mode: "ios",
     backdropDismiss: true
     });
     alert.present();
