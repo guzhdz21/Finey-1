@@ -14,6 +14,7 @@ export class AccionesService {
    alertaPlanCrear: boolean; // Variable que de ser true, confirma que el usuario quiere crear el plan, de lo contrario indica que quiere modificar parametros del plan antes de crearlo
    borrar: boolean; // Variable que de estar en true, indica que el usuario confirmo el querer borrar un plan
    borrarRecordatorio: boolean; // Variable que de estar en true, indica que el usuario confirmo el querer borrar un recordatorio
+   tipoTransferencia: boolean;
   
    // Metodo para presentar presentar un plan con botones dinamicos
   async presentAlertPlan( botones: any[], header: string, message: string) {
@@ -45,6 +46,7 @@ export class AccionesService {
     alert.present();
     await alert.onDidDismiss();
   }
+  
 
   async presentAlertConsejo( header: string, message: string, ultimo: boolean) {
       
@@ -132,6 +134,30 @@ export class AccionesService {
       message: message,
       buttons: [] = botones,
       mode: "ios"
+    });
+    alert.present();
+    await alert.onDidDismiss();
+  }
+
+  async presentAlertTransferencia() {
+      
+    const alert = await this.alertCtrl.create({
+      header: 'Advertencia',
+      message: 'Tus gastos son mayores que tus ingresos, si deseas continuar presiona Ok, si quieres modificar algun dato presiona Configurar. NOTA: Si seleccionas Ok, se te bloqueran varias secciones de la app',
+      buttons: [
+        {
+          text: 'Todo',
+          handler: (blah) => {
+            this.tipoTransferencia = false;
+          }
+        },
+        {
+          text: 'Cierta cantidad',
+          handler: (blah) => { 
+            this.tipoTransferencia = true;
+          }
+        }
+    ]
     });
     alert.present();
     await alert.onDidDismiss();

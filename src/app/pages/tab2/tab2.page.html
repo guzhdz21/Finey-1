@@ -60,13 +60,15 @@
 
                   </div>
 
+                  <ion-item lines="none"></ion-item>
+
                 <ion-fab horizontal="center">
                     <ion-fab-button color="primary">
                         <ion-icon name = "build">
                         </ion-icon>
                     </ion-fab-button>
 
-
+                    
                     <ion-fab-list side="start">
                             <ion-fab-button color="warning" (click)="abrirFormulario('modificar', i)">
                                 <ion-icon name="settings">
@@ -79,33 +81,36 @@
                             </ion-fab-button>
 
                     </ion-fab-list>
-            
+                    
                     
                     <ion-fab-list side="end">
-                        <ion-fab-button color="danger" (click)="pausarPlan(i)" [disabled]="plan.plan.pausado">
+                        <ion-fab-button color="danger" (click)="pausarPlan(i, plan.plan)" >
                             <ion-icon name="pause">
                             </ion-icon>
                         </ion-fab-button>
 
-                        <ion-fab-button color="success" (click)="renaudarPlan(i)" [disabled]="!plan.plan.pausado">
+                        <ion-fab-button color="success" (click)="renaudarPlan(i, plan.plan)">
                             <ion-icon name = "play">
                             </ion-icon>
                         </ion-fab-button>
 
-                </ion-fab-list>
+                        </ion-fab-list>
+
+
+            <ion-fab-list side="top"> 
+                <ion-fab-button size="small" color="success" (click)="transferir(plan.plan)">
+                    <ion-icon name="git-compare">
+                    </ion-icon>
+                </ion-fab-button>
+
+        </ion-fab-list>
 
                 </ion-fab>
 
                   <ion-list>
 
                     <ion-item lines="none"></ion-item>
-
-                    <ion-button color="success"
-                                class="botont" 
-                                (click)="transferir(plan.plan)"
-                                slot="end">
-                            <ion-icon slot="icon-only" name="git-compare"></ion-icon>
-                    </ion-button>
+                    <ion-item lines="none"></ion-item>
 
                     <ion-item>
                         <ion-label color="tertiary">Porcentaje de avance</ion-label>

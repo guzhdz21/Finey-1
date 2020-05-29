@@ -43,7 +43,10 @@ export class Tab2Page implements OnInit{
     this.planDis
   ];
 
+  deshabilitalo: boolean = false;
+
   planesExiste: boolean = false; // Variable utilizada para saber si existen planes o no}
+  contadorDePlanes: number = 0;
 
   //Variable para guardar la infromacion de las alertas
   alertas: AlertaGeneral[] = [];
@@ -159,20 +162,25 @@ export class Tab2Page implements OnInit{
 
   async transferir(plan: Plan){
 
-    let planD = {
-        nombre: plan.nombre,
-        cantidadTotal: plan.cantidadTotal,
-        tiempoTotal: plan.tiempoTotal,
-        cantidadAcumulada: plan.cantidadAcumulada,
-        tiempoRestante: plan.tiempoRestante,
-        descripcion: plan.descripcion,
-        aportacionMensual: plan.aportacionMensual,
-        pausado: plan.pausado
-      }
-
-    this.datosService.planASumar = planD;
-    this.nav.navigateRoot('/selecciona-plan-page');
+if(this.planes.length > 1) {
+  let planD = {
+    nombre: plan.nombre,
+    cantidadTotal: plan.cantidadTotal,
+    tiempoTotal: plan.tiempoTotal,
+    cantidadAcumulada: plan.cantidadAcumulada,
+    tiempoRestante: plan.tiempoRestante,
+    descripcion: plan.descripcion,
+    aportacionMensual: plan.aportacionMensual,
+    pausado: plan.pausado
   }
+
+this.datosService.planASumar = planD;
+this.nav.navigateRoot('/selecciona-plan-page');
+}
+else{
+this.datosService.presentToast("Debes tener mas de 1 plan para transferir dinero entre planes");
+  }
+}
 
   async abrirModal(i: number) {
     this.planesOriginales = JSON.parse(JSON.stringify(this.planes));
@@ -230,7 +238,12 @@ export class Tab2Page implements OnInit{
   }
 
     //Funcion para pausar planes
-  async pausarPlan(i: number) {
+  async pausarPlan(i: number, plan: Plan) {
+
+    if(plan.pausado == true){
+      this.datosService.presentToast("No puedes pausar un plan que ya esta pausado");
+    }
+    else{
       var p;
       await this.accionesService.presentAlertPlan([{text: 'Cancelar', handler: (blah) => {p = false}},
       {text: 'Pausar', handler: (blah) => {p = true}}], 
@@ -269,12 +282,20 @@ export class Tab2Page implements OnInit{
       await this.actualizarUsuario();
       this.datosService.presentToast("Plan pausado");
     }
+    }
+
   }
 
   //Funcion para renaudar planes
-  renaudarPlan(i) {
-    this.reanudarPlanes.calcularYRegistrar(i);
-    this.datosService.actualizarPlanes(this.planes); 
+  renaudarPlan(i, plan: Plan) {
+
+    if(plan.pausado == true){
+      this.reanudarPlanes.calcularYRegistrar(i);
+      this.datosService.actualizarPlanes(this.planes); 
+    }
+    else{
+      this.datosService.presentToast("No puedes reanudar un plan que actualmente esta activo");
+    }
   }
 
   async actualizarUsuario() {
