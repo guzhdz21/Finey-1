@@ -23,7 +23,8 @@ export class AccionesService {
       header: header,
       message: message,
       buttons: [] = botones,
-      mode: "ios"
+      mode: "ios",
+      backdropDismiss: true
     });
     alert.present();
     await alert.onDidDismiss();
@@ -41,7 +42,8 @@ export class AccionesService {
           handler: (bla) => {}
         }
       ],
-      mode: "ios"
+      mode: "ios",
+      backdropDismiss: true
     });
     alert.present();
     await alert.onDidDismiss();
@@ -66,7 +68,8 @@ export class AccionesService {
           handler: (bla) => {}
         }
       ],
-      mode: "ios"
+      mode: "ios",
+      backdropDismiss: true
     });
     alert.present();
     await alert.onDidDismiss();
@@ -85,7 +88,8 @@ export class AccionesService {
         }
       ],
       buttons: [] = botones,
-      mode: "ios"
+      mode: "ios",
+      backdropDismiss: true
     });
     alert.present();
     await alert.onDidDismiss();
@@ -103,7 +107,8 @@ export class AccionesService {
         }
       ],
       buttons: [] = botones,
-      mode: "ios"
+      mode: "ios",
+      backdropDismiss: true
     });
     alert.present();
     await alert.onDidDismiss();
@@ -121,7 +126,8 @@ export class AccionesService {
         }
       ],
       buttons: [] = botones,
-      mode: "ios"
+      mode: "ios",
+      backdropDismiss: true
     });
     alert.present();
     await alert.onDidDismiss();
@@ -133,7 +139,8 @@ export class AccionesService {
       header: header,
       message: message,
       buttons: [] = botones,
-      mode: "ios"
+      mode: "ios",
+      backdropDismiss: true
     });
     alert.present();
     await alert.onDidDismiss();
@@ -157,7 +164,8 @@ export class AccionesService {
             this.tipoTransferencia = true;
           }
         }
-    ]
+    ],
+    backdropDismiss: true
     });
     alert.present();
     await alert.onDidDismiss();
