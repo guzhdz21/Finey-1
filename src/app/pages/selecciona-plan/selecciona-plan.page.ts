@@ -52,11 +52,11 @@ export class SeleccionaPlanPage implements OnInit {
 
               if(this.accionesService.tipoTransferencia == true){ //Si es cierta cantidad el TIPO DE TRANSFERENCIA
 
-                await this.accionesService.presentAlertIngresoExtra([{text: 'Ingresa la cantidad de dinero que quieres transferir',handler: (bla) => { 
-                  if(parseInt(bla.ingresoExtra) <= 0)  {
+                await this.accionesService.presentAlertTransfer([{text: 'Listo',handler: (bla) => { 
+                  if(parseInt(bla.cantidadTransferir) <= 0)  {
                       this.datosService.presentToast('No se puede ingresar 0 ni numeros negativos');
                     } else {
-                      this.cantidadTransferir = parseInt(bla.ingresoExtra);
+                      this.cantidadTransferir = parseInt(bla.cantidadTransferir);
                     }
                   }
                 }]);
@@ -68,7 +68,7 @@ export class SeleccionaPlanPage implements OnInit {
 
               }
 
-              this.datosService.presentToast('Transferencia realizada cone exito');
+              this.datosService.presentToast('Transferencia realizada con exito');
 
             }
             
