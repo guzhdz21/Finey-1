@@ -118,6 +118,11 @@ export class Tab1Page implements OnInit {
     //Asignacion al arreglo de rubros por la funcion qdel servicio datosService que obtiene los rubros de un archicvo
     this.rubros = this.datosService.getRubros();
 
+    //Lllamada a metodo que obtiene la informacion de las alertas de un archivo
+    this.datosService.getAlertasJson().subscribe(val => {
+      this.alertas = val;
+    });
+
     //Llamada a funcion de servicio que obtiene los colores de la grafica de un archivo y asignacion a la variable del Chart
     this.datosService.getColores().subscribe(val => {
       val.colores.forEach(element => {

@@ -188,15 +188,15 @@
         "mensaje": "Inserta el tiempo restante deseado para cumplir un plan"
     },
     {
-        "titulo": "Tab1",
+        "titulo": "Resumen",
         "mensaje": "En esta sección se muestra la cantidad de ingresos, los gastos de forma visual de modo que puedes apreciar como están repartidos según sea su cantidad, y el dinero 'libre' o fondo de ahorro con el que cuentas"
     },
     {
-        "titulo": "Tab2",
+        "titulo": "Mis planes",
         "mensaje": "En esta sección se muestran los planes activos y pausados, sus caracteristicas y avances. Si no hay planes, esta sección te da la oportunidad de crear planes"
     },
     {
-        "titulo": "Tab3",
+        "titulo": "Analizar gastos",
         "mensaje": "En esta sección se muestran los tests disponibles a contestar, dichos tests al terminarlos te darán consejos personalizados para ahorrar dinero"
     }
 ]
