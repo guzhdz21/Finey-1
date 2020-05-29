@@ -170,7 +170,7 @@ export class Tab1Page implements OnInit {
           this.datosService.presentToast('Ingreso extra añadido');
         }
       }
-    }]);
+    }, {text: 'Cancelar',handler: (bla) => {}}]);
   }
 
   async abrirDescripcionGasto(seleccion: string, diseño: string) {

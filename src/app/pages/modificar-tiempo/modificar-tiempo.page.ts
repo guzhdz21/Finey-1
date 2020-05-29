@@ -166,7 +166,7 @@ export class ModificarTiempoPage implements OnInit {
         this.planMayor.aportacionMensual = ahorrar - this.planMenor.aportacionMensual;
         await this.accionesService.presentAlertPlan([{text: 'Adelante', handler: (blah) => {this.accionesService.alertaPlanCrear = true}},
                                                   {text: 'Modificar', handler: (blah) => {this.accionesService.alertaPlanCrear = false}}], 
-                                                  'Planes que apnes son posibles', 
+                                                  'Planes que apenas son posibles', 
         'Puedes dejarlos asi (Adelabte) y cumplirlos en el tiempo establecido MIENTRAS te mantengas en GASTOS MINIMOS en los gastos promedio' +
         ' (luz, agua, etc.) o puedes aumentar el tiempo (Modificar) en conseguirlos para que no estes tan presionado');
         return this.accionesService.alertaPlanCrear;
