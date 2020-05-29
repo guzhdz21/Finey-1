@@ -15,6 +15,7 @@ export class AccionesService {
    borrar: boolean; // Variable que de estar en true, indica que el usuario confirmo el querer borrar un plan
    borrarRecordatorio: boolean; // Variable que de estar en true, indica que el usuario confirmo el querer borrar un recordatorio
    tipoTransferencia: boolean;
+   cantidadTransferir: number;
   
    // Metodo para presentar presentar un plan con botones dinamicos
   async presentAlertPlan( botones: any[], header: string, message: string) {
@@ -121,6 +122,25 @@ export class AccionesService {
       message: 'Inserta la cantidad del ingreso extra que deseas añadir a tu fondo de ahorro',
       inputs: [ {
           name: 'ingresoExtra',
+          type: 'number',
+          value: null
+        }
+      ],
+      buttons: [] = botones,
+      mode: "ios",
+      backdropDismiss: true
+    });
+    alert.present();
+    await alert.onDidDismiss();
+  }
+
+  async presentAlertTransfer(botones: any[]) {
+      
+    const alert = await this.alertCtrl.create({
+      header: 'Selecciona el tipo de transferencia',
+      message: 'Ingresa la cantidad de dinero que quieres transferir',
+      inputs: [ {
+          name: 'cantidadTransferir',
           type: 'number',
           value: null
         }
