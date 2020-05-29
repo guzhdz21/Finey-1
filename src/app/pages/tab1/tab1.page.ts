@@ -42,6 +42,8 @@ export class Tab1Page implements OnInit {
 
   mes: number = this.datosService.mes;
 
+  perdida: number = this.datosService.perdida;
+
   gastosMensuales: GastosMensuales[] = this.datosService.gastosMensualesCargados;
 
   diferenciaFondo: number = this.datosService.diferencia;
@@ -73,7 +75,6 @@ export class Tab1Page implements OnInit {
               private router: Router) {}
 
   async ngOnInit() {
-
       //Evento que escucha cuando el la informacion del usuario es actualiza para actualizar la grafica
      await this.event.subscribe('usuarioActualizado', () => {
       this.usuarioCargado = this.datosService.usuarioCarga;
@@ -281,6 +282,9 @@ export class Tab1Page implements OnInit {
     await this.datosService.cargarGastosMensuales();
     this.gastosMensuales = this.datosService.gastosMensualesCargados;
 
+    await this.datosService.cargarPerdida();
+    this.perdida = this.datosService.perdida;
+
     await this.presentLoading('Calculando ahorro...');
 
     var gastosDelMes: number = 0;
@@ -293,7 +297,7 @@ export class Tab1Page implements OnInit {
     });
 
     //Le restamos al ahorro los gastos del mes
-    var totalAhorro = this.usuarioCargado.ingresoCantidad + this.ingresoExtra - gastosDelMes;
+    var totalAhorro = this.usuarioCargado.ingresoCantidad + this.ingresoExtra -this.perdida - gastosDelMes;
     totalAhorro -= this.diferenciaFondo;
 
     //Agregamos lo extra ganado si asi lo desea el ussuario
@@ -335,6 +339,9 @@ export class Tab1Page implements OnInit {
     this.diferenciaFondo = this.datosService.diferencia;
     await this.datosService.guardarIngresoExtra(0);
     this.ingresoExtra = this.datosService.ingresoExtra;
+    await this.datosService.guardarPerdida(0);
+    this.perdida = this.datosService.perdida;
+
 
     if(this.mes == 1) {
       this.mes++;

@@ -280,6 +280,7 @@ sexoRadio(event)
 
   async guardarDiferencia() {
     await this.datosService.guardarDiferencia(0);
+    await this.datosService.guardarPerdida(0);
   }
     
   ionViewDidEnter() {

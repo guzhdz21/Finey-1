@@ -18,7 +18,7 @@
         <ion-label class="texto_centrado ion-text-wrap"><p>Si trabajaste el dia de hoy, rellena el espacio correpondiente, si no trabajaste hoy dejalo como esta (vacio)</p></ion-label>
       </ion-item>
 
-      <ion-item>
+      <ion-item lines="none">
         <ion-checkbox color="dark" (ionChange)="checkBoxInicial($event)"></ion-checkbox>
         <ion-label class="margen_izquierda_20 ion-text-wrap">Si trabaje hoy</ion-label>
       </ion-item>
@@ -34,7 +34,6 @@
       <ion-label>Ingreso del dia de hoy</ion-label>
       <ion-input type="number"
                 placeholder="Ej. 900"
-                required 
                 (ionChange)="comprobar($event, aporteDiario, 1)"
                 [(ngModel)]="aporteDiario"
                 name="ingreso">

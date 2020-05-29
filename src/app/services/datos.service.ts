@@ -31,6 +31,7 @@ export class DatosService {
     this.cargarMes();
     this.cargarPlanesTerminados();
     this.cargarIngresoExtra();
+    this.cargarPerdida();
     this.localNotifications.fireQueuedEvents();
 
     this.plt.ready().then(() => {
@@ -114,6 +115,7 @@ export class DatosService {
   diferencia: number;
   ingresoExtra: number;
   bloquearModulos: boolean = false;
+  perdida: number;
 
   // Variable de tipo plan que adquiere los valores del storage
   planesCargados: Plan[] = [
@@ -278,6 +280,23 @@ export class DatosService {
     } else {
       this.ingresoExtra = 0;
       this.guardarIngresoExtra(this.ingresoExtra);
+    } 
+  }
+
+  guardarPerdida(perdida: number)
+  {
+    this.perdida = perdida;
+    this.storage.set('Perdida', this.perdida);
+  }
+
+  async cargarPerdida()
+  {
+    const perdida = await this.storage.get('Perdida');
+    if(perdida) {
+      this.perdida = perdida;
+    } else {
+      this.perdida = 0;
+      this.guardarPerdida(this.perdida);
     } 
   }
 
@@ -536,7 +555,6 @@ export class DatosService {
   // Metodo que borra un recordatorio del storage
   async borrarRecordatorio(recordatorio_eliminar: Recordatorio) {
 
-    //this.recordatoriosCargados = this.recordatoriosCargados.filter(this.Encontrado);
     await this.cargarDatosRecordatorios();
     let nuevosRecordatorios: Recordatorio[] = []; 
     this.recordatoriosCargados.forEach(element => {

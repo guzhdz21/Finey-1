@@ -35,6 +35,7 @@ export class GastosDiariosPage implements OnInit {
   invalido2: boolean;
   alertado: boolean[];
   muestraInput: boolean;
+  perdida: number = this.datosService.perdida;
 
   gastosMensuales: GastosMensuales[] = this.datosService.gastosMensualesCargados;
   mes: number = this.datosService.mes;
@@ -45,13 +46,9 @@ export class GastosDiariosPage implements OnInit {
               private nav: NavController) { }
 
   async ngOnInit() {
-
-    if(this.usuario.tipoIngreso == 'Variable') {
-      this.invalido2 = true;
-    }
-    else{
-      this.invalido2 = false;
-    }
+    this.datosService.cargarDatos();
+    this.usuario = this.datosService.usuarioCarga;
+    this.invalido2 = false;
 
     this.muestraInput = false;
 
@@ -144,10 +141,19 @@ export class GastosDiariosPage implements OnInit {
 
   async ingresar() {
 
+    await this.datosService.cargarPerdida();
+    this.perdida = this.datosService.perdida;
+
     if(this.usuario.tipoIngreso == 'Variable') {
-      this.usuario.ingresoCantidad = this.aporteDiario * 30;
-      this.datosService.guardarUsuarioInfo(this.usuario);
-      this.reajustarPlanes();
+      if(this.muestraInput) {
+        this.usuario.ingresoCantidad = this.aporteDiario * 30;
+        this.datosService.guardarUsuarioInfo(this.usuario);
+        this.reajustarPlanes();
+      } else {
+        this.perdida += (this.usuario.ingresoCantidad/30);
+        console.log(this.perdida);
+        this.datosService.guardarPerdida(this.perdida);
+      }
     }
 
     var nuevoMes = true;
