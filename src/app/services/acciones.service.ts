@@ -149,8 +149,8 @@ export class AccionesService {
   async presentAlertTransferencia() {
       
     const alert = await this.alertCtrl.create({
-      header: 'Advertencia',
-      message: 'Tus gastos son mayores que tus ingresos, si deseas continuar presiona Ok, si quieres modificar algun dato presiona Configurar. NOTA: Si seleccionas Ok, se te bloqueran varias secciones de la app',
+      header: 'Selecciona el tipo de transferencia',
+      message: 'Selecciona si quieres tranferir todo el dinero o solo cierta cantidad',
       buttons: [
         {
           text: 'Todo',

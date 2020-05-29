@@ -47,10 +47,10 @@ export class SeleccionaPlanPage implements OnInit {
 
             //Metodo que hace la transferencia de dinero
             async planSeleccionado(planRestar: Plan){
-              //this.accionesService.presentAlertOpciones();
+              this.accionesService.presentAlertTransferencia();
             }
             
-          
+            
             //Metodo que te regresa a la pantalla tab1 en este caso
             async ionViewDidEnter() {
           
