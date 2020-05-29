@@ -12,7 +12,13 @@
   </ion-card>
 </div>
 
-    <ion-item color="primary" *ngIf="testsExisten == true"> 
+    <ion-item color="primary" *ngIf="testsExisten == true">
+      <ion-buttons slot="start">
+        <ion-button slots="icon-only" (click)="botonInfo('Nombre')">
+          <ion-icon name="information-circle margen"></ion-icon>
+        </ion-button>
+      </ion-buttons>
+
         <ion-label><h1 class="texto_centrado_blanco">Tests disponibles</h1></ion-label>
       </ion-item>
 

@@ -1,7 +1,7 @@
 import { Component, OnInit, Inject, LOCALE_ID } from '@angular/core';
 import { ChartType } from 'chart.js';
 import { SingleDataSet, Label, ThemeService } from 'ng2-charts';
-import { Rubro, UsuarioLocal, GastoMayor, Gasto, GastosMensuales, Plan, GastoMensual } from '../../interfaces/interfaces';
+import { Rubro, UsuarioLocal, GastoMayor, Gasto, GastosMensuales, Plan, GastoMensual, AlertaGeneral } from '../../interfaces/interfaces';
 import {Observable, Subscription} from 'rxjs';
 import { DatosService } from '../../services/datos.service';
 import { ModalController, NavController, Events, Platform, LoadingController } from '@ionic/angular';
@@ -51,6 +51,8 @@ export class Tab1Page implements OnInit {
   planes: Plan[] = [];
 
   ingresoExtra: number = this.datosService.ingresoExtra;
+
+  alertas: AlertaGeneral[] = [];
   
   //Variables de asignacion al Chart
   public doughnutChartLabels: Label[] = ['Vivienda'];
@@ -94,6 +96,10 @@ export class Tab1Page implements OnInit {
      await this.event.subscribe('usuarioInsertado', () => {
       this.usuarioCargado = this.datosService.usuarioCarga;
       this.mostrarSaldo();
+    });
+
+    this.datosService.getAlertasJson().subscribe(val => {
+      this.alertas = val;
     });
 
     await this.datosService.cargarGastosMensuales();
@@ -835,6 +841,16 @@ export class Tab1Page implements OnInit {
      else {
       return false;
      }
+  }
+
+  botonInfo(titulo: string) {
+    this.alertas.forEach(element => {
+      if(titulo == element.titulo)
+      {
+        this.accionesService.presentAlertGenerica(element.titulo, element.mensaje);
+        return;
+      }
+    });
   }
 }
   

@@ -3,8 +3,9 @@ import { LocalNotifications} from '@ionic-native/local-notifications/ngx'
 import { DatosService } from '../../services/datos.service';
 import { Platform, NavController, ModalController } from '@ionic/angular';
 import { Subscription, Observable } from 'rxjs';
-import { Test, SubTest, Pregunta, UsuarioLocal } from '../../interfaces/interfaces';
+import { Test, SubTest, Pregunta, UsuarioLocal, AlertaGeneral } from '../../interfaces/interfaces';
 import { NavigationExtras } from '@angular/router';
+import { AccionesService } from '../../services/acciones.service';
 
 @Component({
   selector: 'app-tab3',
@@ -22,15 +23,22 @@ export class Tab3Page {
   valorPromedio: number[];
   testsExisten: boolean;
 
+  alertas: AlertaGeneral[] = [];
+
   tests: Observable<Test[]> = this.datosService.getTests();
 
   constructor(private localNotifications: LocalNotifications,
               public datosService: DatosService,
               private plt: Platform,
               private nav: NavController,
-              private modalCtrl: ModalController) {}
+              private modalCtrl: ModalController,
+              private accionesService: AccionesService) {}
 
   ngOnInit() {
+    this.datosService.getAlertasJson().subscribe(val => {
+      this.alertas = val;
+    });
+    
     this.testsExisten = false;
     this.mostrarTest = [];
     this.valorPromedio = [];
@@ -143,4 +151,15 @@ export class Tab3Page {
   };
   await this.nav.navigateForward(['test-page'], navigationExtras);
   }
+
+  botonInfo(titulo: string) {
+    this.alertas.forEach(element => {
+      if(titulo == element.titulo)
+      {
+        this.accionesService.presentAlertGenerica(element.titulo, element.mensaje);
+        return;
+      }
+    });
+  }
+
 }

@@ -25,7 +25,7 @@ export class AccionesService {
       message: message,
       buttons: [] = botones,
       mode: "ios",
-      backdropDismiss: true
+      backdropDismiss: false
     });
     alert.present();
     await alert.onDidDismiss();
@@ -44,7 +44,7 @@ export class AccionesService {
         }
       ],
       mode: "ios",
-      backdropDismiss: true
+      backdropDismiss: false
     });
     alert.present();
     await alert.onDidDismiss();
@@ -70,7 +70,7 @@ export class AccionesService {
         }
       ],
       mode: "ios",
-      backdropDismiss: true
+      backdropDismiss: false
     });
     alert.present();
     await alert.onDidDismiss();
@@ -90,7 +90,7 @@ export class AccionesService {
       ],
       buttons: [] = botones,
       mode: "ios",
-      backdropDismiss: true
+      backdropDismiss: false
     });
     alert.present();
     await alert.onDidDismiss();
@@ -109,7 +109,7 @@ export class AccionesService {
       ],
       buttons: [] = botones,
       mode: "ios",
-      backdropDismiss: true
+      backdropDismiss: false
     });
     alert.present();
     await alert.onDidDismiss();
@@ -128,7 +128,7 @@ export class AccionesService {
       ],
       buttons: [] = botones,
       mode: "ios",
-      backdropDismiss: true
+      backdropDismiss: false
     });
     alert.present();
     await alert.onDidDismiss();
@@ -147,7 +147,7 @@ export class AccionesService {
       ],
       buttons: [] = botones,
       mode: "ios",
-      backdropDismiss: true
+      backdropDismiss: false
     });
     alert.present();
     await alert.onDidDismiss();
@@ -160,7 +160,7 @@ export class AccionesService {
       message: message,
       buttons: [] = botones,
       mode: "ios",
-      backdropDismiss: true
+      backdropDismiss: false
     });
     alert.present();
     await alert.onDidDismiss();
@@ -186,7 +186,7 @@ export class AccionesService {
         }
     ],
     mode: "ios",
-    backdropDismiss: true
+    backdropDismiss: false
     });
     alert.present();
     await alert.onDidDismiss();

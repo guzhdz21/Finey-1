@@ -97,6 +97,10 @@ export class Tab2Page implements OnInit{
 
   ngOnInit() {
     //Metodo para cargar los planes haya o no
+    this.datosService.getAlertasJson().subscribe(val => {
+      this.alertas = val;
+    });
+
     this.datosService.cargarDatosPlan();
     this.event.subscribe('planesCargados', () => {
       if(this.datosService.planesCargados.length <= 0) {
@@ -337,6 +341,16 @@ this.datosService.presentToast("Debes tener mas de 1 plan para transferir dinero
 
     this.backButtonSub = this.plt.backButton.subscribeWithPriority( 10000, () => {
       this.nav.navigateRoot('/tabs/tab1');
+    });
+  }
+  
+  botonInfo(titulo: string) {
+    this.alertas.forEach(element => {
+      if(titulo == element.titulo)
+      {
+        this.accionesService.presentAlertGenerica(element.titulo, element.mensaje);
+        return;
+      }
     });
   }
 }
