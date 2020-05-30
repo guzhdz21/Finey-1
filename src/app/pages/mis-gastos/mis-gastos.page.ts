@@ -1,7 +1,7 @@
 import { Component, OnInit, ViewChild } from '@angular/core';
 import { ModalController, NavController, IonRadioGroup, Events, Platform } from '@ionic/angular';
 import { DatosService } from '../../services/datos.service';
-import { UsuarioLocal, Rubro, AlertaGeneral, Plan } from '../../interfaces/interfaces';
+import { UsuarioLocal, Rubro, AlertaGeneral, Plan, GastosMensuales } from '../../interfaces/interfaces';
 import { AccionesService } from '../../services/acciones.service';
 import { Subscription } from 'rxjs';
 
@@ -32,7 +32,7 @@ export class MisGastosPage implements OnInit {
   //Variable para guardar los datos del ususario
   usuarioModificado: UsuarioLocal = this.datosService.usuarioCarga;
 
-  usuarioCargado: UsuarioLocal = this.datosService.usuarioCarga;
+  usuarioCargado: UsuarioLocal = JSON.parse(JSON.stringify(this.datosService.usuarioCarga));
 
   diferenciaAhorro: number = this.datosService.diferencia;
 
@@ -44,6 +44,12 @@ export class MisGastosPage implements OnInit {
   rutaSeguir: string = "/tabs/tab1";
 
   aporteDiario: number;
+  valorPromedio = [];
+
+  sobrepasado: boolean;
+  mes: number = this.datosService.mes;
+
+  gastosMenusales: GastosMensuales[] = this.datosService.gastosMensualesCargados;
 
   //Constructor con todas las inyecciones y controladores necesarios
   constructor(private modalCtrl: ModalController,
@@ -54,6 +60,16 @@ export class MisGastosPage implements OnInit {
               private plt: Platform) { }
 
   ngOnInit() {
+    this.valorPromedio[1] = 0;
+    this.valorPromedio[2] = 0;
+    this.valorPromedio[3] = 0;
+    this.valorPromedio[4] = 0;
+    this.valorPromedio[5] = 0;
+    this.valorPromedio[6] = 0;
+    this.valorPromedio[7] = 0;
+    this.valorPromedio[8] = 0;
+
+    this.sobrepasado = false;
 
     this.alertado = [];
     this.alertado[1] = false;
@@ -67,6 +83,13 @@ export class MisGastosPage implements OnInit {
 
     //Llamada a metodo que carga los datos del usuario
     this.datosService.cargarDatos();
+    this.usuarioModificado = this.datosService.usuarioCarga;
+    this.usuarioCargado = JSON.parse(JSON.stringify(this.datosService.usuarioCarga));
+    this.datosService.cargarMes();
+    this.mes = this.datosService.mes;
+
+    this.datosService.cargarGastosMensuales();
+    this.gastosMenusales = this.datosService.gastosMensualesCargados;
 
     //Lllamada a metodo que obtiene la informacion de las alertas de un archivo
     this.datosService.getAlertasJson().subscribe(val => {
@@ -77,9 +100,6 @@ export class MisGastosPage implements OnInit {
     this.datosService.getEtiquetas().subscribe (val => {
       this.etiquetas = val.nombre;
     });
-    
-    //Llamada al metodo que carga los datos
-    this.datosService.cargarDatos();
 
     this.datosService.cargarDatosPlan();
     this.planes = this.datosService.planesCargados;
@@ -146,7 +166,6 @@ export class MisGastosPage implements OnInit {
   {
   
         //Multiplicar X30 el ingreso de cada dia del usuario
-        console.log("Aporte diario antes" + this.aporteDiario)
         if(this.usuarioModificado.tipoIngreso == 'Variable'){
           this.usuarioModificado.ingresoCantidad = this.aporteDiario * 30; 
           console.log("Ganancia mensual: " + this.usuarioModificado.ingresoCantidad)
@@ -165,18 +184,33 @@ export class MisGastosPage implements OnInit {
           this.datosService.guardarBloqueoModulos(true); ////////BLOQUEAR MODULOS///////
           console.log(this.registrarseAdvertencia);
           this.modificarUsuario();
+          
           this.nav.navigateRoot('/tabs/tab3');
         }
       }
       else {
         this.datosService.guardarBloqueoModulos(false); ////////LE DOY PERMISO PARA LOS MODULOS///////
         this.modificarUsuario();
-        
         await this.datosService.cargarBloqueoModulos();
-        this.nav.navigateRoot('/tabs/tab1');
 
-        this.datosService.presentToast('Se han modificado tus gastos');
+        this.calcularPromedios();
+        if(this.sobrepasado) {
+          var irATests;
+          await this.accionesService.presentAlertOpciones([{text: 'Vamos', handler: (blah) => {irATests = true}},
+          {text: 'En otro momento', handler: (blah) => {this.registrarseAdvertencia = true;}}],
+          'Atencion', 'Detectamos que en algunos rubros sobrepasas el promedio nacional en gasto, te recomendamos ' 
+          + 'ir a el modal analizar mis gastos para contestar unas preguntas y recibir consejos de como ahorrar');
+          if(irATests) {
+            this.nav.navigateRoot('/tabs/tab3');
+          } else {
+            this.nav.navigateRoot('/tabs/tab1');
+          }
+        } else {
+          this.nav.navigateRoot('/tabs/tab1');
+        }
       }
+      this.modalCtrl.dismiss();
+      this.datosService.presentToast('Se han modificado tus gastos');
   }
 
   //Metodo que calcula los datos necearios para modificar y lo guarda en storage
@@ -184,19 +218,48 @@ export class MisGastosPage implements OnInit {
   {
 
     var i = 0;
-    this.usuarioModificado.gastos.forEach(element => {
-    element.tipo = this.rubros[i].tipo;
-    element.porcentaje = (Math.round(((element.cantidad*100)/this.usuarioModificado.ingresoCantidad)*100)/100).toString();
-    if (element.tipo === 'Promedio') {
-      element.margenMax = element.cantidad+(element.cantidad*0.07);
-      element.margenMin = element.cantidad-(element.cantidad*0.07);
+    if(this.mes != 1) {
+      for (var gastos of this.usuarioCargado.gastos) {
+        for(var gastosM of this.usuarioModificado.gastos) {
+          if(gastosM.nombre == gastos.nombre) {
+            if(gastosM.cantidad != gastos.cantidad) {
+              for (var mes of this.gastosMenusales) {
+                for (var gastosMen of mes.gastos) {
+                  if(gastosMen.nombre == gastosM.nombre) {
+                    gastosMen.cantidad = gastosM.cantidad;
+                    gastosM.porcentaje = (Math.round(((gastosM.cantidad*100)/this.usuarioModificado.ingresoCantidad)*100)/100).toString();
+                    if(gastosM.tipo == 'Promedio') {
+                      gastosM.margenMax = gastosM.cantidad + (gastosM.cantidad*0.07);
+                      gastosM.margenMin = gastosM.cantidad - (gastosM.cantidad*0.07);
+                    } else {
+                      gastosM.margenMax = gastosM.cantidad;
+                      gastosM.margenMin = gastosM.cantidad;
+                    }
+                  }
+                } 
+              }
+            }
+          }
+        }
+      }
+    } else {
+      for (var gastos of this.usuarioCargado.gastos) {
+        for(var gastosM of this.usuarioModificado.gastos) {
+          if(gastosM.nombre == gastos.nombre) {
+            if(gastosM.cantidad != gastos.cantidad) {
+              gastosM.porcentaje = (Math.round(((gastosM.cantidad*100)/this.usuarioModificado.ingresoCantidad)*100)/100).toString();
+              if(gastosM.tipo == 'Promedio') {
+                  gastosM.margenMax = gastosM.cantidad + (gastosM.cantidad*0.07);
+                  gastosM.margenMin = gastosM.cantidad - (gastosM.cantidad*0.07);
+              } else {
+                gastosM.margenMax = gastosM.cantidad;
+                gastosM.margenMin = gastosM.cantidad;
+              }
+            }
+          }
+        }
+      }
     }
-    else {
-      element.margenMax = element.cantidad;
-      element.margenMin = element.cantidad;
-    }
-    i++;
-  });
 
   var gastosTotales = 0;
   var margenMin = 0;
@@ -384,19 +447,8 @@ export class MisGastosPage implements OnInit {
     this.usuarioModificado.fondoAhorro -= this.diferenciaAhorro;
     this.datosService.usuarioCarga.fondoAhorro = Math.round(this.datosService.usuarioCarga.fondoAhorro*100)/100;
 
-  this.datosService.guardarUsuarioInfo(this.usuarioModificado);
-  this.event.publish('usuarioActualizado');
-  this.modalCtrl.dismiss();
-
-  await this.datosService.cargarBloqueoModulos();
-  if(this.datosService.bloquearModulos == true){
-    this.nav.navigateRoot('/tabs/tab3');
-  }
-  else{
-    this.nav.navigateRoot('/tabs/tab1');
-  }
-
-  this.datosService.presentToast('Cambios modificados');
+    this.datosService.guardarUsuarioInfo(this.usuarioModificado);
+    this.event.publish('usuarioActualizado');
   }
 
   //Metodo para validar el ingreso de gastos e ingreso
@@ -468,5 +520,63 @@ export class MisGastosPage implements OnInit {
       });
     }
 
+  }
+
+  calcularPromedios() {
+    //Vivienda
+    this.valorPromedio[1] = this.usuarioModificado.gastos[0].cantidad + this.usuarioModificado.gastos[1].cantidad + this.usuarioModificado.gastos[2].cantidad + this.usuarioModificado.gastos[3].cantidad;
+
+    //Alimentos
+    this.valorPromedio[2] = this.usuarioModificado.gastos[4].cantidad ;
+
+    //Cuidado personal
+    this.valorPromedio[3] = this.usuarioModificado.gastos[5].cantidad + this.usuarioModificado.gastos[7].cantidad  + this.usuarioModificado.gastos[15].cantidad ;
+
+    //Transporte
+    this.valorPromedio[4] = this.usuarioModificado.gastos[8].cantidad;
+
+    //Internet/cable/telefonía
+    this.valorPromedio[5] = this.usuarioModificado.gastos[10].cantidad;
+
+    //Electronicos
+    this.valorPromedio[6] = this.usuarioModificado.gastos[12].cantidad;
+
+    //Educación
+    this.valorPromedio[7] = this.usuarioModificado.gastos[13].cantidad;
+
+    //Ocio
+    this.valorPromedio[8] = this.usuarioModificado.gastos[14].cantidad;
+
+    if(this.valorPromedio[1] >= 5215){ //Vivienda
+      this.sobrepasado = true;
+    }
+
+    if(this.valorPromedio[2] >= 3500){ //Alimentos
+      this.sobrepasado = true;
+    }
+
+    if(this.valorPromedio[3] >= 1300){ //Cuidado personal
+      this.sobrepasado = true;
+    }
+
+    if(this.valorPromedio[4] >= 1300){ //Transporte
+      this.sobrepasado = true;
+    }
+
+    if(this.valorPromedio[5] >= 885){ //Internet/cable/television
+      this.sobrepasado = true;
+    }
+
+    if(this.valorPromedio[6] >= 800){ //Electronicos
+      this.sobrepasado = true;
+    } 
+
+    if(this.valorPromedio[7] >= 1500){ //Educacion
+      this.sobrepasado = true;
+    }
+
+    if(this.valorPromedio[8] >= 800){ //Ocio
+      this.sobrepasado = true;
+    }
   }
 }
