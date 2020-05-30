@@ -32,6 +32,7 @@ export class DatosService {
     this.cargarPlanesTerminados();
     this.cargarIngresoExtra();
     this.cargarPerdida();
+    
     this.localNotifications.fireQueuedEvents();
 
     this.plt.ready().then(() => {
@@ -201,9 +202,10 @@ export class DatosService {
   }
 
   // Metodo que guarda el usuario en el local storage
-  guardarUsuarioInfo(usuario: UsuarioLocal) {
+  async guardarUsuarioInfo(usuario: UsuarioLocal) {
     this.usuarioCarga = usuario;
     this.storage.set('Usuario', this.usuarioCarga);
+    await this.event.publish('usuarioInsertado');
   }
 
   // Metodo que guarda la variable primera, registrandola para saber que no es la primera vez que el usuario corre la app

@@ -77,8 +77,10 @@ export class Tab1Page implements OnInit {
               private router: Router) {}
 
   async ngOnInit() {
+    await this.datosService.cargarDatos();
+    await this.datosService.cargarPrimeraVez();
       //Evento que escucha cuando el la informacion del usuario es actualiza para actualizar la grafica
-     await this.event.subscribe('usuarioActualizado', () => {
+    await this.event.subscribe('usuarioActualizado', () => {
       this.usuarioCargado = this.datosService.usuarioCarga;
       this.gastosCero = true;
       this.datos = [];
@@ -385,6 +387,7 @@ export class Tab1Page implements OnInit {
         aumento = true;
       }
       gastos.cantidad = Math.round(promedio*100)/100;
+      gastos.porcentaje = (Math.round(((gastos.cantidad*100)/this.usuarioCargado.ingresoCantidad)*100)/100).toString();
       if(gastos.tipo == 'Promedio') {
         var sumatoria = 0;
 

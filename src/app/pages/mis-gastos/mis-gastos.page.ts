@@ -261,6 +261,8 @@ export class MisGastosPage implements OnInit {
       }
     }
 
+    this.datosService.guardarGastosMensuales(this.gastosMenusales);
+
   var gastosTotales = 0;
   var margenMin = 0;
     this.usuarioModificado.gastos.forEach(element => {
