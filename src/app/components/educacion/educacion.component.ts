@@ -99,7 +99,7 @@ this.radioRequired[idSubTest-1][idPregunta] = false;
 this.respuestasContestadas[idSubTest-1][idPregunta] = parseInt(event.detail.value);
 }
 
-filtro1(event, idPregunta, idSubTest){
+filtro1(event){
   this.permiso = parseInt(event.detail.value);
   if(this.permiso == 0){
     this.permisoBoton = true;
