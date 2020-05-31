@@ -1,8 +1,9 @@
 import { Component, OnInit, Input } from '@angular/core';
 import { DatosService } from '../../services/datos.service';
 import { Plan } from '../../interfaces/interfaces';
-import { NavController, ModalController } from '@ionic/angular';
+import { NavController, ModalController, Platform } from '@ionic/angular';
 import { AccionesService } from '../../services/acciones.service';
+import { Subscription } from 'rxjs';
 
 @Component({
   selector: 'app-plan-pausar',
@@ -40,10 +41,13 @@ export class PlanPausarPage implements OnInit {
 
   gastosUsuario: number;
 
+  backButtonSub: Subscription;
+
   constructor(private datosService: DatosService,
               private nav: NavController,
               private modalCtrl: ModalController,
-              private accionesService: AccionesService) { }
+              private accionesService: AccionesService,
+              private plt: Platform) { }
 
   async ngOnInit() {
     await this.datosService.cargarDatos();
@@ -380,5 +384,22 @@ export class PlanPausarPage implements OnInit {
       await this.modalCtrl.dismiss();
       this.nav.navigateRoot('tabs/tab2');
     }
+  }
+
+  async ionViewDidEnter() {
+    this.backButtonSub = this.plt.backButton.subscribeWithPriority( 10000, async () => {
+      var cancelar;
+      await this.accionesService.presentAlertPlan([{text: 'Si', handler: (blah) => {cancelar = true}},
+                                                  {text: 'No', handler: (blah) => {cancelar = false}}], 
+                                                  '¿Seguro que quieres volver?', 
+      'Si cancelas se borraran todos los cambios a tus planes y volvera a como estaban antes');
+    
+      if(cancelar) {
+        console.log(this.planesOriginales);
+        this.datosService.actualizarPlanes(this.planesOriginales);
+        await this.modalCtrl.dismiss();
+        this.nav.navigateRoot('tabs/tab2');
+      }
+    });
   }
 }

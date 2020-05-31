@@ -1,5 +1,8 @@
 import { Component, OnInit, Input } from '@angular/core';
 import { Gasto } from '../../interfaces/interfaces';
+import { ModalController, NavController, Platform } from '@ionic/angular';
+import { Subscription } from 'rxjs';
+import { DatosService } from '../../services/datos.service';
 
 @Component({
   selector: 'app-descripcion-gasto',
@@ -24,7 +27,12 @@ export class DescripcionGastoPage implements OnInit {
     margenMax: null
   }
 
-  constructor() { }
+  backButtonSub: Subscription;
+
+  constructor(private modalCtrl: ModalController,
+              private nav: NavController,
+              private plt: Platform, 
+              private datosService: DatosService) { }
 
   ngOnInit() {
     //For each que verifica y asigna la informacion del gasto selecionado a la variable del HTML
@@ -33,6 +41,13 @@ export class DescripcionGastoPage implements OnInit {
         this.info = element;
         return
       }
+    });
+  }
+
+  ionViewDidEnter() {
+    this.backButtonSub = this.plt.backButton.subscribeWithPriority( 10000, () => {
+      this.modalCtrl.dismiss();
+        this.nav.navigateRoot("tabs/tab1");
     });
   }
 

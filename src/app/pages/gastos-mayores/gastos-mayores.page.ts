@@ -1,8 +1,10 @@
 import { Component, OnInit, Input } from '@angular/core';
 import { GastoMayor } from '../../interfaces/interfaces';
-import { ModalController } from '@ionic/angular';
+import { ModalController, Platform } from '@ionic/angular';
 import { GastoMayorJustifyPage } from '../gasto-mayor-justify/gasto-mayor-justify.page';
 import { AccionesService } from '../../services/acciones.service';
+import { Subscription } from 'rxjs';
+import { DatosService } from '../../services/datos.service';
 
 @Component({
   selector: 'app-gastos-mayores',
@@ -14,10 +16,13 @@ export class GastosMayoresPage implements OnInit {
   @Input() gastosMayores: GastoMayor[];
 
   data: boolean;
+  backButtonSub: Subscription;
   
   constructor(private modalCtrl: ModalController,
               private modalCtrl2: ModalController,
-              private accionesService: AccionesService) { }
+              private accionesService: AccionesService,
+              private datosService: DatosService,
+              private plt: Platform) { }
 
   ngOnInit() {
   }
@@ -47,4 +52,9 @@ export class GastosMayoresPage implements OnInit {
     this.data = data.mayor;
   }
   
+  ionViewDidEnter() {
+    this.backButtonSub = this.plt.backButton.subscribeWithPriority( 10000, () => {
+      this.datosService.presentToast("Debes justificar todos los gastos");
+    });
+  }
 }

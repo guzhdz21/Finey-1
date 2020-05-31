@@ -97,4 +97,6 @@ export class GastoMayorJustifyPage implements OnInit {
       mayor: this.gasto.mayor
     });
   }
+
+  
 }

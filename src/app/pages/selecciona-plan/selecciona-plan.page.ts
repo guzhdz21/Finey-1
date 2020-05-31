@@ -138,7 +138,7 @@ export class SeleccionaPlanPage implements OnInit {
     else{
       this.backButtonSub = this.plt.backButton.subscribeWithPriority( 10000, () => {
       this.modalCtrl.dismiss();
-      this.nav.navigateRoot('/tabs/tab1');
+      this.nav.navigateRoot('/tabs/tab2');
       });
     }
   }

@@ -2,7 +2,8 @@ import { Component, OnInit, ɵflushModuleScopingQueueAsMuchAsPossible } from '@a
 import { DatosService } from '../../services/datos.service';
 import { AlertaGeneral, GastosMensuales, GastoMensual, UsuarioLocal, Plan } from '../../interfaces/interfaces';
 import { AccionesService } from '../../services/acciones.service';
-import { ModalController, NavController } from '@ionic/angular';
+import { ModalController, NavController, Platform } from '@ionic/angular';
+import { Subscription } from 'rxjs';
 
 @Component({
   selector: 'app-gastos-diarios',
@@ -37,13 +38,16 @@ export class GastosDiariosPage implements OnInit {
   muestraInput: boolean;
   perdida: number = this.datosService.perdida;
 
+  backButtonSub: Subscription;
+
   gastosMensuales: GastosMensuales[] = this.datosService.gastosMensualesCargados;
   mes: number = this.datosService.mes;
 
   constructor(private datosService: DatosService,
               private accionesService: AccionesService,
               private modalCtrl: ModalController,
-              private nav: NavController) { }
+              private nav: NavController,
+              private plt: Platform) { }
 
   async ngOnInit() {
     this.datosService.cargarDatos();
@@ -424,4 +428,11 @@ export class GastosDiariosPage implements OnInit {
       return false;
      }
   }
+
+  ionViewDidEnter() {
+    this.backButtonSub = this.plt.backButton.subscribeWithPriority( 10000, () => {
+      this.datosService.presentToast("Debes contestar el formulario");
+    });
+  }
+
 }

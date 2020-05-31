@@ -288,10 +288,7 @@ sexoRadio(event)
     
   ionViewDidEnter() {
     this.backButtonSub = this.plt.backButton.subscribeWithPriority( 10000, () => {
-      if(window.confirm('¿Deseas salir de la app?'))
-      {
         navigator["app"].exitApp();
-      }
     });
   }
   

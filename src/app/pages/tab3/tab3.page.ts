@@ -157,6 +157,9 @@ export class Tab3Page {
 
   ionViewDidEnter() {
     this.backButtonSub = this.plt.backButton.subscribeWithPriority( 10000, () => {
+      if(this.datosService.bloquearModulos == true){
+        navigator["app"].exitApp();
+      }
       this.nav.navigateRoot('/tabs/tab1');
     });
     this.mostrarTestsCorrespondientes();
