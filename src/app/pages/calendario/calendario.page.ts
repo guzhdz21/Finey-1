@@ -4,7 +4,7 @@ import { AlertController, Events, Platform, ModalController, NavController } fro
 import { formatDate } from '@angular/common';
 import { AccionesService } from '../../services/acciones.service';
 import { DatosService } from 'src/app/services/datos.service';
-import { Recordatorio } from '../../interfaces/interfaces';
+import { Recordatorio, AlertaGeneral } from '../../interfaces/interfaces';
 import { Subscription } from 'rxjs';
 
 @Component({
@@ -48,6 +48,7 @@ eventSource=[];
 collapseCard: boolean = false;
 backButtonSub: Subscription;
 rutaSeguir: string = "/tabs/tab1";
+alertas: AlertaGeneral[] = [];
 
     markDisabled = (date: Date) => {
       var dia = new Date().getDate();
@@ -87,6 +88,16 @@ resetEvent() {
     startTime: new Date().toISOString(),
     endTime: new Date().toISOString(),
   };
+}
+
+botonInfo(titulo: string) {
+  this.alertas.forEach(element => {
+    if(titulo == element.titulo)
+    {
+      this.accionesService.presentAlertGenerica(element.titulo, element.mensaje);
+      return;
+    }
+  });
 }
 
 //Metodo que carga los recordatorios desde el storage
@@ -175,6 +186,10 @@ async registrarNuevoRecordatorio() {
               private nav: NavController) { }
 
   ngOnInit() {
+    this.datosService.getAlertasJson().subscribe(val => {
+      this.alertas = val;
+    });
+
     this.resetEvent();
     this.today();
 

@@ -8,8 +8,20 @@
             <ion-content>
 
                 <ion-card *ngIf="planesExiste == false">
+ 
+                    <ion-item color="primary" class="cambio">
+                        <ion-buttons slot="start">
+                            <ion-button slots="icon-only" (click)="botonInfo('Mis planes')">
+                              <ion-icon name="information-circle"></ion-icon>
+                            </ion-button>
+                          </ion-buttons>
+    
+                        <ion-label><h1 class="text margen">No hay planes</h1></ion-label>
+
+                    </ion-item>
+
                     <ion-item lines="none">
-                        <ion-label><h1 class="noHay">No hay planes</h1></ion-label>
+                        <ion-label><h1 class="noHay">Crea tu primer plan</h1></ion-label>
                     </ion-item>
         
                     <p></p>
