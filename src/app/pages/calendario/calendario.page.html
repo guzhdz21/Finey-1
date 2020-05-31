@@ -1,5 +1,10 @@
 <app-header-modal titulo="Calendario" ruta={{rutaSeguir}}></app-header-modal>
 <ion-toolbar color="primary">
+  <ion-buttons slot="start">
+    <ion-button slots="icon-only" (click)="botonInfo('Calendario')">
+      <ion-icon name="information-circle"></ion-icon>
+    </ion-button>
+  </ion-buttons>
   <ion-title text-capitalize>
     {{ viewTitle }}
   </ion-title>

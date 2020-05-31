@@ -96,11 +96,12 @@ export class Tab2Page implements OnInit{
               private quitarPlanes: QuitarPlanesService) {}
 
   ngOnInit() {
-    //Metodo para cargar los planes haya o no
+
     this.datosService.getAlertasJson().subscribe(val => {
       this.alertas = val;
     });
 
+    //Metodo para cargar los planes haya o no
     this.datosService.cargarDatosPlan();
     this.event.subscribe('planesCargados', () => {
       if(this.datosService.planesCargados.length <= 0) {

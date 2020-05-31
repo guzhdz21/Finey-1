@@ -24,6 +24,7 @@ export class SeleccionaPlanPage implements OnInit {
   rutaSeguir: string = "/tabs/tab2";
   backButtonSub: Subscription;
   cantidadTransferir: number;
+  transferenciaAprobada: boolean = true;
 
   planSumar: Plan = {
               nombre: '',
@@ -80,32 +81,45 @@ export class SeleccionaPlanPage implements OnInit {
     if(this.accionesService.tipoTransferencia == true) { //Si es cierta cantidad el TIPO DE TRANSFERENCIA
 
     await this.accionesService.presentAlertTransfer([{text: 'Listo',handler: (bla) => { 
+      console.log(bla.cantidadTransferir);
       if(parseInt(bla.cantidadTransferir) <= 0)  {
+        console.log("igual a 0");
         this.datosService.presentToast('No se puede ingresar 0 ni numeros negativos');
-        return;
+        this.transferenciaAprobada = false;
+        
       } else if(parseInt(bla.cantidadTransferir) > this.planR.cantidadAcumulada) {
         this.datosService.presentToast('No puedes transferir una cantidad mayor a la que contiene el plan');
+        this.transferenciaAprobada = false;
       } 
       else {
-        
+        this.transferenciaAprobada = true;
         this.cantidadTransferir = parseInt(bla.cantidadTransferir);
       }
     }}]);
 
-    this.planR.cantidadAcumulada -= this.cantidadTransferir;
-    this.planS.cantidadAcumulada += this.cantidadTransferir; 
-    this.ajustarPlanes();
+    if(this.transferenciaAprobada == true){
+      this.planR.cantidadAcumulada -= this.cantidadTransferir;
+      this.planS.cantidadAcumulada += this.cantidadTransferir; 
+      this.ajustarPlanes();
+      this.datosService.presentToast('Transferencia realizada con éxito');
+    }
 
   }
   else{ //Si es la opcion de TODO
-    var transferir = this.planR.cantidadAcumulada;
-    this.planR.cantidadAcumulada = 0;
-    this.planR.tiempoRestante = this.planR.tiempoTotal;
-    this.planS.cantidadAcumulada += transferir;
-    this.ajustarPlanes();
+
+    if(planRestar.cantidadAcumulada <= 0){
+      this.accionesService.presentAlertGenerica("Cantidad inválida" , "No puedes seleccionar este plan, pues tiene 0 de cantidad");
+    }
+    else{
+      var transferir = this.planR.cantidadAcumulada;
+      this.planR.cantidadAcumulada = 0;
+      this.planR.tiempoRestante = this.planR.tiempoTotal;
+      this.planS.cantidadAcumulada += transferir;
+      this.ajustarPlanes();
+      this.datosService.presentToast('Transferencia realizada con éxito');
+    }
   }
     this.nav.navigateRoot('/tabs/tab2');
-    this.datosService.presentToast('Transferencia realizada con exito');
 
   }
             

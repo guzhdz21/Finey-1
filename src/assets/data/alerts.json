@@ -198,5 +198,9 @@
     {
         "titulo": "Analizar gastos",
         "mensaje": "En esta sección se muestran los tests disponibles a contestar, dichos tests al terminarlos te darán consejos personalizados para ahorrar dinero"
+    },
+    {
+        "titulo": "Calendario",
+        "mensaje": "En esta sección puedes crear recordatorios de pagos o de cualquier cosa, por ejemplo; crear un recordatorio que (en la hora de inicio y en la de fin) me recuerden que debo pagar la luz tal dia en especifico "
     }
 ]
