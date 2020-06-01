@@ -164,7 +164,7 @@ export class Tab1Page implements OnInit {
       await this.nuevoMes();
     }
     
-    if(await new Date().getHours() > 10 && await new Date().getHours() < 24) {
+    if(await new Date().getHours() > 19 && await new Date().getHours() < 24) {
       if(this.datosService.fechaDiaria != null && this.datosService.fechaDiaria != await new Date().getDate()) {
         await this.abrirGastosDiarios();
       }
