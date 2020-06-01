@@ -12,6 +12,7 @@ import { ModalRegistroPage } from '../modal-registro/modal-registro.page';
 import { GastosDiariosPage } from '../gastos-diarios/gastos-diarios.page';
 import { GastosMayoresPage } from '../gastos-mayores/gastos-mayores.page';
 import { Router } from '@angular/router';
+import { BienvenidaPage } from '../bienvenida/bienvenida.page';
 
 @Component({
   selector: 'app-tab1',
@@ -113,9 +114,10 @@ export class Tab1Page implements OnInit {
     await this.datosService.cargarIngresoExtra();
     this.localNotifications.fireQueuedEvents();
     //Condicional para abrir el registro de la app
+    console.log("Primera es: " + this.datosService.primera);
     if(this.datosService.primera === true) {
-      await this.abrirRegistro();
-    }
+      await this.abrirBienvenida();
+    } 
 
     //Asignacion al arreglo de rubros por la funcion qdel servicio datosService que obtiene los rubros de un archicvo
     this.rubros = this.datosService.getRubros();
@@ -199,10 +201,10 @@ export class Tab1Page implements OnInit {
     await modal.present();
   }
 
-  async abrirRegistro() {
+  async abrirBienvenida() {
 
     const modal = await this.modalCtrl.create({
-      component: ModalRegistroPage
+      component: BienvenidaPage
     });
      modal.present();
     await modal.onDidDismiss();

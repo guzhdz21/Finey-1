@@ -220,6 +220,7 @@ sexoRadio(event)
     this.datosService.guardarPrimeraVez(false);
     this.datosService.cargarDatos();
     this.modalCtrl.dismiss();
+    this.nav.navigateRoot('/tabs/tab1');
   }
 
   //Funcion que regresa un valor booleano siendro true si el ingreso es menor a los gastos del ususario y false si no

@@ -14,13 +14,16 @@ import { GastosDiariosPage } from '../gastos-diarios/gastos-diarios.page';
 import { GastosDiariosPageModule } from '../gastos-diarios/gastos-diarios.module';
 import { GastosMayoresPage } from '../gastos-mayores/gastos-mayores.page';
 import { GastosMayoresPageModule } from '../gastos-mayores/gastos-mayores.module';
+import { BienvenidaPage } from '../bienvenida/bienvenida.page';
+import { BienvenidaPageModule } from '../bienvenida/bienvenida.module';
 
 @NgModule({
   entryComponents: [
     DescripcionGastoPage, 
     ModalRegistroPage,
     GastosDiariosPage,
-    GastosMayoresPage
+    GastosMayoresPage,
+    BienvenidaPage
   ],
   imports: [
     IonicModule,
@@ -31,6 +34,7 @@ import { GastosMayoresPageModule } from '../gastos-mayores/gastos-mayores.module
     ModalRegistroPageModule,
     GastosDiariosPageModule,
     GastosMayoresPageModule,
+    BienvenidaPageModule,
     ChartsModule,
     RouterModule.forChild([{ path: '', component: Tab1Page }])
   ],

@@ -83,7 +83,6 @@ export class SeleccionaPlanPage implements OnInit {
     await this.accionesService.presentAlertTransfer([{text: 'Listo',handler: (bla) => { 
       console.log(bla.cantidadTransferir);
       if(parseInt(bla.cantidadTransferir) <= 0)  {
-        console.log("igual a 0");
         this.datosService.presentToast('No se puede ingresar 0 ni numeros negativos');
         this.transferenciaAprobada = false;
         
