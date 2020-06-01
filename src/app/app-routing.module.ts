@@ -108,6 +108,14 @@ const routes: Routes = [
   {
     path: 'selecciona-plan-page',
     loadChildren: () => import('./pages/selecciona-plan-page/selecciona-plan-page.module').then( m => m.SeleccionaPlanPagePageModule)
+  },
+  {
+    path: 'bienvenida',
+    loadChildren: () => import('./pages/bienvenida/bienvenida.module').then( m => m.BienvenidaPageModule)
+  },
+  {
+    path: 'bienvenida-page',
+    loadChildren: () => import('./pages/bienvenida-page/bienvenida-page.module').then( m => m.BienvenidaPagePageModule)
   }
 
 
