@@ -15,9 +15,13 @@ export class BienvenidaPage implements OnInit {
   ngOnInit() {
   }
 
+  irARegistro() {
+    this.modalCtrl.dismiss();
+    this.nav.navigateRoot('tabs/tab1');
+    this.abrirRegistro();
+  }
 
   async abrirRegistro() {
-    console.log("holaaa")
     const modal = await this.modalCtrl.create({
       component: ModalRegistroPage
     });
