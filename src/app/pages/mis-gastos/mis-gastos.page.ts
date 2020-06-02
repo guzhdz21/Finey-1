@@ -197,7 +197,7 @@ export class MisGastosPage implements OnInit {
         if(this.sobrepasado) {
           var irATests;
           await this.accionesService.presentAlertOpciones([{text: 'Vamos', handler: (blah) => {irATests = true}},
-          {text: 'En otro momento', handler: (blah) => {this.registrarseAdvertencia = true;}}],
+          {text: 'En otro momento', handler: (blah) => {irATests = false;}}],
           'Atencion', 'Detectamos que en algunos rubros sobrepasas el promedio nacional en gasto, te recomendamos ' 
           + 'ir a el modal analizar mis gastos para contestar unas preguntas y recibir consejos de como ahorrar');
           if(irATests) {

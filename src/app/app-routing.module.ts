@@ -7,6 +7,10 @@ const routes: Routes = [
     loadChildren: () => import('./pages/tabs/tabs.module').then(m => m.TabsPageModule)
   },
   {
+    path: 'home/:folder', 
+    loadChildren: () => import('./pages/tabs/tabs.module').then(m => m.TabsPageModule)
+  },
+  {
     path: 'mis-gastos-page',
     loadChildren: () => import('./pages/mis-gastos-page/mis-gastos-page.module').then( m => m.MisGastosPagePageModule)
   },
@@ -93,7 +97,8 @@ const routes: Routes = [
   {
     path: 'hormiga-page',
     loadChildren: () => import('./pages/hormiga-page/hormiga-page.module').then( m => m.HormigaPagePageModule)
-  },  {
+  },
+  {
     path: 'planes-terminados-page',
     loadChildren: () => import('./pages/planes-terminados-page/planes-terminados-page.module').then( m => m.PlanesTerminadosPagePageModule)
   },

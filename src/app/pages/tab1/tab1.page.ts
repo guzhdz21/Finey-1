@@ -7,8 +7,8 @@ import { DatosService } from '../../services/datos.service';
 import { ModalController, NavController, Events, Platform, LoadingController } from '@ionic/angular';
 import { DescripcionGastoPage } from '../descripcion-gasto/descripcion-gasto.page';
 import { LocalNotifications } from '@ionic-native/local-notifications/ngx';
+import { File } from '@ionic-native/file/ngx'
 import { AccionesService } from '../../services/acciones.service';
-import { ModalRegistroPage } from '../modal-registro/modal-registro.page';
 import { GastosDiariosPage } from '../gastos-diarios/gastos-diarios.page';
 import { GastosMayoresPage } from '../gastos-mayores/gastos-mayores.page';
 import { Router } from '@angular/router';
@@ -71,16 +71,18 @@ export class Tab1Page implements OnInit {
               private nav: NavController,
               private event: Events,
               private plt: Platform,
-              @Inject(LOCALE_ID) private locale: string,
               private localNotifications: LocalNotifications, 
               private accionesService: AccionesService,
               private loadingCtrl: LoadingController,
-              private router: Router) {}
+              private router: Router,
+              private file: File) {}
 
   async ngOnInit() {
+    console.log(this.file.dataDirectory);
     await this.datosService.cargarDatos();
     await this.datosService.cargarPrimeraVez();
-      //Evento que escucha cuando el la informacion del usuario es actualiza para actualizar la grafica
+
+    //Evento que escucha cuando el la informacion del usuario es actualiza para actualizar la grafica
     await this.event.subscribe('usuarioActualizado', () => {
       this.usuarioCargado = this.datosService.usuarioCarga;
       this.gastosCero = true;
@@ -229,6 +231,12 @@ export class Tab1Page implements OnInit {
     await modal.onDidDismiss();
   } 
 
+  guardar() {
+    var usuario = JSON.parse(JSON.stringify(this.usuarioCargado));
+    this.file.writeFile(this.file.dataDirectory, 'hola.json',usuario, {replace:true});
+    var hola = this.file.listDir(this.file.dataDirectory, '');
+  }
+
   async nuevoMes() {
 
     await this.datosService.cargarGastosMensuales();
@@ -347,8 +355,6 @@ export class Tab1Page implements OnInit {
       await this.accionesService.presentAlertGenerica('Precaucion','Hemos determinado que puedes tener ciertas ' 
     + 'fugas de dinero, si deseas eliminarlas o darte cuenta cuales pueden ser, ve la seccion de "Gastos Hormiga" del menú');
     }
-
-    console.log(totalAhorro);
 
     await this.datosService.guardarDiferencia(0);
     this.diferenciaFondo = this.datosService.diferencia;
@@ -862,5 +868,6 @@ export class Tab1Page implements OnInit {
       }
     });
   }
+
 }
   
