@@ -31,6 +31,8 @@
     "bootstrap": "^4.4.1",
     "chart.js": "^2.9.3",
     "cordova-android": "^8.1.0",
+    "cordova-plugin-androidx": "^2.0.0",
+    "cordova-plugin-androidx-adapter": "^1.1.1",
     "cordova-plugin-background-mode": "^0.7.3",
     "cordova-plugin-file": "^6.0.2",
     "cordova-sqlite-storage": "^4.0.0",
@@ -86,7 +88,9 @@
       },
       "cordova-plugin-ionic-keyboard": {},
       "cordova-plugin-background-mode": {},
-      "cordova-plugin-file": {}
+      "cordova-plugin-file": {},
+      "cordova-plugin-androidx": {},
+      "cordova-plugin-androidx-adapter": {}
     },
     "platforms": [
       "android"

@@ -13,6 +13,8 @@ import { AlimentosComponent } from './alimentos/alimentos.component';
 import { ElectronicosComponent } from './electronicos/electronicos.component';
 import { EducacionComponent } from './educacion/educacion.component';
 import { OcioComponent } from './ocio/ocio.component';
+import { SkeletonComponent } from './skeleton/skeleton.component';
+import { SkeletonPlanesComponent } from './skeleton-planes/skeleton-planes.component';
 
 @NgModule({
   declarations: [
@@ -26,6 +28,8 @@ import { OcioComponent } from './ocio/ocio.component';
     AlimentosComponent,
     ElectronicosComponent,
     EducacionComponent,
+    SkeletonComponent,
+    SkeletonPlanesComponent,
     OcioComponent
   ],
   exports: [
@@ -39,6 +43,8 @@ import { OcioComponent } from './ocio/ocio.component';
     AlimentosComponent,
     ElectronicosComponent,
     EducacionComponent,
+    SkeletonComponent,
+    SkeletonPlanesComponent,
     OcioComponent
   ],
   imports: [

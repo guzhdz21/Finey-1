@@ -74,6 +74,8 @@ export class Tab2Page implements OnInit{
 
   gastosUsuario: number;
 
+  skeleton = true;
+
 
   //Variables del chart
   public doughnutChartLabels: Label[] = ['Progreso %', 'Restante %'];
@@ -103,11 +105,13 @@ export class Tab2Page implements OnInit{
 
     //Metodo para cargar los planes haya o no
     this.datosService.cargarDatosPlan();
+    this.skeleton = false;
     this.event.subscribe('planesCargados', () => {
       if(this.datosService.planesCargados.length <= 0) {
         this.planesExiste = false;
         this.planesDis = [this.planDis];
         this.planes = [];
+        this.skeleton = false;
         return;
       }
       else {
@@ -124,6 +128,7 @@ export class Tab2Page implements OnInit{
           plan: element
         });
       });
+      this.skeleton = false;
     });
 
     // Comprobamos que existen los planes y asignamos su progreso a la grafica pastel
@@ -132,6 +137,7 @@ export class Tab2Page implements OnInit{
         this.planesExiste = false;
         this.planesDis = [this.planDis];
         this.planes = [];
+        this.skeleton = false;
         return;
       }
       this.planes = JSON.parse(JSON.stringify(this.datosService.planesCargados));
@@ -145,6 +151,7 @@ export class Tab2Page implements OnInit{
           plan: element
         });
       });
+      this.skeleton = false;
     });
   }
 

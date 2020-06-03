@@ -54,6 +54,8 @@ export class Tab1Page implements OnInit {
   ingresoExtra: number = this.datosService.ingresoExtra;
 
   alertas: AlertaGeneral[] = [];
+
+  skeleton: boolean = true;
   
   //Variables de asignacion al Chart
   public doughnutChartLabels: Label[] = ['Vivienda'];
@@ -114,7 +116,6 @@ export class Tab1Page implements OnInit {
     await this.datosService.cargarIngresoExtra();
     this.localNotifications.fireQueuedEvents();
     //Condicional para abrir el registro de la app
-    console.log("Primera es: " + this.datosService.primera);
     if(this.datosService.primera === true) {
       await this.abrirBienvenida();
     } 
@@ -173,6 +174,7 @@ export class Tab1Page implements OnInit {
     }
 
     this.ingresoExtra = this.datosService.ingresoExtra;
+    this.skeleton = false;
   }
 
   async anadirIngreso(){
@@ -866,4 +868,3 @@ export class Tab1Page implements OnInit {
   }
 
 }
-  

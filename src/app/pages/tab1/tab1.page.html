@@ -12,7 +12,9 @@
         <ion-label><h1 class="texto_centrado_blanco margen">Gastos</h1></ion-label>
       </ion-item>
 
-<ion-card>
+      <app-skeleton *ngIf="this.skeleton"></app-skeleton>
+
+<ion-card *ngIf="this.skeleton == false">
     <ion-item lines="none">
         <ion-label class="centrar ingresos">Ingresos: {{this.datosService.usuarioCarga.ingresoCantidad}}</ion-label>
     </ion-item>
@@ -44,7 +46,7 @@
 </div>
 </ion-card>
 
-    <ion-list>
+    <ion-list *ngIf="this.skeleton == false">
         <ion-item *ngFor="let rubro of rubros | async" lines="none" (click)="abrirDescripcionGasto(rubro.texto, rubro.color)">
             <ion-icon slot="start" name="square" [class]="rubro.color"></ion-icon>
             <ion-icon mode="ios" color="success" slot="start" [name]="rubro.nombre"></ion-icon>

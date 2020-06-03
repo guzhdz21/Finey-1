@@ -1,0 +1,30 @@
+
+<ion-card>
+ <ion-item lines="none">
+     <ion-label ><ion-skeleton-text animated style="width: 50%" class="centrado"></ion-skeleton-text></ion-label>
+ </ion-item>
+
+ <ion-item lines="none">
+     <ion-label class="centrar gastos"><ion-skeleton-text animated style="width: 50%" class="centrado"></ion-skeleton-text></ion-label>
+ </ion-item>
+ 
+     <div style="display: block;">
+      <ion-avatar class="centrado grafica">
+        <ion-skeleton-text animated></ion-skeleton-text>
+      </ion-avatar>
+       </div>
+
+       <p></p>
+       <p></p>
+<ion-skeleton-text animated style="width: 95%" class="boton centrado"></ion-skeleton-text>
+<ion-skeleton-text animated style="width: 95%" class="boton centrado"></ion-skeleton-text>
+<ion-skeleton-text animated style="width: 75%" class="boton centrado"></ion-skeleton-text>
+</ion-card>
+
+ <ion-list>
+     <ion-item *ngFor="let rubro of rubros" lines="none">
+         <ion-icon slot="start" name="square"></ion-icon>
+         <ion-icon slot="start" name="square"></ion-icon>
+         <ion-label><ion-skeleton-text animated style="width: 70%"></ion-skeleton-text></ion-label>
+     </ion-item>
+ </ion-list>

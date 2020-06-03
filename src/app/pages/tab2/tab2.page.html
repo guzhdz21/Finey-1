@@ -7,7 +7,7 @@
         <ion-slide *ngFor="let plan of planesDis; let i = index">
             <ion-content>
 
-                <ion-card *ngIf="planesExiste == false">
+                <ion-card *ngIf="planesExiste == false && skeleton == false">
  
                     <ion-item color="primary" class="cambio">
                         <ion-buttons slot="start">
@@ -36,8 +36,10 @@
                             </ion-button>
                     </ion-item>
                 </ion-card>
+
+                <app-skeleton-planes *ngIf="skeleton"></app-skeleton-planes>
                 
-            <ion-card *ngIf="planesExiste == true">
+            <ion-card *ngIf="planesExiste == true && skeleton == false">
                 <ion-item color="danger" class="cambio" *ngIf="plan.plan.pausado == true">
 
                     <ion-label><h1 class="centrar">PAUSADO</h1></ion-label>
