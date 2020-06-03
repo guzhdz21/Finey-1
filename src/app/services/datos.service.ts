@@ -6,6 +6,7 @@ import { ToastController, Events, Platform } from '@ionic/angular';
 import { AlertController } from '@ionic/angular';
 import { LocalNotifications, ELocalNotificationTriggerUnit } from '@ionic-native/local-notifications/ngx';
 import { AccionesService } from './acciones.service';
+import { File } from '@ionic-native/file/ngx';
 
 @Injectable({
   providedIn: 'root'
@@ -19,7 +20,8 @@ export class DatosService {
               public alertCtrl: AlertController,
               public localNotifications: LocalNotifications,
               public accionesService: AccionesService,
-              public plt: Platform) { 
+              public plt: Platform,
+              private file: File) { 
 
     this.cargarPrimeraVez();
     this.cargarDatos();
@@ -117,6 +119,7 @@ export class DatosService {
   ingresoExtra: number;
   bloquearModulos: boolean = false;
   perdida: number;
+  folder = '';
 
   // Variable de tipo plan que adquiere los valores del storage
   planesCargados: Plan[] = [
@@ -199,6 +202,11 @@ export class DatosService {
 
   getPreguntas() {
     return this.http.get<Pregunta[]>('/assets/data/preguntas.json');
+  }
+
+  getArchivos(route) {
+    this.folder = route.snapshot.paramMap.get('folder') || '';
+    return this.http.get<UsuarioLocal>(this.file.dataDirectory + '/' + this.folder + '/hola.json');
   }
 
   // Metodo que guarda el usuario en el local storage

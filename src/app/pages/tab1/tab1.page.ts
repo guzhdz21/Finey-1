@@ -74,11 +74,9 @@ export class Tab1Page implements OnInit {
               private localNotifications: LocalNotifications, 
               private accionesService: AccionesService,
               private loadingCtrl: LoadingController,
-              private router: Router,
-              private file: File) {}
+              private router: Router) {}
 
   async ngOnInit() {
-    console.log(this.file.dataDirectory);
     await this.datosService.cargarDatos();
     await this.datosService.cargarPrimeraVez();
 
@@ -232,9 +230,7 @@ export class Tab1Page implements OnInit {
   } 
 
   guardar() {
-    var usuario = JSON.parse(JSON.stringify(this.usuarioCargado));
-    this.file.writeFile(this.file.dataDirectory, 'hola.json',usuario, {replace:true});
-    var hola = this.file.listDir(this.file.dataDirectory, '');
+    this.nav.navigateRoot('/prueba');
   }
 
   async nuevoMes() {

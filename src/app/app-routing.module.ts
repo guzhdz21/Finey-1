@@ -7,10 +7,6 @@ const routes: Routes = [
     loadChildren: () => import('./pages/tabs/tabs.module').then(m => m.TabsPageModule)
   },
   {
-    path: 'home/:folder', 
-    loadChildren: () => import('./pages/tabs/tabs.module').then(m => m.TabsPageModule)
-  },
-  {
     path: 'mis-gastos-page',
     loadChildren: () => import('./pages/mis-gastos-page/mis-gastos-page.module').then( m => m.MisGastosPagePageModule)
   },
@@ -121,7 +117,16 @@ const routes: Routes = [
   {
     path: 'bienvenida-page',
     loadChildren: () => import('./pages/bienvenida-page/bienvenida-page.module').then( m => m.BienvenidaPagePageModule)
+  },
+  {
+    path: 'prueba',
+    loadChildren: () => import('./pages/prueba/prueba.module').then( m => m.PruebaPageModule)
+  },
+  {
+    path: 'prueba/:folder',
+    loadChildren: () => import('./pages/prueba/prueba.module').then( m => m.PruebaPageModule)
   }
+
 
 
 ];
