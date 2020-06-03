@@ -5,7 +5,6 @@ import { File } from '@ionic-native/file/ngx';
 import { DatosService } from '../../services/datos.service';
 import { UsuarioLocal } from '../../interfaces/interfaces';
 import { HttpClient } from '@angular/common/http';
-import{} from ''
 
 
 @Component({
@@ -57,16 +56,6 @@ export class PruebaPage implements OnInit {
     this.file.listDir(this.file.dataDirectory, this.folder).then(res => {
       this.directories = res;
     });
-
-    var fpath = "path/to/local/file.ext";
-    window.plugins.gdrive.uploadFile(fpath,
-      function (response) {
-      //simple response message with the status
-      },
-      function (error){
-        console.log(error);
-      }
-    );
   }
 
   async leer() {
