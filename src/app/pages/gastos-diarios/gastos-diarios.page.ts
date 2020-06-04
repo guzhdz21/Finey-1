@@ -4,6 +4,7 @@ import { AlertaGeneral, GastosMensuales, GastoMensual, UsuarioLocal, Plan } from
 import { AccionesService } from '../../services/acciones.service';
 import { ModalController, NavController, Platform } from '@ionic/angular';
 import { Subscription } from 'rxjs';
+import { LocalNotifications } from '@ionic-native/local-notifications/ngx';
 
 @Component({
   selector: 'app-gastos-diarios',
@@ -47,7 +48,8 @@ export class GastosDiariosPage implements OnInit {
               private accionesService: AccionesService,
               private modalCtrl: ModalController,
               private nav: NavController,
-              private plt: Platform) { }
+              private plt: Platform,
+              private localNotifications: LocalNotifications) { }
 
   async ngOnInit() {
     this.datosService.cargarDatos();
@@ -211,6 +213,9 @@ export class GastosDiariosPage implements OnInit {
     }
     await this.datosService.guardarGastosMensuales(this.gastosMensuales);
     await this.datosService.guardarFechaDiaria(new Date().getDate());
+    await this.localNotifications.clear(0);
+    await this.datosService.guardarNotificacion(new Date());
+    await this.datosService.mandarNotificacionDiaria();
     this.modalCtrl.dismiss();
     this.nav.navigateRoot('/tabs/tab1');
   }
