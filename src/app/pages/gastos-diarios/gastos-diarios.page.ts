@@ -71,16 +71,19 @@ export class GastosDiariosPage implements OnInit {
       this.alertas = val;
     });
 
-    this.datosService.getEtiquetas().subscribe (val => {
-      this.etiquetas = val.nombre;
+    this.datosService.getRubros().subscribe (val => {
+      this.etiquetas = [];
+      val.forEach(element => {
+        this.etiquetas.push(element.texto)
+      });
 
       var gastos: GastosMensuales = {
         mes: this.mes,
         gastos: []
       }
-      val.nombre.forEach(element => {
+      val.forEach(element => {
         var gasto: GastoMensual = {
-          nombre: element,
+          nombre: element.texto,
           cantidad: null
         } 
        gastos.gastos.push(gasto);
@@ -211,6 +214,8 @@ export class GastosDiariosPage implements OnInit {
       gastosMayores + 'estas sobrepasando el margen maximo, asi que te recomendamos limitarte un poco en tus gastos, '
       + 'ya que podrias llegar a tener perdidas y afectar el desempeño de tus planes');
     }
+    
+    console.log("llegue");
     await this.datosService.guardarGastosMensuales(this.gastosMensuales);
     await this.datosService.guardarFechaDiaria(new Date().getDate());
     await this.localNotifications.clear(0);

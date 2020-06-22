@@ -56,19 +56,19 @@
         "mensaje": "Ingresa el gasto mensual que realizas en seguro de vida"
     },
     {
-        "titulo": "Internet/Cable/Telefonía",
+        "titulo": "Internet/Cable/Telefonia",
         "mensaje": "Ingresa el pago mensual que realizas en tu plan actual, ya sea que solo tengas uno o los tres servicios"
     },
     {
-        "titulo": "Electrodomésticos",
+        "titulo": "Electrodomesticos",
         "mensaje": "Ingresa el gasto mensual que realizas en electodomésticos (licuadora, lámpara, refrigerador, etc. Ya sea reparación o cambio), este gasto debe ser un promedio de cuánto gastas al mes"
     },
     {
-        "titulo": "Electrónicos",
+        "titulo": "Electronicos",
         "mensaje": "Ingresa el gasto mensual que realizas en electrónicos (celular, computadora, etc. ya sea reparacion o cambio), este gasto debe ser un promedio de cuánto gastas al mes"
     },
     {
-        "titulo": "Educación",
+        "titulo": "Educacion",
         "mensaje": "Ingresa el gasto mensual que realizas en educación (colegiatura, libros, cursos, etc.)"
     },
     {

@@ -428,8 +428,12 @@ export class QuitarPlanesService {
 
     } else {
       //Vemos que opcion escoge el ussuario
-      await this.prioridad(this.planMenor.nombre);
-      this.creado = false;
+      if(this.planesPrioritarios.length > 0) {
+        await this.prioridad(this.planesPrioritarios[0].nombre);
+      } else {
+        await this.prioridad(this.planMenor.nombre);
+        this.creado = false;
+      }
 
       if(this.prioridadDos) {
         //Vemos si el ussuario desea pausar o no
@@ -440,6 +444,7 @@ export class QuitarPlanesService {
         this.pausa = false;
         return;
       }
+      this.creado = false;
       return;
     }
   }

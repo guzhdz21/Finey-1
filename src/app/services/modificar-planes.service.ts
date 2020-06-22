@@ -619,7 +619,7 @@ export class ModificarPlanesService {
     if(await this.intentarPrioritario(margenMax, margenMin)) {
       //Calculos finales en el caso de que si se pueda
       if(this.prioridadMinimo) {
-        await this.accionesService.presentAlertPlan([{text: 'Guarar', handler: (blah) => {this.accionesService.alertaPlanCrear = true}},
+        await this.accionesService.presentAlertPlan([{text: 'Guardar', handler: (blah) => {this.accionesService.alertaPlanCrear = true}},
                                                   {text: 'Modificar', handler: (blah) => {this.accionesService.alertaPlanCrear = false}}], 
                                                   'Plan que apenas es posible', 
         'Puedes guardar el plan y cumplirlo en el tiempo establecido MIENTRAS te mantengas en GASTOS MINIMOS en los gastos promedio (luz, agua, etc.) o puedes aumentar el tiempo en conseguirlo para que no estes tan presionado');
@@ -645,8 +645,12 @@ export class ModificarPlanesService {
 
     } else {
       //Vemos que opcion escoge el ussuario
-      await this.prioridad(this.planMenor.nombre);
-      this.creado = false;
+      if(this.planesPrioritarios.length > 0) {
+        await this.prioridad(this.planesPrioritarios[0].nombre);
+      } else {
+        await this.prioridad(this.planMenor.nombre);
+        this.creado = false;
+      }
 
       if(this.prioridadDos) {
         //Vemos si el ussuario desea pausar o no
@@ -657,7 +661,7 @@ export class ModificarPlanesService {
         this.pausa = false;
         return;
       }
-
+      this.creado = false;
       return;
     }
   }
@@ -974,12 +978,13 @@ export class ModificarPlanesService {
       && this.usuarioCargado.ingresoCantidad + this.ingresoExtra - this.usuarioCargado.fondoPlanes < this.gastosUsuario
       && this.usuarioCargado.ingresoCantidad + this.ingresoExtra - this.usuarioCargado.fondoPlanes >= margenMin) {
         this.accionesService.presentAlertGenerica('Gastos Minimos', 'Ahora estas en un sistema de gastos minimos, '+ 
-        'esto quiere decir que se tomara en cuenta tus gastos en margen minimo (el pequeño margen de desviacion' + 
-        ' en cada uno de tus gastos que provoca que gastes menos sobre todo en tus gastos promedio) para hacer los' + 
-        'calculos de tus ahorros ya que al gastar menos ahorraras mas ,' +
-        'pero recuerda que el porcentaje de ese ahorro que no es para los planes sera menor debido que '+ 
-        'los planes se estan llevando casi todo, por lo tanto procura mantenerte dentro de se margen y' + 
-        ' asi poder cumplir todos tus planes');
+        'esto quiere decir que ahora para hacer los calculos que determinaran cuanto ahorraras al mes' + 
+        ' se tomara en cuenta el margen minimo de tus gastos (el pequeño margen de desviacion' + 
+        ' en cada uno de tus gastos que provoca que gastes menos, sobre todo en tus gastos promedio),' + 
+        ' por lo tanto ahora ahorraras mas si te mantienes dentro de ese margen, ' +
+        'pero recuerda que el porcentaje de ese ahorro que no es para los planes sera menor, debido que '+ 
+        'los planes se estan llevando casi todo y entraste en este modo para' + 
+        ' asi poder cumplir todos dichos planes');
     }
     await this.datosService.guardarUsuarioInfo(this.usuarioCargado);
   }

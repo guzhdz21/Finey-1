@@ -5,6 +5,7 @@ import { File } from '@ionic-native/file/ngx';
 import { DatosService } from '../../services/datos.service';
 import { UsuarioLocal } from '../../interfaces/interfaces';
 import { HttpClient } from '@angular/common/http';
+import { InAppBrowser } from '@ionic-native/in-app-browser/ngx';
 
 
 @Component({
@@ -28,7 +29,8 @@ export class PruebaPage implements OnInit {
     private router: Router,
     private route: ActivatedRoute,
     private datosService: DatosService,
-    private http: HttpClient
+    private http: HttpClient,
+    private inAppBrowser: InAppBrowser
     ) { }
 
   async ngOnInit() {
@@ -49,6 +51,14 @@ export class PruebaPage implements OnInit {
     });
   }
 
+  subir() {
+    var redirect_uri = "http://localhost:8100/prueba";
+    var clientId = "1511199877-4cda13hvjq4d7lo6tm1qf73qe3fngvha.apps.googleusercontent.com";
+    var scope = "https://wwww.googleapis.com/auth/drive";
+    this.inAppBrowser.create("https://accounts.google.com/o/oauth2/v2/auth?redirect_uri=" + redirect_uri + 
+    "&prompt=consent&response_type=code&client_id=" + clientId + "&scope" + scope + "$access_type=offline");
+  }
+
   async guardar() {
     this.datosService.presentToast(this.file.dataDirectory);
     var usuario = JSON.stringify(this.usuarioCargado);
@@ -56,6 +66,7 @@ export class PruebaPage implements OnInit {
     this.file.listDir(this.file.dataDirectory, this.folder).then(res => {
       this.directories = res;
     });
+
   }
 
   async leer() {
@@ -66,9 +77,5 @@ export class PruebaPage implements OnInit {
     this.text = usuario;
     this.us = JSON.parse(this.text); 
     this.text = this.us.nombre;
-  }
-
-  getArchivos() {
-    return this.http.get<UsuarioLocal>(this.file.dataDirectory + '/' + this.folder + '/hola.json');
   }
 }

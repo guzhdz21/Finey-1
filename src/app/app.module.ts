@@ -23,6 +23,7 @@ import { registerLocaleData } from '@angular/common';
 
 import { LocalNotifications } from '@ionic-native/local-notifications/ngx';
 import { File } from '@ionic-native/file/ngx';
+import { InAppBrowser } from '@ionic-native/in-app-browser/ngx';
 
 
 
@@ -43,6 +44,7 @@ registerLocaleData(es);
     StatusBar,
     LocalNotifications,
     File,
+    InAppBrowser,
     SplashScreen,
     { provide: RouteReuseStrategy, useClass: IonicRouteStrategy },
     {provide: LOCALE_ID, useValue: 'es-MX'}

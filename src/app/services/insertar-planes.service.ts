@@ -572,7 +572,7 @@ export class InsertarPlanesService {
           this.pausa = false;
           return;
         }
-  
+        this.creado = false;
         return;
       }
     }
@@ -885,12 +885,13 @@ export class InsertarPlanesService {
         this.usuarioCargado.ingresoCantidad + this.ingresoExtra - this.usuarioCargado.fondoPlanes < this.gastosUsuario
         && this.usuarioCargado.ingresoCantidad + this.ingresoExtra - this.usuarioCargado.fondoPlanes >= margenMin) {
         this.accionesService.presentAlertGenerica('Gastos Minimos', 'Ahora estas en un sistema de gastos minimos, '+ 
-        'esto quiere decir que se tomara en cuenta tus gastos en margen minimo (el pequeño margen de desviacion' + 
-        ' en cada uno de tus gastos que provoca que gastes menos sobre todo en tus gastos promedio) para hacer los' + 
-        'calculos de tus ahorros ya que al gastar menos ahorraras mas ,' +
-        'pero recuerda que el porcentaje de ese ahorro que no es para los planes sera menor debido que '+ 
-        'los planes se estan llevando casi todo, por lo tanto procura mantenerte dentro de se margen y' + 
-        ' asi poder cumplir todos tus planes');
+        'esto quiere decir que ahora para hacer los calculos que determinaran cuanto ahorraras al mes' + 
+        ' se tomara en cuenta el margen minimo de tus gastos (el pequeño margen de desviacion' + 
+        ' en cada uno de tus gastos que provoca que gastes menos, sobre todo en tus gastos promedio),' + 
+        ' por lo tanto ahora ahorraras mas si te mantienes dentro de ese margen, ' +
+        'pero recuerda que el porcentaje de ese ahorro que no es para los planes sera menor, debido que '+ 
+        'los planes se estan llevando casi todo y entraste en este modo para' + 
+        ' asi poder cumplir todos dichos planes');
       }
       await this.datosService.guardarUsuarioInfo(this.usuarioCargado);
     }
